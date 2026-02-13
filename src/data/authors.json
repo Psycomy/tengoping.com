@@ -1,38 +1,36 @@
 [
   {
     "id": "antonio",
-    "name": "Antonio García",
+    "name": "Antonio Pérez",
     "avatar": "/images/antonio-garcia.svg",
-    "bio": "Sysadmin con más de 10 años de experiencia en entornos Linux y cloud. Apasionado por la automatización y las buenas prácticas en infraestructura.",
+    "bio": "Administrador de sistemas orientado a infraestructuras IT y seguridad, con experiencia en redes, virtualización y monitorización.",
     "bioShort": "Sysadmin Linux & Cloud",
     "social": {
-      "twitter": "https://twitter.com/antoniogarcia",
-      "github": "https://github.com/antoniogarcia",
-      "linkedin": "https://linkedin.com/in/antoniogarcia"
+      "github": "https://github.com/Psycomy"
     }
   },
   {
-    "id": "carlos",
-    "name": "Carlos Ruiz",
+    "id": "autor2",
+    "name": "Autor2",
     "avatar": "/images/carlos-ruiz.svg",
-    "bio": "Ingeniero de redes y especialista en seguridad. Entusiasta del open source y contributor activo en proyectos de monitorización.",
-    "bioShort": "Network Engineer & Security",
+    "bio": "",
+    "bioShort": "",
     "social": {
-      "twitter": "https://twitter.com/carlosruiz",
-      "github": "https://github.com/carlosruiz",
-      "linkedin": "https://linkedin.com/in/carlosruiz"
+      "twitter": "https://twitter.com/",
+      "github": "https://github.com/",
+      "linkedin": "https://linkedin.com/"
     }
   },
   {
-    "id": "laura",
-    "name": "Laura Méndez",
+    "id": "autor3",
+    "name": "Autor3",
     "avatar": "/images/laura-mendez.svg",
-    "bio": "DevOps engineer y especialista en contenedores. Certificada en Kubernetes y AWS, defensora de la infraestructura como código y la observabilidad.",
-    "bioShort": "DevOps & Containers",
+    "bio": "",
+    "bioShort": "",
     "social": {
-      "twitter": "https://twitter.com/lauramendez",
-      "github": "https://github.com/lauramendez",
-      "linkedin": "https://linkedin.com/in/lauramendez"
+      "twitter": "https://twitter.com/",
+      "github": "https://github.com/",
+      "linkedin": "https://linkedin.com/"
     }
   }
 ]
