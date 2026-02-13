@@ -1,0 +1,166 @@
+---
+import authors from '@data/authors.json';
+import { formatDate, slugify } from '@utils/helpers';
+import { getReadingTime } from '@utils/readingTime';
+
+interface Props {
+  post: {
+    id: string;
+    body?: string;
+    data: {
+      title: string;
+      description: string;
+      author: string;
+      pubDate: Date;
+      category: string;
+      tags: string[];
+      image?: string;
+    };
+  };
+}
+
+const { post } = Astro.props;
+const { title, description, author, pubDate, category, tags, image } = post.data;
+const authorData = authors.find((a) => a.id === author);
+const readingTime = post.body ? getReadingTime(post.body) : 1;
+---
+
+<article class="article-card card-hover">
+  <a href={`/blog/${post.id}`} class="card-image-link">
+    <img src={image || '/images/placeholder-article.svg'} alt={title} class="card-image" loading="lazy" />
+  </a>
+  <div class="card-content">
+    <a href={`/categorias/${slugify(category)}`} class="badge badge-category">{category}</a>
+    <h3 class="card-title">
+      <a href={`/blog/${post.id}`}>{title}</a>
+    </h3>
+    <p class="card-description">{description.length > 120 ? description.slice(0, 120) + '...' : description}</p>
+    <div class="card-tags">
+      {tags.map((tag) => (
+        <a href={`/etiquetas/${slugify(tag)}`} class="badge badge-tag">{tag}</a>
+      ))}
+    </div>
+    <div class="card-meta">
+      <div class="card-author">
+        {authorData && <a href={`/autor/${authorData.id}`}><img src={authorData.avatar} alt={authorData.name} class="card-avatar" loading="lazy" /></a>}
+        <a href={authorData ? `/autor/${authorData.id}` : '#'} class="card-author-link">{authorData ? authorData.name : author}</a>
+      </div>
+      <div class="card-info">
+        <time datetime={new Date(pubDate).toISOString()}>{formatDate(pubDate)}</time>
+        <span>|</span>
+        <span>{readingTime} min</span>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .article-card {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  .card-image-link {
+    display: block;
+    overflow: hidden;
+    flex: 0 0 300px;
+    min-height: 200px;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-right: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 768px) {
+    .article-card { flex-direction: column; }
+    .card-image-link {
+      flex: none;
+      aspect-ratio: 16/9;
+      min-height: auto;
+    }
+    .card-image {
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    flex: 1;
+  }
+
+  .card-title {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .card-title a {
+    text-decoration: none;
+    color: var(--color-text);
+    transition: color 0.2s;
+  }
+  .card-title a:hover { color: var(--color-primary); }
+
+  .card-description {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .card-author {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  .card-avatar {
+    width: 1.75rem;
+    height: 1.75rem;
+    object-fit: cover;
+  }
+
+  .card-author-link {
+    text-decoration: none;
+    color: var(--color-text);
+    transition: color 0.2s;
+  }
+  .card-author-link:hover { color: var(--color-primary); }
+
+  .card-info {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+</style>

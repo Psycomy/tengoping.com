@@ -1,0 +1,66 @@
+---
+const navLinks = [
+  { href: "/blog", label: "blog" },
+  { href: "/categorias", label: "categorias" },
+  { href: "/etiquetas", label: "etiquetas" },
+  { href: "/sobre-nosotros", label: "sobre-nosotros" },
+];
+---
+
+<footer class="site-footer" data-pagefind-ignore>
+  <div class="footer-inner">
+    <nav class="footer-nav" aria-label="Navegaci&oacute;n del pie de p&aacute;gina">
+      {navLinks.map((link) => (
+        <a href={link.href} class="footer-link">[{link.label}]</a>
+      ))}
+      <a href="/rss.xml" class="footer-link" aria-label="RSS Feed">[rss]</a>
+    </nav>
+    <p class="copyright"><span class="prompt">tengoping:~$</span> echo "&copy; 2025 tengoping.com"</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    padding: 2rem 1.5rem;
+    margin-top: auto;
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .footer-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .footer-link:hover { color: var(--color-primary); }
+
+  .copyright {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .prompt {
+    color: var(--color-primary);
+  }
+
+  @media (max-width: 768px) {
+    .footer-nav { gap: 0.75rem; }
+  }
+</style>

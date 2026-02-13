@@ -1,0 +1,177 @@
+---
+const navLinks = [
+  { href: "/blog", label: "./blog" },
+  { href: "/categorias", label: "./categorias" },
+  { href: "/etiquetas", label: "./etiquetas" },
+  { href: "/sobre-nosotros", label: "./sobre-nosotros" },
+];
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <span class="logo-user">root</span><span class="logo-at">@</span><span class="logo-host">tengoping</span><span class="logo-colon">:</span><span class="logo-path">~</span><span class="logo-dollar">$</span><span class="logo-cursor cursor-blink">_</span>
+    </a>
+
+    <nav class="nav-desktop" aria-label="Navegaci&oacute;n principal">
+      {navLinks.map((link) => (
+        <a href={link.href} class="nav-link">{link.label}</a>
+      ))}
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn-icon" type="button" aria-label="Abrir b&uacute;squeda" data-search-trigger>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+
+      <button class="btn-icon theme-toggle" type="button" aria-label="Cambiar tema">
+        <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+
+      <button class="btn-icon hamburger" type="button" aria-label="Abrir men&uacute;" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="nav-mobile" aria-label="Navegaci&oacute;n m&oacute;vil">
+    {navLinks.map((link) => (
+      <a href={link.href} class="nav-link">{link.label}</a>
+    ))}
+  </nav>
+</header>
+
+<script>
+  function setupHeader() {
+    const toggle = document.querySelector('.theme-toggle');
+    toggle?.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+
+    const hamburger = document.querySelector('.hamburger');
+    const navMobile = document.querySelector('.nav-mobile');
+    hamburger?.addEventListener('click', () => {
+      const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+      hamburger.setAttribute('aria-expanded', String(!expanded));
+      navMobile?.classList.toggle('is-open');
+    });
+  }
+
+  setupHeader();
+  document.addEventListener('astro:after-swap', setupHeader);
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--color-header-bg);
+    border-bottom: 1px solid var(--color-border);
+    height: var(--header-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+  }
+
+  .logo {
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .logo-user { color: var(--color-primary); }
+  .logo-at { color: var(--color-text-muted); }
+  .logo-host { color: var(--color-accent); }
+  .logo-colon { color: var(--color-text-muted); }
+  .logo-path { color: var(--color-primary); }
+  .logo-dollar { color: var(--color-text-muted); }
+  .logo-cursor { color: var(--color-primary); margin-left: 2px; }
+
+  .nav-desktop {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .nav-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--color-primary); }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid transparent;
+    padding: 0.4rem;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-icon:hover {
+    border-color: var(--color-border);
+    color: var(--color-primary);
+  }
+
+  .icon-moon { display: none; }
+  :global([data-theme='dark']) .icon-sun { display: none; }
+  :global([data-theme='dark']) .icon-moon { display: block; }
+
+  .hamburger { display: none; }
+
+  .nav-mobile {
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem 1.5rem 1rem;
+    background: var(--color-header-bg);
+  }
+  .nav-mobile.is-open { display: flex; }
+  .nav-mobile .nav-link {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 768px) {
+    .nav-desktop { display: none; }
+    .hamburger { display: inline-flex; }
+    .site-header { height: auto; }
+  }
+</style>

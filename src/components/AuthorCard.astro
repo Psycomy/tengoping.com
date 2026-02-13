@@ -1,0 +1,68 @@
+---
+interface Props {
+  author: {
+    id: string;
+    name: string;
+    avatar: string;
+    bio: string;
+    bioShort: string;
+    social: { twitter?: string; github?: string; linkedin?: string };
+  };
+}
+
+const { author } = Astro.props;
+---
+
+<aside class="author-card">
+  <a href={`/autor/${author.id}`}>
+    <img src={author.avatar} alt={author.name} class="author-avatar" loading="lazy" />
+  </a>
+  <div class="author-info">
+    <h3 class="author-name"><a href={`/autor/${author.id}`}>{author.name}</a></h3>
+    <p class="author-bio">{author.bio}</p>
+    <div class="author-links">
+      <div class="author-social">
+        {author.social.twitter && (
+          <a href={author.social.twitter} target="_blank" rel="noopener noreferrer">[twitter]</a>
+        )}
+        {author.social.github && (
+          <a href={author.social.github} target="_blank" rel="noopener noreferrer">[github]</a>
+        )}
+        {author.social.linkedin && (
+          <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer">[linkedin]</a>
+        )}
+      </div>
+      <a href={`/autor/${author.id}`} class="author-all-posts">[ver todos los articulos]</a>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .author-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    margin-top: 2rem;
+  }
+  .author-avatar { width: 80px; height: 80px; object-fit: cover; }
+  .author-info { flex: 1; min-width: 0; }
+  .author-name { margin: 0 0 0.5rem; font-size: 1rem; font-weight: 700; }
+  .author-name a { text-decoration: none; color: var(--color-text); transition: color 0.2s; }
+  .author-name a:hover { color: var(--color-primary); }
+  .author-bio { margin: 0 0 0.75rem; font-size: 0.8125rem; line-height: 1.6; color: var(--color-text-secondary); }
+  .author-links { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .author-social { display: flex; gap: 0.75rem; }
+  .author-social a { color: var(--color-text-muted); text-decoration: none; font-size: 0.8125rem; transition: color 0.2s; }
+  .author-social a:hover { color: var(--color-primary); }
+  .author-all-posts { color: var(--color-primary); text-decoration: none; font-size: 0.8125rem; font-weight: 600; transition: color 0.2s; }
+  .author-all-posts:hover { color: var(--color-accent); }
+
+  @media (max-width: 640px) {
+    .author-card { flex-direction: column; align-items: center; text-align: center; }
+    .author-links { justify-content: center; }
+    .author-social { justify-content: center; }
+  }
+</style>

@@ -1,0 +1,46 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ArticleCard from '@components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+import { getUniqueTags, slugify } from '@utils/helpers';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const tags = getUniqueTags(posts);
+
+  return tags.map((tag) => ({
+    params: { tag: slugify(tag) },
+    props: {
+      tag,
+      posts: posts
+        .filter((p) => p.data.tags.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout title={`Etiqueta: ${tag}`} description={`Artículos con la etiqueta ${tag}`}>
+  <section class="container page-section">
+    <h1>Etiqueta: <span class="highlight">{tag}</span></h1>
+    <p class="subtitle">{posts.length} {posts.length === 1 ? 'artículo' : 'artículos'}</p>
+    <div class="posts-grid">
+      {posts.map((post) => <ArticleCard post={post} />)}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-section { padding: 3rem 0 4rem; }
+  .page-section h1 { text-align: center; margin-bottom: 0.5rem; }
+  .highlight { color: var(--color-primary); }
+  .subtitle { text-align: center; color: var(--color-text-muted); margin-bottom: 2.5rem; }
+  .posts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+</style>

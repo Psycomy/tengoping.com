@@ -1,0 +1,157 @@
+---
+interface Props {
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { headings } = Astro.props;
+const filtered = headings.filter((h) => h.depth === 2 || h.depth === 3);
+
+interface TocItem { heading: { depth: number; slug: string; text: string }; children: { depth: number; slug: string; text: string }[]; }
+const nested: TocItem[] = [];
+for (const h of filtered) {
+  if (h.depth === 2) {
+    nested.push({ heading: h, children: [] });
+  } else if (h.depth === 3 && nested.length > 0) {
+    nested[nested.length - 1].children.push(h);
+  }
+}
+---
+
+{nested.length > 0 && (
+  <aside class="toc-wrapper" aria-label="Tabla de contenidos">
+    <nav class="toc-desktop">
+      <h2 class="toc-title">// tabla de contenidos</h2>
+      <ul class="toc-list">
+        {nested.map((item, i) => (
+          <li>
+            <a href={`#${item.heading.slug}`} data-slug={item.heading.slug}>
+              <span class="toc-tree">{i === nested.length - 1 && item.children.length === 0 ? '└──' : '├──'}</span> {item.heading.text}
+            </a>
+            {item.children.length > 0 && (
+              <ul class="toc-sublist">
+                {item.children.map((child, j) => (
+                  <li>
+                    <a href={`#${child.slug}`} data-slug={child.slug}>
+                      <span class="toc-tree">{i === nested.length - 1 ? '   ' : '│  '}{j === item.children.length - 1 ? '└──' : '├──'}</span> {child.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <details class="toc-mobile">
+      <summary>// tabla de contenidos</summary>
+      <ul class="toc-list">
+        {nested.map((item, i) => (
+          <li>
+            <a href={`#${item.heading.slug}`}>
+              <span class="toc-tree">{i === nested.length - 1 && item.children.length === 0 ? '└──' : '├──'}</span> {item.heading.text}
+            </a>
+            {item.children.length > 0 && (
+              <ul class="toc-sublist">
+                {item.children.map((child, j) => (
+                  <li>
+                    <a href={`#${child.slug}`}>
+                      <span class="toc-tree">{i === nested.length - 1 ? '   ' : '│  '}{j === item.children.length - 1 ? '└──' : '├──'}</span> {child.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </details>
+  </aside>
+)}
+
+<script>
+  function initScrollSpy() {
+    const links = document.querySelectorAll<HTMLAnchorElement>('.toc-desktop a[data-slug]');
+    if (!links.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            links.forEach((l) => l.classList.remove('active'));
+            const active = document.querySelector(`.toc-desktop a[data-slug="${entry.target.id}"]`);
+            active?.classList.add('active');
+          }
+        }
+      },
+      { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
+    );
+
+    links.forEach((link) => {
+      const target = document.getElementById(link.dataset.slug!);
+      if (target) observer.observe(target);
+    });
+  }
+
+  initScrollSpy();
+  document.addEventListener('astro:after-swap', initScrollSpy);
+</script>
+
+<style>
+  .toc-wrapper {
+    max-height: calc(100vh - var(--header-height) - 4rem);
+    overflow-y: auto;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  .toc-desktop { display: none; }
+  .toc-mobile {
+    display: block;
+    border: 1px solid var(--color-border);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .toc-mobile summary { cursor: pointer; font-weight: 600; color: var(--color-text-muted); }
+
+  @media (min-width: 1025px) {
+    .toc-desktop { display: block; }
+    .toc-mobile { display: none; }
+  }
+
+  .toc-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .toc-list { list-style: none; margin: 0; padding: 0; }
+  .toc-list > li + li { margin-top: 0.15rem; }
+
+  .toc-tree {
+    color: var(--color-text-muted);
+    white-space: pre;
+    user-select: none;
+  }
+
+  .toc-list a {
+    display: block;
+    padding: 0.15rem 0;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .toc-list a:hover { color: var(--color-primary); }
+  .toc-list a:hover .toc-tree { color: var(--color-primary); }
+  .toc-list a.active {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  .toc-list a.active .toc-tree { color: var(--color-primary); }
+
+  .toc-sublist { list-style: none; margin: 0; padding: 0; }
+  .toc-sublist a { font-size: 0.75rem; }
+</style>

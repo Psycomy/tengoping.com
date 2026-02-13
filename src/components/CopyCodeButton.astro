@@ -1,0 +1,54 @@
+---
+// Global script that adds copy buttons to all pre blocks
+---
+
+<script>
+  function initCopyButtons() {
+    document.querySelectorAll('.prose pre').forEach((pre) => {
+      if (pre.parentElement?.classList.contains('code-block')) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block';
+
+      const header = document.createElement('div');
+      header.className = 'code-header';
+
+      const code = pre.querySelector('code');
+      const className = code?.className || '';
+      const langMatch = className.match(/language-(\w+)/);
+      const lang = langMatch ? langMatch[1] : '';
+
+      const langLabel = document.createElement('span');
+      langLabel.textContent = lang || 'code';
+
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'copy-button';
+      copyBtn.textContent = '[copiar]';
+
+      copyBtn.addEventListener('click', async () => {
+        const text = code?.textContent || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = '[copiado!]';
+          copyBtn.classList.add('copied');
+          setTimeout(() => {
+            copyBtn.textContent = '[copiar]';
+            copyBtn.classList.remove('copied');
+          }, 2000);
+        } catch {
+          copyBtn.textContent = '[error]';
+        }
+      });
+
+      header.appendChild(langLabel);
+      header.appendChild(copyBtn);
+
+      pre.parentNode!.insertBefore(wrapper, pre);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
+  }
+
+  initCopyButtons();
+  document.addEventListener('astro:after-swap', initCopyButtons);
+</script>

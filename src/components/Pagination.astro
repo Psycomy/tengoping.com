@@ -1,0 +1,116 @@
+---
+interface Props {
+  url: { prev?: string; next?: string; current: string };
+  currentPage: number;
+  lastPage: number;
+}
+
+const { url, currentPage, lastPage } = Astro.props;
+const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
+---
+
+{lastPage > 1 && (
+  <nav class="pagination" aria-label="Paginaci&oacute;n">
+    <a
+      href={url.prev}
+      class:list={['pagination-btn', { disabled: !url.prev }]}
+      aria-disabled={!url.prev}
+    >
+      [&lt; prev]
+    </a>
+
+    <div class="pagination-pages">
+      {pages.map((page) => (
+        <a
+          href={page === 1 ? '/blog' : `/blog/${page}`}
+          class:list={['pagination-page', { active: page === currentPage }]}
+          aria-current={page === currentPage ? 'page' : undefined}
+        >
+          [{page}]
+        </a>
+      ))}
+    </div>
+
+    <a
+      href={url.next}
+      class:list={['pagination-btn', { disabled: !url.next }]}
+      aria-disabled={!url.next}
+    >
+      [next &gt;]
+    </a>
+  </nav>
+)}
+
+<style>
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 3rem;
+    padding: 1rem 0;
+  }
+
+  .pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .pagination-btn:hover:not(.disabled) {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+  }
+
+  .pagination-btn.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .pagination-pages {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .pagination-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .pagination-page:hover:not(.active) {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  .pagination-page.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+    pointer-events: none;
+  }
+
+  @media (max-width: 640px) {
+    .pagination { flex-wrap: wrap; gap: 0.5rem; }
+    .pagination-btn { padding: 0.4rem 0.5rem; font-size: 0.75rem; }
+    .pagination-page { font-size: 0.75rem; }
+  }
+</style>

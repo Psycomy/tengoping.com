@@ -1,0 +1,123 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ArticleCard from '@components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+import { slugify } from '@utils/helpers';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categoryMap = new Map<string, typeof allPosts>();
+for (const post of allPosts) {
+  const cat = post.data.category;
+  if (!categoryMap.has(cat)) categoryMap.set(cat, []);
+  categoryMap.get(cat)!.push(post);
+}
+---
+
+<BaseLayout>
+  {[...categoryMap.entries()].map(([category, posts]) => (
+    <section class="category-section container">
+      <div class="category-header">
+        <h2>{category}</h2>
+        <a href={`/categorias/${slugify(category)}`}>Ver todos →</a>
+      </div>
+      <div class="category-grid">
+        <div class="featured">
+          <ArticleCard post={posts[0]} />
+        </div>
+        {posts.length > 1 && (
+          <div class="secondary">
+            {posts.slice(1, 4).map((post) => (
+              <ArticleCard post={post} />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  ))}
+</BaseLayout>
+
+<style>
+  .category-section {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .category-section:last-child {
+    border-bottom: none;
+  }
+
+  .category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .category-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .category-header a {
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .featured :global(.article-card) {
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .featured :global(.card-image-link) {
+    flex: none;
+    aspect-ratio: 16/9;
+    min-height: auto;
+  }
+
+  .secondary {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .secondary :global(.article-card) {
+    flex-direction: row;
+  }
+
+  .secondary :global(.card-image-link) {
+    flex: 0 0 180px;
+    min-height: 120px;
+  }
+
+  .secondary :global(.card-title) {
+    font-size: 1rem;
+  }
+
+  .secondary :global(.card-description) {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .category-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .featured :global(.article-card) {
+      flex-direction: column;
+    }
+
+    .secondary :global(.card-image-link) {
+      flex: 0 0 120px;
+      min-height: 80px;
+    }
+  }
+</style>

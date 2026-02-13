@@ -1,0 +1,41 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getUniqueTags, slugify } from '@utils/helpers';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const tags = getUniqueTags(posts);
+const tagCounts = tags.map((tag) => ({
+  name: tag,
+  slug: slugify(tag),
+  count: posts.filter((p) => p.data.tags.includes(tag)).length,
+}));
+---
+
+<BaseLayout title="Etiquetas" description="Todas las etiquetas del blog">
+  <section class="container page-section">
+    <h1>Etiquetas</h1>
+    <div class="tags-cloud">
+      {tagCounts.map((tag) => (
+        <a href={`/etiquetas/${tag.slug}`} class="tag-link badge badge-tag">
+          {tag.name} <span class="tag-count">({tag.count})</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-section { padding: 3rem 0 4rem; }
+  .page-section h1 { text-align: center; margin-bottom: 2rem; }
+  .tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .tag-link { font-size: 0.9rem; padding: 0.4rem 1rem; }
+  .tag-count { opacity: 0.7; }
+</style>

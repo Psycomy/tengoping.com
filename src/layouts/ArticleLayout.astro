@@ -1,0 +1,210 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '@components/TableOfContents.astro';
+import AuthorCard from '@components/AuthorCard.astro';
+import ArticleNav from '@components/ArticleNav.astro';
+import GiscusComments from '@components/GiscusComments.astro';
+import CopyCodeButton from '@components/CopyCodeButton.astro';
+import { getReadingTime } from '@utils/readingTime';
+import { formatDate, slugify } from '@utils/helpers';
+import authors from '@data/authors.json';
+
+interface Props {
+  entry: {
+    id: string;
+    body?: string;
+    data: {
+      title: string;
+      description: string;
+      author: string;
+      pubDate: Date;
+      category: string;
+      tags: string[];
+      image?: string;
+    };
+  };
+  headings: { depth: number; slug: string; text: string }[];
+  prevPost?: { id: string; data: { title: string } } | null;
+  nextPost?: { id: string; data: { title: string } } | null;
+}
+
+const { entry, headings, prevPost, nextPost } = Astro.props;
+const { title, description, author: authorId, pubDate, category, tags, image } = entry.data;
+
+const authorData = authors.find((a) => a.id === authorId);
+const readingTime = getReadingTime(entry.body || '');
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  article={true}
+  publishDate={pubDate.toISOString()}
+  author={authorData?.name}
+>
+  <article class="article-page container" data-pagefind-body>
+    <header class="article-header">
+      <div class="article-meta">
+        <span class="meta-prompt">$ cat article.meta</span>
+        <a href={`/categorias/${slugify(category)}`} class="badge badge-category">{category}</a>
+        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        <span class="reading-time">{readingTime} min de lectura</span>
+      </div>
+      <h1>{title}</h1>
+      <p class="article-description">{description}</p>
+    </header>
+
+    {image && (
+      <div class="article-image">
+        <img src={image} alt={title} />
+      </div>
+    )}
+
+    <div class="article-grid">
+      <aside class="article-sidebar" data-pagefind-ignore>
+        <TableOfContents headings={headings} />
+      </aside>
+
+      <div class="article-content prose">
+        <slot />
+      </div>
+    </div>
+
+    <footer class="article-footer" data-pagefind-ignore>
+      <div class="article-tags">
+        {tags.map((tag) => (
+          <a href={`/etiquetas/${slugify(tag)}`} class="badge badge-tag">{tag}</a>
+        ))}
+      </div>
+
+      {authorData && <AuthorCard author={authorData} />}
+
+      <ArticleNav prevPost={prevPost} nextPost={nextPost} />
+
+      <GiscusComments />
+    </footer>
+  </article>
+
+  <CopyCodeButton />
+</BaseLayout>
+
+<style>
+  .article-page {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+  }
+
+  .article-header {
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    text-align: center;
+  }
+
+  .article-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    flex-wrap: wrap;
+  }
+
+  .meta-prompt {
+    color: var(--color-primary);
+    font-size: 0.8125rem;
+    width: 100%;
+  }
+
+  .reading-time::before {
+    content: '|';
+    margin-right: 1rem;
+  }
+
+  .article-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .article-description {
+    font-size: 1.2rem;
+    color: var(--color-text-secondary);
+    max-width: 650px;
+    margin: 0 auto;
+  }
+
+  .article-image {
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+  }
+
+  .article-image img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 750px) 250px;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: start;
+  }
+
+  .article-content {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .article-sidebar {
+    grid-column: 3;
+    grid-row: 1;
+    position: sticky;
+    top: calc(var(--header-height) + 2rem);
+  }
+
+  .article-footer {
+    max-width: 750px;
+    margin: 3rem auto 0;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 1024px) {
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .article-content {
+      grid-column: 1;
+    }
+
+    .article-sidebar {
+      grid-column: 1;
+      order: -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .article-header h1 {
+      font-size: 1.75rem;
+    }
+
+    .article-description {
+      font-size: 1.05rem;
+    }
+  }
+</style>

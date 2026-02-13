@@ -1,0 +1,50 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Página no encontrada">
+  <section class="error-page container">
+    <h1>404</h1>
+    <p>La página que buscas no existe o ha sido movida.</p>
+    <div class="error-actions">
+      <a href="/" class="btn-primary">Volver al inicio</a>
+      <a href="/blog" class="btn-secondary">Ver artículos</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .error-page {
+    text-align: center;
+    padding: 6rem 0;
+  }
+  .error-page h1 {
+    font-size: 6rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+  .error-page p {
+    font-size: 1.25rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+  }
+  .error-actions { display: flex; justify-content: center; gap: 1rem; }
+  .btn-primary {
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    background: var(--color-bg-secondary);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+</style>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1a1a2e"/>
+  <rect x="40" y="40" width="1120" height="550" rx="20" fill="#16213e" stroke="#6c63ff" stroke-width="2"/>
+  <text x="600" y="280" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="#6c63ff" text-anchor="middle">tengoping.com</text>
+  <text x="600" y="360" font-family="Arial, sans-serif" font-size="28" fill="#a0a0b0" text-anchor="middle">Blog de tecnología y administración de sistemas</text>
+</svg>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "antonio",
+    "name": "Antonio García",
+    "avatar": "/images/antonio-garcia.svg",
+    "bio": "Sysadmin con más de 10 años de experiencia en entornos Linux y cloud. Apasionado por la automatización y las buenas prácticas en infraestructura.",
+    "bioShort": "Sysadmin Linux & Cloud",
+    "social": {
+      "twitter": "https://twitter.com/antoniogarcia",
+      "github": "https://github.com/antoniogarcia",
+      "linkedin": "https://linkedin.com/in/antoniogarcia"
+    }
+  },
+  {
+    "id": "carlos",
+    "name": "Carlos Ruiz",
+    "avatar": "/images/carlos-ruiz.svg",
+    "bio": "Ingeniero de redes y especialista en seguridad. Entusiasta del open source y contributor activo en proyectos de monitorización.",
+    "bioShort": "Network Engineer & Security",
+    "social": {
+      "twitter": "https://twitter.com/carlosruiz",
+      "github": "https://github.com/carlosruiz",
+      "linkedin": "https://linkedin.com/in/carlosruiz"
+    }
+  },
+  {
+    "id": "laura",
+    "name": "Laura Méndez",
+    "avatar": "/images/laura-mendez.svg",
+    "bio": "DevOps engineer y especialista en contenedores. Certificada en Kubernetes y AWS, defensora de la infraestructura como código y la observabilidad.",
+    "bioShort": "DevOps & Containers",
+    "social": {
+      "twitter": "https://twitter.com/lauramendez",
+      "github": "https://github.com/lauramendez",
+      "linkedin": "https://linkedin.com/in/lauramendez"
+    }
+  }
+]

@@ -1,0 +1,66 @@
+---
+const theme = 'preferred_color_scheme';
+---
+
+<section class="giscus-wrapper" id="giscus-section">
+  <div class="giscus"></div>
+</section>
+
+<script>
+  function initGiscus() {
+    const section = document.getElementById('giscus-section');
+    if (!section || section.querySelector('script[src*="giscus"]')) return;
+
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark'
+      ? 'dark'
+      : 'light';
+
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', 'Psycomy/tengoping.com');
+    script.setAttribute('data-repo-id', 'R_kgDORP4nMA');
+    script.setAttribute('data-category', 'Q&A');
+    script.setAttribute('data-category-id', 'DIC_kwDORP4nMM4C2Y3-');
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'top');
+    script.setAttribute('data-theme', theme);
+    script.setAttribute('data-lang', 'es');
+    script.setAttribute('data-loading', 'lazy');
+    script.crossOrigin = 'anonymous';
+    script.async = true;
+    section.appendChild(script);
+  }
+
+  // Sync giscus theme when user toggles dark/light mode
+  function updateGiscusTheme() {
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark'
+      ? 'dark'
+      : 'light';
+    const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+    iframe?.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme } } },
+      'https://giscus.app'
+    );
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.attributeName === 'data-theme') updateGiscusTheme();
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true });
+
+  initGiscus();
+  document.addEventListener('astro:after-swap', initGiscus);
+</script>
+
+<style>
+  .giscus-wrapper {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+</style>
