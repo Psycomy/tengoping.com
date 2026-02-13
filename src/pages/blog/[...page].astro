@@ -18,7 +18,7 @@ const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const categories = getUniqueCategories(allPosts);
 ---
 
-<BaseLayout title="Blog" description="Todos los artículos del blog">
+<BaseLayout title="Blog" description="Todos los artículos del blog" noindex={page.currentPage > 1}>
   <section class="blog-page container">
     <h1>Blog</h1>
 

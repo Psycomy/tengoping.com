@@ -21,6 +21,7 @@ interface Props {
       category: string;
       tags: string[];
       image?: string;
+      updatedDate?: Date;
     };
   };
   headings: { depth: number; slug: string; text: string }[];
@@ -29,7 +30,7 @@ interface Props {
 }
 
 const { entry, headings, prevPost, nextPost } = Astro.props;
-const { title, description, author: authorId, pubDate, category, tags, image } = entry.data;
+const { title, description, author: authorId, pubDate, updatedDate, category, tags, image } = entry.data;
 
 const authorData = authors.find((a) => a.id === authorId);
 const readingTime = getReadingTime(entry.body || '');
@@ -41,6 +42,7 @@ const readingTime = getReadingTime(entry.body || '');
   image={image}
   article={true}
   publishDate={pubDate.toISOString()}
+  modifiedDate={updatedDate?.toISOString()}
   author={authorData?.name}
 >
   <article class="article-page container" data-pagefind-body>

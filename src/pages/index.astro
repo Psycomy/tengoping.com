@@ -15,7 +15,7 @@ for (const post of allPosts) {
 }
 ---
 
-<BaseLayout>
+<BaseLayout isHome={true}>
   {[...categoryMap.entries()].map(([category, posts]) => (
     <section class="category-section container">
       <div class="category-header">
