@@ -1,7 +1,7 @@
 ---
 title: "Guía práctica de systemd: gestión de servicios en Linux"
 description: "Domina systemd para administrar servicios, timers y targets en distribuciones Linux modernas."
-author: "carlos"
+author: "alois"
 pubDate: 2025-02-01
 category: "Linux"
 tags: ["systemd", "Linux", "Servicios", "Sysadmin"]
