@@ -3,6 +3,7 @@ title: "Monitorizar servidores Linux con Prometheus y Grafana"
 description: "Guía paso a paso para desplegar un stack de monitorización con Prometheus y Grafana en servidores Linux usando Node Exporter."
 author: "eloculto"
 pubDate: 2025-02-14
+updatedDate: 2025-02-14
 category: "Linux"
 tags: ["Monitorización", "Prometheus", "Grafana", "Sysadmin"]
 image: "/images/linux-monitoring.jpg"

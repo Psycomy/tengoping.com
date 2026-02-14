@@ -3,6 +3,7 @@ title: "Tareas programadas: cron vs systemd timers"
 description: "Comparativa entre cron y systemd timers para programar tareas automáticas en Linux, con ejemplos prácticos de ambos."
 author: "antonio"
 pubDate: 2025-02-12
+updatedDate: 2025-02-12
 category: "Automatización"
 tags: ["Cron", "systemd", "Automatización", "Linux"]
 image: "/images/auto-cron.jpg"
