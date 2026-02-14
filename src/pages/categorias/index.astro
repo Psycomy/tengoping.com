@@ -39,7 +39,11 @@ const categoryCounts = categories.map((cat) => {
 
 <BaseLayout title="Categorías" description="Todas las categorías del blog">
   <section class="container page-section">
-    <h1>Categorías</h1>
+    <div class="page-header">
+      <span class="meta-prompt">$ ls --categorias</span>
+      <h1>Categorías</h1>
+      <p class="subtitle">{categoryCounts.length} categorías en {posts.length} artículos</p>
+    </div>
     <div class="categories-grid">
       {categoryCounts.map((cat) => (
         <a href={`/categorias/${cat.slug}`} class="category-card card-hover">
@@ -60,7 +64,27 @@ const categoryCounts = categories.map((cat) => {
 
 <style>
   .page-section { padding: 3rem 0 4rem; }
-  .page-section h1 { text-align: center; margin-bottom: 2rem; }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .meta-prompt {
+    display: block;
+    color: var(--color-primary);
+    font-size: 0.8125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
 
   .categories-grid {
     display: grid;

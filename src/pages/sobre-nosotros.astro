@@ -10,8 +10,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
 <BaseLayout title="Sobre nosotros" description="Conoce al equipo detrás de tengoping.com">
   <section class="container page-section">
-    <h1>Sobre nosotros</h1>
-    <p class="page-intro">Somos un equipo de profesionales IT apasionados por compartir conocimiento sobre administración de sistemas, redes y tecnología.</p>
+    <div class="page-header">
+      <span class="meta-prompt">$ cat /etc/team</span>
+      <h1>Sobre nosotros</h1>
+      <p class="subtitle">Somos un equipo de profesionales IT apasionados por compartir conocimiento sobre administración de sistemas, redes y tecnología.</p>
+    </div>
 
     <div class="authors-grid">
       {authors.map((author) => {
@@ -50,8 +53,29 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
 <style>
   .page-section { padding: 3rem 0 4rem; }
-  .page-section h1 { text-align: center; margin-bottom: 1rem; }
-  .page-intro { text-align: center; color: var(--color-text-secondary); max-width: 600px; margin: 0 auto 3rem; font-size: 1.1rem; }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .meta-prompt {
+    display: block;
+    color: var(--color-primary);
+    font-size: 0.8125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
 
   .authors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
 

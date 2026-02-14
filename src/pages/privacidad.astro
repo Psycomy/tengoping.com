@@ -4,8 +4,11 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 
 <BaseLayout title="Política de privacidad" description="Política de privacidad de tengoping.com">
   <section class="container page-section">
-    <h1>Política de privacidad</h1>
-    <p class="page-updated">Última actualización: febrero 2026</p>
+    <div class="page-header">
+      <span class="meta-prompt">$ chmod 600 /etc/privacy.conf</span>
+      <h1>Política de privacidad</h1>
+      <p class="subtitle">Última actualización: febrero 2026</p>
+    </div>
 
     <div class="legal-content prose">
       <h2>Responsable del sitio</h2>
@@ -39,7 +42,19 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 
 <style>
   .page-section { padding: 3rem 0 4rem; max-width: 750px; margin: 0 auto; }
-  .page-section h1 { margin-bottom: 0.5rem; }
-  .page-updated { color: var(--color-text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+
+  .page-header { margin-bottom: 2rem; }
+
+  .meta-prompt {
+    display: block;
+    color: var(--color-primary);
+    font-size: 0.8125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header h1 { margin-bottom: 0.5rem; }
+
+  .subtitle { color: var(--color-text-muted); font-size: 0.85rem; }
+
   .legal-content h2 { font-size: 1.25rem; }
 </style>
