@@ -104,8 +104,21 @@ for (const post of allPosts) {
     font-size: 0.9375rem;
   }
 
-  .secondary :global(.card-description),
+  .secondary :global(.card-description) {
+    display: none;
+  }
+
   .secondary :global(.card-tags) {
+    gap: 0.25rem;
+  }
+
+  .secondary :global(.card-tags .badge-tag) {
+    font-size: 0.6875rem;
+    padding: 0.1rem 0.4rem;
+  }
+
+
+  .secondary :global(.badge-category) {
     display: none;
   }
 
