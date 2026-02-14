@@ -5,11 +5,6 @@
 <div class="search-terminal" id="search-overlay">
   <div class="terminal-window">
     <div class="terminal-titlebar">
-      <div class="terminal-dots">
-        <span class="dot dot-red"></span>
-        <span class="dot dot-yellow"></span>
-        <span class="dot dot-green"></span>
-      </div>
       <span class="terminal-title">tengoping — buscar</span>
       <button class="terminal-close" id="search-close" aria-label="Cerrar búsqueda">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -171,21 +166,6 @@
     gap: 0.75rem;
     flex-shrink: 0;
   }
-
-  .terminal-dots {
-    display: flex;
-    gap: 6px;
-  }
-
-  .dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-  }
-
-  .dot-red { background: #FF5F57; }
-  .dot-yellow { background: #FEBC2E; }
-  .dot-green { background: #28C840; }
 
   .terminal-title {
     flex: 1;
