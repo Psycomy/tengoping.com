@@ -1,13 +1,16 @@
-# `root@tengoping:~$` tengoping.com
+<p align="center">
+  <img src="public/images/logo-github.png" alt="root@tengoping:~$_" width="440">
+</p>
 
-```
-$ cat /etc/motd
+<p align="center">
+  Blog de tecnología, administración de sistemas y redes para profesionales IT.
+</p>
 
-  Blog de tecnologia, administracion de sistemas y redes
-  para profesionales IT.
-
-  Construido con Astro 5 | Alojado en Cloudflare Pages
-```
+<p align="center">
+  <a href="https://tengoping.com">tengoping.com</a> ·
+  <a href="https://tengoping.com/blog">Artículos</a> ·
+  <a href="https://tengoping.com/categorias">Categorías</a>
+</p>
 
 ---
 
@@ -15,14 +18,14 @@ $ cat /etc/motd
 
 | Herramienta | Uso |
 |---|---|
-| [Astro 5](https://astro.build) | Framework web estatico |
+| [Astro 5](https://astro.build) | Framework web estático |
 | [MDX](https://mdxjs.com) | Markdown con componentes |
-| [Pagefind](https://pagefind.app) | Busqueda estatica (~15KB) |
+| [Pagefind](https://pagefind.app) | Búsqueda estática (~15KB) |
 | [Shiki](https://shiki.style) | Resaltado de sintaxis con temas duales |
-| [giscus](https://giscus.app) | Comentarios via GitHub Discussions |
-| [Claude](https://claude.ai) | Asistencia en diseno y desarrollo |
+| [giscus](https://giscus.app) | Comentarios vía GitHub Discussions |
+| [Claude](https://claude.ai) | Asistencia en diseño y desarrollo |
 
-## Inicio rapido
+## Inicio rápido
 
 ```bash
 # Clonar el repositorio
@@ -35,23 +38,23 @@ npm install
 # Servidor de desarrollo
 npm run dev          # localhost:4321
 
-# Build de produccion
+# Build de producción
 npm run build        # genera ./dist/
 
 # Preview local
 npm run preview
 ```
 
-> La busqueda (Pagefind) solo funciona tras ejecutar `npm run build`, ya que indexa el HTML generado.
+> La búsqueda (Pagefind) solo funciona tras ejecutar `npm run build`, ya que indexa el HTML generado.
 
-## Crear un articulo
+## Crear un artículo
 
 Crea un archivo `.md` o `.mdx` en `src/content/blog/`:
 
 ```markdown
 ---
-title: "Titulo del articulo"
-description: "Descripcion breve para SEO y tarjetas"
+title: "Título del artículo"
+description: "Descripción breve para SEO y tarjetas"
 author: "antonio"
 pubDate: 2025-03-01
 updatedDate: 2025-04-15
@@ -61,24 +64,24 @@ image: "/images/mi-imagen.svg"
 draft: false
 ---
 
-Contenido del articulo en Markdown...
+Contenido del artículo en Markdown...
 ```
 
 ### Frontmatter
 
-| Campo | Tipo | Requerido | Descripcion |
+| Campo | Tipo | Requerido | Descripción |
 |---|---|---|---|
-| `title` | string | Si | Titulo del articulo |
-| `description` | string | Si | Descripcion para SEO |
-| `author` | string | Si | ID del autor (ver `src/data/authors.json`) |
-| `pubDate` | date | Si | Fecha de publicacion |
-| `updatedDate` | date | No | Fecha de ultima actualizacion (se muestra en el articulo) |
-| `category` | string | Si | Categoria principal |
-| `tags` | string[] | Si | Array de etiquetas |
+| `title` | string | Sí | Título del artículo |
+| `description` | string | Sí | Descripción para SEO |
+| `author` | string | Sí | ID del autor (ver `src/data/authors.json`) |
+| `pubDate` | date | Sí | Fecha de publicación |
+| `updatedDate` | date | No | Fecha de última actualización (se muestra en el artículo) |
+| `category` | string | Sí | Categoría principal |
+| `tags` | string[] | Sí | Array de etiquetas |
 | `image` | string | No | Ruta a imagen destacada |
-| `draft` | boolean | No | `true` para ocultar el articulo |
+| `draft` | boolean | No | `true` para ocultar el artículo |
 
-## Anadir un autor
+## Añadir un autor
 
 Edita `src/data/authors.json`:
 
@@ -87,7 +90,7 @@ Edita `src/data/authors.json`:
   "id": "nuevo-autor",
   "name": "Nombre Apellido",
   "avatar": "/images/nuevo-autor.svg",
-  "bio": "Biografia completa del autor.",
+  "bio": "Biografía completa del autor.",
   "bioShort": "Rol breve",
   "social": {
     "twitter": "https://twitter.com/usuario",
@@ -99,7 +102,7 @@ Edita `src/data/authors.json`:
 
 ## Comentarios
 
-Los comentarios usan [giscus](https://giscus.app), que almacena las conversaciones en GitHub Discussions de este repositorio. La configuracion esta en `src/components/GiscusComments.astro`.
+Los comentarios usan [giscus](https://giscus.app), que almacena las conversaciones en GitHub Discussions de este repositorio. La configuración está en `src/components/GiscusComments.astro`.
 
 ## Estructura del proyecto
 
@@ -107,19 +110,20 @@ Los comentarios usan [giscus](https://giscus.app), que almacena las conversacion
 src/
 ├── components/        # Header, Footer, ArticleCard, ShareButtons...
 ├── content/
-│   └── blog/          # Articulos en Markdown/MDX
+│   └── blog/          # Artículos en Markdown/MDX
 ├── data/              # authors.json, site.json, navigation.ts
 ├── layouts/           # BaseLayout, ArticleLayout
 ├── pages/
-│   ├── blog/          # Listado paginado + articulos individuales
-│   ├── categorias/    # Paginas por categoria
-│   ├── etiquetas/     # Paginas por etiqueta
-│   └── autor/         # Paginas de autor
+│   ├── blog/          # Listado paginado + artículos individuales
+│   ├── categorias/    # Páginas por categoría
+│   ├── etiquetas/     # Páginas por etiqueta
+│   └── autor/         # Páginas de autor
 ├── styles/            # CSS global (temas claro/oscuro)
 ├── utils/             # Helpers TypeScript
 └── content.config.ts  # Schema de Content Collections
 
 public/
+├── fonts/             # JetBrains Mono (auto-alojada)
 ├── manifest.json      # PWA manifest
 ├── sw.js              # Service worker (cache-first assets, network-first HTML)
 └── _headers           # Cabeceras de seguridad para Cloudflare Pages
@@ -127,30 +131,30 @@ public/
 
 ## Funcionalidades
 
-- **SEO**: OG images con dimensiones, RSS con enclosures, JSON-LD (BlogPosting, WebSite, Organization)
-- **PWA**: manifest + service worker con estrategia de cache hibrida
+- **SEO**: OG images, RSS con enclosures, JSON-LD (BlogPosting, WebSite, Organization)
+- **PWA**: manifest + service worker con estrategia de caché híbrida
 - **Compartir**: botones nativos para Twitter/X, Telegram, WhatsApp, Reddit y LinkedIn
-- **Seguridad**: cabeceras CSP, X-Frame-Options, Permissions-Policy via `_headers`
-- **Busqueda**: indexacion estatica con Pagefind post-build
+- **Seguridad**: cabeceras CSP, X-Frame-Options, Permissions-Policy vía `_headers`
+- **Búsqueda**: indexación estática con Pagefind post-build
 - **Comentarios**: giscus (GitHub Discussions)
-- **Accesibilidad**: landmarks ARIA, navegacion por teclado, breadcrumbs
+- **Accesibilidad**: landmarks ARIA, navegación por teclado, breadcrumbs
 
-## Tema y diseno
+## Tema y diseño
 
-Inspirado en la estetica de terminal:
+Inspirado en la estética de terminal:
 
-- Tipografia monoespaciada (JetBrains Mono) en todo el sitio
-- Sin bordes redondeados, sin sombras — bordes solidos
+- Tipografía monoespaciada (JetBrains Mono) en todo el sitio
+- Sin bordes redondeados, sin sombras — bordes sólidos
 - Encabezados con prefijos markdown (`## `, `### `)
-- TOC con caracteres de arbol (`├──`, `└──`)
+- TOC con caracteres de árbol (`├──`, `└──`)
 - Badges rectangulares, links en formato `[bracket]`
-- Tema claro y oscuro con cambio automatico
+- Tema claro y oscuro con cambio automático
 
 ## Despliegue
 
-El sitio se despliega automaticamente en **Cloudflare Pages** con cada push a `main`.
+El sitio se despliega automáticamente en **Cloudflare Pages** con cada push a `main`.
 
-| Configuracion | Valor |
+| Configuración | Valor |
 |---|---|
 | Build command | `npm run build` |
 | Output directory | `dist` |
@@ -158,8 +162,8 @@ El sitio se despliega automaticamente en **Cloudflare Pages** con cada push a `m
 
 ## Hecho con Claude
 
-Este blog ha sido disenado y desarrollado con la asistencia de [Claude](https://claude.ai) de Anthropic, utilizando [Claude Code](https://claude.ai/code) como herramienta principal de desarrollo.
+Este blog ha sido diseñado y desarrollado con la asistencia de [Claude](https://claude.ai) de Anthropic, utilizando [Claude Code](https://claude.ai/code) como herramienta principal de desarrollo.
 
 ## Licencia
 
-Contenido del blog bajo [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Codigo fuente bajo [MIT](https://opensource.org/licenses/MIT).
+Contenido del blog bajo [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Código fuente bajo [MIT](LICENSE).
