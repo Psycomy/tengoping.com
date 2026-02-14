@@ -2,20 +2,22 @@
 <button class="back-to-top" id="back-to-top" aria-label="Volver arriba" title="Volver arriba">↑</button>
 
 <script>
-  const progressBar = document.getElementById('reading-progress')!;
-  const backToTop = document.getElementById('back-to-top')!;
+  const progressBar = document.getElementById('reading-progress');
+  const backToTop = document.getElementById('back-to-top');
 
-  function updateProgress() {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    progressBar.style.width = `${progress}%`;
-    backToTop.classList.toggle('visible', scrollTop > 300);
+  if (progressBar && backToTop) {
+    function updateProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = `${progress}%`;
+      backToTop.classList.toggle('visible', scrollTop > 300);
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    updateProgress();
   }
-
-  window.addEventListener('scroll', updateProgress, { passive: true });
-  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  updateProgress();
 </script>
 
 <style>

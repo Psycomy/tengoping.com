@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Términos de uso" description="Términos de uso de tengoping.com">
+  <section class="container page-section">
+    <h1>Términos de uso</h1>
+    <p class="page-updated">Última actualización: febrero 2026</p>
+
+    <div class="legal-content prose">
+      <h2>Aceptación de los términos</h2>
+      <p>Al acceder y utilizar <strong>tengoping.com</strong> aceptas cumplir con estos términos de uso. Si no estás de acuerdo con alguno de ellos, te recomendamos no utilizar este sitio.</p>
+
+      <h2>Naturaleza del contenido</h2>
+      <p>tengoping.com es un blog de contenido técnico sobre administración de sistemas, redes y tecnología. Los artículos, guías y tutoriales se proporcionan con fines <strong>educativos e informativos</strong>.</p>
+      <ul>
+        <li>El contenido se ofrece "tal cual", sin garantías de exactitud o completitud.</li>
+        <li>Las configuraciones, comandos y procedimientos descritos deben probarse en entornos controlados antes de aplicarlos en producción.</li>
+        <li>No nos hacemos responsables de daños derivados de la aplicación del contenido publicado.</li>
+      </ul>
+
+      <h2>Propiedad intelectual</h2>
+      <p>Todo el contenido original publicado en tengoping.com (textos, imágenes, código y diseño) es propiedad de sus respectivos autores. Puedes:</p>
+      <ul>
+        <li>Compartir enlaces a los artículos libremente.</li>
+        <li>Citar fragmentos breves con atribución y enlace al artículo original.</li>
+      </ul>
+      <p>No está permitida la reproducción total de artículos sin autorización previa.</p>
+
+      <h2>Comentarios</h2>
+      <p>Los comentarios se gestionan a través de Giscus (GitHub Discussions). Al comentar:</p>
+      <ul>
+        <li>Eres responsable del contenido de tus comentarios.</li>
+        <li>No se permite contenido ofensivo, spam o publicidad no solicitada.</li>
+        <li>Nos reservamos el derecho de moderar o eliminar comentarios que infrinjan estas normas.</li>
+      </ul>
+
+      <h2>Enlaces externos</h2>
+      <p>Este sitio contiene enlaces a recursos externos. No controlamos ni nos responsabilizamos del contenido, disponibilidad o prácticas de dichos sitios.</p>
+
+      <h2>Disponibilidad del servicio</h2>
+      <p>No garantizamos la disponibilidad continua e ininterrumpida del sitio. Podemos modificar, suspender o discontinuar cualquier aspecto del sitio en cualquier momento.</p>
+
+      <h2>Modificaciones</h2>
+      <p>Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor desde su publicación en esta página.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-section { padding: 3rem 0 4rem; max-width: 750px; margin: 0 auto; }
+  .page-section h1 { margin-bottom: 0.5rem; }
+  .page-updated { color: var(--color-text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .legal-content h2 { font-size: 1.25rem; }
+</style>

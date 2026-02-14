@@ -325,6 +325,19 @@ h4 { font-size: 1.0625rem; }
   border: 0;
 }
 
+/* ===== Focus Visible ===== */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.copy-button:focus-visible,
+.badge-tag:focus-visible,
+.card-hover:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 /* ===== Animations ===== */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }

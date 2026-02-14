@@ -5,6 +5,7 @@ const navLinks = [
   { href: "/etiquetas", label: "./etiquetas" },
   { href: "/sobre-nosotros", label: "./sobre-nosotros" },
 ];
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <header class="site-header">
@@ -15,7 +16,7 @@ const navLinks = [
 
     <nav class="nav-desktop" aria-label="Navegaci&oacute;n principal">
       {navLinks.map((link) => (
-        <a href={link.href} class="nav-link">{link.label}</a>
+        <a href={link.href} class="nav-link" aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}>{link.label}</a>
       ))}
     </nav>
 
@@ -48,7 +49,7 @@ const navLinks = [
 
   <nav class="nav-mobile" aria-label="Navegaci&oacute;n m&oacute;vil">
     {navLinks.map((link) => (
-      <a href={link.href} class="nav-link">{link.label}</a>
+      <a href={link.href} class="nav-link" aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}>{link.label}</a>
     ))}
   </nav>
 </header>
@@ -127,6 +128,7 @@ const navLinks = [
     transition: color 0.2s;
   }
   .nav-link:hover { color: var(--color-primary); }
+  .nav-link[aria-current="page"] { color: var(--color-primary); }
 
   .header-actions {
     display: flex;

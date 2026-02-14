@@ -1,0 +1,45 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Política de privacidad" description="Política de privacidad de tengoping.com">
+  <section class="container page-section">
+    <h1>Política de privacidad</h1>
+    <p class="page-updated">Última actualización: febrero 2026</p>
+
+    <div class="legal-content prose">
+      <h2>Responsable del sitio</h2>
+      <p>Este sitio web, <strong>tengoping.com</strong>, es un blog de contenido técnico sobre administración de sistemas, redes y tecnología. No recogemos datos personales directamente a través de formularios ni registros de usuarios.</p>
+
+      <h2>Datos que recopilamos</h2>
+      <p>tengoping.com es un sitio estático y <strong>no utiliza cookies propias ni sistemas de seguimiento</strong>. No obstante, algunos servicios de terceros integrados en el sitio pueden recopilar datos de forma independiente:</p>
+      <ul>
+        <li><strong>Giscus (comentarios):</strong> el sistema de comentarios utiliza GitHub Discussions. Al comentar, interactúas directamente con GitHub y su <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">política de privacidad</a> aplica.</li>
+        <li><strong>Google Fonts:</strong> las tipografías se cargan desde los servidores de Google. Google puede registrar tu dirección IP según su <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">política de privacidad</a>.</li>
+        <li><strong>Pagefind (búsqueda):</strong> el buscador funciona completamente en el navegador. No se envían consultas de búsqueda a ningún servidor externo.</li>
+      </ul>
+
+      <h2>Cookies</h2>
+      <p>El único dato que almacenamos en tu navegador es la <strong>preferencia de tema</strong> (claro/oscuro) mediante <code>localStorage</code>. Esto no es una cookie y no se transmite a ningún servidor.</p>
+
+      <h2>Enlaces externos</h2>
+      <p>Los artículos pueden contener enlaces a sitios web externos. No nos hacemos responsables de las prácticas de privacidad ni del contenido de dichos sitios.</p>
+
+      <h2>Alojamiento</h2>
+      <p>Este sitio está alojado en servidores que pueden registrar datos técnicos básicos (dirección IP, navegador, hora de acceso) en sus logs de servidor con fines de seguridad y mantenimiento.</p>
+
+      <h2>Tus derechos</h2>
+      <p>Dado que no recopilamos datos personales identificables, no hay datos que solicitar, modificar o eliminar. Si tienes preguntas sobre esta política, puedes contactarnos a través de los canales indicados en la sección <a href="/sobre-nosotros">sobre nosotros</a>.</p>
+
+      <h2>Cambios en esta política</h2>
+      <p>Nos reservamos el derecho de actualizar esta política de privacidad. Cualquier cambio será publicado en esta misma página con la fecha de actualización correspondiente.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-section { padding: 3rem 0 4rem; max-width: 750px; margin: 0 auto; }
+  .page-section h1 { margin-bottom: 0.5rem; }
+  .page-updated { color: var(--color-text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .legal-content h2 { font-size: 1.25rem; }
+</style>
