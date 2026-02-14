@@ -27,7 +27,7 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
 
 <article class="article-card card-hover">
   <a href={`/blog/${post.id}`} class="card-image-link">
-    <img src={image || '/images/placeholder-article.svg'} alt={title} class="card-image" loading="lazy" />
+    <img src={image || '/images/placeholder-article.svg'} alt={title} class="card-image" loading="lazy" width="300" height="200" decoding="async" />
   </a>
   <div class="card-content">
     <a href={`/categorias/${slugify(category)}`} class="badge badge-category">{category}</a>
@@ -42,7 +42,7 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
     </div>
     <div class="card-meta">
       <div class="card-author">
-        {authorData && <a href={`/autor/${authorData.id}`}><img src={authorData.avatar} alt={authorData.name} class="card-avatar" loading="lazy" /></a>}
+        {authorData && <a href={`/autor/${authorData.id}`}><img src={authorData.avatar} alt={authorData.name} class="card-avatar" loading="lazy" width="28" height="28" decoding="async" /></a>}
         <a href={authorData ? `/autor/${authorData.id}` : '#'} class="card-author-link">{authorData ? authorData.name : author}</a>
       </div>
       <div class="card-info">

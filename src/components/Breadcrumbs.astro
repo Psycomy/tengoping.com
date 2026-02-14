@@ -1,0 +1,92 @@
+---
+import { slugify } from '@utils/helpers';
+import site from '@data/site.json';
+
+interface Props {
+  title: string;
+  category: string;
+}
+
+const { title, category } = Astro.props;
+const categorySlug = slugify(category);
+
+const breadcrumbItems = [
+  { name: '~', url: site.url },
+  { name: 'blog', url: `${site.url}/blog` },
+  { name: category, url: `${site.url}/categorias/${categorySlug}` },
+  { name: title, url: `${site.url}${Astro.url.pathname}` },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: item.url,
+  })),
+};
+---
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    {breadcrumbItems.map((item, index) => (
+      <li>
+        {index > 0 && <span class="separator">/</span>}
+        {index < breadcrumbItems.length - 1 ? (
+          <a href={new URL(item.url).pathname}>{item.name}</a>
+        ) : (
+          <span class="current" aria-current="page">{item.name}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<style>
+  .breadcrumbs {
+    max-width: 800px;
+    margin: 0 auto 1.5rem;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .separator {
+    color: var(--color-text-muted);
+  }
+
+  a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    color: var(--color-primary);
+  }
+
+  .current {
+    color: var(--color-text-muted);
+    max-width: 30ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>

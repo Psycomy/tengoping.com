@@ -1,0 +1,133 @@
+---
+import { getCollection } from 'astro:content';
+import { slugify } from '@utils/helpers';
+
+interface Props {
+  currentId: string;
+  currentTags: string[];
+  currentCategory: string;
+}
+
+const { currentId, currentTags, currentCategory } = Astro.props;
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+const scored = allPosts
+  .filter((post) => post.id !== currentId)
+  .map((post) => {
+    const sharedTags = post.data.tags.filter((tag) => currentTags.includes(tag)).length;
+    const sameCategory = post.data.category === currentCategory ? 1 : 0;
+    return { post, score: sharedTags * 2 + sameCategory };
+  })
+  .filter(({ score }) => score > 0)
+  .sort((a, b) => b.score - a.score || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+{scored.length > 0 && (
+  <section class="related-articles">
+    <h3 class="related-title">
+      <span class="prompt">$</span> find ./blog --related
+    </h3>
+    <div class="related-grid">
+      {scored.map(({ post }) => (
+        <a href={`/blog/${post.id}`} class="related-card card-hover">
+          {post.data.image && (
+            <img
+              src={post.data.image}
+              alt={post.data.title}
+              class="related-image"
+              loading="lazy"
+              width="300"
+              height="169"
+              decoding="async"
+            />
+          )}
+          <div class="related-content">
+            <span class="badge badge-category">{post.data.category}</span>
+            <h4>{post.data.title}</h4>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .related-articles {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .related-title {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.25rem;
+    font-weight: 400;
+  }
+
+  .related-title .prompt {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    overflow: hidden;
+  }
+
+  .related-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .related-content {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .related-content h4 {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .related-card:hover h4 {
+    color: var(--color-primary);
+  }
+
+  @media (max-width: 768px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .related-card {
+      flex-direction: row;
+    }
+
+    .related-image {
+      width: 120px;
+      aspect-ratio: auto;
+      height: 100%;
+      border-bottom: none;
+      border-right: 1px solid var(--color-border);
+    }
+  }
+</style>

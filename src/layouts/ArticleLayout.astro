@@ -5,6 +5,9 @@ import AuthorCard from '@components/AuthorCard.astro';
 import ArticleNav from '@components/ArticleNav.astro';
 import GiscusComments from '@components/GiscusComments.astro';
 import CopyCodeButton from '@components/CopyCodeButton.astro';
+import Breadcrumbs from '@components/Breadcrumbs.astro';
+import ReadingProgress from '@components/ReadingProgress.astro';
+import RelatedArticles from '@components/RelatedArticles.astro';
 import { getReadingTime } from '@utils/readingTime';
 import { formatDate, slugify } from '@utils/helpers';
 import authors from '@data/authors.json';
@@ -34,18 +37,20 @@ const { title, description, author: authorId, pubDate, updatedDate, category, ta
 
 const authorData = authors.find((a) => a.id === authorId);
 const readingTime = getReadingTime(entry.body || '');
+const ogImage = image || `/og/${entry.id}.png`;
 ---
 
 <BaseLayout
   title={title}
   description={description}
-  image={image}
+  image={ogImage}
   article={true}
   publishDate={pubDate.toISOString()}
   modifiedDate={updatedDate?.toISOString()}
   author={authorData?.name}
 >
   <article class="article-page container" data-pagefind-body>
+    <Breadcrumbs title={title} category={category} />
     <header class="article-header">
       <div class="article-meta">
         <span class="meta-prompt">$ cat article.meta</span>
@@ -59,7 +64,7 @@ const readingTime = getReadingTime(entry.body || '');
 
     {image && (
       <div class="article-image">
-        <img src={image} alt={title} />
+        <img src={image} alt={title} width="900" height="506" decoding="async" fetchpriority="high" />
       </div>
     )}
 
@@ -82,6 +87,8 @@ const readingTime = getReadingTime(entry.body || '');
 
       {authorData && <AuthorCard author={authorData} />}
 
+      <RelatedArticles currentId={entry.id} currentTags={tags} currentCategory={category} />
+
       <ArticleNav prevPost={prevPost} nextPost={nextPost} />
 
       <GiscusComments />
@@ -89,6 +96,7 @@ const readingTime = getReadingTime(entry.body || '');
   </article>
 
   <CopyCodeButton />
+  <ReadingProgress />
 </BaseLayout>
 
 <style>

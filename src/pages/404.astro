@@ -2,49 +2,134 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Página no encontrada">
+<BaseLayout title="404 - Página no encontrada" noindex={true}>
   <section class="error-page container">
-    <h1>404</h1>
-    <p>La página que buscas no existe o ha sido movida.</p>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-title">root@tengoping:~$</span>
+      </div>
+      <div class="terminal-body">
+        <p class="terminal-line"><span class="prompt">$</span> curl -I https://tengoping.com<span class="path">{Astro.url.pathname}</span></p>
+        <p class="terminal-line response-line">HTTP/1.1 <span class="status-code">404</span> Not Found</p>
+        <p class="terminal-line response-line">Content-Type: text/html; charset=utf-8</p>
+        <p class="terminal-line response-line">Server: tengoping</p>
+        <p class="terminal-line">&nbsp;</p>
+        <p class="terminal-line"><span class="prompt">$</span> echo "La página solicitada no existe o ha sido movida."</p>
+        <p class="terminal-line output-line">La página solicitada no existe o ha sido movida.</p>
+        <p class="terminal-line">&nbsp;</p>
+        <p class="terminal-line"><span class="prompt">$</span> echo "Sugerencias:"</p>
+        <p class="terminal-line output-line">- Verifica que la URL esté escrita correctamente</p>
+        <p class="terminal-line output-line">- La página pudo haber sido eliminada o renombrada</p>
+        <p class="terminal-line">&nbsp;</p>
+        <p class="terminal-line cursor-line"><span class="prompt">$</span> <span class="cursor-blink">_</span></p>
+      </div>
+    </div>
     <div class="error-actions">
-      <a href="/" class="btn-primary">Volver al inicio</a>
-      <a href="/blog" class="btn-secondary">Ver artículos</a>
+      <a href="/" class="terminal-btn">[volver_al_inicio]</a>
+      <a href="/blog" class="terminal-btn">[ver_artículos]</a>
     </div>
   </section>
 </BaseLayout>
 
 <style>
   .error-page {
-    text-align: center;
-    padding: 6rem 0;
+    padding: 4rem 0 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
-  .error-page h1 {
-    font-size: 6rem;
-    font-weight: 800;
+
+  .terminal-window {
+    width: 100%;
+    max-width: 700px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .terminal-header {
+    padding: 0.6rem 1rem;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .terminal-title {
     color: var(--color-primary);
-    margin-bottom: 1rem;
+    font-weight: 600;
   }
-  .error-page p {
-    font-size: 1.25rem;
+
+  .terminal-body {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.8;
+  }
+
+  .terminal-line {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .prompt {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  .path {
+    color: var(--color-accent);
+  }
+
+  .status-code {
+    color: #ef4444;
+    font-weight: 700;
+  }
+
+  .response-line {
+    color: var(--color-text-muted);
+    padding-left: 1rem;
+  }
+
+  .output-line {
     color: var(--color-text-secondary);
-    margin-bottom: 2rem;
+    padding-left: 1rem;
   }
-  .error-actions { display: flex; justify-content: center; gap: 1rem; }
-  .btn-primary {
-    padding: 0.75rem 1.5rem;
+
+  .error-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .terminal-btn {
+    padding: 0.6rem 1.25rem;
+    background: var(--color-surface);
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .terminal-btn:hover {
     background: var(--color-primary);
     color: white;
-    border-radius: var(--radius-sm);
-    font-weight: 600;
-    text-decoration: none;
+    border-color: var(--color-primary);
   }
-  .btn-secondary {
-    padding: 0.75rem 1.5rem;
-    background: var(--color-bg-secondary);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    font-weight: 600;
-    text-decoration: none;
+
+  @media (max-width: 480px) {
+    .terminal-body {
+      padding: 1rem;
+      font-size: 0.75rem;
+    }
+    .error-actions {
+      flex-direction: column;
+      width: 100%;
+      max-width: 700px;
+    }
+    .terminal-btn {
+      text-align: center;
+    }
   }
 </style>
