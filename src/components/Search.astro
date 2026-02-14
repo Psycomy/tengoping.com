@@ -2,7 +2,7 @@
 // Terminal-style fullscreen search using Pagefind
 ---
 
-<div class="search-terminal" id="search-overlay">
+<div class="search-terminal" id="search-overlay" role="dialog" aria-modal="true" aria-label="Buscar artículos">
   <div class="terminal-window">
     <div class="terminal-titlebar">
       <span class="terminal-title">tengoping — buscar</span>
@@ -15,7 +15,7 @@
     <div class="terminal-body">
       <div class="terminal-prompt-line">
         <span class="prompt-symbol">$</span>
-        <span class="prompt-cmd">grep -ri "</span><span class="prompt-query" id="search-query-mirror"></span><span class="prompt-cmd">" /blog/</span>
+        <span class="prompt-cmd">grep -ri "</span><span class="prompt-query" id="search-query-mirror"></span><span class="prompt-cmd">" /blog/</span><span class="prompt-cursor">▌</span>
       </div>
       <div id="search-pagefind"></div>
     </div>
@@ -85,7 +85,35 @@
       }, 300);
     }
 
+    var lastFocusedElement = null;
+
+    function trapFocus(e) {
+      if (!overlay || !overlay.classList.contains('active')) return;
+      if (e.key !== 'Tab') return;
+
+      var focusable = overlay.querySelectorAll(
+        'input, button, a[href], [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable.length) return;
+
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
     function openSearch() {
+      lastFocusedElement = document.activeElement;
       if (overlay) overlay.classList.add('active');
       document.body.style.overflow = 'hidden';
       loadPagefind();
@@ -98,6 +126,7 @@
     function closeSearch() {
       if (overlay) overlay.classList.remove('active');
       document.body.style.overflow = '';
+      if (lastFocusedElement) lastFocusedElement.focus();
     }
 
     document.querySelectorAll('[data-search-trigger]').forEach(function(btn) {
@@ -116,6 +145,7 @@
         openSearch();
       }
       if (e.key === 'Escape') closeSearch();
+      trapFocus(e);
     });
   }
 
@@ -235,6 +265,16 @@
   .prompt-query {
     color: #E6EDF3;
     font-weight: 600;
+  }
+
+  .prompt-cursor {
+    color: #58D5A2;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 
   .terminal-error {
