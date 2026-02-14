@@ -2,15 +2,16 @@ import type { APIRoute, GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 
 let fontData: ArrayBuffer | null = null;
 
 async function loadFont(): Promise<ArrayBuffer> {
   if (fontData) return fontData;
-  const res = await fetch(
-    'https://fonts.gstatic.com/s/jetbrainsmono/v24/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPQ.ttf'
-  );
-  fontData = await res.arrayBuffer();
+  const fontPath = resolve('public/fonts/JetBrainsMono-Regular.ttf');
+  const buffer = await readFile(fontPath);
+  fontData = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
   return fontData;
 }
 
