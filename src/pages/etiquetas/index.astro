@@ -5,20 +5,48 @@ import { getUniqueTags, slugify } from '@utils/helpers';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const tags = getUniqueTags(posts);
-const tagCounts = tags.map((tag) => ({
-  name: tag,
-  slug: slugify(tag),
-  count: posts.filter((p) => p.data.tags.includes(tag)).length,
-}));
+const tagCounts = tags
+  .map((tag) => ({
+    name: tag,
+    slug: slugify(tag),
+    count: posts.filter((p) => p.data.tags.includes(tag)).length,
+  }))
+  .sort((a, b) => b.count - a.count);
+
+const maxCount = Math.max(...tagCounts.map((t) => t.count));
+const minCount = Math.min(...tagCounts.map((t) => t.count));
+
+function getScale(count: number): number {
+  if (maxCount === minCount) return 1;
+  return 0.8 + ((count - minCount) / (maxCount - minCount)) * 0.6;
+}
+
+function getLevel(count: number): number {
+  if (maxCount === minCount) return 2;
+  const ratio = (count - minCount) / (maxCount - minCount);
+  if (ratio >= 0.66) return 3;
+  if (ratio >= 0.33) return 2;
+  return 1;
+}
 ---
 
 <BaseLayout title="Etiquetas" description="Todas las etiquetas del blog">
   <section class="container page-section">
-    <h1>Etiquetas</h1>
+    <div class="page-header">
+      <span class="meta-prompt">$ ls --tags</span>
+      <h1>Etiquetas</h1>
+      <p class="subtitle">{tagCounts.length} etiquetas en {posts.length} artículos</p>
+    </div>
     <div class="tags-cloud">
       {tagCounts.map((tag) => (
-        <a href={`/etiquetas/${tag.slug}`} class="tag-link badge badge-tag">
-          {tag.name} <span class="tag-count">({tag.count})</span>
+        <a
+          href={`/etiquetas/${tag.slug}`}
+          class="tag-link"
+          data-level={getLevel(tag.count)}
+          style={`font-size: ${getScale(tag.count)}rem`}
+        >
+          {tag.name}
+          <span class="tag-count">{tag.count}</span>
         </a>
       ))}
     </div>
@@ -26,16 +54,82 @@ const tagCounts = tags.map((tag) => ({
 </BaseLayout>
 
 <style>
-  .page-section { padding: 3rem 0 4rem; }
-  .page-section h1 { text-align: center; margin-bottom: 2rem; }
+  .page-section {
+    padding: 3rem 0 4rem;
+    text-align: center;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .meta-prompt {
+    display: block;
+    color: var(--color-primary);
+    font-size: 0.8125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
   .tags-cloud {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
     gap: 0.75rem;
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
   }
-  .tag-link { font-size: 0.9rem; padding: 0.4rem 1rem; }
-  .tag-count { opacity: 0.7; }
+
+  .tag-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+  }
+
+  .tag-link[data-level="1"] {
+    color: var(--color-text-muted);
+  }
+
+  .tag-link[data-level="2"] {
+    color: var(--color-text-secondary);
+  }
+
+  .tag-link[data-level="3"] {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .tag-link:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  }
+
+  .tag-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.4em;
+    padding: 0.1rem 0.35rem;
+    font-size: 0.7em;
+    line-height: 1;
+    border: 1px solid currentColor;
+    opacity: 0.7;
+  }
 </style>
