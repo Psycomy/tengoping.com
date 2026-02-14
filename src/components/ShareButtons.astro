@@ -1,0 +1,95 @@
+---
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+const encodedTitle = encodeURIComponent(title);
+const encodedUrl = encodeURIComponent(url);
+
+const networks = [
+  {
+    name: 'Twitter',
+    href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+    icon: '<path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>',
+  },
+  {
+    name: 'Telegram',
+    href: `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`,
+    icon: '<path d="M21.2 4.4L2.9 11.2c-.6.2-.6.8 0 1l4.6 1.7 1.8 5.6c.1.4.6.5.9.3l2.6-2.2 4.5 3.4c.4.3 1 .1 1.1-.4L21.9 5.5c.2-.7-.3-1.3-.7-1.1z"/><path d="M8.5 13.5l9-6.5-7 7.5-.5 3z"/>',
+  },
+  {
+    name: 'WhatsApp',
+    href: `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`,
+    icon: '<path d="M17.5 14.4l-2-1c-.3-.1-.5-.1-.7.2l-.9 1.1c-.2.2-.3.3-.6.1s-1.2-.4-2.3-1.4c-.8-.8-1.4-1.7-1.6-2s0-.5.1-.6l.4-.5.3-.4c.1-.1.1-.3 0-.4l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 00-8.6 14.9L2 22l5.3-1.4A10 10 0 1012 2z"/>',
+  },
+  {
+    name: 'Reddit',
+    href: `https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
+    icon: '<circle cx="9" cy="14" r="1.5"/><circle cx="15" cy="14" r="1.5"/><path d="M12 17c-1.5 0-2.7-.4-3.2-.9m6.4 0c-.5.5-1.7.9-3.2.9"/><path d="M22 12a2 2 0 00-3.3-1.5 10.5 10.5 0 00-5.2-1.5l1-4.5 3 .7a1.5 1.5 0 103-1 1.5 1.5 0 00-2.8.3l-3.5-.8c-.2 0-.4.1-.4.3l-1.1 5a10.5 10.5 0 00-5.4 1.5A2 2 0 002 12c0 .7.4 1.3.9 1.7-.1.3-.1.7-.1 1 0 3.4 4 6.3 9.2 6.3s9.2-2.9 9.2-6.3c0-.3 0-.7-.1-1 .5-.4.9-1 .9-1.7z"/>',
+  },
+  {
+    name: 'LinkedIn',
+    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    icon: '<path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
+  },
+];
+---
+
+<div class="share-buttons">
+  <span class="share-label">$ compartir --redes</span>
+  <div class="share-links">
+    {networks.map((net) => (
+      <a
+        href={net.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="share-link"
+        title={`Compartir en ${net.name}`}
+        aria-label={`Compartir en ${net.name}`}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={net.icon} />
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .share-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .share-label {
+    color: var(--color-primary);
+    font-size: 0.8125rem;
+    white-space: nowrap;
+  }
+
+  .share-links {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .share-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .share-link:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+</style>

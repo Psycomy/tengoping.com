@@ -40,6 +40,8 @@ const imageURL = new URL(image, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#58D5A2" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" hreflang="es" href={canonicalURL} />
     <link rel="alternate" hreflang="x-default" href={canonicalURL} />
@@ -63,6 +65,8 @@ const imageURL = new URL(image, Astro.site);
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={imageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:site_name" content={site.title} />
     {publishDate && <meta property="article:published_time" content={publishDate} />}
@@ -127,6 +131,18 @@ const imageURL = new URL(image, Astro.site);
       })} />
     )}
 
+    {isHome && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: site.title,
+        url: site.url,
+        logo: `${site.url}/favicon.svg`,
+        description: site.description,
+        sameAs: ['https://github.com/Psycomy'],
+      })} />
+    )}
+
     <!-- Theme script (prevent flash) -->
     <script is:inline>
       (function () {
@@ -143,5 +159,10 @@ const imageURL = new URL(image, Astro.site);
     </main>
     <Footer />
     <Search />
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
   </body>
 </html>
