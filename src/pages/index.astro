@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import ArticleCard from '@components/ArticleCard.astro';
+import HeroSlider from '@components/HeroSlider.astro';
 import { getCollection } from 'astro:content';
 import { slugify } from '@utils/helpers';
 
@@ -23,6 +24,7 @@ const categoryIcons: Record<string, string> = {
 ---
 
 <BaseLayout isHome={true}>
+  <HeroSlider posts={allPosts.slice(0, 5)} />
   {[...categoryMap.entries()].map(([category, posts]) => (
     <section class="category-section container">
       <div class="category-header">

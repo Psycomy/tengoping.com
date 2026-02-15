@@ -1,0 +1,310 @@
+---
+import { slugify } from '@utils/helpers';
+
+interface Props {
+  posts: {
+    id: string;
+    data: {
+      title: string;
+      description: string;
+      category: string;
+      image?: string;
+      pubDate: Date;
+    };
+  }[];
+}
+
+const { posts } = Astro.props;
+---
+
+<section class="hero-slider" aria-label="Últimas publicaciones">
+  <div class="slider-track">
+    {posts.map((post, i) => (
+      <div class="slide" data-index={i} aria-hidden={i !== 0 ? "true" : undefined}>
+        <img
+          src={post.data.image || '/images/placeholder-article.svg'}
+          alt=""
+          class="slide-image"
+          loading={i === 0 ? 'eager' : 'lazy'}
+          decoding="async"
+        />
+        <div class="slide-overlay">
+          <div class="slide-content container">
+            <a href={`/categorias/${slugify(post.data.category)}`} class="badge badge-category">./{post.data.category}</a>
+            <h2 class="slide-title">{post.data.title}</h2>
+            <p class="slide-description">
+              {post.data.description.length > 140
+                ? post.data.description.slice(0, 140) + '...'
+                : post.data.description}
+            </p>
+            <a href={`/blog/${post.id}`} class="slide-cta">[$ leer más →]</a>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <button class="slider-arrow slider-prev" aria-label="Anterior">[&lt;]</button>
+  <button class="slider-arrow slider-next" aria-label="Siguiente">[&gt;]</button>
+
+  <div class="slider-dots" role="tablist" aria-label="Navegación del slider">
+    {posts.map((_, i) => (
+      <button
+        class={`slider-dot${i === 0 ? ' active' : ''}`}
+        role="tab"
+        aria-selected={i === 0 ? "true" : "false"}
+        aria-label={`Slide ${i + 1}`}
+        data-dot={i}
+      />
+    ))}
+  </div>
+</section>
+
+<style>
+  .hero-slider {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .slider-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease;
+  }
+
+  .slide {
+    position: relative;
+    min-width: 100%;
+    height: 100%;
+  }
+
+  .slide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.2));
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 3.5rem;
+  }
+
+  .slide-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 600px;
+  }
+
+  .slide-content .badge-category {
+    align-self: flex-start;
+    text-decoration: none;
+  }
+
+  .slide-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #E6EDF3;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .slide-description {
+    font-size: 0.875rem;
+    color: #8B949E;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .slide-cta {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid #58D5A2;
+    color: #58D5A2;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 0.25rem;
+  }
+
+  .slide-cta:hover {
+    background: #58D5A2;
+    color: #0D1117;
+  }
+
+  .slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: #E6EDF3;
+    border: 1px solid #30363D;
+    font-family: var(--font-mono);
+    font-size: 1.125rem;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    z-index: 2;
+  }
+
+  .slider-arrow:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: #58D5A2;
+    color: #58D5A2;
+  }
+
+  .slider-prev { left: 1rem; }
+  .slider-next { right: 1rem; }
+
+  .slider-dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 2;
+  }
+
+  .slider-dot {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #58D5A2;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s;
+  }
+
+  .slider-dot.active {
+    background: #58D5A2;
+  }
+
+  .slider-dot:hover:not(.active) {
+    background: rgba(88, 213, 162, 0.4);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slider-track {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-slider {
+      height: 300px;
+    }
+
+    .slide-overlay {
+      padding-bottom: 2.5rem;
+    }
+
+    .slide-title {
+      font-size: 1.25rem;
+    }
+
+    .slide-description {
+      font-size: 0.8125rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .slider-arrow {
+      display: none;
+    }
+
+    .slide-cta {
+      padding: 0.4rem 1rem;
+      font-size: 0.75rem;
+    }
+  }
+</style>
+
+<script>
+  function setupHeroSlider() {
+    const slider = document.querySelector('.hero-slider');
+    if (!slider) return;
+
+    const track = slider.querySelector('.slider-track') as HTMLElement;
+    const slides = slider.querySelectorAll('.slide');
+    const dots = slider.querySelectorAll('.slider-dot');
+    const prevBtn = slider.querySelector('.slider-prev');
+    const nextBtn = slider.querySelector('.slider-next');
+    const total = slides.length;
+    let current = 0;
+    let autoplayId: number | null = null;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function goTo(index: number) {
+      current = ((index % total) + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      slides.forEach((s, i) => s.setAttribute('aria-hidden', String(i !== current)));
+      dots.forEach((d, i) => {
+        d.classList.toggle('active', i === current);
+        d.setAttribute('aria-selected', String(i === current));
+      });
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    function startAutoplay() {
+      if (reducedMotion) return;
+      stopAutoplay();
+      autoplayId = window.setInterval(next, 5000);
+    }
+
+    function stopAutoplay() {
+      if (autoplayId !== null) { clearInterval(autoplayId); autoplayId = null; }
+    }
+
+    nextBtn?.addEventListener('click', () => { next(); startAutoplay(); });
+    prevBtn?.addEventListener('click', () => { prev(); startAutoplay(); });
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        goTo(Number((dot as HTMLElement).dataset.dot));
+        startAutoplay();
+      });
+    });
+
+    slider.addEventListener('mouseenter', stopAutoplay);
+    slider.addEventListener('mouseleave', startAutoplay);
+
+    // Touch swipe
+    let touchStartX = 0;
+    slider.addEventListener('touchstart', (e: Event) => {
+      stopAutoplay();
+      touchStartX = (e as TouchEvent).touches[0].clientX;
+    }, { passive: true });
+    slider.addEventListener('touchend', (e: Event) => {
+      const diff = touchStartX - (e as TouchEvent).changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+      startAutoplay();
+    }, { passive: true });
+
+    // Keyboard
+    slider.setAttribute('tabindex', '0');
+    slider.addEventListener('keydown', (e: Event) => {
+      const key = (e as KeyboardEvent).key;
+      if (key === 'ArrowRight') { next(); startAutoplay(); }
+      if (key === 'ArrowLeft') { prev(); startAutoplay(); }
+    });
+
+    startAutoplay();
+  }
+
+  setupHeroSlider();
+  document.addEventListener('astro:after-swap', setupHeroSlider);
+</script>
