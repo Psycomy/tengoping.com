@@ -13,22 +13,71 @@ Requisitos
   Fuente: DejaVu Sans Mono (incluida en la mayoría de distros Linux)
   Si no la tienes: sudo apt install fonts-dejavu-core
 
-Uso
----
-  # Genera todas las imágenes en public/images/
+Modos de uso
+------------
+  # Genera todas las imágenes del catálogo ARTICLES
   python3 scripts/generate-images.py
 
-  # Genera solo una imagen concreta
+  # Genera solo una imagen concreta del catálogo
   python3 scripts/generate-images.py fail2ban.jpg
 
-  # Genera varias a la vez
-  python3 scripts/generate-images.py fail2ban.jpg kvm-libvirt.jpg
+  # Auto-genera desde frontmatter de los .md (solo las faltantes)
+  python3 scripts/generate-images.py --auto
 
-  # Lista todas las imágenes disponibles
+  # Auto-genera forzando sobreescritura
+  python3 scripts/generate-images.py --auto --force
+
+  # Modo interactivo: wizard para crear una imagen nueva
+  python3 scripts/generate-images.py --new
+
+  # Detecta imágenes huérfanas y faltantes
+  python3 scripts/generate-images.py --check
+
+  # Lista todas las entradas del catálogo
   python3 scripts/generate-images.py --list
 
-Añadir una imagen nueva
------------------------
+Filtros
+-------
+  # Filtra por categoría (funciona con catálogo, --auto y --list)
+  python3 scripts/generate-images.py --category Seguridad
+  python3 scripts/generate-images.py --auto --category Linux
+
+Modo --auto
+-----------
+  Lee los .md de src/content/blog/, parsea el frontmatter y genera
+  imágenes automáticamente:
+
+  - Filename: se extrae del campo image del frontmatter
+  - Título: palabras significativas del título, en mayúsculas
+  - Subtítulo: description truncado a ~45 chars
+  - Categoría: campo category → color de acento
+  - Tree items: generados a partir de los tags[]
+
+  Si el filename coincide con una entrada del catálogo ARTICLES,
+  se usa esa entrada manual como override.
+
+  Por defecto solo genera las que faltan. Con --force regenera todas.
+
+Modo --check
+------------
+  Compara las imágenes referenciadas en frontmatter vs las existentes
+  en public/images/. Reporta:
+
+  - Faltantes: referenciadas en frontmatter pero no existen en disco
+  - Huérfanas: existen en disco pero ningún post las referencia
+  - Posts sin campo image en el frontmatter
+
+Modo --new
+----------
+  Wizard interactivo que pregunta paso a paso:
+  1. Nombre del fichero
+  2. Título (texto grande)
+  3. Subtítulo (texto pequeño)
+  4. Categoría (menú numerado)
+  5. Tree items (3 líneas)
+
+Añadir una imagen al catálogo manual
+-------------------------------------
   1. Abre scripts/generate-images.py
 
   2. Añade una entrada a la lista ARTICLES:
