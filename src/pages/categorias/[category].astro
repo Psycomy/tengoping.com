@@ -3,32 +3,17 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import ArticleCard from '@components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
-import { getUniqueCategories, slugify } from '@utils/helpers';
-
-const categoryMeta: Record<string, { icon: string; description: string }> = {
-  'Linux': {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="13" y2="12"/><line x1="7" y1="16" x2="10" y2="16"/></svg>`,
-    description: 'Administración, configuración y buenas prácticas en sistemas Linux',
-  },
-  'Automatización': {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>`,
-    description: 'Scripts, herramientas y flujos para automatizar tareas repetitivas',
-  },
-  'Opinión': {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
-    description: 'Reflexiones y análisis sobre tendencias en tecnología e infraestructura',
-  },
-  'Redes': {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><line x1="6" y1="7" x2="10.5" y2="10.5"/><line x1="18" y1="7" x2="13.5" y2="10.5"/><line x1="6" y1="17" x2="10.5" y2="13.5"/><line x1="18" y1="17" x2="13.5" y2="13.5"/></svg>`,
-    description: 'Configuración de redes, protocolos y seguridad perimetral',
-  },
-};
+import { slugify } from '@utils/helpers';
+import { categoryMeta } from '@data/categories';
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
-  const categories = getUniqueCategories(posts);
+  const allCategories = new Set([
+    ...Object.keys(categoryMeta),
+    ...posts.map((p) => p.data.category),
+  ]);
 
-  return categories.map((category) => ({
+  return [...allCategories].map((category) => ({
     params: { category: slugify(category) },
     props: {
       category,
@@ -71,6 +56,11 @@ const meta = categoryMeta[category];
   .category-icon {
     display: flex;
     color: var(--color-primary);
+  }
+
+  .category-icon :global(svg) {
+    width: 28px;
+    height: 28px;
   }
 
   .category-heading h1 {
