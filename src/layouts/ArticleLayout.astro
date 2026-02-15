@@ -55,7 +55,7 @@ const canonicalURL = new URL(`/blog/${entry.id}`, Astro.site).toString();
     <Breadcrumbs title={title} category={category} />
     <header class="article-header">
       <div class="article-meta">
-        <span class="meta-prompt">$ cat article.meta</span>
+        <span class="meta-prompt">$ cat {entry.id}.meta</span>
         <a href={`/categorias/${slugify(category)}`} class="badge badge-category">{category}</a>
         <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
         {updatedDate && <span class="updated-date">(actualizado: {formatDate(updatedDate)})</span>}
