@@ -57,7 +57,12 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
       const current = document.documentElement.getAttribute('data-theme');
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
+      const osTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (next === osTheme) {
+        localStorage.removeItem('theme');
+      } else {
+        localStorage.setItem('theme', next);
+      }
     });
 
     const hamburger = document.querySelector('.hamburger');

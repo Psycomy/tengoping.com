@@ -132,12 +132,18 @@ const imageURL = new URL(image, Astro.site);
       })} />
     )}
 
-    <!-- Theme script (prevent flash) -->
+    <!-- Theme script (prevent flash + sync with OS) -->
     <script is:inline>
       (function () {
+        const mq = window.matchMedia('(prefers-color-scheme: dark)');
         const saved = localStorage.getItem('theme');
-        const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const preferred = mq.matches ? 'dark' : 'light';
         document.documentElement.setAttribute('data-theme', saved || preferred);
+        mq.addEventListener('change', function (e) {
+          if (!localStorage.getItem('theme')) {
+            document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+          }
+        });
       })();
     </script>
   </head>
