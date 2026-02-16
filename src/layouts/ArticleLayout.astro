@@ -210,10 +210,12 @@ const canonicalURL = new URL(`/blog/${entry.id}`, Astro.site).toString();
 
     .article-content {
       grid-column: 1;
+      grid-row: auto;
     }
 
     .article-sidebar {
       grid-column: 1;
+      grid-row: auto;
       order: -1;
       position: static;
     }
