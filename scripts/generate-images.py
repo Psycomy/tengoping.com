@@ -55,6 +55,8 @@ CAT_COLORS = {
     "Seguridad": "#F87171",
     "Self-Hosting": "#34D399",
     "Hardware": "#FBBF24",
+    "Software": "#C084FC",
+    "Monitorización": "#F472B6",
 }
 
 # Stop words para extraer título de imagen desde el título del post
@@ -90,7 +92,7 @@ ARTICLES = [
      ["├── config/", "├── scripts/", "└── docs/"]),
     ("linux-containers.jpg", "PODMAN", "contenedores sin root", "Linux",
      ["├── podman run", "├── Containerfile", "└── pods/"]),
-    ("linux-monitoring.jpg", "PROMETHEUS", "monitorización con grafana", "Linux",
+    ("linux-monitoring.jpg", "PROMETHEUS", "monitorización con grafana", "Monitorización",
      ["├── prometheus.yml", "├── node_exporter", "└── grafana:3000"]),
     ("linux-permissions.jpg", "PERMISOS", "chmod, chown y acls", "Linux",
      ["├── chmod 750", "├── chown user:group", "└── setfacl -m"]),
@@ -150,6 +152,20 @@ ARTICLES = [
      ["├── mini-pc/", "├── poweredge/", "└── watts.log"]),
     ("linux-hardware-diag.jpg", "DIAGNÓSTICO", "hardware en linux", "Hardware",
      ["├── lscpu / lsblk", "├── smartctl -a", "└── sensors"]),
+    # Software
+    ("soft-git.jpg", "GIT", "control de versiones para sysadmins", "Software",
+     ["├── git init", "├── git branch", "└── git merge"]),
+    ("soft-python.jpg", "PYTHON", "administración de sistemas", "Software",
+     ["├── subprocess", "├── paramiko", "└── psutil"]),
+    ("soft-cicd.jpg", "GITHUB ACTIONS", "ci/cd guía práctica", "Software",
+     ["├── .github/workflows/", "├── jobs:", "└── secrets"]),
+    # Monitorización
+    ("mon-observabilidad.jpg", "OBSERVABILIDAD", "métricas, logs y trazas", "Monitorización",
+     ["├── metrics/", "├── logs/", "└── traces/"]),
+    ("mon-alertmanager.jpg", "ALERTMANAGER", "alertas inteligentes", "Monitorización",
+     ["├── alertmanager.yml", "├── route:", "└── silence/"]),
+    ("mon-uptimekuma.jpg", "UPTIME KUMA", "monitorizar servicios web", "Monitorización",
+     ["├── docker-compose.yml", "├── monitors/", "└── notifications/"]),
 ]
 
 # Índice rápido por filename para lookups

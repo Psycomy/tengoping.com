@@ -4,7 +4,7 @@ description: "Guía paso a paso para desplegar un stack de monitorización con P
 author: "eloculto"
 pubDate: 2025-02-14
 updatedDate: 2025-02-14
-category: "Linux"
+category: "Monitorización"
 tags: ["Monitorización", "Prometheus", "Grafana", "Sysadmin"]
 image: "/images/linux-monitoring.jpg"
 draft: false
