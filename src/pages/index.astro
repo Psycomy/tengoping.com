@@ -9,17 +9,28 @@ import { categoryMeta } from '@data/categories';
 const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
+const categoryOrder = [
+  'Linux', 'Software', 'Redes', 'Seguridad', 'Virtualización',
+  'Monitorización', 'Automatización', 'Self-Hosting', 'Hardware', 'Opinión',
+];
+
 const categoryMap = new Map<string, typeof allPosts>();
 for (const post of allPosts) {
   const cat = post.data.category;
   if (!categoryMap.has(cat)) categoryMap.set(cat, []);
   categoryMap.get(cat)!.push(post);
 }
+
+const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
+  const ia = categoryOrder.indexOf(a[0]);
+  const ib = categoryOrder.indexOf(b[0]);
+  return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+});
 ---
 
 <BaseLayout isHome={true}>
   <HeroSlider posts={allPosts.slice(0, 5)} />
-  {[...categoryMap.entries()].map(([category, posts]) => (
+  {sortedCategories.map(([category, posts]) => (
     <section class="category-section container">
       <div class="category-header">
         <h2>

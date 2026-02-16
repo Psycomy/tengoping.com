@@ -5,17 +5,28 @@ import { slugify } from '@utils/helpers';
 import { categoryMeta } from '@data/categories';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
-const categoryCounts = Object.entries(categoryMeta).map(([cat, meta]) => {
-  const catPosts = posts.filter((p) => p.data.category === cat);
-  const tags = [...new Set(catPosts.flatMap((p) => p.data.tags))].sort();
-  return {
-    name: cat,
-    slug: slugify(cat),
-    count: catPosts.length,
-    tags,
-    meta,
-  };
-});
+const categoryOrder = [
+  'Linux', 'Software', 'Redes', 'Seguridad', 'Virtualización',
+  'Monitorización', 'Automatización', 'Self-Hosting', 'Hardware', 'Opinión',
+];
+
+const categoryCounts = Object.entries(categoryMeta)
+  .map(([cat, meta]) => {
+    const catPosts = posts.filter((p) => p.data.category === cat);
+    const tags = [...new Set(catPosts.flatMap((p) => p.data.tags))].sort();
+    return {
+      name: cat,
+      slug: slugify(cat),
+      count: catPosts.length,
+      tags,
+      meta,
+    };
+  })
+  .sort((a, b) => {
+    const ia = categoryOrder.indexOf(a.name);
+    const ib = categoryOrder.indexOf(b.name);
+    return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+  });
 ---
 
 <BaseLayout title="Categorías" description="Todas las categorías del blog">
