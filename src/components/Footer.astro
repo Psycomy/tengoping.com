@@ -13,6 +13,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
       <a href="/rss.xml" class="footer-link" aria-label="RSS Feed">[rss]</a>
     </nav>
     <p class="copyright"><span class="prompt">tengoping:~$</span> echo "&copy; 2026 tengoping.com"</p>
+    <p class="source-link"><span class="prompt">tengoping:~$</span> git remote -v → <a href="https://github.com/Psycomy/tengoping.com" target="_blank" rel="noopener noreferrer">github.com/Psycomy/tengoping.com</a></p>
   </div>
 </footer>
 
@@ -55,6 +56,21 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
 
   .prompt {
+    color: var(--color-primary);
+  }
+
+  .source-link {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .source-link a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .source-link a:hover {
     color: var(--color-primary);
   }
 
