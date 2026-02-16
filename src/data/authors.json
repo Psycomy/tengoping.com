@@ -18,11 +18,11 @@
     "social": {}
   },
   {
-    "id": "eloculto",
-    "name": "El Oculto",
-    "avatar": "/images/laura-mendez.svg",
-    "bio": "Enfocado en seguridad e infraestructura de servidores Linux. Escribe sobre hardening, proxies inversos, backups y monitorización. Prefiere que los servidores hablen solo cuando se les pregunta.",
-    "bioShort": "Seguridad & Infraestructura Linux",
+    "id": "orgise",
+    "name": "Orgise",
+    "avatar": "/images/arch.png",
+    "bio": "La tecnología debe servirnos, no esclavizarnos. Piensa que el software libre es necesario para una sociedad libre. Construyamos un mundo mejor para las generaciones venideras.",
+    "bioShort": "Frontend Web Developer",
     "social": {}
   }
 ]
