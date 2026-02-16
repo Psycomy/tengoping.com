@@ -3,7 +3,6 @@ title: "IA en la administración de sistemas: ¿oportunidad o amenaza?"
 description: "Reflexión sobre el impacto de la inteligencia artificial en el trabajo diario del sysadmin y cómo adaptarse al cambio."
 author: "alois"
 pubDate: 2025-02-03
-updatedDate: 2025-02-03
 category: "Opinión"
 tags: ["IA", "Opinión", "Sysadmin", "Futuro"]
 image: "/images/opinion-ia.jpg"
