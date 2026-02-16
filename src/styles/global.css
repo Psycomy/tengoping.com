@@ -294,6 +294,13 @@ h4 { font-size: 1.0625rem; }
   border: none;
 }
 
+/* Shiki dual theme: switch to dark token colors in dark mode */
+[data-theme='dark'] .astro-code,
+[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
 .code-header {
   display: flex;
   justify-content: space-between;
