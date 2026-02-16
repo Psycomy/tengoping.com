@@ -1,7 +1,7 @@
 ---
 title: "Gitea: monta tu propio servidor Git"
 description: "Instala y configura Gitea como alternativa ligera a GitHub o GitLab para alojar repositorios Git en tu propio servidor."
-author: "eloculto"
+author: "antonio"
 pubDate: 2025-10-08
 category: "Self-Hosting"
 tags: ["Gitea", "Git", "Self-Hosting", "DevOps"]
