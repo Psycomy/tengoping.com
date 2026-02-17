@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'tengoping-v1';
+const CACHE_VERSION = 'tengoping-v2';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const PAGES_CACHE = `${CACHE_VERSION}-pages`;
 
@@ -6,6 +6,11 @@ const PRECACHE_URLS = [
   '/',
   '/favicon.svg',
 ];
+
+// Assets built by Astro have content hashes in filename — safe to cache-first
+function isHashedAsset(url) {
+  return url.pathname.startsWith('/_astro/');
+}
 
 // Install: precache shell
 self.addEventListener('install', (event) => {
@@ -29,7 +34,7 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: cache-first for static assets, network-first for HTML
+// Fetch strategy
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
@@ -47,13 +52,8 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => caches.match(request))
     );
-  } else if (
-    request.destination === 'style' ||
-    request.destination === 'script' ||
-    request.destination === 'font' ||
-    request.destination === 'image'
-  ) {
-    // Cache-first for static assets
+  } else if (isHashedAsset(url)) {
+    // Cache-first ONLY for hashed assets (_astro/*) — filename changes on content change
     event.respondWith(
       caches.match(request).then(
         (cached) =>
@@ -64,6 +64,22 @@ self.addEventListener('fetch', (event) => {
             return response;
           })
       )
+    );
+  } else if (
+    request.destination === 'style' ||
+    request.destination === 'script' ||
+    request.destination === 'font' ||
+    request.destination === 'image'
+  ) {
+    // Network-first for non-hashed assets (images, icons, etc.)
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(STATIC_CACHE).then((cache) => cache.put(request, clone));
+          return response;
+        })
+        .catch(() => caches.match(request))
     );
   }
 });
