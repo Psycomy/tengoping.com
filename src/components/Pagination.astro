@@ -11,13 +11,11 @@ const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
 
 {lastPage > 1 && (
   <nav class="pagination" aria-label="Paginaci&oacute;n">
-    <a
-      href={url.prev}
-      class:list={['pagination-btn', { disabled: !url.prev }]}
-      aria-disabled={!url.prev}
-    >
-      [&lt; prev]
-    </a>
+    {url.prev ? (
+      <a href={url.prev} class="pagination-btn">[&lt; prev]</a>
+    ) : (
+      <span class="pagination-btn disabled" aria-disabled="true">[&lt; prev]</span>
+    )}
 
     <div class="pagination-pages">
       {pages.map((page) => (
@@ -31,13 +29,11 @@ const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
       ))}
     </div>
 
-    <a
-      href={url.next}
-      class:list={['pagination-btn', { disabled: !url.next }]}
-      aria-disabled={!url.next}
-    >
-      [next &gt;]
-    </a>
+    {url.next ? (
+      <a href={url.next} class="pagination-btn">[next &gt;]</a>
+    ) : (
+      <span class="pagination-btn disabled" aria-disabled="true">[next &gt;]</span>
+    )}
   </nav>
 )}
 

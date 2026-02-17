@@ -1,10 +1,13 @@
-const CACHE_VERSION = 'tengoping-v2';
+const CACHE_VERSION = 'tengoping-v3';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const PAGES_CACHE = `${CACHE_VERSION}-pages`;
 
 const PRECACHE_URLS = [
   '/',
   '/favicon.svg',
+  '/offline.html',
+  '/fonts/JetBrainsMono-Regular.woff2',
+  '/fonts/JetBrainsMono-Bold.woff2',
 ];
 
 // Assets built by Astro have content hashes in filename — safe to cache-first
@@ -42,7 +45,7 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== location.origin) return;
 
   if (request.destination === 'document') {
-    // Network-first for HTML pages
+    // Network-first for HTML pages, offline fallback
     event.respondWith(
       fetch(request)
         .then((response) => {
@@ -50,7 +53,9 @@ self.addEventListener('fetch', (event) => {
           caches.open(PAGES_CACHE).then((cache) => cache.put(request, clone));
           return response;
         })
-        .catch(() => caches.match(request))
+        .catch(() =>
+          caches.match(request).then((cached) => cached || caches.match('/offline.html'))
+        )
     );
   } else if (isHashedAsset(url)) {
     // Cache-first ONLY for hashed assets (_astro/*) — filename changes on content change

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sin conexion | tengoping.com</title>
+    <style>
+      @font-face {
+        font-family: 'JetBrains Mono';
+        src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'JetBrains Mono';
+        src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+        font-weight: 700;
+        font-display: swap;
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: 'JetBrains Mono', monospace;
+        background: #0D1117;
+        color: #E6EDF3;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+      .terminal-window {
+        width: 100%;
+        max-width: 700px;
+        border: 1px solid #30363D;
+        background: #161B22;
+      }
+      .terminal-header {
+        padding: 0.6rem 1rem;
+        background: #0D1117;
+        border-bottom: 1px solid #30363D;
+        font-size: 0.8125rem;
+        color: #848D97;
+      }
+      .terminal-title { color: #58D5A2; font-weight: 700; }
+      .terminal-body {
+        padding: 1.25rem 1.5rem;
+        font-size: 0.8125rem;
+        line-height: 1.8;
+      }
+      .terminal-line { margin: 0; white-space: pre-wrap; }
+      .prompt { color: #58D5A2; font-weight: 700; }
+      .status-code { color: #ef4444; font-weight: 700; }
+      .response-line { color: #848D97; padding-left: 1rem; }
+      .output-line { color: #8B949E; padding-left: 1rem; }
+      .cursor-blink { animation: blink 1s step-end infinite; }
+      @keyframes blink { 50% { opacity: 0; } }
+      .actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      .terminal-btn {
+        padding: 0.6rem 1.25rem;
+        background: #161B22;
+        color: #58D5A2;
+        border: 1px solid #30363D;
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .terminal-btn:hover {
+        background: #58D5A2;
+        color: #0D1117;
+        border-color: #58D5A2;
+      }
+      @media (max-width: 480px) {
+        .terminal-body { padding: 1rem; font-size: 0.75rem; }
+        .actions { flex-direction: column; width: 100%; max-width: 700px; }
+        .terminal-btn { text-align: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <span class="terminal-title">root@tengoping:~$</span>
+      </div>
+      <div class="terminal-body">
+        <p class="terminal-line"><span class="prompt">$</span> ping tengoping.com</p>
+        <p class="terminal-line response-line">ping: tengoping.com: <span class="status-code">Network unreachable</span></p>
+        <p class="terminal-line">&nbsp;</p>
+        <p class="terminal-line"><span class="prompt">$</span> echo "No hay conexion a Internet."</p>
+        <p class="terminal-line output-line">No hay conexion a Internet.</p>
+        <p class="terminal-line output-line">Verifica tu conexion e intenta de nuevo.</p>
+        <p class="terminal-line">&nbsp;</p>
+        <p class="terminal-line"><span class="prompt">$</span> <span class="cursor-blink">_</span></p>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="terminal-btn" onclick="location.reload()">[reintentar]</button>
+      <a href="/" class="terminal-btn">[volver_al_inicio]</a>
+    </div>
+  </body>
+</html>
