@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-02-05
 category: "Automatización"
 tags: ["Bash", "Scripts", "Sysadmin", "Automatización"]
-image: "/images/auto-bash.jpg"
+image: "../../assets/images/auto-bash.jpg"
 draft: false
 ---
 

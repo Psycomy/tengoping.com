@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-01-22
 category: "Redes"
 tags: ["VLAN", "Redes", "Switch", "Linux"]
-image: "/images/redes-vlan.jpg"
+image: "../../assets/images/redes-vlan.jpg"
 draft: false
 ---
 

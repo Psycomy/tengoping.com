@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-02-12
 category: "Linux"
 tags: ["Seguridad", "Hardening", "SSH", "Sysadmin"]
-image: "/images/linux-hardening.jpg"
+image: "../../assets/images/linux-hardening.jpg"
 draft: false
 ---
 

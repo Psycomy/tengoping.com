@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2026-02-16
 category: "Software"
 tags: ["ci-cd", "github-actions", "devops", "automatizacion"]
-image: "/images/soft-cicd.jpg"
+image: "../../assets/images/soft-cicd.jpg"
 draft: false
 ---
 

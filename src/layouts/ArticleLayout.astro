@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '@components/TableOfContents.astro';
 import AuthorCard from '@components/AuthorCard.astro';
@@ -24,7 +26,7 @@ interface Props {
       pubDate: Date;
       category: string;
       tags: string[];
-      image?: string;
+      image?: ImageMetadata;
       updatedDate?: Date;
     };
   };
@@ -38,7 +40,7 @@ const { title, description, author: authorId, pubDate, updatedDate, category, ta
 
 const authorData = authors.find((a) => a.id === authorId);
 const readingTime = getReadingTime(entry.body || '');
-const ogImage = image || `/og/${entry.id}.png`;
+const ogImage = image?.src || `/og/${entry.id}.png`;
 const canonicalURL = new URL(`/blog/${entry.id}`, Astro.site).toString();
 ---
 
@@ -67,7 +69,7 @@ const canonicalURL = new URL(`/blog/${entry.id}`, Astro.site).toString();
 
     {image && (
       <div class="article-image">
-        <img src={image} alt={title} width="900" height="506" decoding="async" fetchpriority="high" />
+        <Image src={image} alt={title} width={900} height={506} format="webp" loading="eager" />
       </div>
     )}
 

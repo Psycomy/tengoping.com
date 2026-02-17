@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-02-14
 category: "Monitorización"
 tags: ["Monitorización", "Prometheus", "Grafana", "Sysadmin"]
-image: "/images/linux-monitoring.jpg"
+image: "../../assets/images/linux-monitoring.jpg"
 draft: false
 ---
 

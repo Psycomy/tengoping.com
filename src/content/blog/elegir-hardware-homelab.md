@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-10-30
 category: "Hardware"
 tags: ["Homelab", "Hardware", "Servidores", "Self-Hosting"]
-image: "/images/homelab-hardware.jpg"
+image: "../../assets/images/homelab-hardware.jpg"
 draft: false
 ---
 

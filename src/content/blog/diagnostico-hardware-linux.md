@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2026-01-25
 category: "Hardware"
 tags: ["Diagnóstico", "Hardware", "Linux", "Sysadmin"]
-image: "/images/linux-hardware-diag.jpg"
+image: "../../assets/images/linux-hardware-diag.jpg"
 draft: false
 ---
 

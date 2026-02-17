@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-04-05
 category: "Self-Hosting"
 tags: ["Nextcloud", "Self-Hosting", "Nube", "Linux"]
-image: "/images/nextcloud-server.jpg"
+image: "../../assets/images/nextcloud-server.jpg"
 draft: false
 ---
 

@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-01-28
 category: "Redes"
 tags: ["Nginx", "Proxy", "Redes", "Sysadmin"]
-image: "/images/redes-proxy.jpg"
+image: "../../assets/images/redes-proxy.jpg"
 draft: false
 ---
 

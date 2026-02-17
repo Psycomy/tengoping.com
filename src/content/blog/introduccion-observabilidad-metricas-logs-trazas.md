@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2026-02-16
 category: "Monitorización"
 tags: ["observabilidad", "metricas", "logs", "trazas", "monitoring"]
-image: "/images/mon-observabilidad.jpg"
+image: "../../assets/images/mon-observabilidad.jpg"
 draft: false
 ---
 

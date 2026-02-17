@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-01-15
 category: "Linux"
 tags: ["SSH", "Oracle Linux", "Seguridad", "Sysadmin"]
-image: "/images/ssh-server.jpg"
+image: "../../assets/images/ssh-server.jpg"
 draft: false
 ---
 

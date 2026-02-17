@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import authors from '@data/authors.json';
 import { formatDate, slugify } from '@utils/helpers';
 import { getReadingTime } from '@utils/readingTime';
@@ -14,7 +16,7 @@ interface Props {
       pubDate: Date;
       category: string;
       tags: string[];
-      image?: string;
+      image?: ImageMetadata;
     };
   };
 }
@@ -27,7 +29,10 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
 
 <article class="article-card card-hover">
   <a href={`/blog/${post.id}`} class="card-image-link">
-    <img src={image || '/images/placeholder-article.svg'} alt={title} class="card-image" loading="lazy" width="300" height="200" decoding="async" />
+{image
+      ? <Image src={image} alt={title} class="card-image" loading="lazy" width={300} height={200} format="webp" />
+      : <img src="/images/placeholder-article.svg" alt={title} class="card-image" loading="lazy" width="300" height="200" decoding="async" />
+    }
   </a>
   <div class="card-content">
     <a href={`/categorias/${slugify(category)}`} class="badge badge-category">{category}</a>

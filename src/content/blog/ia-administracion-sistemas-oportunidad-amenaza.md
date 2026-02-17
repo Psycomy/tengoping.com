@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-02-03
 category: "Opinión"
 tags: ["IA", "Opinión", "Sysadmin", "Futuro"]
-image: "/images/opinion-ia.jpg"
+image: "../../assets/images/opinion-ia.jpg"
 draft: false
 ---
 

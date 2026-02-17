@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-10-08
 category: "Self-Hosting"
 tags: ["Gitea", "Git", "Self-Hosting", "DevOps"]
-image: "/images/gitea-server.jpg"
+image: "../../assets/images/gitea-server.jpg"
 draft: false
 ---
 

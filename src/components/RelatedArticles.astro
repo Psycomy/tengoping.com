@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { slugify } from '@utils/helpers';
 
@@ -33,14 +34,14 @@ const scored = allPosts
       {scored.map(({ post }) => (
         <a href={`/blog/${post.id}`} class="related-card card-hover">
           {post.data.image && (
-            <img
+            <Image
               src={post.data.image}
               alt={post.data.title}
               class="related-image"
               loading="lazy"
-              width="300"
-              height="169"
-              decoding="async"
+              width={300}
+              height={169}
+              format="webp"
             />
           )}
           <div class="related-content">

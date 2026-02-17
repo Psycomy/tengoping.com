@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-05-22
 category: "Virtualización"
 tags: ["Proxmox", "Virtualización", "LXC", "Homelab"]
-image: "/images/proxmox-ve.jpg"
+image: "../../assets/images/proxmox-ve.jpg"
 draft: false
 ---
 

@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-02-08
 category: "Automatización"
 tags: ["Backup", "rsync", "Sysadmin", "Scripts"]
-image: "/images/auto-backup.jpg"
+image: "../../assets/images/auto-backup.jpg"
 draft: false
 ---
 

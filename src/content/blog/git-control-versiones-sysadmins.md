@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2026-02-16
 category: "Software"
 tags: ["git", "control-de-versiones", "sysadmin", "infraestructura-como-codigo"]
-image: "/images/soft-git.jpg"
+image: "../../assets/images/soft-git.jpg"
 draft: false
 ---
 

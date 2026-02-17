@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-02-10
 category: "Opinión"
 tags: ["Automatización", "DevOps", "Ansible", "Carrera profesional"]
-image: "/images/sysadmin-automation.jpg"
+image: "../../assets/images/sysadmin-automation.jpg"
 draft: false
 ---
 

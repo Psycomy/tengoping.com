@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-02-10
 category: "Linux"
 tags: ["Permisos", "Linux", "Seguridad", "ACL"]
-image: "/images/linux-permissions.jpg"
+image: "../../assets/images/linux-permissions.jpg"
 draft: false
 ---
 

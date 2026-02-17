@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-01-18
 category: "Opinión"
 tags: ["Cloud", "Tendencias", "Opinión", "Infraestructura"]
-image: "/images/opinion-cloud.jpg"
+image: "../../assets/images/opinion-cloud.jpg"
 draft: false
 ---
 

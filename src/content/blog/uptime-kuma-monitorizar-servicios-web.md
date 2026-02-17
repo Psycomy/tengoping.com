@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2026-02-16
 category: "Monitorización"
 tags: ["uptime-kuma", "monitoring", "self-hosting", "disponibilidad"]
-image: "/images/mon-uptimekuma.jpg"
+image: "../../assets/images/mon-uptimekuma.jpg"
 draft: false
 ---
 

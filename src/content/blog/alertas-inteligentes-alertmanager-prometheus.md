@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2026-02-16
 category: "Monitorización"
 tags: ["alertmanager", "prometheus", "alertas", "monitoring"]
-image: "/images/mon-alertmanager.jpg"
+image: "../../assets/images/mon-alertmanager.jpg"
 draft: false
 ---
 

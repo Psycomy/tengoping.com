@@ -26,7 +26,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.join(SCRIPT_DIR, "..")
-OUT_DIR = os.path.join(PROJECT_ROOT, "public", "images")
+OUT_DIR = os.path.join(PROJECT_ROOT, "src", "assets", "images")
 CONTENT_DIR = os.path.join(PROJECT_ROOT, "src", "content", "blog")
 WIDTH, HEIGHT = 800, 500
 

@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-01-20
 category: "Linux"
 tags: ["Podman", "Contenedores", "Linux", "Docker"]
-image: "/images/linux-containers.jpg"
+image: "../../assets/images/linux-containers.jpg"
 draft: false
 ---
 

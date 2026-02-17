@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-03-10
 category: "Virtualización"
 tags: ["KVM", "libvirt", "Virtualización", "Linux"]
-image: "/images/kvm-libvirt.jpg"
+image: "../../assets/images/kvm-libvirt.jpg"
 draft: false
 ---
 

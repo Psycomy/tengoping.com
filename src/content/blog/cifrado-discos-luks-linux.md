@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-06-30
 category: "Seguridad"
 tags: ["LUKS", "Cifrado", "Seguridad", "Linux"]
-image: "/images/luks-cifrado.jpg"
+image: "../../assets/images/luks-cifrado.jpg"
 draft: false
 ---
 

@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-01-22
 category: "Redes"
 tags: ["NetworkManager", "nmcli", "Routing", "Linux"]
-image: "/images/network-routes.jpg"
+image: "../../assets/images/network-routes.jpg"
 draft: false
 ---
 

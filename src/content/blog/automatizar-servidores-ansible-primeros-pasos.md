@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-01-25
 category: "Automatización"
 tags: ["Ansible", "Automatización", "DevOps", "Linux"]
-image: "/images/auto-ansible.jpg"
+image: "../../assets/images/auto-ansible.jpg"
 draft: false
 ---
 

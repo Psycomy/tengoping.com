@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-02-01
 category: "Automatización"
 tags: ["LVM", "Storage", "Linux", "Cheatsheet"]
-image: "/images/lvm-storage.jpg"
+image: "../../assets/images/lvm-storage.jpg"
 draft: false
 ---
 

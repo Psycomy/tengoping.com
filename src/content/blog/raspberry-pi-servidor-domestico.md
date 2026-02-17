@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-05-03
 category: "Hardware"
 tags: ["Raspberry Pi", "Homelab", "Hardware", "Linux"]
-image: "/images/raspberry-pi-server.jpg"
+image: "../../assets/images/raspberry-pi-server.jpg"
 draft: false
 ---
 

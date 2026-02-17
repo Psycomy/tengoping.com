@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-02-11
 category: "Redes"
 tags: ["Firewall", "nftables", "Seguridad", "Redes"]
-image: "/images/redes-firewall.jpg"
+image: "../../assets/images/redes-firewall.jpg"
 draft: false
 ---
 

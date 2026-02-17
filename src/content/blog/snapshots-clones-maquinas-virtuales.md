@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-11-05
 category: "Virtualización"
 tags: ["Snapshots", "KVM", "Proxmox", "Virtualización"]
-image: "/images/vm-snapshots.jpg"
+image: "../../assets/images/vm-snapshots.jpg"
 draft: false
 ---
 

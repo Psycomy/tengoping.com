@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-02-01
 category: "Linux"
 tags: ["systemd", "Linux", "Servicios", "Sysadmin"]
-image: "/images/linux-systemd.jpg"
+image: "../../assets/images/linux-systemd.jpg"
 draft: false
 ---
 

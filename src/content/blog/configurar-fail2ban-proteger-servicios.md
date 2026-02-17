@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-04-18
 category: "Seguridad"
 tags: ["Fail2Ban", "Seguridad", "SSH", "Linux"]
-image: "/images/fail2ban.jpg"
+image: "../../assets/images/fail2ban.jpg"
 draft: false
 ---
 

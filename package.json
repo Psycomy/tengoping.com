@@ -15,6 +15,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "astro": "^5.17.1",
     "astro-pagefind": "^1.8.5",
-    "satori": "^0.19.2"
+    "satori": "^0.19.2",
+    "sharp": "^0.34.5"
   }
 }

@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-02-12
 category: "Automatización"
 tags: ["Cron", "systemd", "Automatización", "Linux"]
-image: "/images/auto-cron.jpg"
+image: "../../assets/images/auto-cron.jpg"
 draft: false
 ---
 

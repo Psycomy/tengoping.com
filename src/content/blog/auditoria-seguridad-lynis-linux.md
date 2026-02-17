@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-09-12
 category: "Seguridad"
 tags: ["Lynis", "Auditoría", "Hardening", "Seguridad"]
-image: "/images/lynis-audit.jpg"
+image: "../../assets/images/lynis-audit.jpg"
 draft: false
 ---
 

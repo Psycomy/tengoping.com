@@ -23,9 +23,9 @@ export async function GET(context: APIContext) {
 
   const items = await Promise.all(
     posts.map(async (post) => {
-      const imagePath = post.data.image || `/og/${post.id}.png`;
+      const imagePath = post.data.image?.src || `/og/${post.id}.png`;
       const isJpeg = imagePath.endsWith('.jpg') || imagePath.endsWith('.jpeg');
-      const length = await getFileSize(imagePath);
+      const length = isJpeg ? 0 : await getFileSize(imagePath);
 
       return {
         title: post.data.title,

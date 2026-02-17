@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-12-20
 category: "Seguridad"
 tags: ["SSL", "Let's Encrypt", "Certbot", "Nginx"]
-image: "/images/letsencrypt-ssl.jpg"
+image: "../../assets/images/letsencrypt-ssl.jpg"
 draft: false
 ---
 

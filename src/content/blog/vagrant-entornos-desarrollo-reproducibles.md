@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-08-15
 category: "Virtualización"
 tags: ["Vagrant", "Virtualización", "DevOps", "Automatización"]
-image: "/images/vagrant-dev.jpg"
+image: "../../assets/images/vagrant-dev.jpg"
 draft: false
 ---
 

@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2026-02-16
 category: "Software"
 tags: ["python", "scripting", "automatizacion", "sysadmin"]
-image: "/images/soft-python.jpg"
+image: "../../assets/images/soft-python.jpg"
 draft: false
 ---
 

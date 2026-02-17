@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2026-01-18
 category: "Self-Hosting"
 tags: ["WireGuard", "VPN", "Self-Hosting", "Seguridad"]
-image: "/images/wireguard-vpn.jpg"
+image: "../../assets/images/wireguard-vpn.jpg"
 draft: false
 ---
 

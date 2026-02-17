@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-07-14
 category: "Self-Hosting"
 tags: ["Pi-hole", "DNS", "Self-Hosting", "Redes"]
-image: "/images/pihole-dns.jpg"
+image: "../../assets/images/pihole-dns.jpg"
 draft: false
 ---
 

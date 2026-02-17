@@ -5,7 +5,7 @@ author: "alois"
 pubDate: 2025-02-06
 category: "Redes"
 tags: ["DNS", "BIND9", "Redes", "Linux"]
-image: "/images/redes-dns.jpg"
+image: "../../assets/images/redes-dns.jpg"
 draft: false
 ---
 

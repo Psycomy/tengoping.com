@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-07-28
 category: "Hardware"
 tags: ["NAS", "OpenMediaVault", "Hardware", "Almacenamiento"]
-image: "/images/nas-omv.jpg"
+image: "../../assets/images/nas-omv.jpg"
 draft: false
 ---
 

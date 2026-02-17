@@ -5,7 +5,7 @@ author: "antonio"
 pubDate: 2025-02-08
 category: "Opinión"
 tags: ["DevOps", "Opinión", "Cultura", "Equipos"]
-image: "/images/opinion-devops.jpg"
+image: "../../assets/images/opinion-devops.jpg"
 draft: false
 ---
 
