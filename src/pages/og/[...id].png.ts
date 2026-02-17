@@ -9,7 +9,7 @@ let fontData: ArrayBuffer | null = null;
 
 async function loadFont(): Promise<ArrayBuffer> {
   if (fontData) return fontData;
-  const fontPath = resolve('public/fonts/JetBrainsMono-Regular.ttf');
+  const fontPath = resolve('src/assets/fonts/JetBrainsMono-Regular.ttf');
   const buffer = await readFile(fontPath);
   fontData = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
   return fontData;
