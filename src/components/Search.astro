@@ -158,11 +158,16 @@
     position: fixed;
     inset: 0;
     z-index: 1000;
-    background: rgba(0, 0, 0, 0.85);
+    background: var(--search-backdrop);
     display: none;
     align-items: center;
     justify-content: center;
     padding: 2rem;
+    --search-backdrop: rgba(0, 0, 0, 0.5);
+  }
+
+  :global([data-theme='dark']) .search-terminal {
+    --search-backdrop: rgba(0, 0, 0, 0.85);
   }
 
   .search-terminal.active {
@@ -174,12 +179,12 @@
     max-width: 800px;
     height: 80vh;
     max-height: 700px;
-    background: #0D1117;
-    border: 1px solid #30363D;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
     display: flex;
     flex-direction: column;
     animation: terminalOpen 0.2s ease-out;
-    color: #E6EDF3;
+    color: var(--color-text);
   }
 
   @keyframes terminalOpen {
@@ -191,8 +196,8 @@
     display: flex;
     align-items: center;
     padding: 0.65rem 1rem;
-    background: #161B22;
-    border-bottom: 1px solid #30363D;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
     gap: 0.75rem;
     flex-shrink: 0;
   }
@@ -201,7 +206,7 @@
     flex: 1;
     text-align: center;
     font-size: 0.8rem;
-    color: #8B949E;
+    color: var(--color-text-muted);
     font-family: var(--font-body, 'JetBrains Mono', monospace);
   }
 
@@ -209,14 +214,14 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: #8B949E;
+    color: var(--color-text-muted);
     padding: 0.2rem;
     line-height: 1;
     transition: color 0.15s;
   }
 
   .terminal-close:hover {
-    color: #E6EDF3;
+    color: var(--color-text);
   }
 
   .terminal-body {
@@ -224,7 +229,7 @@
     overflow-y: auto;
     padding: 1rem 1.25rem;
     scrollbar-width: thin;
-    scrollbar-color: #30363D #0D1117;
+    scrollbar-color: var(--color-border) var(--color-bg);
   }
 
   .terminal-body::-webkit-scrollbar {
@@ -232,43 +237,43 @@
   }
 
   .terminal-body::-webkit-scrollbar-track {
-    background: #0D1117;
+    background: var(--color-bg);
   }
 
   .terminal-body::-webkit-scrollbar-thumb {
-    background: #30363D;
+    background: var(--color-border);
   }
 
   .terminal-body::-webkit-scrollbar-thumb:hover {
-    background: #58D5A2;
+    background: var(--color-primary);
   }
 
   .terminal-prompt-line {
     font-family: var(--font-body, 'JetBrains Mono', monospace);
     font-size: 0.9rem;
     margin-bottom: 1rem;
-    color: #8B949E;
+    color: var(--color-text-muted);
     white-space: nowrap;
     overflow: hidden;
   }
 
   .prompt-symbol {
-    color: #58D5A2;
+    color: var(--color-primary);
     font-weight: 700;
     margin-right: 0.5ch;
   }
 
   .prompt-cmd {
-    color: #8B949E;
+    color: var(--color-text-muted);
   }
 
   .prompt-query {
-    color: #E6EDF3;
+    color: var(--color-text);
     font-weight: 600;
   }
 
   .prompt-cursor {
-    color: #58D5A2;
+    color: var(--color-primary);
     animation: blink 1s step-end infinite;
   }
 
@@ -285,8 +290,8 @@
   }
 
   .terminal-error code {
-    color: #58D5A2;
-    background: #161B22;
+    color: var(--color-primary);
+    background: var(--color-bg-secondary);
     padding: 0.15rem 0.4rem;
   }
 
@@ -295,20 +300,20 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 1.25rem;
-    background: #161B22;
-    border-top: 1px solid #30363D;
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border);
     font-family: var(--font-body, 'JetBrains Mono', monospace);
     font-size: 0.75rem;
-    color: #8B949E;
+    color: var(--color-text-muted);
     flex-shrink: 0;
   }
 
   .status-results {
-    color: #58D5A2;
+    color: var(--color-primary);
   }
 
   .status-keys {
-    color: #6E7681;
+    color: var(--color-text-muted);
   }
 
   @media (max-width: 768px) {

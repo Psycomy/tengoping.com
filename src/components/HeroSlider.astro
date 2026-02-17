@@ -66,6 +66,15 @@ const { posts } = Astro.props;
     height: 450px;
     overflow: hidden;
     border-bottom: 1px solid var(--color-border);
+    --hero-overlay-start: rgba(255, 255, 255, 0.9);
+    --hero-overlay-end: rgba(255, 255, 255, 0.15);
+    --hero-arrow-bg: rgba(255, 255, 255, 0.7);
+  }
+
+  :global([data-theme='dark']) .hero-slider {
+    --hero-overlay-start: rgba(0, 0, 0, 0.85);
+    --hero-overlay-end: rgba(0, 0, 0, 0.2);
+    --hero-arrow-bg: rgba(0, 0, 0, 0.6);
   }
 
   .slider-track {
@@ -89,7 +98,7 @@ const { posts } = Astro.props;
   .slide-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.2));
+    background: linear-gradient(to right, var(--hero-overlay-start) 40%, var(--hero-overlay-end));
     display: flex;
     align-items: flex-end;
     padding-bottom: 3.5rem;
@@ -110,14 +119,14 @@ const { posts } = Astro.props;
   .slide-title {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #E6EDF3;
+    color: var(--color-text);
     line-height: 1.3;
     margin: 0;
   }
 
   .slide-description {
     font-size: 0.875rem;
-    color: #8B949E;
+    color: var(--color-text-secondary);
     line-height: 1.6;
     margin: 0;
   }
@@ -126,8 +135,8 @@ const { posts } = Astro.props;
     display: inline-block;
     align-self: flex-start;
     padding: 0.5rem 1.25rem;
-    border: 1px solid #58D5A2;
-    color: #58D5A2;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     font-weight: 600;
@@ -137,17 +146,17 @@ const { posts } = Astro.props;
   }
 
   .slide-cta:hover {
-    background: #58D5A2;
-    color: #0D1117;
+    background: var(--color-primary);
+    color: var(--color-bg);
   }
 
   .slider-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.6);
-    color: #E6EDF3;
-    border: 1px solid #30363D;
+    background: var(--hero-arrow-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
     font-family: var(--font-mono);
     font-size: 1.125rem;
     padding: 0.5rem 0.75rem;
@@ -157,9 +166,9 @@ const { posts } = Astro.props;
   }
 
   .slider-arrow:hover {
-    background: rgba(0, 0, 0, 0.8);
-    border-color: #58D5A2;
-    color: #58D5A2;
+    background: var(--hero-arrow-bg);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
 
   .slider-prev { left: 1rem; }
@@ -178,7 +187,7 @@ const { posts } = Astro.props;
   .slider-dot {
     width: 10px;
     height: 10px;
-    border: 1px solid #58D5A2;
+    border: 1px solid var(--color-primary);
     background: transparent;
     cursor: pointer;
     padding: 0;
@@ -186,11 +195,11 @@ const { posts } = Astro.props;
   }
 
   .slider-dot.active {
-    background: #58D5A2;
+    background: var(--color-primary);
   }
 
   .slider-dot:hover:not(.active) {
-    background: rgba(88, 213, 162, 0.4);
+    background: color-mix(in srgb, var(--color-primary) 40%, transparent);
   }
 
   @media (prefers-reduced-motion: reduce) {
