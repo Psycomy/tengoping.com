@@ -70,6 +70,7 @@ function writeHeaders(hashes) {
     "form-action 'self'",
     "object-src 'none'",
     'upgrade-insecure-requests',
+    "frame-ancestors 'none'",
   ].join('; ');
 
   const content = `/*
