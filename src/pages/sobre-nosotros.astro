@@ -28,11 +28,16 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
               </div>
             </div>
             <p class="author-bio">{author.bio}</p>
-            <div class="author-social">
-              {author.social.twitter && <a href={author.social.twitter} target="_blank" rel="noopener noreferrer">Twitter</a>}
-              {author.social.github && <a href={author.social.github} target="_blank" rel="noopener noreferrer">GitHub</a>}
-              {author.social.linkedin && <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>}
-            </div>
+            {(() => {
+              const s = author.social as { twitter?: string; github?: string; linkedin?: string };
+              return (
+                <div class="author-social">
+                  {s.twitter && <a href={s.twitter} target="_blank" rel="noopener noreferrer">Twitter</a>}
+                  {s.github && <a href={s.github} target="_blank" rel="noopener noreferrer">GitHub</a>}
+                  {s.linkedin && <a href={s.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>}
+                </div>
+              );
+            })()}
             {authorPosts.length > 0 && (
               <div class="author-posts">
                 <h3>Artículos recientes</h3>

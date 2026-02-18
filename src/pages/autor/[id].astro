@@ -33,11 +33,16 @@ const { author, posts } = Astro.props;
         <p class="author-bio">{author.bio}</p>
         <div class="author-meta">
           <span class="meta-stat">{posts.length} articulos</span>
-          <div class="author-social">
-            {author.social.twitter && <a href={author.social.twitter} target="_blank" rel="noopener noreferrer">[twitter]</a>}
-            {author.social.github && <a href={author.social.github} target="_blank" rel="noopener noreferrer">[github]</a>}
-            {author.social.linkedin && <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer">[linkedin]</a>}
-          </div>
+          {(() => {
+            const s = author.social as { twitter?: string; github?: string; linkedin?: string };
+            return (
+              <div class="author-social">
+                {s.twitter && <a href={s.twitter} target="_blank" rel="noopener noreferrer">[twitter]</a>}
+                {s.github && <a href={s.github} target="_blank" rel="noopener noreferrer">[github]</a>}
+                {s.linkedin && <a href={s.linkedin} target="_blank" rel="noopener noreferrer">[linkedin]</a>}
+              </div>
+            );
+          })()}
         </div>
       </div>
     </div>
