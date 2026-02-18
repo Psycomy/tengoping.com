@@ -15,6 +15,17 @@ function isHashedAsset(url) {
   return url.pathname.startsWith('/_astro/');
 }
 
+const MAX_PAGES = 50;
+
+async function limitPagesCache() {
+  const cache = await caches.open(PAGES_CACHE);
+  const keys = await cache.keys();
+  if (keys.length > MAX_PAGES) {
+    const toDelete = keys.slice(0, keys.length - MAX_PAGES);
+    await Promise.all(toDelete.map((k) => cache.delete(k)));
+  }
+}
+
 // Install: precache shell
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -50,7 +61,10 @@ self.addEventListener('fetch', (event) => {
       fetch(request)
         .then((response) => {
           const clone = response.clone();
-          caches.open(PAGES_CACHE).then((cache) => cache.put(request, clone));
+          caches.open(PAGES_CACHE).then((cache) => {
+            cache.put(request, clone);
+            limitPagesCache();
+          });
           return response;
         })
         .catch(() =>
