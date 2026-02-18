@@ -11,21 +11,31 @@ const { title, category } = Astro.props;
 const categorySlug = slugify(category);
 
 const breadcrumbItems = [
-  { name: '~', url: site.url },
-  { name: 'blog', url: `${site.url}/blog` },
-  { name: category, url: `${site.url}/categorias/${categorySlug}` },
-  { name: title, url: `${site.url}${Astro.url.pathname}` },
+  { name: '~', url: '/' },
+  { name: 'blog', url: '/blog' },
+  { name: category, url: `/categorias/${categorySlug}` },
+  { name: title, url: Astro.url.pathname },
 ];
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
-  itemListElement: breadcrumbItems.map((item, index) => ({
-    '@type': 'ListItem',
-    position: index + 1,
-    name: item.name,
-    item: item.url,
-  })),
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '~', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'blog', item: `${site.url}/blog` },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: category,
+      item: `${site.url}/categorias/${categorySlug}`,
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: title,
+      item: `${site.url}${Astro.url.pathname}`,
+    },
+  ],
 };
 ---
 
@@ -36,7 +46,7 @@ const jsonLd = {
         <li>
           {index > 0 && <span class="separator">/</span>}
           {index < breadcrumbItems.length - 1 ? (
-            <a href={new URL(item.url).pathname}>{item.name}</a>
+            <a href={item.url}>{item.name}</a>
           ) : (
             <span class="current" aria-current="page">
               {item.name}
