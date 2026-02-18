@@ -42,6 +42,17 @@ const authorData = authors.find((a) => a.id === authorId);
 const readingTime = getReadingTime(entry.body || '');
 const ogImage = image?.src || `/og/${entry.id}.png`;
 const canonicalURL = new URL(`/blog/${entry.id}`, Astro.site).toString();
+
+const authorJsonLd = authorData
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: authorData.name,
+      url: new URL(`/autor/${authorData.id}`, Astro.site).toString(),
+      ...(authorData.social?.github && { sameAs: [authorData.social.github] }),
+      ...(authorData.bioShort && { description: authorData.bioShort }),
+    }
+  : null;
 ---
 
 <BaseLayout
@@ -53,6 +64,10 @@ const canonicalURL = new URL(`/blog/${entry.id}`, Astro.site).toString();
   modifiedDate={updatedDate?.toISOString()}
   author={authorData?.name}
 >
+  {authorJsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(authorJsonLd)} />
+  )}
+
   <article class="article-page container" data-pagefind-body>
     <Breadcrumbs title={title} category={category} />
     <header class="article-header">

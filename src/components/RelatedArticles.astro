@@ -13,15 +13,20 @@ const { currentId, currentTags, currentCategory } = Astro.props;
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 
+const now = new Date();
+
 const scored = allPosts
   .filter((post) => post.id !== currentId)
   .map((post) => {
     const sharedTags = post.data.tags.filter((tag) => currentTags.includes(tag)).length;
     const sameCategory = post.data.category === currentCategory ? 1 : 0;
-    return { post, score: sharedTags * 2 + sameCategory };
+    const baseScore = sharedTags * 2 + sameCategory;
+    const daysSincePublished = (now.valueOf() - post.data.pubDate.valueOf()) / (1000 * 60 * 60 * 24);
+    const recencyBoost = Math.max(0, 1 - daysSincePublished / 365) * 0.5;
+    return { post, baseScore, score: baseScore + recencyBoost };
   })
-  .filter(({ score }) => score > 0)
-  .sort((a, b) => b.score - a.score || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf())
+  .filter(({ baseScore }) => baseScore > 0)
+  .sort((a, b) => b.score - a.score)
   .slice(0, 3);
 ---
 

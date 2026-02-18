@@ -17,10 +17,11 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     </nav>
 
     <div class="header-actions">
-      <button class="btn-icon" type="button" aria-label="Abrir b&uacute;squeda" data-search-trigger>
+      <button class="btn-icon btn-search" type="button" aria-label="Abrir b&uacute;squeda" data-search-trigger>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
+        <span class="kbd-shortcut" aria-hidden="true">[Ctrl+K]</span>
       </button>
 
       <button class="btn-icon theme-toggle" type="button" aria-label="Cambiar tema">
@@ -153,6 +154,27 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     color: var(--color-primary);
   }
 
+  .btn-search {
+    gap: 0.35rem;
+  }
+
+  .kbd-shortcut {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    line-height: 1;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    padding: 0.2rem 0.3rem;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    user-select: none;
+  }
+
+  .btn-search:hover .kbd-shortcut {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
   .icon-moon { display: none; }
   :global([data-theme='dark']) .icon-sun { display: none; }
   :global([data-theme='dark']) .icon-moon { display: block; }
@@ -176,5 +198,6 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     .nav-desktop { display: none; }
     .hamburger { display: inline-flex; }
     .site-header { height: auto; }
+    .kbd-shortcut { display: none; }
   }
 </style>

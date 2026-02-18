@@ -48,14 +48,14 @@ for (const h of filtered) {
       <ul class="toc-list">
         {nested.map((item, i) => (
           <li>
-            <a href={`#${item.heading.slug}`}>
+            <a href={`#${item.heading.slug}`} data-slug={item.heading.slug}>
               <span class="toc-tree">{i === nested.length - 1 && item.children.length === 0 ? '└──' : '├──'}</span> {item.heading.text}
             </a>
             {item.children.length > 0 && (
               <ul class="toc-sublist">
                 {item.children.map((child, j) => (
                   <li>
-                    <a href={`#${child.slug}`}>
+                    <a href={`#${child.slug}`} data-slug={child.slug}>
                       <span class="toc-tree">{i === nested.length - 1 ? '   ' : '│  '}{j === item.children.length - 1 ? '└──' : '├──'}</span> {child.text}
                     </a>
                   </li>
@@ -71,25 +71,57 @@ for (const h of filtered) {
 
 <script>
   function initScrollSpy() {
-    const links = document.querySelectorAll<HTMLAnchorElement>('.toc-desktop a[data-slug]');
-    if (!links.length) return;
+    const desktopLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-desktop a[data-slug]');
+    const mobileLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-mobile a[data-slug]');
+    const mobileSummary = document.querySelector<HTMLElement>('.toc-mobile summary');
+
+    if (!desktopLinks.length && !mobileLinks.length) return;
+
+    // Collect all unique slugs to observe from desktop links (source of truth for headings)
+    // If desktop is hidden, fall back to mobile links.
+    const slugsToObserve = new Set<string>();
+    desktopLinks.forEach((l) => { if (l.dataset.slug) slugsToObserve.add(l.dataset.slug); });
+    mobileLinks.forEach((l) => { if (l.dataset.slug) slugsToObserve.add(l.dataset.slug); });
+
+    if (!slugsToObserve.size) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            links.forEach((l) => l.classList.remove('active'));
-            const active = document.querySelector(`.toc-desktop a[data-slug="${entry.target.id}"]`);
-            active?.classList.add('active');
+            const slug = entry.target.id;
+
+            // Update desktop TOC
+            desktopLinks.forEach((l) => l.classList.remove('active'));
+            const activeDesktop = document.querySelector<HTMLAnchorElement>(
+              `.toc-desktop a[data-slug="${slug}"]`
+            );
+            activeDesktop?.classList.add('active');
+
+            // Update mobile TOC links
+            mobileLinks.forEach((l) => l.classList.remove('active'));
+            const activeMobile = document.querySelector<HTMLAnchorElement>(
+              `.toc-mobile a[data-slug="${slug}"]`
+            );
+            activeMobile?.classList.add('active');
+
+            // Update mobile <summary> to reflect the current section
+            if (mobileSummary && activeMobile) {
+              // Extract plain text of the active link (strip the tree prefix span)
+              const clone = activeMobile.cloneNode(true) as HTMLElement;
+              clone.querySelector('.toc-tree')?.remove();
+              const sectionText = clone.textContent?.trim() ?? '';
+              mobileSummary.textContent = sectionText
+                ? `§ ${sectionText}`
+                : '// tabla de contenidos';
+            }
           }
         }
       },
       { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
     );
 
-    links.forEach((link) => {
-      const slug = link.dataset.slug;
-      if (!slug) return;
+    slugsToObserve.forEach((slug) => {
       const target = document.getElementById(slug);
       if (target) observer.observe(target);
     });
