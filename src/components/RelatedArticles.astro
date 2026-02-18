@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import { slugify } from '@utils/helpers';
 
 interface Props {
   currentId: string;
@@ -21,7 +20,8 @@ const scored = allPosts
     const sharedTags = post.data.tags.filter((tag) => currentTags.includes(tag)).length;
     const sameCategory = post.data.category === currentCategory ? 1 : 0;
     const baseScore = sharedTags * 2 + sameCategory;
-    const daysSincePublished = (now.valueOf() - post.data.pubDate.valueOf()) / (1000 * 60 * 60 * 24);
+    const daysSincePublished =
+      (now.valueOf() - post.data.pubDate.valueOf()) / (1000 * 60 * 60 * 24);
     const recencyBoost = Math.max(0, 1 - daysSincePublished / 365) * 0.5;
     return { post, baseScore, score: baseScore + recencyBoost };
   })
@@ -30,34 +30,36 @@ const scored = allPosts
   .slice(0, 3);
 ---
 
-{scored.length > 0 && (
-  <section class="related-articles">
-    <h3 class="related-title">
-      <span class="prompt">$</span> find ./blog --related
-    </h3>
-    <div class="related-grid">
-      {scored.map(({ post }) => (
-        <a href={`/blog/${post.id}`} class="related-card card-hover">
-          {post.data.image && (
-            <Image
-              src={post.data.image}
-              alt={post.data.title}
-              class="related-image"
-              loading="lazy"
-              width={300}
-              height={169}
-              format="webp"
-            />
-          )}
-          <div class="related-content">
-            <span class="badge badge-category">{post.data.category}</span>
-            <h4>{post.data.title}</h4>
-          </div>
-        </a>
-      ))}
-    </div>
-  </section>
-)}
+{
+  scored.length > 0 && (
+    <section class="related-articles">
+      <h3 class="related-title">
+        <span class="prompt">$</span> find ./blog --related
+      </h3>
+      <div class="related-grid">
+        {scored.map(({ post }) => (
+          <a href={`/blog/${post.id}`} class="related-card card-hover">
+            {post.data.image && (
+              <Image
+                src={post.data.image}
+                alt={post.data.title}
+                class="related-image"
+                loading="lazy"
+                width={300}
+                height={169}
+                format="webp"
+              />
+            )}
+            <div class="related-content">
+              <span class="badge badge-category">{post.data.category}</span>
+              <h4>{post.data.title}</h4>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
 
 <style>
   .related-articles {
