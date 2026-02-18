@@ -30,7 +30,7 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
 <article class="article-card card-hover">
   <a href={`/blog/${post.id}`} class="card-image-link">
 {image
-      ? <Image src={image} alt={title} class="card-image" loading="lazy" width={300} height={200} format="webp" />
+      ? <Image src={image} alt={title} class="card-image" loading="lazy" width={300} height={200} format="webp" sizes="(max-width: 768px) 100vw, 300px" />
       : <img src="/images/placeholder-article.svg" alt={title} class="card-image" loading="lazy" width="300" height="200" decoding="async" />
     }
   </a>
