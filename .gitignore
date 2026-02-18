@@ -6,5 +6,4 @@ dist/
 .env
 .env.*
 .claude/
-docs/plans/
 .vscode/
