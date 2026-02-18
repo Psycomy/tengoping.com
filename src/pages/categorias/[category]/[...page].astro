@@ -39,6 +39,7 @@ const basePath = `/categorias/${slugify(category)}`;
   title={`Categoría: ${category}`}
   description={meta?.description ?? `Artículos sobre ${category}`}
   noindex={page.currentPage > 1}
+  canonicalOverride={page.currentPage > 1 ? `${basePath}/` : undefined}
 >
   <section class="container page-section">
     <div class="category-heading">

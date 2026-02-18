@@ -15,6 +15,7 @@ interface Props {
   author?: string;
   noindex?: boolean;
   isHome?: boolean;
+  canonicalOverride?: string;
 }
 
 const {
@@ -27,10 +28,13 @@ const {
   author,
   noindex = false,
   isHome = false,
+  canonicalOverride,
 } = Astro.props;
 
 const pageTitle = title === site.title ? title : `${title} | ${site.title}`;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = canonicalOverride
+  ? new URL(canonicalOverride, Astro.site)
+  : new URL(Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.site);
 ---
 
