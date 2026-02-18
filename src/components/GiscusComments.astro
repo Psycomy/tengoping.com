@@ -54,6 +54,21 @@ const { giscus } = site;
     );
   }
 
+  // When Giscus loads lazily (after scrolling into view), the iframe is injected into
+  // .giscus div. We observe that insertion to sync the current theme, in case the user
+  // changed theme before scrolling down to the comments section.
+  const giscusDiv = document.querySelector('.giscus');
+  if (giscusDiv) {
+    const iframeObserver = new MutationObserver(() => {
+      const iframe = giscusDiv.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+      if (!iframe) return;
+      iframeObserver.disconnect();
+      // Wait for the iframe to finish loading before sending the theme message
+      iframe.addEventListener('load', updateGiscusTheme, { once: true });
+    });
+    iframeObserver.observe(giscusDiv, { childList: true });
+  }
+
   const observer = new MutationObserver((mutations) => {
     for (const m of mutations) {
       if (m.attributeName === 'data-theme') updateGiscusTheme();
