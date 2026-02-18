@@ -3,9 +3,10 @@ interface Props {
   url: { prev?: string; next?: string; current: string };
   currentPage: number;
   lastPage: number;
+  basePath?: string;
 }
 
-const { url, currentPage, lastPage } = Astro.props;
+const { url, currentPage, lastPage, basePath = '/blog' } = Astro.props;
 const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
 ---
 
@@ -20,7 +21,7 @@ const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
     <div class="pagination-pages">
       {pages.map((page) => (
         <a
-          href={page === 1 ? '/blog' : `/blog/${page}`}
+          href={page === 1 ? basePath : `${basePath}/${page}`}
           class:list={['pagination-page', { active: page === currentPage }]}
           aria-current={page === currentPage ? 'page' : undefined}
         >

@@ -2,43 +2,60 @@
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import ArticleCard from '@components/ArticleCard.astro';
+import Pagination from '@components/Pagination.astro';
 import { getCollection } from 'astro:content';
 import { slugify } from '@utils/helpers';
 import { categoryMeta } from '@data/categories';
+import site from '@data/site.json';
 
-export const getStaticPaths = (async () => {
+export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   const allCategories = new Set([
     ...Object.keys(categoryMeta),
     ...posts.map((p) => p.data.category),
   ]);
 
-  return [...allCategories].map((category) => ({
-    params: { category: slugify(category) },
-    props: {
-      category,
-      posts: posts
-        .filter((p) => p.data.category === category)
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
-    },
-  }));
+  return [...allCategories].flatMap((category) => {
+    const categoryPosts = posts
+      .filter((p) => p.data.category === category)
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+    if (categoryPosts.length === 0) return [];
+
+    return paginate(categoryPosts, {
+      params: { category: slugify(category) },
+      props: { category },
+      pageSize: site.postsPerPage,
+    });
+  });
 }) satisfies GetStaticPaths;
 
-const { category, posts } = Astro.props;
+const { page, category } = Astro.props;
 const meta = categoryMeta[category];
+const basePath = `/categorias/${slugify(category)}`;
 ---
 
-<BaseLayout title={`Categoría: ${category}`} description={meta?.description ?? `Artículos sobre ${category}`}>
+<BaseLayout
+  title={`Categoría: ${category}`}
+  description={meta?.description ?? `Artículos sobre ${category}`}
+  noindex={page.currentPage > 1}
+>
   <section class="container page-section">
     <div class="category-heading">
       {meta?.icon && <span class="category-icon" set:html={meta.icon} />}
       <h1>{category}</h1>
     </div>
     {meta?.description && <p class="category-desc">{meta.description}</p>}
-    <p class="subtitle">{posts.length} {posts.length === 1 ? 'artículo' : 'artículos'}</p>
+    <p class="subtitle">{page.total} {page.total === 1 ? 'artículo' : 'artículos'}</p>
     <div class="posts-grid">
-      {posts.map((post) => <ArticleCard post={post} />)}
+      {page.data.map((post) => <ArticleCard post={post} />)}
     </div>
+    <Pagination
+      url={{ prev: page.url.prev, next: page.url.next, current: page.url.current }}
+      currentPage={page.currentPage}
+      lastPage={page.lastPage}
+      basePath={basePath}
+    />
   </section>
 </BaseLayout>
 

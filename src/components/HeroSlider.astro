@@ -199,7 +199,17 @@ const { posts } = Astro.props;
   }
 
   .slider-dot:hover:not(.active) {
-    background: color-mix(in srgb, var(--color-primary) 40%, transparent);
+    background: rgba(26, 115, 232, 0.4);
+  }
+
+  :global([data-theme='dark']) .slider-dot:hover:not(.active) {
+    background: rgba(88, 213, 162, 0.4);
+  }
+
+  @supports (background: color-mix(in srgb, red 50%, transparent)) {
+    .slider-dot:hover:not(.active) {
+      background: color-mix(in srgb, var(--color-primary) 40%, transparent);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

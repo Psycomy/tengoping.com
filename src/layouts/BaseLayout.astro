@@ -42,7 +42,7 @@ const imageURL = new URL(image, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#58D5A2" />
+    <meta name="theme-color" content="#1A73E8" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" hreflang="es" href={canonicalURL} />
     <link rel="alternate" hreflang="x-default" href={canonicalURL} />
@@ -143,15 +143,30 @@ const imageURL = new URL(image, Astro.site);
     <!-- Theme script (prevent flash + sync with OS) -->
     <script is:inline>
       (function () {
-        const mq = window.matchMedia('(prefers-color-scheme: dark)');
-        const saved = localStorage.getItem('theme');
-        const preferred = mq.matches ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', saved || preferred);
+        function setThemeColor(theme) {
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'dark' ? '#58D5A2' : '#1A73E8');
+        }
+        var mq = window.matchMedia('(prefers-color-scheme: dark)');
+        var saved = localStorage.getItem('theme');
+        var preferred = mq.matches ? 'dark' : 'light';
+        var theme = saved || preferred;
+        document.documentElement.setAttribute('data-theme', theme);
+        setThemeColor(theme);
         mq.addEventListener('change', function (e) {
           if (!localStorage.getItem('theme')) {
-            document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+            var t = e.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', t);
+            setThemeColor(t);
           }
         });
+        new MutationObserver(function (mutations) {
+          for (var i = 0; i < mutations.length; i++) {
+            if (mutations[i].attributeName === 'data-theme') {
+              setThemeColor(document.documentElement.getAttribute('data-theme'));
+            }
+          }
+        }).observe(document.documentElement, { attributes: true });
       })();
     </script>
   </head>
