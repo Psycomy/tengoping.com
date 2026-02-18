@@ -12,8 +12,8 @@
   {
     "id": "alois",
     "name": "Alois",
-    "avatar": "/images/carlos-ruiz.svg",
-    "bio": "Especialista en redes y automatización de sistemas Linux. Apasionado por DNS, VLANs, systemd y todo lo que se pueda scriptar con Bash. Firme defensor de que si lo haces dos veces, merece un script.",
+    "avatar": "/images/alois.png",
+    "bio": "Administrador de sistemas y redes con experiencia en entornos Linux, virtualización y networking. Enfocado en soluciones prácticas, automatización y diseño de infraestructuras eficientes y robustas.",
     "bioShort": "Redes & Automatización Linux",
     "social": {}
   },

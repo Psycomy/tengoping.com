@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <rect width="200" height="200" fill="#6c63ff"/>
-  <circle cx="100" cy="80" r="40" fill="#fff" opacity="0.9"/>
-  <ellipse cx="100" cy="170" rx="55" ry="45" fill="#fff" opacity="0.9"/>
-  <text x="100" y="195" font-family="Arial" font-size="14" fill="#6c63ff" text-anchor="middle">AG</text>
-</svg>
