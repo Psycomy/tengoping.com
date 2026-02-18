@@ -1,3 +1,8 @@
+# IMPORTANTE: Este archivo es una plantilla en el repositorio.
+# `npm run build` ejecuta `scripts/postbuild.mjs` que sobrescribe
+# `dist/_headers` con los hashes SHA-256 reales de los inline scripts.
+# NO editar manualmente — los cambios se perderán en el próximo build.
+
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
@@ -5,4 +10,4 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-XSS-Protection: 0
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://giscus.app; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; frame-src https://giscus.app; connect-src 'self' https://giscus.app
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://giscus.app; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://api.github.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests; frame-ancestors 'none'
