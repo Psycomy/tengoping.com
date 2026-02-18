@@ -1,11 +1,11 @@
 ---
-title: "Pi-hole: bloquea publicidad en toda tu red"
-description: "Cómo instalar Pi-hole como servidor DNS local para filtrar publicidad y rastreadores en todos los dispositivos de tu red."
-author: "antonio"
+title: 'Pi-hole: bloquea publicidad en toda tu red'
+description: 'Cómo instalar Pi-hole como servidor DNS local para filtrar publicidad y rastreadores en todos los dispositivos de tu red.'
+author: 'antonio'
 pubDate: 2025-07-14
-category: "Self-Hosting"
-tags: ["Pi-hole", "DNS", "Self-Hosting", "Redes"]
-image: "../../assets/images/pihole-dns.jpg"
+category: 'Self-Hosting'
+tags: ['Pi-hole', 'DNS', 'Self-Hosting', 'Redes']
+image: '../../assets/images/pihole-dns.jpg'
 draft: false
 ---
 
@@ -101,21 +101,21 @@ sudo nano /etc/unbound/unbound.conf.d/pi-hole.conf
 
 ```yaml
 server:
-    verbosity: 0
-    interface: 127.0.0.1
-    port: 5335
-    do-ip4: yes
-    do-ip6: no
-    do-udp: yes
-    do-tcp: yes
-    harden-glue: yes
-    harden-dnssec-stripped: yes
-    use-caps-for-id: no
-    edns-buffer-size: 1232
-    prefetch: yes
-    num-threads: 1
-    cache-min-ttl: 3600
-    cache-max-ttl: 86400
+  verbosity: 0
+  interface: 127.0.0.1
+  port: 5335
+  do-ip4: yes
+  do-ip6: no
+  do-udp: yes
+  do-tcp: yes
+  harden-glue: yes
+  harden-dnssec-stripped: yes
+  use-caps-for-id: no
+  edns-buffer-size: 1232
+  prefetch: yes
+  num-threads: 1
+  cache-min-ttl: 3600
+  cache-max-ttl: 86400
 ```
 
 ```bash
@@ -144,9 +144,9 @@ services:
     container_name: pihole
     image: pihole/pihole:latest
     ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-      - "80:80/tcp"
+      - '53:53/tcp'
+      - '53:53/udp'
+      - '80:80/tcp'
     environment:
       TZ: 'Europe/Madrid'
       WEBPASSWORD: 'tu_password_segura'

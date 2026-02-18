@@ -16,14 +16,14 @@
 
 ## Stack
 
-| Herramienta | Uso |
-|---|---|
-| [Astro 5](https://astro.build) | Framework web estático |
-| [MDX](https://mdxjs.com) | Markdown con componentes |
-| [Pagefind](https://pagefind.app) | Búsqueda estática (~15KB) |
-| [Shiki](https://shiki.style) | Resaltado de sintaxis con temas duales |
-| [giscus](https://giscus.app) | Comentarios vía GitHub Discussions |
-| [Claude](https://claude.ai) | Asistencia en diseño y desarrollo |
+| Herramienta                      | Uso                                    |
+| -------------------------------- | -------------------------------------- |
+| [Astro 5](https://astro.build)   | Framework web estático                 |
+| [MDX](https://mdxjs.com)         | Markdown con componentes               |
+| [Pagefind](https://pagefind.app) | Búsqueda estática (~15KB)              |
+| [Shiki](https://shiki.style)     | Resaltado de sintaxis con temas duales |
+| [giscus](https://giscus.app)     | Comentarios vía GitHub Discussions     |
+| [Claude](https://claude.ai)      | Asistencia en diseño y desarrollo      |
 
 ## Inicio rápido
 
@@ -53,14 +53,14 @@ Crea un archivo `.md` o `.mdx` en `src/content/blog/`:
 
 ```markdown
 ---
-title: "Título del artículo"
-description: "Descripción breve para SEO y tarjetas"
-author: "antonio"
+title: 'Título del artículo'
+description: 'Descripción breve para SEO y tarjetas'
+author: 'antonio'
 pubDate: 2025-03-01
 updatedDate: 2025-04-15
-category: "Linux"
-tags: ["SSH", "Seguridad"]
-image: "../../assets/images/mi-imagen.jpg"
+category: 'Linux'
+tags: ['SSH', 'Seguridad']
+image: '../../assets/images/mi-imagen.jpg'
 draft: false
 ---
 
@@ -69,17 +69,17 @@ Contenido del artículo en Markdown...
 
 ### Frontmatter
 
-| Campo | Tipo | Requerido | Descripción |
-|---|---|---|---|
-| `title` | string | Sí | Título del artículo |
-| `description` | string | Sí | Descripción para SEO |
-| `author` | string | Sí | ID del autor (ver `src/data/authors.json`) |
-| `pubDate` | date | Sí | Fecha de publicación |
-| `updatedDate` | date | No | Fecha de última actualización (se muestra en el artículo) |
-| `category` | string | Sí | Categoría principal |
-| `tags` | string[] | Sí | Array de etiquetas |
-| `image` | string | No | Ruta a imagen destacada |
-| `draft` | boolean | No | `true` para ocultar el artículo |
+| Campo         | Tipo     | Requerido | Descripción                                               |
+| ------------- | -------- | --------- | --------------------------------------------------------- |
+| `title`       | string   | Sí        | Título del artículo                                       |
+| `description` | string   | Sí        | Descripción para SEO                                      |
+| `author`      | string   | Sí        | ID del autor (ver `src/data/authors.json`)                |
+| `pubDate`     | date     | Sí        | Fecha de publicación                                      |
+| `updatedDate` | date     | No        | Fecha de última actualización (se muestra en el artículo) |
+| `category`    | string   | Sí        | Categoría principal                                       |
+| `tags`        | string[] | Sí        | Array de etiquetas                                        |
+| `image`       | string   | No        | Ruta a imagen destacada                                   |
+| `draft`       | boolean  | No        | `true` para ocultar el artículo                           |
 
 ## Añadir un autor
 
@@ -154,11 +154,11 @@ Inspirado en la estética de terminal:
 
 El sitio se despliega automáticamente en **Cloudflare Pages** con cada push a `main`.
 
-| Configuración | Valor |
-|---|---|
-| Build command | `npm run build` |
-| Output directory | `dist` |
-| Node version | `20` |
+| Configuración    | Valor           |
+| ---------------- | --------------- |
+| Build command    | `npm run build` |
+| Output directory | `dist`          |
+| Node version     | `20`            |
 
 ## Hecho con Claude
 

@@ -1,11 +1,11 @@
 ---
-title: "Tareas programadas: cron vs systemd timers"
-description: "Comparativa entre cron y systemd timers para programar tareas automáticas en Linux, con ejemplos prácticos de ambos."
-author: "antonio"
+title: 'Tareas programadas: cron vs systemd timers'
+description: 'Comparativa entre cron y systemd timers para programar tareas automáticas en Linux, con ejemplos prácticos de ambos.'
+author: 'antonio'
 pubDate: 2025-02-12
-category: "Automatización"
-tags: ["Cron", "systemd", "Automatización", "Linux"]
-image: "../../assets/images/auto-cron.jpg"
+category: 'Automatización'
+tags: ['Cron', 'systemd', 'Automatización', 'Linux']
+image: '../../assets/images/auto-cron.jpg'
 draft: false
 ---
 
@@ -65,12 +65,12 @@ systemctl status backup.timer
 
 ## Comparativa
 
-| Característica | cron | systemd timers |
-|---------------|------|----------------|
-| Logs | syslog | journalctl |
-| Dependencias | No | Sí |
-| Ejecución perdida | No | Persistent=true |
-| Complejidad | Baja | Media |
+| Característica    | cron   | systemd timers  |
+| ----------------- | ------ | --------------- |
+| Logs              | syslog | journalctl      |
+| Dependencias      | No     | Sí              |
+| Ejecución perdida | No     | Persistent=true |
+| Complejidad       | Baja   | Media           |
 
 ## Conclusión
 

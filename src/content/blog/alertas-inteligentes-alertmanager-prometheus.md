@@ -1,11 +1,11 @@
 ---
-title: "Alertas inteligentes con Alertmanager y Prometheus"
-description: "Configura alertas efectivas con Alertmanager: routing, agrupación, silenciamiento y buenas prácticas para evitar la fatiga de alertas en tu infraestructura."
-author: "antonio"
+title: 'Alertas inteligentes con Alertmanager y Prometheus'
+description: 'Configura alertas efectivas con Alertmanager: routing, agrupación, silenciamiento y buenas prácticas para evitar la fatiga de alertas en tu infraestructura.'
+author: 'antonio'
 pubDate: 2026-02-16
-category: "Monitorización"
-tags: ["alertmanager", "prometheus", "alertas", "monitoring"]
-image: "../../assets/images/mon-alertmanager.jpg"
+category: 'Monitorización'
+tags: ['alertmanager', 'prometheus', 'alertas', 'monitoring']
+image: '../../assets/images/mon-alertmanager.jpg'
 draft: false
 ---
 
@@ -44,7 +44,7 @@ El flujo de alertas sigue este camino:
 3. **Alertmanager procesa la alerta**: la agrupa con otras similares, decide si debe inhibirse o silenciarse, y la enruta al receptor adecuado.
 4. **El receptor entrega la notificación**: email, Slack, PagerDuty, webhook, Telegram u otros.
 
-La separación es deliberada. Prometheus se encarga de decidir *qué* está mal. Alertmanager se encarga de decidir *a quién* avisar, *cuándo* y *cómo*.
+La separación es deliberada. Prometheus se encarga de decidir _qué_ está mal. Alertmanager se encarga de decidir _a quién_ avisar, _cuándo_ y _cómo_.
 
 ## Conectar Prometheus con Alertmanager
 
@@ -56,10 +56,10 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
-            - "localhost:9093"
+            - 'localhost:9093'
 
 rule_files:
-  - "rules/*.yml"
+  - 'rules/*.yml'
 ```
 
 Crea el directorio `rules/` junto a tu `prometheus.yml` si no existe:
@@ -85,8 +85,8 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "Instancia {{ $labels.instance }} caída"
-          description: "La instancia {{ $labels.instance }} del job {{ $labels.job }} lleva más de 2 minutos sin responder."
+          summary: 'Instancia {{ $labels.instance }} caída'
+          description: 'La instancia {{ $labels.instance }} del job {{ $labels.job }} lleva más de 2 minutos sin responder.'
 
       # Uso de CPU sostenido por encima del 90%
       - alert: CpuElevado
@@ -95,8 +95,8 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "CPU por encima del 90% en {{ $labels.instance }}"
-          description: "El uso medio de CPU en {{ $labels.instance }} lleva más de 10 minutos por encima del 90%. Valor actual: {{ $value | printf \"%.1f\" }}%."
+          summary: 'CPU por encima del 90% en {{ $labels.instance }}'
+          description: 'El uso medio de CPU en {{ $labels.instance }} lleva más de 10 minutos por encima del 90%. Valor actual: {{ $value | printf "%.1f" }}%.'
 
       # Disco con menos del 10% de espacio libre
       - alert: DiscoLleno
@@ -105,8 +105,8 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "Disco casi lleno en {{ $labels.instance }}"
-          description: "El sistema de ficheros {{ $labels.mountpoint }} en {{ $labels.instance }} tiene menos del 10% libre."
+          summary: 'Disco casi lleno en {{ $labels.instance }}'
+          description: 'El sistema de ficheros {{ $labels.mountpoint }} en {{ $labels.instance }} tiene menos del 10% libre.'
 
       # Más del 85% de memoria en uso
       - alert: MemoriaAlta
@@ -115,8 +115,8 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "Memoria alta en {{ $labels.instance }}"
-          description: "El uso de memoria en {{ $labels.instance }} supera el 85% desde hace 10 minutos. Valor actual: {{ $value | printf \"%.1f\" }}%."
+          summary: 'Memoria alta en {{ $labels.instance }}'
+          description: 'El uso de memoria en {{ $labels.instance }} supera el 85% desde hace 10 minutos. Valor actual: {{ $value | printf "%.1f" }}%.'
 ```
 
 Fíjate en algunos detalles importantes:
@@ -141,21 +141,21 @@ Aquí es donde la magia ocurre. El fichero `alertmanager.yml` controla el enruta
 # alertmanager.yml
 global:
   resolve_timeout: 5m
-  smtp_from: "alertas@tudominio.com"
-  smtp_smarthost: "smtp.tudominio.com:587"
-  smtp_auth_username: "alertas@tudominio.com"
-  smtp_auth_password: "tu-password-smtp"
+  smtp_from: 'alertas@tudominio.com'
+  smtp_smarthost: 'smtp.tudominio.com:587'
+  smtp_auth_username: 'alertas@tudominio.com'
+  smtp_auth_password: 'tu-password-smtp'
   smtp_require_tls: true
-  slack_api_url: "https://hooks.slack.com/services/TU_WORKSPACE/TU_CANAL/TU_TOKEN"
+  slack_api_url: 'https://hooks.slack.com/services/TU_WORKSPACE/TU_CANAL/TU_TOKEN'
 
 # Plantillas personalizadas (opcional)
 templates:
-  - "/etc/alertmanager/templates/*.tmpl"
+  - '/etc/alertmanager/templates/*.tmpl'
 
 # Árbol de enrutamiento
 route:
   # Receptor por defecto
-  receiver: "slack-general"
+  receiver: 'slack-general'
 
   # Tiempo de espera para agrupar alertas nuevas del mismo grupo
   group_wait: 30s
@@ -167,28 +167,28 @@ route:
   repeat_interval: 4h
 
   # Agrupar alertas por estas etiquetas
-  group_by: ["alertname", "severity"]
+  group_by: ['alertname', 'severity']
 
   # Rutas hijas (se evalúan en orden)
   routes:
     # Alertas críticas van por email y Slack
     - match:
         severity: critical
-      receiver: "equipo-criticas"
+      receiver: 'equipo-criticas'
       repeat_interval: 1h
       continue: false
 
     # Alertas warning solo a Slack
     - match:
         severity: warning
-      receiver: "slack-general"
+      receiver: 'slack-general'
       repeat_interval: 6h
 
 # Receptores
 receivers:
-  - name: "slack-general"
+  - name: 'slack-general'
     slack_configs:
-      - channel: "#monitoring"
+      - channel: '#monitoring'
         title: '{{ .GroupLabels.alertname }} [{{ .Status | toUpper }}]'
         text: >-
           {{ range .Alerts }}
@@ -197,12 +197,12 @@ receivers:
           {{ end }}
         send_resolved: true
 
-  - name: "equipo-criticas"
+  - name: 'equipo-criticas'
     email_configs:
-      - to: "oncall@tudominio.com"
+      - to: 'oncall@tudominio.com'
         send_resolved: true
     slack_configs:
-      - channel: "#criticas"
+      - channel: '#criticas'
         title: 'CRITICO: {{ .GroupLabels.alertname }}'
         text: >-
           {{ range .Alerts }}
@@ -215,10 +215,10 @@ receivers:
 inhibit_rules:
   # Si una instancia está caída, no enviar alertas de CPU/memoria/disco
   - source_match:
-      alertname: "InstanciaCaida"
+      alertname: 'InstanciaCaida'
     target_match_re:
-      alertname: "CpuElevado|MemoriaAlta|DiscoLleno"
-    equal: ["instance"]
+      alertname: 'CpuElevado|MemoriaAlta|DiscoLleno'
+    equal: ['instance']
 ```
 
 Valida el fichero antes de arrancar:
@@ -275,9 +275,9 @@ Para integraciones personalizadas (Telegram, Discord, sistemas de ticketing), pu
 
 ```yaml
 receivers:
-  - name: "webhook-custom"
+  - name: 'webhook-custom'
     webhook_configs:
-      - url: "http://localhost:8090/alertmanager"
+      - url: 'http://localhost:8090/alertmanager'
         send_resolved: true
         max_alerts: 0
 ```

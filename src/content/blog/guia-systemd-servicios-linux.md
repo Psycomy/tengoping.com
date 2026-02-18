@@ -1,11 +1,11 @@
 ---
-title: "Guía práctica de systemd: gestión de servicios en Linux"
-description: "Domina systemd para administrar servicios, timers y targets en distribuciones Linux modernas."
-author: "alois"
+title: 'Guía práctica de systemd: gestión de servicios en Linux'
+description: 'Domina systemd para administrar servicios, timers y targets en distribuciones Linux modernas.'
+author: 'alois'
 pubDate: 2025-02-01
-category: "Linux"
-tags: ["systemd", "Linux", "Servicios", "Sysadmin"]
-image: "../../assets/images/linux-systemd.jpg"
+category: 'Linux'
+tags: ['systemd', 'Linux', 'Servicios', 'Sysadmin']
+image: '../../assets/images/linux-systemd.jpg'
 draft: false
 ---
 

@@ -1,11 +1,11 @@
 ---
-title: "Montar un NAS casero con OpenMediaVault"
-description: "Guía para construir un NAS económico con OpenMediaVault: instalación, configuración de discos, carpetas compartidas y acceso remoto."
-author: "antonio"
+title: 'Montar un NAS casero con OpenMediaVault'
+description: 'Guía para construir un NAS económico con OpenMediaVault: instalación, configuración de discos, carpetas compartidas y acceso remoto.'
+author: 'antonio'
 pubDate: 2025-07-28
-category: "Hardware"
-tags: ["NAS", "OpenMediaVault", "Hardware", "Almacenamiento"]
-image: "../../assets/images/nas-omv.jpg"
+category: 'Hardware'
+tags: ['NAS', 'OpenMediaVault', 'Hardware', 'Almacenamiento']
+image: '../../assets/images/nas-omv.jpg'
 draft: false
 ---
 
@@ -17,12 +17,12 @@ Un NAS (Network Attached Storage) es un dispositivo de almacenamiento conectado 
 
 No necesitas un equipo potente para un NAS. Estas son las opciones más comunes ordenadas de menor a mayor presupuesto:
 
-| Opción | Pros | Contras | Presupuesto aprox. |
-|---|---|---|---|
-| Raspberry Pi 4/5 | Bajo consumo, barato | Limitado a USB para discos | 80-120 EUR |
-| Portátil antiguo | Tiene batería como SAI integrado | Solo 1 bahía SATA interna | 0-50 EUR |
-| Mini PC (Lenovo Tiny, HP EliteDesk) | Compacto, bajo consumo, bahía SATA | Normalmente 1 bahía | 80-150 EUR |
-| PC dedicado con varias bahías | Múltiples discos, expansible | Mayor consumo, más ruido | 150-300 EUR |
+| Opción                              | Pros                               | Contras                    | Presupuesto aprox. |
+| ----------------------------------- | ---------------------------------- | -------------------------- | ------------------ |
+| Raspberry Pi 4/5                    | Bajo consumo, barato               | Limitado a USB para discos | 80-120 EUR         |
+| Portátil antiguo                    | Tiene batería como SAI integrado   | Solo 1 bahía SATA interna  | 0-50 EUR           |
+| Mini PC (Lenovo Tiny, HP EliteDesk) | Compacto, bajo consumo, bahía SATA | Normalmente 1 bahía        | 80-150 EUR         |
+| PC dedicado con varias bahías       | Múltiples discos, expansible       | Mayor consumo, más ruido   | 150-300 EUR        |
 
 Para un NAS doméstico serio, lo ideal es un equipo con al menos dos bahías para discos SATA de 3.5 pulgadas. Un viejo PC de sobremesa con una placa que tenga 4 puertos SATA es una opción excelente.
 

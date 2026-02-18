@@ -1,11 +1,11 @@
 ---
-title: "Backups incrementales con rsync en servidores Linux"
-description: "Cómo implementar una estrategia de backups incrementales usando rsync y hardlinks para ahorrar espacio y tiempo en tus servidores."
-author: "antonio"
+title: 'Backups incrementales con rsync en servidores Linux'
+description: 'Cómo implementar una estrategia de backups incrementales usando rsync y hardlinks para ahorrar espacio y tiempo en tus servidores.'
+author: 'antonio'
 pubDate: 2025-02-08
-category: "Automatización"
-tags: ["Backup", "rsync", "Sysadmin", "Scripts"]
-image: "../../assets/images/auto-backup.jpg"
+category: 'Automatización'
+tags: ['Backup', 'rsync', 'Sysadmin', 'Scripts']
+image: '../../assets/images/auto-backup.jpg'
 draft: false
 ---
 
@@ -142,11 +142,11 @@ du -sh --apparent-size /backups/servidor01/*
 
 ## Estrategia de retención
 
-| Periodo | Retención |
-|---------|-----------|
-| Últimos 7 días | Diario |
-| Último mes | Semanal |
-| Último año | Mensual |
+| Periodo        | Retención |
+| -------------- | --------- |
+| Últimos 7 días | Diario    |
+| Último mes     | Semanal   |
+| Último año     | Mensual   |
 
 Para implementarlo, en vez de borrar por antigüedad, marca los backups semanales y mensuales que quieras conservar con un enlace simbólico o muévelos a otro directorio.
 

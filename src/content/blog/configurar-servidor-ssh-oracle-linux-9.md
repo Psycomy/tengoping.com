@@ -1,11 +1,11 @@
 ---
-title: "Cómo configurar un servidor SSH seguro en Oracle Linux 9"
-description: "Guía paso a paso para configurar y securizar un servidor SSH en Oracle Linux 9, incluyendo autenticación por clave, fail2ban y mejores prácticas."
-author: "antonio"
+title: 'Cómo configurar un servidor SSH seguro en Oracle Linux 9'
+description: 'Guía paso a paso para configurar y securizar un servidor SSH en Oracle Linux 9, incluyendo autenticación por clave, fail2ban y mejores prácticas.'
+author: 'antonio'
 pubDate: 2025-01-15
-category: "Linux"
-tags: ["SSH", "Oracle Linux", "Seguridad", "Sysadmin"]
-image: "../../assets/images/ssh-server.jpg"
+category: 'Linux'
+tags: ['SSH', 'Oracle Linux', 'Seguridad', 'Sysadmin']
+image: '../../assets/images/ssh-server.jpg'
 draft: false
 ---
 
@@ -113,13 +113,13 @@ sudo last -n 20
 
 ## Resumen de seguridad
 
-| Medida | Descripción |
-|--------|-------------|
-| Cambiar puerto | Reduce escaneos automáticos |
+| Medida            | Descripción                   |
+| ----------------- | ----------------------------- |
+| Cambiar puerto    | Reduce escaneos automáticos   |
 | Deshabilitar root | Evita ataques directos a root |
-| Claves públicas | Más seguro que contraseñas |
-| Fail2ban | Bloquea IPs maliciosas |
-| AllowUsers | Lista blanca de usuarios |
+| Claves públicas   | Más seguro que contraseñas    |
+| Fail2ban          | Bloquea IPs maliciosas        |
+| AllowUsers        | Lista blanca de usuarios      |
 
 ## Conclusión
 

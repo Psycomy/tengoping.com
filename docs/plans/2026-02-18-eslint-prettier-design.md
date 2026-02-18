@@ -13,6 +13,7 @@ npm install -D eslint @eslint/js typescript-eslint eslint-plugin-astro eslint-co
 ## Ficheros nuevos
 
 ### `eslint.config.mjs`
+
 ```js
 import js from '@eslint/js';
 import ts from 'typescript-eslint';
@@ -36,6 +37,7 @@ export default [
 ```
 
 ### `.prettierrc`
+
 ```json
 {
   "semi": true,
@@ -54,6 +56,7 @@ export default [
 ```
 
 ### `.prettierignore`
+
 ```
 dist/
 .astro/
@@ -64,6 +67,7 @@ public/pagefind/
 ## Modificaciones
 
 ### `package.json` — scripts + lint-staged
+
 ```json
 "scripts": {
   "dev": "astro dev",
@@ -83,7 +87,9 @@ public/pagefind/
 ```
 
 ### `.github/workflows/ci.yml` — añadir steps de lint
+
 Después del step "Type check":
+
 ```yaml
 - name: Lint
   run: npm run lint
@@ -93,6 +99,7 @@ Después del step "Type check":
 ```
 
 ### `src/components/RelatedArticles.astro` — eliminar import sin usar
+
 Eliminar la línea: `import { slugify } from '@utils/helpers';`
 
 ## Husky setup

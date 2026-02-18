@@ -3,8 +3,9 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import authors from '@data/authors.json';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 ---
 
 <BaseLayout title="Sobre nosotros" description="Conoce al equipo detrás de tengoping.com">
@@ -12,51 +13,74 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     <div class="page-header">
       <span class="meta-prompt">$ cat /etc/team</span>
       <h1>Sobre nosotros</h1>
-      <p class="subtitle">Somos un equipo de profesionales IT apasionados por compartir conocimiento sobre administración de sistemas, redes y tecnología.</p>
+      <p class="subtitle">
+        Somos un equipo de profesionales IT apasionados por compartir conocimiento sobre
+        administración de sistemas, redes y tecnología.
+      </p>
     </div>
 
     <div class="authors-grid">
-      {authors.map((author) => {
-        const authorPosts = posts.filter((p) => p.data.author === author.id).slice(0, 3);
-        return (
-          <div class="author-profile">
-            <div class="author-header">
-              <img src={author.avatar} alt={author.name} class="author-avatar" />
-              <div>
-                <h2><a href={`/autor/${author.id}`}>{author.name}</a></h2>
-                <p class="author-role">{author.bioShort}</p>
-              </div>
-            </div>
-            <p class="author-bio">{author.bio}</p>
-            {(() => {
-              const s = author.social as { twitter?: string; github?: string; linkedin?: string };
-              return (
-                <div class="author-social">
-                  {s.twitter && <a href={s.twitter} target="_blank" rel="noopener noreferrer">Twitter</a>}
-                  {s.github && <a href={s.github} target="_blank" rel="noopener noreferrer">GitHub</a>}
-                  {s.linkedin && <a href={s.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>}
+      {
+        authors.map((author) => {
+          const authorPosts = posts.filter((p) => p.data.author === author.id).slice(0, 3);
+          return (
+            <div class="author-profile">
+              <div class="author-header">
+                <img src={author.avatar} alt={author.name} class="author-avatar" />
+                <div>
+                  <h2>
+                    <a href={`/autor/${author.id}`}>{author.name}</a>
+                  </h2>
+                  <p class="author-role">{author.bioShort}</p>
                 </div>
-              );
-            })()}
-            {authorPosts.length > 0 && (
-              <div class="author-posts">
-                <h3>Artículos recientes</h3>
-                <ul>
-                  {authorPosts.map((post) => (
-                    <li><a href={`/blog/${post.id}`}>{post.data.title}</a></li>
-                  ))}
-                </ul>
               </div>
-            )}
-          </div>
-        );
-      })}
+              <p class="author-bio">{author.bio}</p>
+              {(() => {
+                const s = author.social as { twitter?: string; github?: string; linkedin?: string };
+                return (
+                  <div class="author-social">
+                    {s.twitter && (
+                      <a href={s.twitter} target="_blank" rel="noopener noreferrer">
+                        Twitter
+                      </a>
+                    )}
+                    {s.github && (
+                      <a href={s.github} target="_blank" rel="noopener noreferrer">
+                        GitHub
+                      </a>
+                    )}
+                    {s.linkedin && (
+                      <a href={s.linkedin} target="_blank" rel="noopener noreferrer">
+                        LinkedIn
+                      </a>
+                    )}
+                  </div>
+                );
+              })()}
+              {authorPosts.length > 0 && (
+                <div class="author-posts">
+                  <h3>Artículos recientes</h3>
+                  <ul>
+                    {authorPosts.map((post) => (
+                      <li>
+                        <a href={`/blog/${post.id}`}>{post.data.title}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          );
+        })
+      }
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .page-section { padding: 3rem 0 4rem; }
+  .page-section {
+    padding: 3rem 0 4rem;
+  }
 
   .page-header {
     text-align: center;
@@ -81,7 +105,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     margin: 0 auto;
   }
 
-  .authors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+  .authors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+  }
 
   .author-profile {
     background: var(--color-surface);
@@ -90,22 +118,72 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     padding: 2rem;
   }
 
-  .author-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-  .author-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
-  .author-header h2 { margin: 0; font-size: 1.25rem; }
-  .author-header h2 a { text-decoration: none; color: var(--color-text); }
-  .author-header h2 a:hover { color: var(--color-primary); }
-  .author-role { color: var(--color-text-muted); font-size: 0.875rem; margin: 0.25rem 0 0; }
+  .author-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .author-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .author-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  .author-header h2 a {
+    text-decoration: none;
+    color: var(--color-text);
+  }
+  .author-header h2 a:hover {
+    color: var(--color-primary);
+  }
+  .author-role {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    margin: 0.25rem 0 0;
+  }
 
-  .author-bio { color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 1rem; }
+  .author-bio {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
 
-  .author-social { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-  .author-social a { font-size: 0.875rem; font-weight: 500; }
+  .author-social {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .author-social a {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
 
-  .author-posts h3 { font-size: 1rem; margin-bottom: 0.75rem; color: var(--color-text-muted); }
-  .author-posts ul { list-style: none; padding: 0; }
-  .author-posts li { padding: 0.5rem 0; border-top: 1px solid var(--color-border); }
-  .author-posts a { text-decoration: none; font-size: 0.9rem; }
+  .author-posts h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-muted);
+  }
+  .author-posts ul {
+    list-style: none;
+    padding: 0;
+  }
+  .author-posts li {
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+  .author-posts a {
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
 
-  @media (max-width: 768px) { .authors-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 768px) {
+    .authors-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

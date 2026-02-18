@@ -1,11 +1,11 @@
 ---
-title: "Hardening básico de servidores Linux"
-description: "Lista de medidas esenciales para securizar un servidor Linux recién instalado: SSH, usuarios, firewall, kernel y auditoría."
-author: "antonio"
+title: 'Hardening básico de servidores Linux'
+description: 'Lista de medidas esenciales para securizar un servidor Linux recién instalado: SSH, usuarios, firewall, kernel y auditoría.'
+author: 'antonio'
 pubDate: 2025-02-12
-category: "Linux"
-tags: ["Seguridad", "Hardening", "SSH", "Sysadmin"]
-image: "../../assets/images/linux-hardening.jpg"
+category: 'Linux'
+tags: ['Seguridad', 'Hardening', 'SSH', 'Sysadmin']
+image: '../../assets/images/linux-hardening.jpg'
 draft: false
 ---
 
@@ -211,14 +211,14 @@ sudo ausearch -k identity -ts recent
 
 ## Checklist rápido
 
-| Medida | Comando de verificación |
-|--------|------------------------|
-| Sistema actualizado | `dnf check-update` |
+| Medida               | Comando de verificación                     |
+| -------------------- | ------------------------------------------- |
+| Sistema actualizado  | `dnf check-update`                          |
 | Root SSH desactivado | `grep PermitRootLogin /etc/ssh/sshd_config` |
-| Firewall activo | `firewall-cmd --list-all` |
-| fail2ban corriendo | `fail2ban-client status` |
-| Servicios mínimos | `systemctl list-units --state=running` |
-| Auditoría activa | `auditctl -l` |
+| Firewall activo      | `firewall-cmd --list-all`                   |
+| fail2ban corriendo   | `fail2ban-client status`                    |
+| Servicios mínimos    | `systemctl list-units --state=running`      |
+| Auditoría activa     | `auditctl -l`                               |
 
 ## Conclusión
 

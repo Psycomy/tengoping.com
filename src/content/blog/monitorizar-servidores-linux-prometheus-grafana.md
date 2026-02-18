@@ -1,11 +1,11 @@
 ---
-title: "Monitorizar servidores Linux con Prometheus y Grafana"
-description: "Guía paso a paso para desplegar un stack de monitorización con Prometheus y Grafana en servidores Linux usando Node Exporter."
-author: "antonio"
+title: 'Monitorizar servidores Linux con Prometheus y Grafana'
+description: 'Guía paso a paso para desplegar un stack de monitorización con Prometheus y Grafana en servidores Linux usando Node Exporter.'
+author: 'antonio'
 pubDate: 2025-02-14
-category: "Monitorización"
-tags: ["Monitorización", "Prometheus", "Grafana", "Sysadmin"]
-image: "../../assets/images/linux-monitoring.jpg"
+category: 'Monitorización'
+tags: ['Monitorización', 'Prometheus', 'Grafana', 'Sysadmin']
+image: '../../assets/images/linux-monitoring.jpg'
 draft: false
 ---
 
@@ -79,12 +79,12 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
-  - job_name: "nodos"
+  - job_name: 'nodos'
     static_configs:
       - targets:
-          - "192.168.1.10:9100"
-          - "192.168.1.11:9100"
-          - "192.168.1.12:9100"
+          - '192.168.1.10:9100'
+          - '192.168.1.11:9100'
+          - '192.168.1.12:9100'
 ```
 
 ### Crear el servicio
@@ -172,7 +172,7 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "Nodo {{ $labels.instance }} no responde"
+          summary: 'Nodo {{ $labels.instance }} no responde'
 
       - alert: DiscoLleno
         expr: (1 - node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) > 0.85
@@ -180,14 +180,14 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "Disco al {{ $value | humanizePercentage }} en {{ $labels.instance }}"
+          summary: 'Disco al {{ $value | humanizePercentage }} en {{ $labels.instance }}'
 ```
 
 Añade la referencia en `prometheus.yml`:
 
 ```yaml
 rule_files:
-  - "alerts.yml"
+  - 'alerts.yml'
 ```
 
 Reinicia Prometheus para aplicar:

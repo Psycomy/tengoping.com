@@ -1,11 +1,11 @@
 ---
-title: "Snapshots y clones en máquinas virtuales"
-description: "Cómo usar snapshots y clones en KVM y Proxmox para proteger tus VMs y acelerar despliegues."
-author: "antonio"
+title: 'Snapshots y clones en máquinas virtuales'
+description: 'Cómo usar snapshots y clones en KVM y Proxmox para proteger tus VMs y acelerar despliegues.'
+author: 'antonio'
 pubDate: 2025-11-05
-category: "Virtualización"
-tags: ["Snapshots", "KVM", "Proxmox", "Virtualización"]
-image: "../../assets/images/vm-snapshots.jpg"
+category: 'Virtualización'
+tags: ['Snapshots', 'KVM', 'Proxmox', 'Virtualización']
+image: '../../assets/images/vm-snapshots.jpg'
 draft: false
 ---
 
@@ -155,12 +155,12 @@ qm clone 100 103 --name vm-full --full
 
 ### Comparativa
 
-| Caracteristica   | Full clone       | Linked clone     |
-|------------------|------------------|------------------|
-| Espacio en disco | Igual al original| Solo diferencias |
-| Velocidad creacion| Lenta (copia todo)| Rapida          |
-| Independencia    | Total            | Depende de la base|
-| Uso tipico       | Produccion       | Testing, labs    |
+| Caracteristica     | Full clone         | Linked clone       |
+| ------------------ | ------------------ | ------------------ |
+| Espacio en disco   | Igual al original  | Solo diferencias   |
+| Velocidad creacion | Lenta (copia todo) | Rapida             |
+| Independencia      | Total              | Depende de la base |
+| Uso tipico         | Produccion         | Testing, labs      |
 
 ## Buenas practicas
 

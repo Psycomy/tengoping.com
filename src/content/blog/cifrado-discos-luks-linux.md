@@ -1,11 +1,11 @@
 ---
-title: "Cifrado de discos con LUKS en Linux"
-description: "Aprende a cifrar particiones y discos completos con LUKS para proteger tus datos en caso de pérdida o robo del equipo."
-author: "alois"
+title: 'Cifrado de discos con LUKS en Linux'
+description: 'Aprende a cifrar particiones y discos completos con LUKS para proteger tus datos en caso de pérdida o robo del equipo.'
+author: 'alois'
 pubDate: 2025-06-30
-category: "Seguridad"
-tags: ["LUKS", "Cifrado", "Seguridad", "Linux"]
-image: "../../assets/images/luks-cifrado.jpg"
+category: 'Seguridad'
+tags: ['LUKS', 'Cifrado', 'Seguridad', 'Linux']
+image: '../../assets/images/luks-cifrado.jpg'
 draft: false
 ---
 

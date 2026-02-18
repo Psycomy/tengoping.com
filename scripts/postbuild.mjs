@@ -23,7 +23,8 @@ function collectInlineScriptHashes(dir, hashes = new Set()) {
     } else if (entry.name.endsWith('.html')) {
       const html = readFileSync(fullPath, 'utf-8');
       // Match inline <script> (no src=, no type="application/ld+json")
-      const re = /<script(?![^>]*\bsrc\s*=)(?![^>]*type\s*=\s*["']application\/ld\+json["'])[^>]*>([\s\S]*?)<\/script>/gi;
+      const re =
+        /<script(?![^>]*\bsrc\s*=)(?![^>]*type\s*=\s*["']application\/ld\+json["'])[^>]*>([\s\S]*?)<\/script>/gi;
       let match;
       while ((match = re.exec(html)) !== null) {
         const content = match[1];

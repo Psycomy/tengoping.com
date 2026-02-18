@@ -1,11 +1,11 @@
 ---
-title: "Comandos esenciales de LVM: guía rápida"
-description: "Cheatsheet con los comandos más usados de LVM (Logical Volume Manager) para la gestión de volúmenes lógicos en Linux."
-author: "antonio"
+title: 'Comandos esenciales de LVM: guía rápida'
+description: 'Cheatsheet con los comandos más usados de LVM (Logical Volume Manager) para la gestión de volúmenes lógicos en Linux.'
+author: 'antonio'
 pubDate: 2025-02-01
-category: "Automatización"
-tags: ["LVM", "Storage", "Linux", "Cheatsheet"]
-image: "../../assets/images/lvm-storage.jpg"
+category: 'Automatización'
+tags: ['LVM', 'Storage', 'Linux', 'Cheatsheet']
+image: '../../assets/images/lvm-storage.jpg'
 draft: false
 ---
 

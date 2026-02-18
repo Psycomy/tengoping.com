@@ -19,9 +19,7 @@ const { giscus } = site;
     const section = document.getElementById('giscus-section');
     if (!section || section.querySelector('script[src*="giscus"]')) return;
 
-    const theme = document.documentElement.getAttribute('data-theme') === 'dark'
-      ? 'dark'
-      : 'light';
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
 
     const script = document.createElement('script');
     script.src = 'https://giscus.app/client.js';
@@ -44,14 +42,9 @@ const { giscus } = site;
 
   // Sync giscus theme when user toggles dark/light mode
   function updateGiscusTheme() {
-    const theme = document.documentElement.getAttribute('data-theme') === 'dark'
-      ? 'dark'
-      : 'light';
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
-    iframe?.contentWindow?.postMessage(
-      { giscus: { setConfig: { theme } } },
-      'https://giscus.app'
-    );
+    iframe?.contentWindow?.postMessage({ giscus: { setConfig: { theme } } }, 'https://giscus.app');
   }
 
   // When Giscus loads lazily (after scrolling into view), the iframe is injected into

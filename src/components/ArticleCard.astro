@@ -29,9 +29,29 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
 
 <article class="article-card card-hover">
   <a href={`/blog/${post.id}`} class="card-image-link">
-{image
-      ? <Image src={image} alt={title} class="card-image" loading="lazy" width={300} height={200} format="webp" sizes="(max-width: 768px) 100vw, 300px" />
-      : <img src="/images/placeholder-article.svg" alt={title} class="card-image" loading="lazy" width="300" height="200" decoding="async" />
+    {
+      image ? (
+        <Image
+          src={image}
+          alt={title}
+          class="card-image"
+          loading="lazy"
+          width={300}
+          height={200}
+          format="webp"
+          sizes="(max-width: 768px) 100vw, 300px"
+        />
+      ) : (
+        <img
+          src="/images/placeholder-article.svg"
+          alt={title}
+          class="card-image"
+          loading="lazy"
+          width="300"
+          height="200"
+          decoding="async"
+        />
+      )
     }
   </a>
   <div class="card-content">
@@ -39,16 +59,38 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
     <h3 class="card-title">
       <a href={`/blog/${post.id}`}>{title}</a>
     </h3>
-    <p class="card-description">{description.length > 120 ? description.slice(0, 120) + '...' : description}</p>
+    <p class="card-description">
+      {description.length > 120 ? description.slice(0, 120) + '...' : description}
+    </p>
     <div class="card-tags">
-      {tags.map((tag) => (
-        <a href={`/etiquetas/${slugify(tag)}`} class="badge badge-tag">{tag}</a>
-      ))}
+      {
+        tags.map((tag) => (
+          <a href={`/etiquetas/${slugify(tag)}`} class="badge badge-tag">
+            {tag}
+          </a>
+        ))
+      }
     </div>
     <div class="card-meta">
       <div class="card-author">
-        {authorData && <a href={`/autor/${authorData.id}`}><img src={authorData.avatar} alt={authorData.name} class="card-avatar" loading="lazy" width="28" height="28" decoding="async" /></a>}
-        <a href={authorData ? `/autor/${authorData.id}` : '#'} class="card-author-link">{authorData ? authorData.name : author}</a>
+        {
+          authorData && (
+            <a href={`/autor/${authorData.id}`}>
+              <img
+                src={authorData.avatar}
+                alt={authorData.name}
+                class="card-avatar"
+                loading="lazy"
+                width="28"
+                height="28"
+                decoding="async"
+              />
+            </a>
+          )
+        }
+        <a href={authorData ? `/autor/${authorData.id}` : '#'} class="card-author-link"
+          >{authorData ? authorData.name : author}</a
+        >
       </div>
       <div class="card-info">
         <time datetime={new Date(pubDate).toISOString()}>{formatDate(pubDate)}</time>
@@ -83,7 +125,9 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
   }
 
   @media (max-width: 768px) {
-    .article-card { flex-direction: column; }
+    .article-card {
+      flex-direction: column;
+    }
     .card-image-link {
       flex: none;
       aspect-ratio: 16/9;
@@ -116,7 +160,9 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
     color: var(--color-text);
     transition: color 0.2s;
   }
-  .card-title a:hover { color: var(--color-primary); }
+  .card-title a:hover {
+    color: var(--color-primary);
+  }
 
   .card-description {
     margin: 0;
@@ -159,7 +205,9 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
     color: var(--color-text);
     transition: color 0.2s;
   }
-  .card-author-link:hover { color: var(--color-primary); }
+  .card-author-link:hover {
+    color: var(--color-primary);
+  }
 
   .card-info {
     display: flex;

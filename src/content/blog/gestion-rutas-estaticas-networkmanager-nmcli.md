@@ -1,11 +1,11 @@
 ---
-title: "Gestión de rutas estáticas con NetworkManager y nmcli"
-description: "Aprende a gestionar rutas estáticas en Linux usando NetworkManager y nmcli. Guía completa con ejemplos prácticos para administradores de redes."
-author: "alois"
+title: 'Gestión de rutas estáticas con NetworkManager y nmcli'
+description: 'Aprende a gestionar rutas estáticas en Linux usando NetworkManager y nmcli. Guía completa con ejemplos prácticos para administradores de redes.'
+author: 'alois'
 pubDate: 2025-01-22
-category: "Redes"
-tags: ["NetworkManager", "nmcli", "Routing", "Linux"]
-image: "../../assets/images/network-routes.jpg"
+category: 'Redes'
+tags: ['NetworkManager', 'nmcli', 'Routing', 'Linux']
+image: '../../assets/images/network-routes.jpg'
 draft: false
 ---
 
@@ -126,13 +126,13 @@ traceroute 10.10.1.1
 
 ## Tabla resumen de comandos
 
-| Acción | Comando |
-|--------|---------|
-| Listar conexiones | `nmcli connection show` |
-| Añadir ruta | `nmcli con mod "conn" +ipv4.routes "..."` |
-| Eliminar ruta | `nmcli con mod "conn" -ipv4.routes "..."` |
-| Aplicar cambios | `nmcli connection up "conn"` |
-| Ver rutas | `ip route show` |
+| Acción            | Comando                                   |
+| ----------------- | ----------------------------------------- |
+| Listar conexiones | `nmcli connection show`                   |
+| Añadir ruta       | `nmcli con mod "conn" +ipv4.routes "..."` |
+| Eliminar ruta     | `nmcli con mod "conn" -ipv4.routes "..."` |
+| Aplicar cambios   | `nmcli connection up "conn"`              |
+| Ver rutas         | `ip route show`                           |
 
 ## Conclusión
 

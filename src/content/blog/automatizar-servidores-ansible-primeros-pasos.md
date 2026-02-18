@@ -1,11 +1,11 @@
 ---
-title: "Automatizar servidores con Ansible: primeros pasos"
-description: "Guía de inicio con Ansible para automatizar la configuración y gestión de servidores Linux de forma declarativa."
-author: "antonio"
+title: 'Automatizar servidores con Ansible: primeros pasos'
+description: 'Guía de inicio con Ansible para automatizar la configuración y gestión de servidores Linux de forma declarativa.'
+author: 'antonio'
 pubDate: 2025-01-25
-category: "Automatización"
-tags: ["Ansible", "Automatización", "DevOps", "Linux"]
-image: "../../assets/images/auto-ansible.jpg"
+category: 'Automatización'
+tags: ['Ansible', 'Automatización', 'DevOps', 'Linux']
+image: '../../assets/images/auto-ansible.jpg'
 draft: false
 ---
 

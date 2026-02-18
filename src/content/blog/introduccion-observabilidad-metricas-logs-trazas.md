@@ -1,11 +1,11 @@
 ---
-title: "Introducción a la observabilidad: métricas, logs y trazas"
-description: "Descubre los tres pilares de la observabilidad moderna: métricas, logs y trazas. Qué son, por qué importan y qué herramientas usar para monitorizar tu infraestructura."
-author: "antonio"
+title: 'Introducción a la observabilidad: métricas, logs y trazas'
+description: 'Descubre los tres pilares de la observabilidad moderna: métricas, logs y trazas. Qué son, por qué importan y qué herramientas usar para monitorizar tu infraestructura.'
+author: 'antonio'
 pubDate: 2026-02-16
-category: "Monitorización"
-tags: ["observabilidad", "metricas", "logs", "trazas", "monitoring"]
-image: "../../assets/images/mon-observabilidad.jpg"
+category: 'Monitorización'
+tags: ['observabilidad', 'metricas', 'logs', 'trazas', 'monitoring']
+image: '../../assets/images/mon-observabilidad.jpg'
 draft: false
 ---
 
@@ -99,23 +99,23 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: "node-exporter"
+  - job_name: 'node-exporter'
     static_configs:
       - targets:
-          - "servidor1:9100"
-          - "servidor2:9100"
-          - "servidor3:9100"
+          - 'servidor1:9100'
+          - 'servidor2:9100'
+          - 'servidor3:9100'
 
-  - job_name: "nginx"
+  - job_name: 'nginx'
     static_configs:
       - targets:
-          - "servidor1:9113"
+          - 'servidor1:9113'
 
-  - job_name: "aplicacion"
-    metrics_path: "/metrics"
+  - job_name: 'aplicacion'
+    metrics_path: '/metrics'
     static_configs:
       - targets:
-          - "servidor1:8080"
+          - 'servidor1:8080'
 ```
 
 Una consulta PromQL típica para ver la tasa de errores HTTP:
@@ -264,9 +264,9 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:1.54
     ports:
-      - "16686:16686"   # UI web
-      - "4317:4317"     # OTLP gRPC (OpenTelemetry)
-      - "4318:4318"     # OTLP HTTP (OpenTelemetry)
+      - '16686:16686' # UI web
+      - '4317:4317' # OTLP gRPC (OpenTelemetry)
+      - '4318:4318' # OTLP HTTP (OpenTelemetry)
     environment:
       - COLLECTOR_OTLP_ENABLED=true
 ```
@@ -285,11 +285,11 @@ receivers:
 
 exporters:
   prometheus:
-    endpoint: "0.0.0.0:8889"
+    endpoint: '0.0.0.0:8889'
   loki:
-    endpoint: "http://loki:3100/loki/api/v1/push"
+    endpoint: 'http://loki:3100/loki/api/v1/push'
   otlp/tempo:
-    endpoint: "tempo:4317"
+    endpoint: 'tempo:4317'
     tls:
       insecure: true
 

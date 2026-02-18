@@ -10,33 +10,43 @@ const { url, currentPage, lastPage, basePath = '/blog' } = Astro.props;
 const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
 ---
 
-{lastPage > 1 && (
-  <nav class="pagination" aria-label="Paginaci&oacute;n">
-    {url.prev ? (
-      <a href={url.prev} class="pagination-btn">[&lt; prev]</a>
-    ) : (
-      <span class="pagination-btn disabled" aria-disabled="true">[&lt; prev]</span>
-    )}
-
-    <div class="pagination-pages">
-      {pages.map((page) => (
-        <a
-          href={page === 1 ? basePath : `${basePath}/${page}`}
-          class:list={['pagination-page', { active: page === currentPage }]}
-          aria-current={page === currentPage ? 'page' : undefined}
-        >
-          [{page}]
+{
+  lastPage > 1 && (
+    <nav class="pagination" aria-label="Paginación">
+      {url.prev ? (
+        <a href={url.prev} class="pagination-btn">
+          [&lt; prev]
         </a>
-      ))}
-    </div>
+      ) : (
+        <span class="pagination-btn disabled" aria-disabled="true">
+          [&lt; prev]
+        </span>
+      )}
 
-    {url.next ? (
-      <a href={url.next} class="pagination-btn">[next &gt;]</a>
-    ) : (
-      <span class="pagination-btn disabled" aria-disabled="true">[next &gt;]</span>
-    )}
-  </nav>
-)}
+      <div class="pagination-pages">
+        {pages.map((page) => (
+          <a
+            href={page === 1 ? basePath : `${basePath}/${page}`}
+            class:list={['pagination-page', { active: page === currentPage }]}
+            aria-current={page === currentPage ? 'page' : undefined}
+          >
+            [{page}]
+          </a>
+        ))}
+      </div>
+
+      {url.next ? (
+        <a href={url.next} class="pagination-btn">
+          [next &gt;]
+        </a>
+      ) : (
+        <span class="pagination-btn disabled" aria-disabled="true">
+          [next &gt;]
+        </span>
+      )}
+    </nav>
+  )
+}
 
 <style>
   .pagination {
@@ -106,8 +116,16 @@ const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
   }
 
   @media (max-width: 640px) {
-    .pagination { flex-wrap: wrap; gap: 0.5rem; }
-    .pagination-btn { padding: 0.4rem 0.5rem; font-size: 0.75rem; }
-    .pagination-page { font-size: 0.75rem; }
+    .pagination {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .pagination-btn {
+      padding: 0.4rem 0.5rem;
+      font-size: 0.75rem;
+    }
+    .pagination-page {
+      font-size: 0.75rem;
+    }
   }
 </style>

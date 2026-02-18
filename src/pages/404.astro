@@ -9,19 +9,30 @@ import BaseLayout from '@layouts/BaseLayout.astro';
         <span class="terminal-title">root@tengoping:~$</span>
       </div>
       <div class="terminal-body">
-        <p class="terminal-line"><span class="prompt">$</span> curl -I https://tengoping.com<span class="path">{Astro.url.pathname}</span></p>
-        <p class="terminal-line response-line">HTTP/1.1 <span class="status-code">404</span> Not Found</p>
+        <p class="terminal-line">
+          <span class="prompt">$</span> curl -I https://tengoping.com<span class="path"
+            >{Astro.url.pathname}</span
+          >
+        </p>
+        <p class="terminal-line response-line">
+          HTTP/1.1 <span class="status-code">404</span> Not Found
+        </p>
         <p class="terminal-line response-line">Content-Type: text/html; charset=utf-8</p>
         <p class="terminal-line response-line">Server: tengoping</p>
         <p class="terminal-line">&nbsp;</p>
-        <p class="terminal-line"><span class="prompt">$</span> echo "La página solicitada no existe o ha sido movida."</p>
+        <p class="terminal-line">
+          <span class="prompt">$</span> echo "La página solicitada no existe o ha sido movida."
+        </p>
         <p class="terminal-line output-line">La página solicitada no existe o ha sido movida.</p>
         <p class="terminal-line">&nbsp;</p>
         <p class="terminal-line"><span class="prompt">$</span> echo "Sugerencias:"</p>
         <p class="terminal-line output-line">- Verifica que la URL esté escrita correctamente</p>
         <p class="terminal-line output-line">- La página pudo haber sido eliminada o renombrada</p>
         <p class="terminal-line">&nbsp;</p>
-        <p class="terminal-line cursor-line"><span class="prompt">$</span> <span class="cursor-blink">_</span></p>
+        <p class="terminal-line cursor-line">
+          <span class="prompt">$</span>
+          <span class="cursor-blink">_</span>
+        </p>
       </div>
     </div>
     <div class="error-actions">

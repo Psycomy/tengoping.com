@@ -1,11 +1,11 @@
 ---
-title: "Montar tu propia nube con Nextcloud"
-description: "Guía completa para instalar Nextcloud en un servidor Linux y tener tu propio almacenamiento en la nube sin depender de terceros."
-author: "alois"
+title: 'Montar tu propia nube con Nextcloud'
+description: 'Guía completa para instalar Nextcloud en un servidor Linux y tener tu propio almacenamiento en la nube sin depender de terceros.'
+author: 'alois'
 pubDate: 2025-04-05
-category: "Self-Hosting"
-tags: ["Nextcloud", "Self-Hosting", "Nube", "Linux"]
-image: "../../assets/images/nextcloud-server.jpg"
+category: 'Self-Hosting'
+tags: ['Nextcloud', 'Self-Hosting', 'Nube', 'Linux']
+image: '../../assets/images/nextcloud-server.jpg'
 draft: false
 ---
 

@@ -31,16 +31,20 @@ const jsonLd = {
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol>
-    {breadcrumbItems.map((item, index) => (
-      <li>
-        {index > 0 && <span class="separator">/</span>}
-        {index < breadcrumbItems.length - 1 ? (
-          <a href={new URL(item.url).pathname}>{item.name}</a>
-        ) : (
-          <span class="current" aria-current="page">{item.name}</span>
-        )}
-      </li>
-    ))}
+    {
+      breadcrumbItems.map((item, index) => (
+        <li>
+          {index > 0 && <span class="separator">/</span>}
+          {index < breadcrumbItems.length - 1 ? (
+            <a href={new URL(item.url).pathname}>{item.name}</a>
+          ) : (
+            <span class="current" aria-current="page">
+              {item.name}
+            </span>
+          )}
+        </li>
+      ))
+    }
   </ol>
 </nav>
 

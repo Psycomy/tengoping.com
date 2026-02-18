@@ -1,11 +1,11 @@
 ---
-title: "Introducción a contenedores con Podman en Linux"
-description: "Aprende a usar Podman como alternativa a Docker para gestionar contenedores en Linux sin necesidad de un daemon root."
-author: "antonio"
+title: 'Introducción a contenedores con Podman en Linux'
+description: 'Aprende a usar Podman como alternativa a Docker para gestionar contenedores en Linux sin necesidad de un daemon root.'
+author: 'antonio'
 pubDate: 2025-01-20
-category: "Linux"
-tags: ["Podman", "Contenedores", "Linux", "Docker"]
-image: "../../assets/images/linux-containers.jpg"
+category: 'Linux'
+tags: ['Podman', 'Contenedores', 'Linux', 'Docker']
+image: '../../assets/images/linux-containers.jpg'
 draft: false
 ---
 

@@ -33,16 +33,30 @@ const { author, posts } = Astro.props;
         <p class="author-bio">{author.bio}</p>
         <div class="author-meta">
           <span class="meta-stat">{posts.length} articulos</span>
-          {(() => {
-            const s = author.social as { twitter?: string; github?: string; linkedin?: string };
-            return (
-              <div class="author-social">
-                {s.twitter && <a href={s.twitter} target="_blank" rel="noopener noreferrer">[twitter]</a>}
-                {s.github && <a href={s.github} target="_blank" rel="noopener noreferrer">[github]</a>}
-                {s.linkedin && <a href={s.linkedin} target="_blank" rel="noopener noreferrer">[linkedin]</a>}
-              </div>
-            );
-          })()}
+          {
+            (() => {
+              const s = author.social as { twitter?: string; github?: string; linkedin?: string };
+              return (
+                <div class="author-social">
+                  {s.twitter && (
+                    <a href={s.twitter} target="_blank" rel="noopener noreferrer">
+                      [twitter]
+                    </a>
+                  )}
+                  {s.github && (
+                    <a href={s.github} target="_blank" rel="noopener noreferrer">
+                      [github]
+                    </a>
+                  )}
+                  {s.linkedin && (
+                    <a href={s.linkedin} target="_blank" rel="noopener noreferrer">
+                      [linkedin]
+                    </a>
+                  )}
+                </div>
+              );
+            })()
+          }
         </div>
       </div>
     </div>
@@ -55,7 +69,9 @@ const { author, posts } = Astro.props;
 </BaseLayout>
 
 <style>
-  .page-section { padding: 3rem 0 4rem; }
+  .page-section {
+    padding: 3rem 0 4rem;
+  }
 
   .author-card {
     display: flex;
@@ -127,7 +143,10 @@ const { author, posts } = Astro.props;
     font-weight: 600;
   }
 
-  .author-social { display: flex; gap: 0.75rem; }
+  .author-social {
+    display: flex;
+    gap: 0.75rem;
+  }
   .author-social a {
     color: var(--color-text-muted);
     text-decoration: none;
@@ -135,7 +154,9 @@ const { author, posts } = Astro.props;
     font-weight: 500;
     transition: color 0.2s;
   }
-  .author-social a:hover { color: var(--color-primary); }
+  .author-social a:hover {
+    color: var(--color-primary);
+  }
 
   .posts-heading {
     margin-bottom: 2rem;
@@ -150,7 +171,9 @@ const { author, posts } = Astro.props;
   }
 
   @media (max-width: 768px) {
-    .author-card { flex-direction: column; }
+    .author-card {
+      flex-direction: column;
+    }
     .author-avatar-wrapper {
       flex: none;
       aspect-ratio: 16/9;

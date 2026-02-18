@@ -1,11 +1,11 @@
 ---
-title: "Cultura DevOps en equipos pequeños: por dónde empezar"
-description: "Cómo implementar prácticas DevOps en equipos reducidos sin morir en el intento. Enfoque práctico y realista."
-author: "antonio"
+title: 'Cultura DevOps en equipos pequeños: por dónde empezar'
+description: 'Cómo implementar prácticas DevOps en equipos reducidos sin morir en el intento. Enfoque práctico y realista.'
+author: 'antonio'
 pubDate: 2025-02-08
-category: "Opinión"
-tags: ["DevOps", "Opinión", "Cultura", "Equipos"]
-image: "../../assets/images/opinion-devops.jpg"
+category: 'Opinión'
+tags: ['DevOps', 'Opinión', 'Cultura', 'Equipos']
+image: '../../assets/images/opinion-devops.jpg'
 draft: false
 ---
 

@@ -1,11 +1,11 @@
 ---
-title: "Introducción a KVM y libvirt en Linux"
-description: "Guía para empezar con virtualización KVM en Linux: instalación de libvirt, creación de VMs desde terminal y configuración de red."
-author: "antonio"
+title: 'Introducción a KVM y libvirt en Linux'
+description: 'Guía para empezar con virtualización KVM en Linux: instalación de libvirt, creación de VMs desde terminal y configuración de red.'
+author: 'antonio'
 pubDate: 2025-03-10
-category: "Virtualización"
-tags: ["KVM", "libvirt", "Virtualización", "Linux"]
-image: "../../assets/images/kvm-libvirt.jpg"
+category: 'Virtualización'
+tags: ['KVM', 'libvirt', 'Virtualización', 'Linux']
+image: '../../assets/images/kvm-libvirt.jpg'
 draft: false
 ---
 

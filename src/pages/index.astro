@@ -6,12 +6,21 @@ import { getCollection } from 'astro:content';
 import { slugify } from '@utils/helpers';
 import { categoryMeta } from '@data/categories';
 
-const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 
 const categoryOrder = [
-  'Linux', 'Software', 'Redes', 'Seguridad', 'Virtualización',
-  'Monitorización', 'Automatización', 'Self-Hosting', 'Hardware', 'Opinión',
+  'Linux',
+  'Software',
+  'Redes',
+  'Seguridad',
+  'Virtualización',
+  'Monitorización',
+  'Automatización',
+  'Self-Hosting',
+  'Hardware',
+  'Opinión',
 ];
 
 const categoryMap = new Map<string, typeof allPosts>();
@@ -30,29 +39,31 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
 
 <BaseLayout isHome={true}>
   <HeroSlider posts={allPosts.slice(0, 5)} />
-  {sortedCategories.map(([category, posts]) => (
-    <section class="category-section container">
-      <div class="category-header">
-        <h2>
-          <span class="category-icon" set:html={categoryMeta[category]?.icon || ''} />
-          {category}
-        </h2>
-        <a href={`/categorias/${slugify(category)}`}>Ver todos →</a>
-      </div>
-      <div class="category-grid">
-        <div class="featured">
-          <ArticleCard post={posts[0]} />
+  {
+    sortedCategories.map(([category, posts]) => (
+      <section class="category-section container">
+        <div class="category-header">
+          <h2>
+            <span class="category-icon" set:html={categoryMeta[category]?.icon || ''} />
+            {category}
+          </h2>
+          <a href={`/categorias/${slugify(category)}`}>Ver todos →</a>
         </div>
-        {posts.length > 1 && (
-          <div class="secondary">
-            {posts.slice(1, 4).map((post) => (
-              <ArticleCard post={post} />
-            ))}
+        <div class="category-grid">
+          <div class="featured">
+            <ArticleCard post={posts[0]} />
           </div>
-        )}
-      </div>
-    </section>
-  ))}
+          {posts.length > 1 && (
+            <div class="secondary">
+              {posts.slice(1, 4).map((post) => (
+                <ArticleCard post={post} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    ))
+  }
 </BaseLayout>
 
 <style>
@@ -146,7 +157,6 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
     font-size: 0.6875rem;
     padding: 0.1rem 0.4rem;
   }
-
 
   .secondary :global(.badge-category) {
     display: none;

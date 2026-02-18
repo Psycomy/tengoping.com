@@ -7,26 +7,28 @@ interface Props {
 const { prevPost, nextPost } = Astro.props;
 ---
 
-{(prevPost || nextPost) && (
-  <nav class="article-nav" aria-label="Navegación entre artículos">
-    <div class="nav-prev">
-      {prevPost && (
-        <a href={`/blog/${prevPost.id}`} rel="prev">
-          <span class="nav-label">← Anterior</span>
-          <span class="nav-title">{prevPost.data.title}</span>
-        </a>
-      )}
-    </div>
-    <div class="nav-next">
-      {nextPost && (
-        <a href={`/blog/${nextPost.id}`} rel="next">
-          <span class="nav-label">Siguiente →</span>
-          <span class="nav-title">{nextPost.data.title}</span>
-        </a>
-      )}
-    </div>
-  </nav>
-)}
+{
+  (prevPost || nextPost) && (
+    <nav class="article-nav" aria-label="Navegación entre artículos">
+      <div class="nav-prev">
+        {prevPost && (
+          <a href={`/blog/${prevPost.id}`} rel="prev">
+            <span class="nav-label">← Anterior</span>
+            <span class="nav-title">{prevPost.data.title}</span>
+          </a>
+        )}
+      </div>
+      <div class="nav-next">
+        {nextPost && (
+          <a href={`/blog/${nextPost.id}`} rel="next">
+            <span class="nav-label">Siguiente →</span>
+            <span class="nav-title">{nextPost.data.title}</span>
+          </a>
+        )}
+      </div>
+    </nav>
+  )
+}
 
 <style>
   .article-nav {
@@ -37,8 +39,15 @@ const { prevPost, nextPost } = Astro.props;
     padding-top: 2rem;
     border-top: 1px solid var(--color-border);
   }
-  .nav-prev, .nav-next { flex: 1; min-width: 0; overflow: hidden; }
-  .nav-next { text-align: right; }
+  .nav-prev,
+  .nav-next {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .nav-next {
+    text-align: right;
+  }
   .article-nav a {
     display: flex;
     flex-direction: column;
@@ -48,7 +57,9 @@ const { prevPost, nextPost } = Astro.props;
     transition: color 0.2s;
     max-width: 100%;
   }
-  .article-nav a:hover { color: var(--color-primary); }
+  .article-nav a:hover {
+    color: var(--color-primary);
+  }
   .nav-label {
     font-size: 0.8125rem;
     font-weight: 600;
@@ -65,7 +76,12 @@ const { prevPost, nextPost } = Astro.props;
     max-width: 100%;
   }
   @media (max-width: 640px) {
-    .article-nav { flex-direction: column; gap: 1rem; }
-    .nav-next { text-align: left; }
+    .article-nav {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .nav-next {
+      text-align: left;
+    }
   }
 </style>

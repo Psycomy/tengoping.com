@@ -79,93 +79,130 @@ const imageURL = new URL(image, Astro.site);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageURL} />
 
-    {article && (
-      <link rel="preconnect" href="https://giscus.app" crossorigin />
-    )}
+    {article && <link rel="preconnect" href="https://giscus.app" crossorigin />}
 
     <!-- Fonts (self-hosted) -->
-    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/JetBrainsMono-Medium.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/JetBrainsMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/JetBrainsMono-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="/fonts/JetBrainsMono-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/JetBrainsMono-Medium.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/JetBrainsMono-SemiBold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/JetBrainsMono-Bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <!-- Prefetch Pagefind for instant search -->
     <link rel="prefetch" href="/pagefind/pagefind-ui.js" as="script" />
 
-    {article && author && (
-      <script type="application/ld+json" set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
-        headline: title,
-        description: description,
-        image: imageURL.toString(),
-        datePublished: publishDate,
-        ...(modifiedDate && { dateModified: modifiedDate }),
-        author: {
-          '@type': 'Person',
-          name: author,
-        },
-        publisher: {
-          '@type': 'Organization',
-          name: site.title,
-          url: site.url,
-        },
-      })} />
-    )}
+    {
+      article && author && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: title,
+            description: description,
+            image: imageURL.toString(),
+            datePublished: publishDate,
+            ...(modifiedDate && { dateModified: modifiedDate }),
+            author: {
+              '@type': 'Person',
+              name: author,
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: site.title,
+              url: site.url,
+            },
+          })}
+        />
+      )
+    }
 
-    {isHome && (
-      <script type="application/ld+json" set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: site.title,
-        url: site.url,
-        description: site.description,
-        inLanguage: 'es',
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: {
-            '@type': 'EntryPoint',
-            urlTemplate: `${site.url}/?q={search_term_string}`,
-            actionPlatform: 'https://schema.org/DesktopWebPlatform',
-          },
-          'query-input': 'required name=search_term_string',
-        },
-      })} />
-    )}
+    {
+      isHome && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: site.title,
+            url: site.url,
+            description: site.description,
+            inLanguage: 'es',
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: {
+                '@type': 'EntryPoint',
+                urlTemplate: `${site.url}/?q={search_term_string}`,
+                actionPlatform: 'https://schema.org/DesktopWebPlatform',
+              },
+              'query-input': 'required name=search_term_string',
+            },
+          })}
+        />
+      )
+    }
 
-    {isHome && (
-      <script type="application/ld+json" set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'Organization',
-        name: site.title,
-        url: site.url,
-        logo: `${site.url}/favicon.svg`,
-        description: site.description,
-        sameAs: ['https://github.com/Psycomy'],
-      })} />
-    )}
+    {
+      isHome && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: site.title,
+            url: site.url,
+            logo: `${site.url}/favicon.svg`,
+            description: site.description,
+            sameAs: ['https://github.com/Psycomy'],
+          })}
+        />
+      )
+    }
 
     <!-- Theme script (prevent flash + sync with OS) -->
     <script is:inline>
       (function () {
         function setThemeColor(theme) {
-          var meta = document.querySelector('meta[name="theme-color"]');
+          const meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', theme === 'dark' ? '#58D5A2' : '#1A73E8');
         }
-        var mq = window.matchMedia('(prefers-color-scheme: dark)');
-        var saved = localStorage.getItem('theme');
-        var preferred = mq.matches ? 'dark' : 'light';
-        var theme = saved || preferred;
+        const mq = window.matchMedia('(prefers-color-scheme: dark)');
+        const saved = localStorage.getItem('theme');
+        const preferred = mq.matches ? 'dark' : 'light';
+        const theme = saved || preferred;
         document.documentElement.setAttribute('data-theme', theme);
         setThemeColor(theme);
         mq.addEventListener('change', function (e) {
           if (!localStorage.getItem('theme')) {
-            var t = e.matches ? 'dark' : 'light';
+            const t = e.matches ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', t);
             setThemeColor(t);
           }
         });
         new MutationObserver(function (mutations) {
-          for (var i = 0; i < mutations.length; i++) {
+          for (let i = 0; i < mutations.length; i++) {
             if (mutations[i].attributeName === 'data-theme') {
               setThemeColor(document.documentElement.getAttribute('data-theme'));
             }

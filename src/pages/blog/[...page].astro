@@ -8,8 +8,9 @@ import { getUniqueCategories, slugify } from '@utils/helpers';
 import site from '@data/site.json';
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const posts = (await getCollection('blog', ({ data }) => !data.draft))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
   return paginate(posts, { pageSize: site.postsPerPage });
 }) satisfies GetStaticPaths;
 
@@ -28,15 +29,17 @@ const categories = getUniqueCategories(allPosts);
 
     <nav class="category-filter" aria-label="Filtrar por categoría">
       <a href="/blog" class="badge badge-category">Todas</a>
-      {categories.map((cat) => (
-        <a href={`/categorias/${slugify(cat)}`} class="badge badge-tag">{cat}</a>
-      ))}
+      {
+        categories.map((cat) => (
+          <a href={`/categorias/${slugify(cat)}`} class="badge badge-tag">
+            {cat}
+          </a>
+        ))
+      }
     </nav>
 
     <div class="posts-grid">
-      {page.data.map((post) => (
-        <ArticleCard post={post} />
-      ))}
+      {page.data.map((post) => <ArticleCard post={post} />)}
     </div>
 
     <Pagination

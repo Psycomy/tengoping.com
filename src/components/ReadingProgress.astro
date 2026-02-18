@@ -1,5 +1,7 @@
 <div class="reading-progress-bar" id="reading-progress" aria-hidden="true"></div>
-<button class="back-to-top" id="back-to-top" aria-label="Volver arriba" title="Volver arriba">↑</button>
+<button class="back-to-top" id="back-to-top" aria-label="Volver arriba" title="Volver arriba"
+  >↑</button
+>
 
 <script>
   const progressBar = document.getElementById('reading-progress');
@@ -53,7 +55,10 @@
     cursor: pointer;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    transition:
+      opacity 0.2s ease,
+      background-color 0.2s ease,
+      color 0.2s ease;
     z-index: 100;
   }
 

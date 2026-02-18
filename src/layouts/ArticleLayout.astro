@@ -36,7 +36,16 @@ interface Props {
 }
 
 const { entry, headings, prevPost, nextPost } = Astro.props;
-const { title, description, author: authorId, pubDate, updatedDate, category, tags, image } = entry.data;
+const {
+  title,
+  description,
+  author: authorId,
+  pubDate,
+  updatedDate,
+  category,
+  tags,
+  image,
+} = entry.data;
 
 const authorData = authors.find((a) => a.id === authorId);
 const readingTime = getReadingTime(entry.body || '');
@@ -64,9 +73,7 @@ const authorJsonLd = authorData
   modifiedDate={updatedDate?.toISOString()}
   author={authorData?.name}
 >
-  {authorJsonLd && (
-    <script type="application/ld+json" set:html={JSON.stringify(authorJsonLd)} />
-  )}
+  {authorJsonLd && <script type="application/ld+json" set:html={JSON.stringify(authorJsonLd)} />}
 
   <article class="article-page container" data-pagefind-body>
     <Breadcrumbs title={title} category={category} />
@@ -82,11 +89,13 @@ const authorJsonLd = authorData
       <p class="article-description">{description}</p>
     </header>
 
-    {image && (
-      <div class="article-image">
-        <Image src={image} alt={title} width={900} height={506} format="webp" loading="eager" />
-      </div>
-    )}
+    {
+      image && (
+        <div class="article-image">
+          <Image src={image} alt={title} width={900} height={506} format="webp" loading="eager" />
+        </div>
+      )
+    }
 
     <div class="article-grid">
       <aside class="article-sidebar" data-pagefind-ignore>
@@ -100,9 +109,13 @@ const authorJsonLd = authorData
 
     <footer class="article-footer" data-pagefind-ignore>
       <div class="article-tags">
-        {tags.map((tag) => (
-          <a href={`/etiquetas/${slugify(tag)}`} class="badge badge-tag">{tag}</a>
-        ))}
+        {
+          tags.map((tag) => (
+            <a href={`/etiquetas/${slugify(tag)}`} class="badge badge-tag">
+              {tag}
+            </a>
+          ))
+        }
       </div>
 
       <ShareButtons title={title} url={canonicalURL} />

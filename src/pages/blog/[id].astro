@@ -4,8 +4,9 @@ import ArticleLayout from '@layouts/ArticleLayout.astro';
 import { getCollection, render } from 'astro:content';
 
 export const getStaticPaths = (async () => {
-  const posts = (await getCollection('blog', ({ data }) => !data.draft))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
 
   return posts.map((entry, index) => ({
     params: { id: entry.id },

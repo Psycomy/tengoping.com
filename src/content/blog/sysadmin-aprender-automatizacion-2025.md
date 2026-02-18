@@ -1,11 +1,11 @@
 ---
-title: "Por qué todo sysadmin debería aprender automatización en 2025"
-description: "Reflexión sobre la importancia de la automatización para los administradores de sistemas en el panorama tecnológico actual y cómo empezar."
-author: "alois"
+title: 'Por qué todo sysadmin debería aprender automatización en 2025'
+description: 'Reflexión sobre la importancia de la automatización para los administradores de sistemas en el panorama tecnológico actual y cómo empezar.'
+author: 'alois'
 pubDate: 2025-02-10
-category: "Opinión"
-tags: ["Automatización", "DevOps", "Ansible", "Carrera profesional"]
-image: "../../assets/images/sysadmin-automation.jpg"
+category: 'Opinión'
+tags: ['Automatización', 'DevOps', 'Ansible', 'Carrera profesional']
+image: '../../assets/images/sysadmin-automation.jpg'
 draft: false
 ---
 
@@ -97,13 +97,13 @@ Los perfiles que combinan conocimientos de sysadmin con habilidades de automatiz
 
 ### Habilidades complementarias
 
-| Habilidad | Por qué importa |
-|-----------|-----------------|
-| Git | Versionado de configuraciones |
-| Ansible | Gestión de configuración |
-| Terraform | Infraestructura como código |
-| Docker | Contenedorización |
-| CI/CD | Despliegues automatizados |
+| Habilidad | Por qué importa               |
+| --------- | ----------------------------- |
+| Git       | Versionado de configuraciones |
+| Ansible   | Gestión de configuración      |
+| Terraform | Infraestructura como código   |
+| Docker    | Contenedorización             |
+| CI/CD     | Despliegues automatizados     |
 
 ## Conclusión
 

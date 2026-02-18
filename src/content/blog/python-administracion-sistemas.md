@@ -1,11 +1,11 @@
 ---
-title: "Python para administración de sistemas: scripts y automatización"
-description: "Aprende a usar Python para automatizar tareas de administración de sistemas: gestión de procesos, conexiones SSH, monitorización de recursos y scripts prácticos para el día a día."
-author: "antonio"
+title: 'Python para administración de sistemas: scripts y automatización'
+description: 'Aprende a usar Python para automatizar tareas de administración de sistemas: gestión de procesos, conexiones SSH, monitorización de recursos y scripts prácticos para el día a día.'
+author: 'antonio'
 pubDate: 2026-02-16
-category: "Software"
-tags: ["python", "scripting", "automatizacion", "sysadmin"]
-image: "../../assets/images/soft-python.jpg"
+category: 'Software'
+tags: ['python', 'scripting', 'automatizacion', 'sysadmin']
+image: '../../assets/images/soft-python.jpg'
 draft: false
 ---
 

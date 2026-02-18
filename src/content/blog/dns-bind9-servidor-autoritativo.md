@@ -1,11 +1,11 @@
 ---
-title: "Montar un servidor DNS autoritativo con BIND9"
-description: "Cómo instalar y configurar un servidor DNS autoritativo con BIND9 en Linux para gestionar tus propias zonas DNS."
-author: "alois"
+title: 'Montar un servidor DNS autoritativo con BIND9'
+description: 'Cómo instalar y configurar un servidor DNS autoritativo con BIND9 en Linux para gestionar tus propias zonas DNS.'
+author: 'alois'
 pubDate: 2025-02-06
-category: "Redes"
-tags: ["DNS", "BIND9", "Redes", "Linux"]
-image: "../../assets/images/redes-dns.jpg"
+category: 'Redes'
+tags: ['DNS', 'BIND9', 'Redes', 'Linux']
+image: '../../assets/images/redes-dns.jpg'
 draft: false
 ---
 

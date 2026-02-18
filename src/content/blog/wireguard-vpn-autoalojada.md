@@ -1,11 +1,11 @@
 ---
-title: "WireGuard: monta tu propia VPN en minutos"
-description: "Guía paso a paso para configurar un servidor VPN con WireGuard en Linux y conectar clientes de forma segura."
-author: "alois"
+title: 'WireGuard: monta tu propia VPN en minutos'
+description: 'Guía paso a paso para configurar un servidor VPN con WireGuard en Linux y conectar clientes de forma segura.'
+author: 'alois'
 pubDate: 2026-01-18
-category: "Self-Hosting"
-tags: ["WireGuard", "VPN", "Self-Hosting", "Seguridad"]
-image: "../../assets/images/wireguard-vpn.jpg"
+category: 'Self-Hosting'
+tags: ['WireGuard', 'VPN', 'Self-Hosting', 'Seguridad']
+image: '../../assets/images/wireguard-vpn.jpg'
 draft: false
 ---
 

@@ -6,8 +6,16 @@ import { categoryMeta } from '@data/categories';
 
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const categoryOrder = [
-  'Linux', 'Software', 'Redes', 'Seguridad', 'Virtualización',
-  'Monitorización', 'Automatización', 'Self-Hosting', 'Hardware', 'Opinión',
+  'Linux',
+  'Software',
+  'Redes',
+  'Seguridad',
+  'Virtualización',
+  'Monitorización',
+  'Automatización',
+  'Self-Hosting',
+  'Hardware',
+  'Opinión',
 ];
 
 const categoryCounts = Object.entries(categoryMeta)
@@ -37,25 +45,31 @@ const categoryCounts = Object.entries(categoryMeta)
       <p class="subtitle">{categoryCounts.length} categorías en {posts.length} artículos</p>
     </div>
     <div class="categories-grid">
-      {categoryCounts.map((cat) => (
-        <a href={`/categorias/${cat.slug}`} class="category-card card-hover">
-          {cat.meta?.icon && <span class="category-icon" set:html={cat.meta.icon} />}
-          <h2>{cat.name}</h2>
-          {cat.meta?.description && <p class="category-desc">{cat.meta.description}</p>}
-          <div class="card-tags">
-            {cat.tags.map((tag) => (
-              <span class="badge badge-tag">{tag}</span>
-            ))}
-          </div>
-          <span class="count">{cat.count} {cat.count === 1 ? 'artículo' : 'artículos'}</span>
-        </a>
-      ))}
+      {
+        categoryCounts.map((cat) => (
+          <a href={`/categorias/${cat.slug}`} class="category-card card-hover">
+            {cat.meta?.icon && <span class="category-icon" set:html={cat.meta.icon} />}
+            <h2>{cat.name}</h2>
+            {cat.meta?.description && <p class="category-desc">{cat.meta.description}</p>}
+            <div class="card-tags">
+              {cat.tags.map((tag) => (
+                <span class="badge badge-tag">{tag}</span>
+              ))}
+            </div>
+            <span class="count">
+              {cat.count} {cat.count === 1 ? 'artículo' : 'artículos'}
+            </span>
+          </a>
+        ))
+      }
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .page-section { padding: 3rem 0 4rem; }
+  .page-section {
+    padding: 3rem 0 4rem;
+  }
 
   .page-header {
     text-align: center;
@@ -108,7 +122,9 @@ const categoryCounts = Object.entries(categoryMeta)
     margin: 0;
   }
 
-  .category-card:hover h2 { color: var(--color-primary); }
+  .category-card:hover h2 {
+    color: var(--color-primary);
+  }
 
   .category-desc {
     font-size: 0.85rem;

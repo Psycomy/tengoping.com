@@ -13,6 +13,7 @@
 ### Task 1: preconnect a giscus.app en BaseLayout
 
 **Files:**
+
 - Modify: `src/layouts/BaseLayout.astro:82-88` (bloque de fonts/prefetch)
 
 **Step 1: Añadir preconnect**
@@ -26,15 +27,15 @@ En `BaseLayout.astro`, después de `<link rel="manifest" href="/manifest.json" /
 Quedaría así (entre línea 44 y el bloque de fonts línea 83):
 
 ```astro
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#1A73E8" />
-    <link rel="canonical" href={canonicalURL} />
-    ...
-    <!-- Preconnect -->
-    <link rel="preconnect" href="https://giscus.app" crossorigin />
+<link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#1A73E8" />
+<link rel="canonical" href={canonicalURL} />
+...
+<!-- Preconnect -->
+<link rel="preconnect" href="https://giscus.app" crossorigin />
 
-    <!-- Fonts (self-hosted) -->
-    <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" ...
+<!-- Fonts (self-hosted) -->
+<link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" ...
 ```
 
 **Step 2: Verificar visualmente**
@@ -57,18 +58,43 @@ git commit -m "perf: preconnect a giscus.app para reducir latencia de comentario
 ### Task 2: aria-hidden en SVGs de ShareButtons
 
 **Files:**
+
 - Modify: `src/components/ShareButtons.astro:52`
 
 **Step 1: Añadir aria-hidden al SVG**
 
 Línea 52 actual:
+
 ```astro
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={net.icon} />
+<svg
+  width="18"
+  height="18"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  set:html={net.icon}
+/>
 ```
 
 Cambiar a:
+
 ```astro
-<svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={net.icon} />
+<svg
+  aria-hidden="true"
+  focusable="false"
+  width="18"
+  height="18"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  set:html={net.icon}
+/>
 ```
 
 El `aria-label` ya está en el `<a>` padre — el SVG debe ser invisible para lectores de pantalla.
@@ -85,18 +111,38 @@ git commit -m "a11y: aria-hidden en SVGs de ShareButtons para evitar duplicació
 ### Task 3: sizes attribute en ArticleCard
 
 **Files:**
+
 - Modify: `src/components/ArticleCard.astro:33`
 
 **Step 1: Añadir sizes al Image**
 
 Línea 33 actual:
+
 ```astro
-? <Image src={image} alt={title} class="card-image" loading="lazy" width={300} height={200} format="webp" />
+? <Image
+  src={image}
+  alt={title}
+  class="card-image"
+  loading="lazy"
+  width={300}
+  height={200}
+  format="webp"
+/>
 ```
 
 Cambiar a:
+
 ```astro
-? <Image src={image} alt={title} class="card-image" loading="lazy" width={300} height={200} format="webp" sizes="(max-width: 768px) 100vw, 300px" />
+? <Image
+  src={image}
+  alt={title}
+  class="card-image"
+  loading="lazy"
+  width={300}
+  height={200}
+  format="webp"
+  sizes="(max-width: 768px) 100vw, 300px"
+/>
 ```
 
 **Razonamiento:** En desktop la imagen ocupa `flex: 0 0 300px` → 300px fijo. En mobile (`max-width: 768px`) la tarjeta es columna → imagen ocupa 100vw.
@@ -113,18 +159,40 @@ git commit -m "perf: añadir sizes a ArticleCard para responsive image selection
 ### Task 4: sizes attribute en HeroSlider
 
 **Files:**
+
 - Modify: `src/components/HeroSlider.astro:27`
 
 **Step 1: Añadir sizes al Image del slider**
 
 Línea 27 actual:
+
 ```astro
-? <Image src={post.data.image} alt={post.data.title} class="slide-image" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'auto'} format="webp" width={1200} height={450} />
+? <Image
+  src={post.data.image}
+  alt={post.data.title}
+  class="slide-image"
+  loading={i === 0 ? 'eager' : 'lazy'}
+  fetchpriority={i === 0 ? 'high' : 'auto'}
+  format="webp"
+  width={1200}
+  height={450}
+/>
 ```
 
 Cambiar a:
+
 ```astro
-? <Image src={post.data.image} alt={post.data.title} class="slide-image" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'auto'} format="webp" width={1200} height={450} sizes="100vw" />
+? <Image
+  src={post.data.image}
+  alt={post.data.title}
+  class="slide-image"
+  loading={i === 0 ? 'eager' : 'lazy'}
+  fetchpriority={i === 0 ? 'high' : 'auto'}
+  format="webp"
+  width={1200}
+  height={450}
+  sizes="100vw"
+/>
 ```
 
 **Razonamiento:** El slider siempre ocupa el ancho completo del viewport tanto en desktop como en mobile.
@@ -141,6 +209,7 @@ git commit -m "perf: añadir sizes=100vw a HeroSlider para selección óptima de
 ### Task 5: Limpieza de PAGES_CACHE en Service Worker
 
 **Files:**
+
 - Modify: `public/sw.js`
 
 **Problema:** El PAGES_CACHE (páginas HTML visitadas) crece indefinidamente. Cada página visitada se guarda pero nunca se elimina salvo que cambie `CACHE_VERSION`.
@@ -187,9 +256,7 @@ if (request.destination === 'document') {
         });
         return response;
       })
-      .catch(() =>
-        caches.match(request).then((cached) => cached || caches.match('/offline.html'))
-      )
+      .catch(() => caches.match(request).then((cached) => cached || caches.match('/offline.html')))
   );
 }
 ```
@@ -210,6 +277,7 @@ git commit -m "fix: limitar PAGES_CACHE a 50 entradas para evitar crecimiento in
 ### Task 6: GitHub Actions CI workflow
 
 **Files:**
+
 - Create: `.github/workflows/ci.yml`
 
 **Objetivo:** Validar que el build no se rompe en cada push a `main` y en PRs. Cloudflare Pages despliega solo; este workflow añade type checking con `astro check` que Cloudflare no ejecuta.
@@ -251,6 +319,7 @@ jobs:
 ```
 
 **Notas:**
+
 - `npm ci` (no `npm install`) — más rápido y determinista en CI
 - `node-version: 22` — coincide con la versión LTS actual que usa Cloudflare Pages por defecto
 - `npm run build` ejecuta `astro build && node scripts/postbuild.mjs` completo

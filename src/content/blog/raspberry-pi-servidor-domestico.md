@@ -1,11 +1,11 @@
 ---
-title: "Raspberry Pi como servidor doméstico"
-description: "Cómo convertir una Raspberry Pi en un servidor doméstico para DNS, VPN, almacenamiento y más."
-author: "antonio"
+title: 'Raspberry Pi como servidor doméstico'
+description: 'Cómo convertir una Raspberry Pi en un servidor doméstico para DNS, VPN, almacenamiento y más.'
+author: 'antonio'
 pubDate: 2025-05-03
-category: "Hardware"
-tags: ["Raspberry Pi", "Homelab", "Hardware", "Linux"]
-image: "../../assets/images/raspberry-pi-server.jpg"
+category: 'Hardware'
+tags: ['Raspberry Pi', 'Homelab', 'Hardware', 'Linux']
+image: '../../assets/images/raspberry-pi-server.jpg'
 draft: false
 ---
 
@@ -17,14 +17,14 @@ La Raspberry Pi es una de las mejores opciones para montar un servidor doméstic
 
 La elección del modelo depende de tu presupuesto y del uso que le vayas a dar:
 
-| Característica | Raspberry Pi 4 | Raspberry Pi 5 |
-|---|---|---|
-| CPU | Cortex-A72 (4 cores, 1.8 GHz) | Cortex-A76 (4 cores, 2.4 GHz) |
-| RAM | 1/2/4/8 GB | 4/8 GB |
-| USB | 2x USB 3.0, 2x USB 2.0 | 2x USB 3.0, 2x USB 2.0 |
-| PCIe | No | PCIe 2.0 x1 (vía HAT) |
-| Consumo | ~6W en carga | ~10W en carga |
-| Precio aprox. | 45-75 EUR | 60-90 EUR |
+| Característica | Raspberry Pi 4                | Raspberry Pi 5                |
+| -------------- | ----------------------------- | ----------------------------- |
+| CPU            | Cortex-A72 (4 cores, 1.8 GHz) | Cortex-A76 (4 cores, 2.4 GHz) |
+| RAM            | 1/2/4/8 GB                    | 4/8 GB                        |
+| USB            | 2x USB 3.0, 2x USB 2.0        | 2x USB 3.0, 2x USB 2.0        |
+| PCIe           | No                            | PCIe 2.0 x1 (vía HAT)         |
+| Consumo        | ~6W en carga                  | ~10W en carga                 |
+| Precio aprox.  | 45-75 EUR                     | 60-90 EUR                     |
 
 Para servicios ligeros como Pi-hole o WireGuard, una Pi 4 con 2 GB es más que suficiente. Si planeas correr contenedores Docker o un NAS con Samba, la Pi 5 con 8 GB merece la inversión. El soporte PCIe de la Pi 5 permite conectar un SSD NVMe mediante un HAT, lo que mejora drásticamente el rendimiento de disco.
 

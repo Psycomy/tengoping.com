@@ -1,11 +1,11 @@
 ---
-title: "Auditoría de seguridad con Lynis en Linux"
-description: "Cómo usar Lynis para auditar la seguridad de servidores Linux, interpretar resultados y aplicar las recomendaciones."
-author: "antonio"
+title: 'Auditoría de seguridad con Lynis en Linux'
+description: 'Cómo usar Lynis para auditar la seguridad de servidores Linux, interpretar resultados y aplicar las recomendaciones.'
+author: 'antonio'
 pubDate: 2025-09-12
-category: "Seguridad"
-tags: ["Lynis", "Auditoría", "Hardening", "Seguridad"]
-image: "../../assets/images/lynis-audit.jpg"
+category: 'Seguridad'
+tags: ['Lynis', 'Auditoría', 'Hardening', 'Seguridad']
+image: '../../assets/images/lynis-audit.jpg'
 draft: false
 ---
 

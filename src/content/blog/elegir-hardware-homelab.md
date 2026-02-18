@@ -1,11 +1,11 @@
 ---
-title: "Cómo elegir hardware para tu homelab"
-description: "Consejos prácticos para montar un homelab sin arruinarte: mini PCs, servidores usados, almacenamiento y consumo eléctrico."
-author: "alois"
+title: 'Cómo elegir hardware para tu homelab'
+description: 'Consejos prácticos para montar un homelab sin arruinarte: mini PCs, servidores usados, almacenamiento y consumo eléctrico.'
+author: 'alois'
 pubDate: 2025-10-30
-category: "Hardware"
-tags: ["Homelab", "Hardware", "Servidores", "Self-Hosting"]
-image: "../../assets/images/homelab-hardware.jpg"
+category: 'Hardware'
+tags: ['Homelab', 'Hardware', 'Servidores', 'Self-Hosting']
+image: '../../assets/images/homelab-hardware.jpg'
 draft: false
 ---
 
@@ -51,12 +51,12 @@ Para virtualización con Proxmox, ESXi o KVM, la RAM es generalmente más import
 
 Orientaciones según uso:
 
-| Uso | RAM mínima | CPU recomendada |
-|---|---|---|
-| Pi-hole, DNS, pequeños servicios | 4-8 GB | Cualquier x86_64 moderno |
-| Docker con 10-15 contenedores | 16-32 GB | 4+ cores |
-| Proxmox con 5-10 VMs | 32-64 GB | 8+ cores, VT-x/VT-d |
-| Cluster Kubernetes casero | 64+ GB (repartido) | Varios nodos con 4+ cores |
+| Uso                              | RAM mínima         | CPU recomendada           |
+| -------------------------------- | ------------------ | ------------------------- |
+| Pi-hole, DNS, pequeños servicios | 4-8 GB             | Cualquier x86_64 moderno  |
+| Docker con 10-15 contenedores    | 16-32 GB           | 4+ cores                  |
+| Proxmox con 5-10 VMs             | 32-64 GB           | 8+ cores, VT-x/VT-d       |
+| Cluster Kubernetes casero        | 64+ GB (repartido) | Varios nodos con 4+ cores |
 
 Comprueba siempre que el procesador soporte virtualización por hardware:
 
@@ -105,12 +105,12 @@ ethtool eth0 | grep Speed
 
 El consumo eléctrico es un factor que muchos ignoran hasta que llega la factura. La diferencia entre opciones es considerable:
 
-| Equipo | Consumo en reposo | Ruido |
-|---|---|---|
-| Raspberry Pi 5 | 5-10W | Silencioso |
-| Mini PC (Lenovo Tiny) | 8-15W | Silencioso |
-| PC sobremesa reconvertido | 30-60W | Moderado |
-| Servidor enterprise (1U/2U) | 80-200W | Alto |
+| Equipo                      | Consumo en reposo | Ruido      |
+| --------------------------- | ----------------- | ---------- |
+| Raspberry Pi 5              | 5-10W             | Silencioso |
+| Mini PC (Lenovo Tiny)       | 8-15W             | Silencioso |
+| PC sobremesa reconvertido   | 30-60W            | Moderado   |
+| Servidor enterprise (1U/2U) | 80-200W           | Alto       |
 
 Para calcular el coste anual aproximado:
 

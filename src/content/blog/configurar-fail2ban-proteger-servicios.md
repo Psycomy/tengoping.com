@@ -1,11 +1,11 @@
 ---
-title: "Configurar Fail2Ban para proteger servicios en Linux"
-description: "Guía práctica para instalar y configurar Fail2Ban: protege SSH, Nginx y otros servicios contra ataques de fuerza bruta."
-author: "antonio"
+title: 'Configurar Fail2Ban para proteger servicios en Linux'
+description: 'Guía práctica para instalar y configurar Fail2Ban: protege SSH, Nginx y otros servicios contra ataques de fuerza bruta.'
+author: 'antonio'
 pubDate: 2025-04-18
-category: "Seguridad"
-tags: ["Fail2Ban", "Seguridad", "SSH", "Linux"]
-image: "../../assets/images/fail2ban.jpg"
+category: 'Seguridad'
+tags: ['Fail2Ban', 'Seguridad', 'SSH', 'Linux']
+image: '../../assets/images/fail2ban.jpg'
 draft: false
 ---
 

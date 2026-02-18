@@ -1,11 +1,11 @@
 ---
-title: "Permisos en Linux: chmod, chown y ACLs explicados"
-description: "Entiende el sistema de permisos de Linux, desde los básicos con chmod y chown hasta las ACLs para control de acceso avanzado."
-author: "antonio"
+title: 'Permisos en Linux: chmod, chown y ACLs explicados'
+description: 'Entiende el sistema de permisos de Linux, desde los básicos con chmod y chown hasta las ACLs para control de acceso avanzado.'
+author: 'antonio'
 pubDate: 2025-02-10
-category: "Linux"
-tags: ["Permisos", "Linux", "Seguridad", "ACL"]
-image: "../../assets/images/linux-permissions.jpg"
+category: 'Linux'
+tags: ['Permisos', 'Linux', 'Seguridad', 'ACL']
+image: '../../assets/images/linux-permissions.jpg'
 draft: false
 ---
 
@@ -61,11 +61,11 @@ sudo setfacl -d -m g:developers:rwx /opt/app/src
 
 ## Permisos especiales
 
-| Permiso | Octal | Uso |
-|---------|-------|-----|
-| SUID | 4000 | Ejecutar como propietario |
-| SGID | 2000 | Heredar grupo del directorio |
-| Sticky | 1000 | Solo el propietario puede borrar |
+| Permiso | Octal | Uso                              |
+| ------- | ----- | -------------------------------- |
+| SUID    | 4000  | Ejecutar como propietario        |
+| SGID    | 2000  | Heredar grupo del directorio     |
+| Sticky  | 1000  | Solo el propietario puede borrar |
 
 ## Conclusión
 

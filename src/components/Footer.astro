@@ -6,14 +6,30 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 <footer class="site-footer" data-pagefind-ignore>
   <div class="footer-inner">
-    <nav class="footer-nav" aria-label="Navegaci&oacute;n del pie de p&aacute;gina">
-      {navLinks.map((link) => (
-        <a href={link.href} class="footer-link" aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}>[{link.label}]</a>
-      ))}
+    <nav class="footer-nav" aria-label="Navegación del pie de página">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="footer-link"
+            aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
+          >
+            [{link.label}]
+          </a>
+        ))
+      }
       <a href="/rss.xml" class="footer-link" aria-label="RSS Feed">[rss]</a>
-      <a href="https://github.com/Psycomy/tengoping.com" class="footer-link" target="_blank" rel="noopener noreferrer" aria-label="Código fuente en GitHub">[github]</a>
+      <a
+        href="https://github.com/Psycomy/tengoping.com"
+        class="footer-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Código fuente en GitHub">[github]</a
+      >
     </nav>
-    <p class="copyright"><span class="prompt">tengoping:~$</span> echo "&copy; 2026 tengoping.com"</p>
+    <p class="copyright">
+      <span class="prompt">tengoping:~$</span> echo "&copy; 2026 tengoping.com"
+    </p>
   </div>
 </footer>
 
@@ -47,8 +63,12 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     font-weight: 500;
     transition: color 0.2s;
   }
-  .footer-link:hover { color: var(--color-primary); }
-  .footer-link[aria-current="page"] { color: var(--color-primary); }
+  .footer-link:hover {
+    color: var(--color-primary);
+  }
+  .footer-link[aria-current='page'] {
+    color: var(--color-primary);
+  }
 
   .copyright {
     font-size: 0.8rem;
@@ -59,8 +79,9 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     color: var(--color-primary);
   }
 
-
   @media (max-width: 768px) {
-    .footer-nav { gap: 0.75rem; }
+    .footer-nav {
+      gap: 0.75rem;
+    }
   }
 </style>

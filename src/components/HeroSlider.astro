@@ -21,41 +21,70 @@ const { posts } = Astro.props;
 
 <section class="hero-slider" aria-label="Últimas publicaciones">
   <div class="slider-track">
-    {posts.map((post, i) => (
-      <div class="slide" data-index={i} aria-hidden={i !== 0 ? "true" : undefined}>
-{post.data.image
-          ? <Image src={post.data.image} alt={post.data.title} class="slide-image" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'auto'} format="webp" width={1200} height={450} sizes="100vw" />
-          : <img src="/images/placeholder-article.svg" alt={post.data.title} class="slide-image" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
-        }
-        <div class="slide-overlay">
-          <div class="slide-content container">
-            <a href={`/categorias/${slugify(post.data.category)}`} class="badge badge-category" tabindex={i !== 0 ? -1 : undefined}>./{post.data.category}</a>
-            <h2 class="slide-title">{post.data.title}</h2>
-            <p class="slide-description">
-              {post.data.description.length > 140
-                ? post.data.description.slice(0, 140) + '...'
-                : post.data.description}
-            </p>
-            <a href={`/blog/${post.id}`} class="slide-cta" tabindex={i !== 0 ? -1 : undefined}>[$ leer más →]</a>
+    {
+      posts.map((post, i) => (
+        <div class="slide" data-index={i} aria-hidden={i !== 0 ? 'true' : undefined}>
+          {post.data.image ? (
+            <Image
+              src={post.data.image}
+              alt={post.data.title}
+              class="slide-image"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : 'auto'}
+              format="webp"
+              width={1200}
+              height={450}
+              sizes="100vw"
+            />
+          ) : (
+            <img
+              src="/images/placeholder-article.svg"
+              alt={post.data.title}
+              class="slide-image"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          )}
+          <div class="slide-overlay">
+            <div class="slide-content container">
+              <a
+                href={`/categorias/${slugify(post.data.category)}`}
+                class="badge badge-category"
+                tabindex={i !== 0 ? -1 : undefined}
+              >
+                ./{post.data.category}
+              </a>
+              <h2 class="slide-title">{post.data.title}</h2>
+              <p class="slide-description">
+                {post.data.description.length > 140
+                  ? post.data.description.slice(0, 140) + '...'
+                  : post.data.description}
+              </p>
+              <a href={`/blog/${post.id}`} class="slide-cta" tabindex={i !== 0 ? -1 : undefined}>
+                [$ leer más →]
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    ))}
+      ))
+    }
   </div>
 
   <button class="slider-arrow slider-prev" aria-label="Anterior">[&lt;]</button>
   <button class="slider-arrow slider-next" aria-label="Siguiente">[&gt;]</button>
 
   <div class="slider-dots" role="tablist" aria-label="Navegación del slider">
-    {posts.map((_, i) => (
-      <button
-        class={`slider-dot${i === 0 ? ' active' : ''}`}
-        role="tab"
-        aria-selected={i === 0 ? "true" : "false"}
-        aria-label={`Slide ${i + 1}`}
-        data-dot={i}
-      />
-    ))}
+    {
+      posts.map((_, i) => (
+        <button
+          class={`slider-dot${i === 0 ? ' active' : ''}`}
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-label={`Slide ${i + 1}`}
+          data-dot={i}
+        />
+      ))
+    }
   </div>
 </section>
 
@@ -141,7 +170,9 @@ const { posts } = Astro.props;
     font-size: 0.8125rem;
     font-weight: 600;
     text-decoration: none;
-    transition: background 0.2s, color 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s;
     margin-top: 0.25rem;
   }
 
@@ -161,7 +192,9 @@ const { posts } = Astro.props;
     font-size: 1.125rem;
     padding: 0.5rem 0.75rem;
     cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
+    transition:
+      background 0.2s,
+      border-color 0.2s;
     z-index: 2;
   }
 
@@ -171,8 +204,12 @@ const { posts } = Astro.props;
     color: var(--color-primary);
   }
 
-  .slider-prev { left: 1rem; }
-  .slider-next { right: 1rem; }
+  .slider-prev {
+    left: 1rem;
+  }
+  .slider-next {
+    right: 1rem;
+  }
 
   .slider-dots {
     position: absolute;
@@ -283,7 +320,7 @@ const { posts } = Astro.props;
       slides.forEach((s, i) => {
         const isActive = i === current;
         s.setAttribute('aria-hidden', String(!isActive));
-        s.querySelectorAll<HTMLElement>('a').forEach(el => {
+        s.querySelectorAll<HTMLElement>('a').forEach((el) => {
           if (isActive) el.removeAttribute('tabindex');
           else el.setAttribute('tabindex', '-1');
         });
@@ -294,8 +331,12 @@ const { posts } = Astro.props;
       });
     }
 
-    function next() { goTo(current + 1); }
-    function prev() { goTo(current - 1); }
+    function next() {
+      goTo(current + 1);
+    }
+    function prev() {
+      goTo(current - 1);
+    }
 
     function startAutoplay() {
       if (reducedMotion) return;
@@ -304,11 +345,20 @@ const { posts } = Astro.props;
     }
 
     function stopAutoplay() {
-      if (autoplayId !== null) { clearInterval(autoplayId); autoplayId = null; }
+      if (autoplayId !== null) {
+        clearInterval(autoplayId);
+        autoplayId = null;
+      }
     }
 
-    nextBtn?.addEventListener('click', () => { next(); startAutoplay(); });
-    prevBtn?.addEventListener('click', () => { prev(); startAutoplay(); });
+    nextBtn?.addEventListener('click', () => {
+      next();
+      startAutoplay();
+    });
+    prevBtn?.addEventListener('click', () => {
+      prev();
+      startAutoplay();
+    });
     dots.forEach((dot) => {
       dot.addEventListener('click', () => {
         goTo(Number((dot as HTMLElement).dataset.dot));
@@ -321,22 +371,39 @@ const { posts } = Astro.props;
 
     // Touch swipe
     let touchStartX = 0;
-    slider.addEventListener('touchstart', (e: Event) => {
-      stopAutoplay();
-      touchStartX = (e as TouchEvent).touches[0].clientX;
-    }, { passive: true });
-    slider.addEventListener('touchend', (e: Event) => {
-      const diff = touchStartX - (e as TouchEvent).changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
-      startAutoplay();
-    }, { passive: true });
+    slider.addEventListener(
+      'touchstart',
+      (e: Event) => {
+        stopAutoplay();
+        touchStartX = (e as TouchEvent).touches[0].clientX;
+      },
+      { passive: true }
+    );
+    slider.addEventListener(
+      'touchend',
+      (e: Event) => {
+        const diff = touchStartX - (e as TouchEvent).changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) next();
+          else prev();
+        }
+        startAutoplay();
+      },
+      { passive: true }
+    );
 
     // Keyboard
     slider.setAttribute('tabindex', '0');
     slider.addEventListener('keydown', (e: Event) => {
       const key = (e as KeyboardEvent).key;
-      if (key === 'ArrowRight') { next(); startAutoplay(); }
-      if (key === 'ArrowLeft') { prev(); startAutoplay(); }
+      if (key === 'ArrowRight') {
+        next();
+        startAutoplay();
+      }
+      if (key === 'ArrowLeft') {
+        prev();
+        startAutoplay();
+      }
     });
 
     startAutoplay();

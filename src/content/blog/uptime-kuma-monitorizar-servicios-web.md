@@ -1,11 +1,11 @@
 ---
-title: "Monitorizar servicios web con Uptime Kuma"
-description: "Despliega Uptime Kuma con Docker para monitorizar la disponibilidad de tus servicios web: checks HTTP, TCP, ping, notificaciones y dashboard en tiempo real."
-author: "antonio"
+title: 'Monitorizar servicios web con Uptime Kuma'
+description: 'Despliega Uptime Kuma con Docker para monitorizar la disponibilidad de tus servicios web: checks HTTP, TCP, ping, notificaciones y dashboard en tiempo real.'
+author: 'antonio'
 pubDate: 2026-02-16
-category: "Monitorización"
-tags: ["uptime-kuma", "monitoring", "self-hosting", "disponibilidad"]
-image: "../../assets/images/mon-uptimekuma.jpg"
+category: 'Monitorización'
+tags: ['uptime-kuma', 'monitoring', 'self-hosting', 'disponibilidad']
+image: '../../assets/images/mon-uptimekuma.jpg'
 draft: false
 ---
 
@@ -58,7 +58,7 @@ services:
     container_name: uptime-kuma
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - '3001:3001'
     volumes:
       - ./data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock:ro

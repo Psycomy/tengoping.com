@@ -38,17 +38,19 @@ function getLevel(count: number): number {
       <p class="subtitle">{tagCounts.length} etiquetas en {posts.length} artículos</p>
     </div>
     <div class="tags-cloud">
-      {tagCounts.map((tag) => (
-        <a
-          href={`/etiquetas/${tag.slug}`}
-          class="tag-link"
-          data-level={getLevel(tag.count)}
-          style={`font-size: ${getScale(tag.count)}rem`}
-        >
-          {tag.name}
-          <span class="tag-count">{tag.count}</span>
-        </a>
-      ))}
+      {
+        tagCounts.map((tag) => (
+          <a
+            href={`/etiquetas/${tag.slug}`}
+            class="tag-link"
+            data-level={getLevel(tag.count)}
+            style={`font-size: ${getScale(tag.count)}rem`}
+          >
+            {tag.name}
+            <span class="tag-count">{tag.count}</span>
+          </a>
+        ))
+      }
     </div>
   </section>
 </BaseLayout>
@@ -99,18 +101,21 @@ function getLevel(count: number): number {
     text-transform: uppercase;
     font-weight: 500;
     letter-spacing: 0.03em;
-    transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+    transition:
+      color 0.2s,
+      border-color 0.2s,
+      background-color 0.2s;
   }
 
-  .tag-link[data-level="1"] {
+  .tag-link[data-level='1'] {
     color: var(--color-text-muted);
   }
 
-  .tag-link[data-level="2"] {
+  .tag-link[data-level='2'] {
     color: var(--color-text-secondary);
   }
 
-  .tag-link[data-level="3"] {
+  .tag-link[data-level='3'] {
     color: var(--color-primary);
     border-color: var(--color-primary);
   }

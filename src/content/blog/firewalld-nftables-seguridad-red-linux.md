@@ -1,11 +1,11 @@
 ---
-title: "Firewalld y nftables: seguridad de red en Linux"
-description: "Aprende a configurar firewalld y nftables para proteger tus servidores Linux con reglas de filtrado de tráfico efectivas."
-author: "antonio"
+title: 'Firewalld y nftables: seguridad de red en Linux'
+description: 'Aprende a configurar firewalld y nftables para proteger tus servidores Linux con reglas de filtrado de tráfico efectivas.'
+author: 'antonio'
 pubDate: 2025-02-11
-category: "Redes"
-tags: ["Firewall", "nftables", "Seguridad", "Redes"]
-image: "../../assets/images/redes-firewall.jpg"
+category: 'Redes'
+tags: ['Firewall', 'nftables', 'Seguridad', 'Redes']
+image: '../../assets/images/redes-firewall.jpg'
 draft: false
 ---
 
@@ -58,11 +58,11 @@ sudo nft list ruleset
 
 ## ¿Cuál usar?
 
-| Escenario | Recomendación |
-|-----------|---------------|
-| Servidor estándar | firewalld |
-| Reglas complejas | nftables directo |
-| Entornos cloud | security groups + firewalld |
+| Escenario         | Recomendación               |
+| ----------------- | --------------------------- |
+| Servidor estándar | firewalld                   |
+| Reglas complejas  | nftables directo            |
+| Entornos cloud    | security groups + firewalld |
 
 ## Conclusión
 

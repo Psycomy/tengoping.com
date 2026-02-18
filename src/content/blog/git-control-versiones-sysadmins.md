@@ -1,11 +1,11 @@
 ---
-title: "Git para sysadmins: control de versiones en infraestructura"
-description: "Guía práctica de Git orientada a administradores de sistemas: versiona configuraciones, gestiona infraestructura como código y colabora en equipo sin miedo a romper nada."
-author: "antonio"
+title: 'Git para sysadmins: control de versiones en infraestructura'
+description: 'Guía práctica de Git orientada a administradores de sistemas: versiona configuraciones, gestiona infraestructura como código y colabora en equipo sin miedo a romper nada.'
+author: 'antonio'
 pubDate: 2026-02-16
-category: "Software"
-tags: ["git", "control-de-versiones", "sysadmin", "infraestructura-como-codigo"]
-image: "../../assets/images/soft-git.jpg"
+category: 'Software'
+tags: ['git', 'control-de-versiones', 'sysadmin', 'infraestructura-como-codigo']
+image: '../../assets/images/soft-git.jpg'
 draft: false
 ---
 
@@ -220,7 +220,7 @@ Con esta estructura versionada:
 
 ## Buenas prácticas para sysadmins
 
-**Commits descriptivos:** Usa mensajes que expliquen el *por qué*, no solo el *qué*.
+**Commits descriptivos:** Usa mensajes que expliquen el _por qué_, no solo el _qué_.
 
 ```bash
 # Mal
