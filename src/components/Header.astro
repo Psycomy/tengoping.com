@@ -95,6 +95,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
         type="button"
         aria-label="Abrir menú"
         aria-expanded="false"
+        aria-controls="nav-mobile"
       >
         <svg
           width="24"
@@ -111,7 +112,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     </div>
   </div>
 
-  <nav class="nav-mobile" aria-label="Navegación móvil">
+  <nav class="nav-mobile" id="nav-mobile" aria-label="Navegación móvil">
     {
       navLinks.map((link) => (
         <a
@@ -141,12 +142,32 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
       }
     });
 
-    const hamburger = document.querySelector('.hamburger');
-    const navMobile = document.querySelector('.nav-mobile');
+    const hamburger = document.querySelector<HTMLButtonElement>('.hamburger');
+    const navMobile = document.querySelector<HTMLElement>('.nav-mobile');
+
+    function openMobileNav() {
+      hamburger?.setAttribute('aria-expanded', 'true');
+      navMobile?.classList.add('is-open');
+      const firstLink = navMobile?.querySelector<HTMLAnchorElement>('a');
+      if (firstLink) setTimeout(() => firstLink.focus(), 50);
+    }
+
+    function closeMobileNav() {
+      hamburger?.setAttribute('aria-expanded', 'false');
+      navMobile?.classList.remove('is-open');
+      hamburger?.focus();
+    }
+
     hamburger?.addEventListener('click', () => {
       const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-      hamburger.setAttribute('aria-expanded', String(!expanded));
-      navMobile?.classList.toggle('is-open');
+      if (expanded) closeMobileNav();
+      else openMobileNav();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navMobile?.classList.contains('is-open')) {
+        closeMobileNav();
+      }
     });
   }
 
