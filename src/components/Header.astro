@@ -128,6 +128,8 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 </header>
 
 <script>
+  let escListenerRegistered = false;
+
   function setupHeader() {
     const toggle = document.querySelector('.theme-toggle');
     toggle?.addEventListener('click', () => {
@@ -149,7 +151,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
       hamburger?.setAttribute('aria-expanded', 'true');
       navMobile?.classList.add('is-open');
       const firstLink = navMobile?.querySelector<HTMLAnchorElement>('a');
-      if (firstLink) setTimeout(() => firstLink.focus(), 50);
+      if (firstLink) requestAnimationFrame(() => firstLink.focus());
     }
 
     function closeMobileNav() {
@@ -164,11 +166,18 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
       else openMobileNav();
     });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && navMobile?.classList.contains('is-open')) {
-        closeMobileNav();
-      }
-    });
+    if (!escListenerRegistered) {
+      escListenerRegistered = true;
+      document.addEventListener('keydown', (e: KeyboardEvent) => {
+        const nav = document.querySelector<HTMLElement>('.nav-mobile');
+        const hbg = document.querySelector<HTMLButtonElement>('.hamburger');
+        if (e.key === 'Escape' && nav?.classList.contains('is-open')) {
+          hbg?.setAttribute('aria-expanded', 'false');
+          nav.classList.remove('is-open');
+          hbg?.focus();
+        }
+      });
+    }
   }
 
   setupHeader();
