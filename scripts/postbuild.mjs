@@ -56,6 +56,22 @@ function updateServiceWorker() {
 function writeHeaders(hashes) {
   const scriptSrc = ["'self'", ...hashes, "'wasm-unsafe-eval'", 'https://giscus.app'].join(' ');
 
+  const csp = [
+    "default-src 'self'",
+    `script-src ${scriptSrc}`,
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
+    "img-src 'self' data: https:",
+    'frame-src https://giscus.app',
+    "connect-src 'self' https://giscus.app https://api.github.com",
+    "worker-src 'self'",
+    "manifest-src 'self'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "object-src 'none'",
+    'upgrade-insecure-requests',
+  ].join('; ');
+
   const content = `/*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
@@ -63,7 +79,7 @@ function writeHeaders(hashes) {
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-XSS-Protection: 0
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy: default-src 'self'; script-src ${scriptSrc}; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; frame-src https://giscus.app; connect-src 'self' https://giscus.app
+  Content-Security-Policy: ${csp}
 `;
 
   writeFileSync(join(DIST, '_headers'), content);
