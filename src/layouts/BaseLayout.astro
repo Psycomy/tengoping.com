@@ -79,6 +79,10 @@ const imageURL = new URL(image, Astro.site);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageURL} />
 
+    {article && (
+      <link rel="preconnect" href="https://giscus.app" crossorigin />
+    )}
+
     <!-- Fonts (self-hosted) -->
     <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/JetBrainsMono-Medium.woff2" as="font" type="font/woff2" crossorigin />
