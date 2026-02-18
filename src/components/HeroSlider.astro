@@ -29,14 +29,14 @@ const { posts } = Astro.props;
         }
         <div class="slide-overlay">
           <div class="slide-content container">
-            <a href={`/categorias/${slugify(post.data.category)}`} class="badge badge-category">./{post.data.category}</a>
+            <a href={`/categorias/${slugify(post.data.category)}`} class="badge badge-category" tabindex={i !== 0 ? -1 : undefined}>./{post.data.category}</a>
             <h2 class="slide-title">{post.data.title}</h2>
             <p class="slide-description">
               {post.data.description.length > 140
                 ? post.data.description.slice(0, 140) + '...'
                 : post.data.description}
             </p>
-            <a href={`/blog/${post.id}`} class="slide-cta">[$ leer más →]</a>
+            <a href={`/blog/${post.id}`} class="slide-cta" tabindex={i !== 0 ? -1 : undefined}>[$ leer más →]</a>
           </div>
         </div>
       </div>
@@ -185,29 +185,41 @@ const { posts } = Astro.props;
   }
 
   .slider-dot {
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slider-dot::after {
+    content: '';
+    display: block;
     width: 10px;
     height: 10px;
     border: 1px solid var(--color-primary);
     background: transparent;
-    cursor: pointer;
-    padding: 0;
     transition: background 0.2s;
   }
 
-  .slider-dot.active {
+  .slider-dot.active::after {
     background: var(--color-primary);
   }
 
-  .slider-dot:hover:not(.active) {
+  .slider-dot:hover:not(.active)::after {
     background: rgba(26, 115, 232, 0.4);
   }
 
-  :global([data-theme='dark']) .slider-dot:hover:not(.active) {
+  :global([data-theme='dark']) .slider-dot:hover:not(.active)::after {
     background: rgba(88, 213, 162, 0.4);
   }
 
   @supports (background: color-mix(in srgb, red 50%, transparent)) {
-    .slider-dot:hover:not(.active) {
+    .slider-dot:hover:not(.active)::after {
       background: color-mix(in srgb, var(--color-primary) 40%, transparent);
     }
   }
@@ -268,7 +280,14 @@ const { posts } = Astro.props;
     function goTo(index: number) {
       current = ((index % total) + total) % total;
       track.style.transform = `translateX(-${current * 100}%)`;
-      slides.forEach((s, i) => s.setAttribute('aria-hidden', String(i !== current)));
+      slides.forEach((s, i) => {
+        const isActive = i === current;
+        s.setAttribute('aria-hidden', String(!isActive));
+        s.querySelectorAll<HTMLElement>('a').forEach(el => {
+          if (isActive) el.removeAttribute('tabindex');
+          else el.setAttribute('tabindex', '-1');
+        });
+      });
       dots.forEach((d, i) => {
         d.classList.toggle('active', i === current);
         d.setAttribute('aria-selected', String(i === current));

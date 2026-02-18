@@ -441,7 +441,7 @@ h4 { font-size: 1.0625rem; }
 
 .badge-category {
   background: var(--color-accent);
-  color: white;
+  color: #111111;
   border-color: var(--color-accent);
 }
 
