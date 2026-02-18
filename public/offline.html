@@ -85,40 +85,26 @@
           opacity: 0;
         }
       }
-      .actions {
-        display: flex;
-        gap: 1rem;
-        margin-top: 2rem;
-      }
-      .terminal-btn {
-        padding: 0.6rem 1.25rem;
-        background: #161b22;
+      .terminal-cmd {
+        background: none;
+        border: none;
         color: #58d5a2;
-        border: 1px solid #30363d;
         font-family: 'JetBrains Mono', monospace;
-        font-weight: 600;
-        font-size: 0.875rem;
-        text-decoration: none;
+        font-size: inherit;
+        font-weight: 700;
         cursor: pointer;
-        transition: all 0.2s;
+        padding: 0;
+        text-decoration: none;
+        transition: opacity 0.2s;
       }
-      .terminal-btn:hover {
+      .terminal-cmd:hover {
         background: #58d5a2;
         color: #0d1117;
-        border-color: #58d5a2;
       }
       @media (max-width: 480px) {
         .terminal-body {
           padding: 1rem;
           font-size: 0.75rem;
-        }
-        .actions {
-          flex-direction: column;
-          width: 100%;
-          max-width: 700px;
-        }
-        .terminal-btn {
-          text-align: center;
         }
       }
     </style>
@@ -141,13 +127,17 @@
         <p class="terminal-line output-line">Verifica tu conexion e intenta de nuevo.</p>
         <p class="terminal-line">&nbsp;</p>
         <p class="terminal-line">
+          <span class="prompt">$</span>
+          <button class="terminal-cmd" onclick="location.reload()">[reintentar]</button>
+        </p>
+        <p class="terminal-line">
+          <span class="prompt">$</span>
+          <a href="/" class="terminal-cmd">[volver_al_inicio]</a>
+        </p>
+        <p class="terminal-line">
           <span class="prompt">$</span> <span class="cursor-blink">_</span>
         </p>
       </div>
-    </div>
-    <div class="actions">
-      <button class="terminal-btn" onclick="location.reload()">[reintentar]</button>
-      <a href="/" class="terminal-btn">[volver_al_inicio]</a>
     </div>
   </body>
 </html>
