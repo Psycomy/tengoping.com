@@ -1,8 +1,16 @@
 ---
-const theme = 'preferred_color_scheme';
+import site from '@data/site.json';
+const { giscus } = site;
 ---
 
-<section class="giscus-wrapper" id="giscus-section">
+<section
+  class="giscus-wrapper"
+  id="giscus-section"
+  data-repo={giscus.repo}
+  data-repo-id={giscus.repoId}
+  data-category={giscus.category}
+  data-category-id={giscus.categoryId}
+>
   <div class="giscus"></div>
 </section>
 
@@ -17,10 +25,10 @@ const theme = 'preferred_color_scheme';
 
     const script = document.createElement('script');
     script.src = 'https://giscus.app/client.js';
-    script.setAttribute('data-repo', 'Psycomy/tengoping.com');
-    script.setAttribute('data-repo-id', 'R_kgDORP4nMA');
-    script.setAttribute('data-category', 'Q&A');
-    script.setAttribute('data-category-id', 'DIC_kwDORP4nMM4C2Y3-');
+    script.setAttribute('data-repo', section.dataset.repo!);
+    script.setAttribute('data-repo-id', section.dataset.repoId!);
+    script.setAttribute('data-category', section.dataset.category!);
+    script.setAttribute('data-category-id', section.dataset.categoryId!);
     script.setAttribute('data-mapping', 'pathname');
     script.setAttribute('data-strict', '0');
     script.setAttribute('data-reactions-enabled', '1');

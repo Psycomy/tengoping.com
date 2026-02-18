@@ -24,7 +24,7 @@ const { posts } = Astro.props;
     {posts.map((post, i) => (
       <div class="slide" data-index={i} aria-hidden={i !== 0 ? "true" : undefined}>
 {post.data.image
-          ? <Image src={post.data.image} alt="" class="slide-image" loading={i === 0 ? 'eager' : 'lazy'} format="webp" width={1200} height={450} />
+          ? <Image src={post.data.image} alt="" class="slide-image" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'auto'} format="webp" width={1200} height={450} />
           : <img src="/images/placeholder-article.svg" alt="" class="slide-image" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
         }
         <div class="slide-overlay">

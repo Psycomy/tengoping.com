@@ -3,5 +3,11 @@
   "description": "Blog de tecnología, administración de sistemas y redes para profesionales IT",
   "url": "https://tengoping.com",
   "language": "es",
-  "postsPerPage": 6
+  "postsPerPage": 6,
+  "giscus": {
+    "repo": "Psycomy/tengoping.com",
+    "repoId": "R_kgDORP4nMA",
+    "category": "Q&A",
+    "categoryId": "DIC_kwDORP4nMM4C2Y3-"
+  }
 }
