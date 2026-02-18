@@ -29,3 +29,9 @@ jobs:
 
       - name: Type check
         run: npx astro check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
