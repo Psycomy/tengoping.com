@@ -6,7 +6,11 @@
     "dev": "astro dev",
     "build": "astro build && node scripts/postbuild.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
@@ -29,5 +33,10 @@
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "typescript-eslint": "^8.56.0"
+  },
+  "lint-staged": {
+    "*.{ts,mjs,js}": ["eslint --fix", "prettier --write"],
+    "*.astro": ["eslint --fix", "prettier --write"],
+    "*.{json,css,md}": ["prettier --write"]
   }
 }
