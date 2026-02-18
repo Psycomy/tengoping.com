@@ -11,7 +11,17 @@ export default [
   prettier,
   {
     rules: {
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
+    },
+  },
+  // Root-level config files — need Node.js globals
+  {
+    files: ['*.mjs', '*.cjs'],
+    languageOptions: {
+      globals: { ...globals.node },
     },
   },
   // Service Worker — needs ServiceWorkerGlobalScope globals
