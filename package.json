@@ -47,5 +47,8 @@
     "*.{json,css,md}": [
       "prettier --write"
     ]
+  },
+  "overrides": {
+    "lodash": "4.17.23"
   }
 }
