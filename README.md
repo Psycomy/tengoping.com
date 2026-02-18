@@ -60,7 +60,7 @@ pubDate: 2025-03-01
 updatedDate: 2025-04-15
 category: "Linux"
 tags: ["SSH", "Seguridad"]
-image: "/images/mi-imagen.svg"
+image: "../../assets/images/mi-imagen.jpg"
 draft: false
 ---
 
