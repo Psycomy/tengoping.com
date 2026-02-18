@@ -61,9 +61,9 @@ self.addEventListener('fetch', (event) => {
       fetch(request)
         .then((response) => {
           const clone = response.clone();
-          caches.open(PAGES_CACHE).then((cache) => {
-            cache.put(request, clone);
-            limitPagesCache();
+          caches.open(PAGES_CACHE).then(async (cache) => {
+            await cache.put(request, clone);
+            await limitPagesCache();
           });
           return response;
         })
