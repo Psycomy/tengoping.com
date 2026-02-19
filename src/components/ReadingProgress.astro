@@ -14,6 +14,7 @@
 
     const pb = progressBar;
     const bt = backToTop;
+    const originalTitle = document.title;
 
     // Remove previous scroll listener
     if (scrollHandler) {
@@ -26,6 +27,12 @@
       const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       pb.style.width = `${progress}%`;
       bt.classList.toggle('visible', scrollTop > 300);
+
+      if (progress > 2 && progress < 98) {
+        document.title = `[${Math.round(progress)}%] ${originalTitle}`;
+      } else {
+        document.title = originalTitle;
+      }
     };
 
     window.addEventListener('scroll', scrollHandler, { passive: true });

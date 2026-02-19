@@ -7,6 +7,7 @@ import AuthorCard from '@components/AuthorCard.astro';
 import ArticleNav from '@components/ArticleNav.astro';
 import GiscusComments from '@components/GiscusComments.astro';
 import CopyCodeButton from '@components/CopyCodeButton.astro';
+import HeadingAnchors from '@components/HeadingAnchors.astro';
 import Breadcrumbs from '@components/Breadcrumbs.astro';
 import ReadingProgress from '@components/ReadingProgress.astro';
 import RelatedArticles from '@components/RelatedArticles.astro';
@@ -131,6 +132,7 @@ const authorJsonLd = authorData
   </article>
 
   <CopyCodeButton />
+  <HeadingAnchors />
   <ReadingProgress />
 </BaseLayout>
 

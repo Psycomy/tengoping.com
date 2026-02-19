@@ -1,0 +1,74 @@
+<script>
+  function init() {
+    const headings = document.querySelectorAll<HTMLElement>(
+      '.prose h2[id], .prose h3[id], .prose h4[id]'
+    );
+
+    headings.forEach((heading) => {
+      // Avoid duplicates on re-init
+      if (heading.querySelector('.heading-anchor')) return;
+
+      const id = heading.id;
+      const anchor = document.createElement('a');
+      anchor.className = 'heading-anchor';
+      anchor.href = `#${id}`;
+      anchor.setAttribute('aria-label', `Enlace a sección: ${heading.textContent?.trim() ?? ''}`);
+      anchor.textContent = '[#]';
+
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = `${window.location.origin}${window.location.pathname}#${id}`;
+        navigator.clipboard.writeText(url).then(() => {
+          anchor.textContent = '[✓]';
+          setTimeout(() => {
+            anchor.textContent = '[#]';
+          }, 1500);
+        });
+        // Also update the URL in the address bar
+        history.pushState(null, '', `#${id}`);
+      });
+
+      heading.appendChild(anchor);
+    });
+  }
+
+  init();
+  document.addEventListener('astro:after-swap', init);
+</script>
+
+<style>
+  :global(.prose h2),
+  :global(.prose h3),
+  :global(.prose h4) {
+    position: relative;
+  }
+
+  :global(.heading-anchor) {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-size: 0.75em;
+    font-family: var(--font-mono);
+    color: var(--color-primary);
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    vertical-align: middle;
+    user-select: none;
+  }
+
+  :global(.prose h2:hover .heading-anchor),
+  :global(.prose h3:hover .heading-anchor),
+  :global(.prose h4:hover .heading-anchor) {
+    opacity: 1;
+  }
+
+  :global(.heading-anchor:hover) {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.heading-anchor) {
+      transition: none;
+    }
+  }
+</style>
