@@ -47,7 +47,9 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
             <span class="category-icon" set:html={categoryMeta[category]?.icon || ''} />
             {category}
           </h2>
-          <a href={`/categorias/${slugify(category)}`}>Ver todos →</a>
+          <a class="cat-link" href={`/categorias/${slugify(category)}`}>
+            [ver todos →]
+          </a>
         </div>
         <div class="category-grid">
           <div class="featured">
@@ -101,10 +103,17 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
     height: 1.5rem;
   }
 
-  .category-header a {
-    font-weight: 600;
-    font-size: 0.9rem;
+  .cat-link {
+    font-size: 0.8125rem;
+    font-family: var(--font-mono);
+    text-decoration: none;
+    color: var(--color-text-secondary);
     white-space: nowrap;
+    transition: color 0.15s ease;
+  }
+
+  .cat-link:hover {
+    color: var(--color-primary);
   }
 
   .category-grid {
