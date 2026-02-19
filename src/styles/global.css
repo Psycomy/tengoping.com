@@ -22,7 +22,6 @@
   --color-primary-dark: #1557b0;
   --color-accent: #ff6d00;
   --color-accent-light: #ff8f33;
-  --color-success: #2ecc71;
 
   --color-bg: #f4f6f9;
   --color-bg-secondary: #e8ecf1;
@@ -69,7 +68,6 @@
   --color-primary-dark: #3fbf8a;
   --color-accent: #00bfff;
   --color-accent-light: #33ccff;
-  --color-success: #00ff9c;
 
   --color-bg: #0d1117;
   --color-bg-secondary: #161b22;
@@ -466,13 +464,6 @@ h4 {
 
 /* ===== Focus Visible ===== */
 *:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.copy-button:focus-visible,
-.badge-tag:focus-visible,
-.card-hover:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
