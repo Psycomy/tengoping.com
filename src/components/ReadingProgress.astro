@@ -15,6 +15,9 @@
     const pb = progressBar;
     const bt = backToTop;
     const originalTitle = document.title;
+    const readingTimeEl = document.querySelector<HTMLElement>('.reading-time');
+    const totalMinutes = readingTimeEl ? parseInt(readingTimeEl.dataset.minutes ?? '0', 10) : 0;
+    const originalReadingText = readingTimeEl?.textContent ?? '';
 
     // Remove previous scroll listener
     if (scrollHandler) {
@@ -32,6 +35,18 @@
         document.title = `[${Math.round(progress)}%] ${originalTitle}`;
       } else {
         document.title = originalTitle;
+      }
+
+      if (readingTimeEl && totalMinutes > 0) {
+        if (progress >= 98) {
+          readingTimeEl.textContent = '< 1 min';
+        } else if (progress > 5) {
+          const remaining = Math.round(totalMinutes * (1 - progress / 100));
+          readingTimeEl.textContent =
+            remaining === 1 ? '~1 min restante' : `~${remaining} min restantes`;
+        } else {
+          readingTimeEl.textContent = originalReadingText;
+        }
       }
     };
 
