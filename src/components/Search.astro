@@ -48,6 +48,8 @@
 </div>
 
 <script is:inline>
+  let globalListenersRegistered = false;
+
   function initSearch() {
     const overlay = document.getElementById('search-overlay');
     const closeBtn = document.getElementById('search-close');
@@ -156,21 +158,25 @@
       btn.addEventListener('click', openSearch);
     });
 
-    if (closeBtn) closeBtn.addEventListener('click', closeSearch);
+    if (closeBtn) closeBtn.onclick = closeSearch;
 
-    if (overlay)
-      overlay.addEventListener('click', function (e) {
-        if (e.target === overlay) closeSearch();
+    if (!globalListenersRegistered) {
+      if (overlay)
+        overlay.addEventListener('click', function (e) {
+          if (e.target === overlay) closeSearch();
+        });
+
+      document.addEventListener('keydown', function (e) {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          openSearch();
+        }
+        if (e.key === 'Escape') closeSearch();
+        trapFocus(e);
       });
 
-    document.addEventListener('keydown', function (e) {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        openSearch();
-      }
-      if (e.key === 'Escape') closeSearch();
-      trapFocus(e);
-    });
+      globalListenersRegistered = true;
+    }
   }
 
   initSearch();
