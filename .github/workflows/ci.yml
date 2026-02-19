@@ -41,3 +41,8 @@ jobs:
 
       - name: Check internal links
         run: npm run check-links
+
+      - name: Lighthouse CI
+        run: npx @lhci/cli@0.15 autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
