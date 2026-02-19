@@ -1,5 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
-  <rect width="800" height="400" fill="#2d2d3f"/>
-  <rect x="300" y="140" width="200" height="120" rx="10" fill="#6c63ff" opacity="0.3"/>
-  <text x="400" y="210" font-family="Arial" font-size="48" fill="#6c63ff" text-anchor="middle">&lt;/&gt;</text>
+  <style>
+    .bg     { fill: #f4f6f9; }
+    .border { fill: none; stroke: #d1d9e6; stroke-width: 1; }
+    .prompt { fill: #1a73e8; }
+    .dim    { fill: #8b949e; }
+    @media (prefers-color-scheme: dark) {
+      .bg     { fill: #161b22; }
+      .border { stroke: #30363d; }
+      .prompt { fill: #58d5a2; }
+    }
+  </style>
+  <rect class="bg" width="800" height="400"/>
+  <rect class="border" x="280" y="130" width="240" height="140"/>
+  <text x="300" y="175" font-family="JetBrains Mono, monospace" font-size="15" class="prompt">$ cat ./imagen</text>
+  <text x="300" y="210" font-family="JetBrains Mono, monospace" font-size="13" class="dim">No such file</text>
+  <text x="300" y="245" font-family="JetBrains Mono, monospace" font-size="13" class="dim">or directory</text>
 </svg>
