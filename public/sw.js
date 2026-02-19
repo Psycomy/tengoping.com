@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'tengoping-v3';
+const CACHE_VERSION = 'tengoping-v4';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const PAGES_CACHE = `${CACHE_VERSION}-pages`;
 
@@ -32,18 +32,24 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate: clean old caches
+// Activate: clean old caches and notify clients of update
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key !== STATIC_CACHE && key !== PAGES_CACHE)
-            .map((key) => caches.delete(key))
-        )
-      )
+      .then((keys) => {
+        const oldKeys = keys.filter((key) => key !== STATIC_CACHE && key !== PAGES_CACHE);
+        return Promise.all(oldKeys.map((key) => caches.delete(key))).then(() => oldKeys.length > 0);
+      })
+      .then((wasUpdated) => {
+        if (wasUpdated) {
+          return self.clients
+            .matchAll({ type: 'window' })
+            .then((clients) =>
+              clients.forEach((client) => client.postMessage({ type: 'SW_UPDATED' }))
+            );
+        }
+      })
   );
   self.clients.claim();
 });
