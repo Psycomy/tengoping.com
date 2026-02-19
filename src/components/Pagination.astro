@@ -75,7 +75,7 @@ const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
   .pagination-btn:hover:not(.disabled) {
     background: var(--color-primary);
     border-color: var(--color-primary);
-    color: white;
+    color: var(--color-bg);
   }
 
   .pagination-btn.disabled {
@@ -111,7 +111,7 @@ const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
   .pagination-page.active {
     background: var(--color-primary);
     border-color: var(--color-primary);
-    color: white;
+    color: var(--color-bg);
     pointer-events: none;
   }
 

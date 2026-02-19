@@ -227,7 +227,7 @@ h4 {
   padding: 1rem 1.5rem;
   margin: 1.5rem 0;
   background: var(--color-bg-secondary);
-  font-style: italic;
+  font-style: normal;
   color: var(--color-text-secondary);
 }
 
@@ -417,7 +417,7 @@ h4 {
 
 .copy-button:hover {
   background: var(--color-primary);
-  color: white;
+  color: var(--color-bg);
   border-color: var(--color-primary);
 }
 
@@ -527,7 +527,7 @@ h4 {
 
 .badge-tag:hover {
   background: var(--color-primary);
-  color: white;
+  color: var(--color-bg);
   border-color: var(--color-primary);
 }
 
