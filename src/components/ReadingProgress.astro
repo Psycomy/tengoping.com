@@ -4,25 +4,43 @@
 >
 
 <script>
-  const progressBar = document.getElementById('reading-progress');
-  const backToTop = document.getElementById('back-to-top');
+  let scrollHandler: (() => void) | null = null;
 
-  if (progressBar && backToTop) {
+  function init() {
+    const progressBar = document.getElementById('reading-progress');
+    const backToTop = document.getElementById('back-to-top');
+
+    if (!progressBar || !backToTop) return;
+
     const pb = progressBar;
     const bt = backToTop;
 
-    function updateProgress() {
+    // Remove previous scroll listener
+    if (scrollHandler) {
+      window.removeEventListener('scroll', scrollHandler);
+    }
+
+    scrollHandler = function () {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       pb.style.width = `${progress}%`;
       bt.classList.toggle('visible', scrollTop > 300);
-    }
+    };
 
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    bt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-    updateProgress();
+    window.addEventListener('scroll', scrollHandler, { passive: true });
+
+    // onclick overwrites on each init — no accumulation
+    bt.onclick = () => {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: prefersReduced ? 'instant' : 'smooth' });
+    };
+
+    scrollHandler(); // initial state
   }
+
+  init();
+  document.addEventListener('astro:after-swap', init);
 </script>
 
 <style>
