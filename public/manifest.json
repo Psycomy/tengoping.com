@@ -18,5 +18,21 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Todos los artículos del blog",
+      "url": "/blog/",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Categorías",
+      "short_name": "Categorías",
+      "description": "Artículos por categoría",
+      "url": "/categorias/",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    }
   ]
 }
