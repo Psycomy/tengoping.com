@@ -683,3 +683,32 @@ h4 {
     transition: none;
   }
 }
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print {
+  .site-header,
+  .site-footer,
+  .search-terminal,
+  .article-sidebar,
+  .share-buttons,
+  .reading-progress-bar,
+  .back-to-top,
+  .article-nav,
+  .related-articles,
+  .rss-cta,
+  .article-tags {
+    display: none !important;
+  }
+
+  .article-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  a::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.75em;
+    color: #555;
+  }
+}
