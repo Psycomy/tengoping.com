@@ -22,37 +22,39 @@ for (const h of filtered) {
 
 {
   nested.length > 0 && (
-    <aside class="toc-wrapper" aria-label="Tabla de contenidos">
-      <nav class="toc-desktop">
-        <h2 class="toc-title">// tabla de contenidos</h2>
-        <ul class="toc-list">
-          {nested.map((item, i) => (
-            <li>
-              <a href={`#${item.heading.slug}`} data-slug={item.heading.slug}>
-                <span class="toc-tree">
-                  {i === nested.length - 1 && item.children.length === 0 ? '└──' : '├──'}
-                </span>{' '}
-                {item.heading.text}
-              </a>
-              {item.children.length > 0 && (
-                <ul class="toc-sublist">
-                  {item.children.map((child, j) => (
-                    <li>
-                      <a href={`#${child.slug}`} data-slug={child.slug}>
-                        <span class="toc-tree">
-                          {i === nested.length - 1 ? '   ' : '│  '}
-                          {j === item.children.length - 1 ? '└──' : '├──'}
-                        </span>{' '}
-                        {child.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-      </nav>
+    <aside class="toc-outer" aria-label="Tabla de contenidos">
+      <div class="toc-wrapper">
+        <nav class="toc-desktop">
+          <h2 class="toc-title">// tabla de contenidos</h2>
+          <ul class="toc-list">
+            {nested.map((item, i) => (
+              <li>
+                <a href={`#${item.heading.slug}`} data-slug={item.heading.slug}>
+                  <span class="toc-tree">
+                    {i === nested.length - 1 && item.children.length === 0 ? '└──' : '├──'}
+                  </span>{' '}
+                  {item.heading.text}
+                </a>
+                {item.children.length > 0 && (
+                  <ul class="toc-sublist">
+                    {item.children.map((child, j) => (
+                      <li>
+                        <a href={`#${child.slug}`} data-slug={child.slug}>
+                          <span class="toc-tree">
+                            {i === nested.length - 1 ? '   ' : '│  '}
+                            {j === item.children.length - 1 ? '└──' : '├──'}
+                          </span>{' '}
+                          {child.text}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
 
       <details class="toc-mobile">
         <summary>// tabla de contenidos</summary>
@@ -92,6 +94,19 @@ for (const h of filtered) {
   let scrollObserver: IntersectionObserver | null = null;
 
   function initScrollSpy() {
+    // Fade indicator: show when TOC has scrollable overflow
+    const tocOuter = document.querySelector<HTMLElement>('.toc-outer');
+    const tocWrapper = document.querySelector<HTMLElement>('.toc-wrapper');
+    if (tocOuter && tocWrapper) {
+      const updateFade = () => {
+        const hasMore =
+          tocWrapper.scrollTop + tocWrapper.clientHeight < tocWrapper.scrollHeight - 4;
+        tocOuter.classList.toggle('show-fade', hasMore);
+      };
+      updateFade();
+      tocWrapper.addEventListener('scroll', updateFade, { passive: true });
+    }
+
     if (scrollObserver) {
       scrollObserver.disconnect();
       scrollObserver = null;
@@ -162,11 +177,33 @@ for (const h of filtered) {
 </script>
 
 <style>
+  .toc-outer {
+    position: relative;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
   .toc-wrapper {
     max-height: calc(100vh - var(--header-height) - 4rem);
     overflow-y: auto;
-    font-size: 0.8125rem;
-    line-height: 1.6;
+  }
+
+  /* Fade gradient shown when there is more content below */
+  .toc-outer::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 8px; /* leave space for scrollbar */
+    height: 2.5rem;
+    background: linear-gradient(to bottom, transparent, var(--color-bg));
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .toc-outer.show-fade::after {
+    opacity: 1;
   }
 
   .toc-desktop {
