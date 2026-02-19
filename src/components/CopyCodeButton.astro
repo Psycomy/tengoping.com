@@ -4,6 +4,15 @@
 
 <script>
   function initCopyButtons() {
+    if (!document.getElementById('copy-announce')) {
+      const announce = document.createElement('div');
+      announce.id = 'copy-announce';
+      announce.setAttribute('aria-live', 'polite');
+      announce.setAttribute('aria-atomic', 'true');
+      announce.className = 'sr-only';
+      document.body.appendChild(announce);
+    }
+
     document.querySelectorAll('.prose pre').forEach((pre) => {
       if (pre.parentElement?.classList.contains('code-block')) return;
 
@@ -31,9 +40,13 @@
           await navigator.clipboard.writeText(text);
           copyBtn.textContent = '[copiado!]';
           copyBtn.classList.add('copied');
+          const announce = document.getElementById('copy-announce');
+          if (announce) announce.textContent = 'Código copiado al portapapeles';
           setTimeout(() => {
             copyBtn.textContent = '[copiar]';
             copyBtn.classList.remove('copied');
+            const announceEl = document.getElementById('copy-announce');
+            if (announceEl) announceEl.textContent = '';
           }, 2000);
         } catch {
           copyBtn.textContent = '[error]';
