@@ -422,7 +422,7 @@ h4 {
 
 .copy-button.copied {
   background: #10b981;
-  color: white;
+  color: var(--color-bg);
   border-color: #10b981;
 }
 

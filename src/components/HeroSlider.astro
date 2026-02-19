@@ -292,7 +292,16 @@ const { posts } = Astro.props;
 </style>
 
 <script>
+  // Module-level so it can be cleared on astro:after-swap (slider only on homepage)
+  let autoplayId: number | null = null;
+
   function setupHeroSlider() {
+    // Clear any running interval from the previous page visit
+    if (autoplayId !== null) {
+      clearInterval(autoplayId);
+      autoplayId = null;
+    }
+
     const slider = document.querySelector('.hero-slider');
     if (!slider) return;
 
@@ -303,7 +312,6 @@ const { posts } = Astro.props;
     const nextBtn = slider.querySelector('.slider-next');
     const total = slides.length;
     let current = 0;
-    let autoplayId: number | null = null;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function goTo(index: number) {
