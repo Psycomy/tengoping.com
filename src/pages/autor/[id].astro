@@ -32,7 +32,7 @@ const { author, posts } = Astro.props;
         <p class="author-role">{author.bioShort}</p>
         <p class="author-bio">{author.bio}</p>
         <div class="author-meta">
-          <span class="meta-stat">{posts.length} articulos</span>
+          <span class="meta-stat">{posts.length} artículos</span>
           {
             (() => {
               const s = author.social as { twitter?: string; github?: string; linkedin?: string };
@@ -61,7 +61,7 @@ const { author, posts } = Astro.props;
       </div>
     </div>
 
-    <h2 class="posts-heading">Articulos de {author.name} ({posts.length})</h2>
+    <h2 class="posts-heading">Artículos de {author.name} ({posts.length})</h2>
     <div class="posts-grid">
       {posts.map((post) => <ArticleCard post={post} />)}
     </div>
