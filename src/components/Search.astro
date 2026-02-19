@@ -158,9 +158,8 @@
       btn.addEventListener('click', openSearch);
     });
 
-    if (closeBtn) closeBtn.onclick = closeSearch;
-
     if (!globalListenersRegistered) {
+      if (closeBtn) closeBtn.onclick = closeSearch;
       if (overlay)
         overlay.addEventListener('click', function (e) {
           if (e.target === overlay) closeSearch();
