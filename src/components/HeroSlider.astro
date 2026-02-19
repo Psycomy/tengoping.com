@@ -75,18 +75,29 @@ const { posts } = Astro.props;
   <button class="slider-arrow slider-prev" aria-label="Anterior">[&lt;]</button>
   <button class="slider-arrow slider-next" aria-label="Siguiente">[&gt;]</button>
 
-  <div class="slider-dots" role="tablist" aria-label="Navegación del slider">
-    {
-      posts.map((_, i) => (
-        <button
-          class={`slider-dot${i === 0 ? ' active' : ''}`}
-          role="tab"
-          aria-selected={i === 0 ? 'true' : 'false'}
-          aria-label={`Diapositiva ${i + 1}`}
-          data-dot={i}
-        />
-      ))
-    }
+  <div class="slider-controls">
+    <span
+      class="slider-counter"
+      aria-live="polite"
+      aria-atomic="true"
+      aria-label={`Diapositiva 1 de ${posts.length}`}>[1/{posts.length}]</span
+    >
+    <div class="slider-dots" role="tablist" aria-label="Navegación del slider">
+      {
+        posts.map((_, i) => (
+          <button
+            class={`slider-dot${i === 0 ? ' active' : ''}`}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-label={`Diapositiva ${i + 1}`}
+            data-dot={i}
+          />
+        ))
+      }
+    </div>
+    <button class="slider-pause" type="button" aria-label="Pausar autoplay" aria-pressed="false">
+      [⏸]
+    </button>
   </div>
 </section>
 
@@ -213,16 +224,6 @@ const { posts } = Astro.props;
     right: 1rem;
   }
 
-  .slider-dots {
-    position: absolute;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0.5rem;
-    z-index: 2;
-  }
-
   .slider-dot {
     width: 24px;
     height: 24px;
@@ -251,6 +252,60 @@ const { posts } = Astro.props;
 
   .slider-dot:hover:not(.active)::after {
     background: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+
+  /* Bottom controls bar */
+  .slider-controls {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    z-index: 2;
+    padding: 0 1rem;
+  }
+
+  .slider-dots {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .slider-counter {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--color-text);
+    background: var(--hero-arrow-bg);
+    border: 1px solid var(--color-border);
+    padding: 0.2rem 0.45rem;
+    white-space: nowrap;
+  }
+
+  .slider-pause {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: var(--hero-arrow-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    padding: 0.2rem 0.45rem;
+    cursor: pointer;
+    transition:
+      border-color 0.2s,
+      color 0.2s;
+    line-height: 1;
+  }
+
+  .slider-pause:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slider-pause {
+      display: none;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -284,6 +339,11 @@ const { posts } = Astro.props;
       display: none;
     }
 
+    .slider-counter,
+    .slider-pause {
+      display: none;
+    }
+
     .slide-cta {
       padding: 0.4rem 1rem;
       font-size: 0.75rem;
@@ -310,6 +370,9 @@ const { posts } = Astro.props;
     const dots = slider.querySelectorAll('.slider-dot');
     const prevBtn = slider.querySelector('.slider-prev');
     const nextBtn = slider.querySelector('.slider-next');
+    const pauseBtn = slider.querySelector<HTMLButtonElement>('.slider-pause');
+    const counter = slider.querySelector<HTMLSpanElement>('.slider-counter');
+    let isPausedByUser = false;
     const total = slides.length;
     let current = 0;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -329,6 +392,10 @@ const { posts } = Astro.props;
         d.classList.toggle('active', i === current);
         d.setAttribute('aria-selected', String(i === current));
       });
+      if (counter) {
+        counter.textContent = `[${current + 1}/${total}]`;
+        counter.setAttribute('aria-label', `Diapositiva ${current + 1} de ${total}`);
+      }
     }
 
     function next() {
@@ -340,6 +407,7 @@ const { posts } = Astro.props;
 
     function startAutoplay() {
       if (reducedMotion) return;
+      if (isPausedByUser) return;
       stopAutoplay();
       autoplayId = window.setInterval(next, 5000);
     }
@@ -364,6 +432,23 @@ const { posts } = Astro.props;
         goTo(Number((dot as HTMLElement).dataset.dot));
         startAutoplay();
       });
+    });
+
+    pauseBtn?.addEventListener('click', () => {
+      isPausedByUser = !isPausedByUser;
+      if (isPausedByUser) {
+        stopAutoplay();
+      } else {
+        startAutoplay();
+      }
+      if (pauseBtn) {
+        pauseBtn.textContent = isPausedByUser ? '[▶]' : '[⏸]';
+        pauseBtn.setAttribute('aria-pressed', String(isPausedByUser));
+        pauseBtn.setAttribute(
+          'aria-label',
+          isPausedByUser ? 'Reanudar autoplay' : 'Pausar autoplay'
+        );
+      }
     });
 
     slider.addEventListener('mouseenter', stopAutoplay);
