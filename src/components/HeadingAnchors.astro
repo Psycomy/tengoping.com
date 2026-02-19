@@ -66,6 +66,13 @@
     opacity: 1;
   }
 
+  /* Touch devices: always show anchors at reduced opacity (no hover state) */
+  @media (hover: none) {
+    :global(.heading-anchor) {
+      opacity: 0.4;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     :global(.heading-anchor) {
       transition: none;
