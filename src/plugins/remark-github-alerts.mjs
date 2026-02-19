@@ -10,7 +10,7 @@ const ALERT_TYPES = {
   CAUTION: 'Peligro',
 };
 
-const ALERT_RE = /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\n?/;
+const ALERT_RE = /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\][ \t]*\n?/;
 
 /**
  * Recorre el árbol mdast buscando blockquotes con marcador [!TIPO].
@@ -21,7 +21,8 @@ function walk(tree) {
     for (const child of tree.children) {
       if (child.type === 'blockquote') {
         transformAlert(child);
-      } else {
+      }
+      if (child.children) {
         walk(child);
       }
     }
@@ -55,7 +56,10 @@ function transformAlert(node) {
   // Insertar párrafo de título al inicio
   node.children.unshift({
     type: 'paragraph',
-    children: [{ type: 'text', value: `## ${title}` }],
+    children: [
+      // Prefijo "## " es decorativo (convención terminal del blog, no un heading mdast)
+      { type: 'text', value: `## ${title}` },
+    ],
     data: {
       hProperties: { className: ['callout-title'] },
     },
