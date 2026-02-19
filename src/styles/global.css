@@ -231,6 +231,70 @@ h4 {
   color: var(--color-text-secondary);
 }
 
+/* --- GitHub Alerts / Callouts --- */
+
+.prose blockquote.callout {
+  font-style: normal;
+  color: inherit;
+  border-left-width: 4px;
+}
+
+.prose blockquote.callout .callout-title {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-style: normal;
+}
+
+/* NOTE — verde terminal */
+.prose blockquote.callout-note {
+  border-left-color: #58d5a2;
+  background: #58d5a21a;
+}
+
+.prose blockquote.callout-note .callout-title {
+  color: #58d5a2;
+}
+
+/* TIP — azul eléctrico */
+.prose blockquote.callout-tip {
+  border-left-color: #00bfff;
+  background: #00bfff1a;
+}
+
+.prose blockquote.callout-tip .callout-title {
+  color: #00bfff;
+}
+
+/* IMPORTANT — púrpura */
+.prose blockquote.callout-important {
+  border-left-color: #a78bfa;
+  background: #a78bfa1a;
+}
+
+.prose blockquote.callout-important .callout-title {
+  color: #a78bfa;
+}
+
+/* WARNING — ámbar */
+.prose blockquote.callout-warning {
+  border-left-color: #f59e0b;
+  background: #f59e0b1a;
+}
+
+.prose blockquote.callout-warning .callout-title {
+  color: #f59e0b;
+}
+
+/* CAUTION — rojo */
+.prose blockquote.callout-caution {
+  border-left-color: #ef4444;
+  background: #ef44441a;
+}
+
+.prose blockquote.callout-caution .callout-title {
+  color: #ef4444;
+}
+
 .prose a {
   color: var(--color-primary);
   text-decoration: underline;
