@@ -12,6 +12,11 @@ const { currentId, currentTags, currentCategory } = Astro.props;
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 
+const TAG_SCORE_WEIGHT = 2;
+const RECENCY_DAYS = 365;
+const RECENCY_WEIGHT = 0.5;
+const MAX_RELATED = 3;
+
 const now = new Date();
 
 const scored = allPosts
@@ -19,15 +24,15 @@ const scored = allPosts
   .map((post) => {
     const sharedTags = post.data.tags.filter((tag) => currentTags.includes(tag)).length;
     const sameCategory = post.data.category === currentCategory ? 1 : 0;
-    const baseScore = sharedTags * 2 + sameCategory;
+    const baseScore = sharedTags * TAG_SCORE_WEIGHT + sameCategory;
     const daysSincePublished =
       (now.valueOf() - post.data.pubDate.valueOf()) / (1000 * 60 * 60 * 24);
-    const recencyBoost = Math.max(0, 1 - daysSincePublished / 365) * 0.5;
+    const recencyBoost = Math.max(0, 1 - daysSincePublished / RECENCY_DAYS) * RECENCY_WEIGHT;
     return { post, baseScore, score: baseScore + recencyBoost };
   })
   .filter(({ baseScore }) => baseScore > 0)
   .sort((a, b) => b.score - a.score)
-  .slice(0, 3);
+  .slice(0, MAX_RELATED);
 ---
 
 {
