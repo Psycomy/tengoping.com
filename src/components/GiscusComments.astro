@@ -15,6 +15,17 @@ const { giscus } = site;
 </section>
 
 <script>
+  // Sync giscus theme when user toggles dark/light mode
+  function updateGiscusTheme() {
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+    iframe?.contentWindow?.postMessage({ giscus: { setConfig: { theme } } }, 'https://giscus.app');
+  }
+
+  // Module-level reference so we can disconnect the previous observer before
+  // attaching a new one when initGiscus() runs after astro:after-swap.
+  let iframeObserver: MutationObserver | null = null;
+
   function initGiscus() {
     const section = document.getElementById('giscus-section');
     if (!section || section.querySelector('script[src*="giscus"]')) return;
@@ -38,36 +49,37 @@ const { giscus } = site;
     script.crossOrigin = 'anonymous';
     script.async = true;
     section.appendChild(script);
+
+    // When Giscus loads lazily (after scrolling into view), the iframe is injected
+    // into .giscus div. We observe that insertion to sync the current theme, in case
+    // the user changed theme before scrolling down to the comments section.
+    // Disconnect any previous observer (stale after astro:after-swap DOM swap) before
+    // attaching a fresh one to the current page's .giscus div.
+    iframeObserver?.disconnect();
+    const giscusDiv = section.querySelector('.giscus');
+    if (giscusDiv) {
+      iframeObserver = new MutationObserver(() => {
+        const iframe = giscusDiv.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+        if (!iframe) return;
+        iframeObserver?.disconnect();
+        iframeObserver = null;
+        // Wait for the iframe to finish loading before sending the theme message
+        iframe.addEventListener('load', updateGiscusTheme, { once: true });
+      });
+      iframeObserver.observe(giscusDiv, { childList: true });
+    }
   }
 
-  // Sync giscus theme when user toggles dark/light mode
-  function updateGiscusTheme() {
-    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-    const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
-    iframe?.contentWindow?.postMessage({ giscus: { setConfig: { theme } } }, 'https://giscus.app');
-  }
-
-  // When Giscus loads lazily (after scrolling into view), the iframe is injected into
-  // .giscus div. We observe that insertion to sync the current theme, in case the user
-  // changed theme before scrolling down to the comments section.
-  const giscusDiv = document.querySelector('.giscus');
-  if (giscusDiv) {
-    const iframeObserver = new MutationObserver(() => {
-      const iframe = giscusDiv.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
-      if (!iframe) return;
-      iframeObserver.disconnect();
-      // Wait for the iframe to finish loading before sending the theme message
-      iframe.addEventListener('load', updateGiscusTheme, { once: true });
-    });
-    iframeObserver.observe(giscusDiv, { childList: true });
-  }
-
-  const observer = new MutationObserver((mutations) => {
+  // Observe data-theme changes on <html> to keep Giscus in sync with the site theme.
+  // document.documentElement persists across page swaps, so this only needs to be
+  // set up once at module level (bundled scripts run exactly once in Astro without
+  // is:inline).
+  const themeObserver = new MutationObserver((mutations) => {
     for (const m of mutations) {
       if (m.attributeName === 'data-theme') updateGiscusTheme();
     }
   });
-  observer.observe(document.documentElement, { attributes: true });
+  themeObserver.observe(document.documentElement, { attributes: true });
 
   initGiscus();
   document.addEventListener('astro:after-swap', initGiscus);
