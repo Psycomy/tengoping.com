@@ -121,6 +121,13 @@ const authorJsonLd = authorData
 
       <ShareButtons title={title} url={canonicalURL} />
 
+      <div class="rss-cta">
+        <span class="rss-prompt">$ curl tengoping.com/rss.xml | subscribe</span>
+        <a href="/rss.xml" class="rss-link" aria-label="Suscribirse al feed RSS"
+          >[suscribirse por RSS →]</a
+        >
+      </div>
+
       {authorData && <AuthorCard author={authorData} />}
 
       <RelatedArticles currentId={entry.id} currentTags={tags} currentCategory={category} />
@@ -234,6 +241,34 @@ const authorJsonLd = authorData
     margin-bottom: 2rem;
     padding-bottom: 2rem;
     border-bottom: 1px solid var(--color-border);
+  }
+
+  .rss-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2rem;
+  }
+
+  .rss-prompt {
+    font-size: 0.8125rem;
+    color: var(--color-primary);
+  }
+
+  .rss-link {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .rss-link:hover {
+    color: var(--color-primary);
   }
 
   @media (max-width: 1024px) {
