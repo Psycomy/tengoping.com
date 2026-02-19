@@ -2,11 +2,13 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import pagefind from 'astro-pagefind';
+import remarkGithubAlerts from './src/plugins/remark-github-alerts.mjs';
 
 export default defineConfig({
   site: 'https://tengoping.com',
   integrations: [mdx(), sitemap(), pagefind()],
   markdown: {
+    remarkPlugins: [remarkGithubAlerts],
     shikiConfig: {
       themes: {
         light: 'github-light',
