@@ -12,7 +12,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky",
-    "check-links": "linkinator ./dist --recurse --skip \"^https?://(?!localhost)\" --verbosity error"
+    "check-links": "linkinator \"**/*.html\" --recurse --server-root ./dist --skip \"^https?://(?!localhost)\" --verbosity error"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
