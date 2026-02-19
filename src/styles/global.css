@@ -60,6 +60,7 @@
   --astro-code-token-string-expression: #032f62;
   --astro-code-token-punctuation: #1c1c2e;
   --astro-code-token-link: #1a73e8;
+  --color-success: #10b981;
 }
 
 [data-theme='dark'] {
@@ -92,6 +93,7 @@
   --astro-code-token-string-expression: #a5d6ff;
   --astro-code-token-punctuation: #e6edf3;
   --astro-code-token-link: #00bfff;
+  --color-success: #3dba7a;
 }
 
 /* ===== Reset & Base ===== */
@@ -421,9 +423,9 @@ h4 {
 }
 
 .copy-button.copied {
-  background: #10b981;
+  background: var(--color-success);
   color: var(--color-bg);
-  border-color: #10b981;
+  border-color: var(--color-success);
 }
 
 /* ===== Utility Classes ===== */
