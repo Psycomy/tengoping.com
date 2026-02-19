@@ -25,7 +25,15 @@ const { author, posts } = Astro.props;
   <section class="container page-section">
     <div class="author-card">
       <div class="author-avatar-wrapper">
-        <img src={author.avatar} alt={author.name} class="author-avatar" />
+        <img
+          src={author.avatar}
+          alt={author.name}
+          class="author-avatar"
+          width="300"
+          height="200"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <div class="author-content">
         <h1 class="author-name">{author.name}</h1>
