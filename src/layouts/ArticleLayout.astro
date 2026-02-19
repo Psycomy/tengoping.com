@@ -84,7 +84,7 @@ const authorJsonLd = authorData
         <a href={`/categorias/${slugify(category)}`} class="badge badge-category">{category}</a>
         <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
         {updatedDate && <span class="updated-date">(actualizado: {formatDate(updatedDate)})</span>}
-        <span class="reading-time" data-minutes={readingTime}>{readingTime} min de lectura</span>
+        <span class="reading-time">{readingTime} min de lectura</span>
       </div>
       <h1>{title}</h1>
       <p class="article-description">{description}</p>
