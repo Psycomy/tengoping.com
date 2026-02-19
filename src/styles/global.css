@@ -16,6 +16,7 @@
 
 /* ===== Custom Properties ===== */
 :root {
+  color-scheme: light dark;
   --color-primary: #1a73e8;
   --color-primary-light: #4a90ed;
   --color-primary-dark: #1557b0;
