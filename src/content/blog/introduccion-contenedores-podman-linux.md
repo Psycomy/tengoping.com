@@ -59,3 +59,6 @@ podman pod ps
 ## Conclusión
 
 Podman es una alternativa sólida a Docker, especialmente en entornos donde la seguridad y la ejecución sin root son prioritarias.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

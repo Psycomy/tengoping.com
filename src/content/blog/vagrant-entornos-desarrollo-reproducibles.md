@@ -227,3 +227,6 @@ vagrant package          # empaquetar VM como box
 ## Conclusion
 
 Vagrant convierte la creacion de entornos de desarrollo en un proceso predecible y repetible. Con un Vagrantfile versionado en Git, todos los miembros del equipo trabajan sobre la misma base. Combinado con aprovisionamiento automatico, puedes tener un entorno completo funcionando en minutos.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

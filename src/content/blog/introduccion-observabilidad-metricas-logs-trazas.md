@@ -383,3 +383,6 @@ Solo cuando tengas microservicios o una arquitectura con múltiples componentes 
 Si este artículo te ha dado una visión general, el siguiente paso natural es ensuciarte las manos. Mi recomendación: monta un stack de Prometheus + Grafana + Loki en un entorno de pruebas (Docker Compose es perfecto para esto) y empieza a monitorizar algo real. No necesitas un cluster de Kubernetes — tu propio servidor con node_exporter y Promtail ya te dará datos reales con los que experimentar.
 
 En futuros artículos entraremos en detalle con cada pilar: configurar Prometheus con alertas en Alertmanager, montar un stack de Loki para centralizar logs, y cómo instrumentar aplicaciones con OpenTelemetry. Si quieres ir preparándote, echa un vistazo a la documentación oficial de [Prometheus](https://prometheus.io/docs/) y [Grafana Loki](https://grafana.com/docs/loki/latest/).
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

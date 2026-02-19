@@ -181,3 +181,6 @@ sudo lynis audit system --profile /etc/lynis/custom.prf
 - Mantiene Lynis actualizado. Las versiones nuevas incorporan tests para vulnerabilidades y configuraciones recientes.
 
 Lynis no corrige los problemas automaticamente, pero te da un mapa claro de donde estan las debilidades de tu sistema y que hacer para resolverlas.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

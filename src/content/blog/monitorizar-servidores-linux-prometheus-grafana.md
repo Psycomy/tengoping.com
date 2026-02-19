@@ -199,3 +199,6 @@ sudo systemctl restart prometheus
 ## Conclusión
 
 Con Prometheus, Node Exporter y Grafana tienes un stack de monitorización completo y gratuito. El siguiente paso natural es añadir Alertmanager para enviar notificaciones por email, Slack o Telegram cuando salten las alertas.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

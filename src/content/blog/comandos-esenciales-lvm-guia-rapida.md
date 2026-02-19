@@ -164,3 +164,5 @@ lvs -o +lv_size,seg_pe_ranges
 ```
 
 > Recuerda: siempre haz un backup antes de modificar volúmenes en producción.
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

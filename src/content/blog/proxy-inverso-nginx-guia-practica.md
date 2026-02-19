@@ -164,3 +164,6 @@ sudo systemctl reload nginx
 ## Conclusión
 
 Nginx como proxy inverso es el estándar para exponer aplicaciones internas de forma segura. Con HTTPS centralizado, cabeceras de seguridad y balanceo de carga, un solo Nginx puede gestionar decenas de servicios internos sin que cada uno tenga que preocuparse por certificados o seguridad a nivel de transporte.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

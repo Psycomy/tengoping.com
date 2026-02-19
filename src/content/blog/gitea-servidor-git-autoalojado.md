@@ -215,3 +215,6 @@ git push --mirror
 - **Monitoreo**: revisa los logs en `/var/lib/gitea/log/` y supervisa el uso de disco.
 
 Con Gitea funcionando, tienes un servidor Git completo con interfaz web, gestion de usuarios, issues y pull requests, todo bajo tu propio techo.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

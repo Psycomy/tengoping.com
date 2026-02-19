@@ -246,3 +246,6 @@ git push origin v1.2.0
 Una vez que tengas tus configuraciones versionadas, el siguiente nivel es automatizar despliegues: que un `git push` dispare la aplicación de cambios en los servidores. Eso es CI/CD aplicado a infraestructura, y lo cubriremos en un próximo artículo.
 
 Por ahora, el primer paso es sencillo: crea un repositorio, versiona lo que tienes, y empieza a hacer commits. Tu futuro yo te lo agradecerá la primera vez que necesites volver atrás.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

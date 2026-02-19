@@ -181,3 +181,6 @@ Nunca expongas el panel web de OMV directamente a internet sin protección adici
 ## Conclusion
 
 OpenMediaVault convierte hardware económico o reciclado en un NAS competente. Con RAID, copias de seguridad automáticas y monitorización SMART, tus datos estarán protegidos sin depender de servicios en la nube ni pagar suscripciones. Empieza con lo que tengas, aunque sea un disco y un mini PC viejo, y amplía según tus necesidades.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

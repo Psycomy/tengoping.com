@@ -167,3 +167,6 @@ Para refrigeración, un disipador pasivo de aluminio es suficiente para uso norm
 ## Conclusión
 
 Una Raspberry Pi es el punto de entrada perfecto al mundo del homelab. Con un consumo inferior a 10W puedes tener un servidor funcionando las 24 horas del día sin impacto notable en la factura de la luz. Empieza con un servicio sencillo como Pi-hole, familiarízate con la administración remota por SSH y ve añadiendo servicios según tus necesidades.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

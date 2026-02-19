@@ -41,3 +41,6 @@ Lo que funciona en Google no funciona en un equipo de 5 personas. Adapta las pr�
 ## Conclusión
 
 DevOps en equipos pequeños es posible y necesario. La clave es empezar simple, medir resultados y mejorar incrementalmente.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

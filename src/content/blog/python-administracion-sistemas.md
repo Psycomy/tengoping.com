@@ -449,3 +449,6 @@ Si quieres ir más allá, estos son buenos siguientes pasos:
 - **systemd timers o cron**: programa tus scripts Python para que se ejecuten periódicamente y tendrás un sistema de monitorización hecho a medida.
 
 La gracia de Python para sysadmin no es hacer cosas que no puedas hacer con Bash. Es hacerlas de forma que dentro de seis meses puedas abrir el script, entenderlo en treinta segundos y modificarlo sin miedo a romper algo.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

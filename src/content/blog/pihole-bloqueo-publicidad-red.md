@@ -163,3 +163,6 @@ docker compose up -d
 ## Resultado
 
 Con Pi-hole funcionando como DNS de tu red, la navegacion sera mas rapida y limpia. Reduciras el consumo de ancho de banda, eliminaras rastreadores y tendras visibilidad total sobre las consultas DNS que generan tus dispositivos.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

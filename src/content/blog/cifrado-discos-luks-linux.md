@@ -176,3 +176,5 @@ La mayoria de entornos de escritorio Linux (GNOME, KDE) detectan automaticamente
 - El cifrado tiene un impacto minimo en el rendimiento gracias a las instrucciones AES-NI presentes en procesadores modernos.
 - Combina el cifrado de disco con permisos adecuados del sistema de archivos. LUKS protege los datos en reposo, no mientras el volumen esta desbloqueado.
 - Para servidores remotos sin acceso a consola durante el arranque, considera usar `clevis` y `tang` para desbloqueo automatico por red (Network Bound Disk Encryption).
+  > [!NOTE]
+  > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

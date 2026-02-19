@@ -285,3 +285,6 @@ sudo ./hw-diag.sh
 ## Conclusion
 
 Diagnosticar hardware desde la terminal no solo es posible sino que es la forma más directa y eficiente de hacerlo en servidores Linux. Con `smartctl` puedes anticipar fallos de disco, con `stress-ng` verificar la estabilidad de la CPU, con `sensors` controlar las temperaturas y con `iperf3` medir el rendimiento real de la red. Incorpora estas herramientas a tu rutina de mantenimiento y tendrás tus servidores bajo control.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

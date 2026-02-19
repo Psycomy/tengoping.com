@@ -303,3 +303,6 @@ concurrency:
 ## Siguiente paso
 
 Ya tienes las bases para automatizar cualquier flujo con GitHub Actions. El siguiente paso natural es explorar los self-hosted runners: máquinas que tú controlas (un servidor de tu red, una Raspberry Pi, una VM) donde se ejecutan los workflows en lugar de en la infraestructura de GitHub. Esto te da acceso a hardware específico, redes internas y elimina los límites de minutos gratuitos. Consulta la documentación oficial de GitHub sobre self-hosted runners y prepárate para llevar tu automatización al siguiente nivel.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

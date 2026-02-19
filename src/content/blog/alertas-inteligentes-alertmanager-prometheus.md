@@ -338,3 +338,6 @@ Revisa también la interfaz web de Alertmanager en `http://tu-servidor:9093` par
 ## Siguiente paso
 
 Con Alertmanager funcionando, el siguiente paso natural es implementar **Grafana OnCall** o **PagerDuty** para gestionar guardias y escalados. Alertmanager se encarga del enrutamiento inicial, pero un sistema de gestión de incidencias te permite definir rotaciones de guardia, escalados automáticos si nadie responde y un registro completo de cada incidente. También vale la pena explorar las **alerting rules basadas en recording rules** para simplificar expresiones PromQL complejas y mejorar el rendimiento de la evaluación.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

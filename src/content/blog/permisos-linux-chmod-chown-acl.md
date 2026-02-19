@@ -70,3 +70,6 @@ sudo setfacl -d -m g:developers:rwx /opt/app/src
 ## Conclusión
 
 Comprender los permisos en Linux es fundamental para la seguridad del sistema. Las ACLs complementan los permisos tradicionales cuando se necesita mayor granularidad.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

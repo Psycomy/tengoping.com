@@ -177,3 +177,6 @@ virsh snapshot-revert <vm> --snapshotname <snap>  # revertir
 ## Conclusion
 
 KVM con libvirt es la base de la virtualizacion en Linux. Con `virt-install` y `virsh` puedes crear y gestionar maquinas virtuales completas sin salir de la terminal. Una vez domines estos fundamentos, puedes explorar redes bridge, almacenamiento compartido y migracion en vivo entre hosts.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

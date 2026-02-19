@@ -175,3 +175,6 @@ Algunos ajustes adicionales que conviene tener en cuenta:
 - Combina Fail2Ban con otras medidas: claves SSH, firewall con listas de permitidos, port knocking o VPN.
 
 Fail2Ban no sustituye una configuracion de seguridad solida, pero es un complemento imprescindible para cualquier servidor Linux expuesto a la red.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

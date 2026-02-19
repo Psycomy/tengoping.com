@@ -75,3 +75,6 @@ systemctl status backup.timer
 ## Conclusión
 
 Cron sigue siendo válido para tareas simples. Los systemd timers ofrecen mejor integración con el sistema y control de dependencias para escenarios más complejos.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

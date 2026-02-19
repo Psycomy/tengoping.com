@@ -36,3 +36,6 @@ Kubernetes se ha consolidado como la plataforma de orquestación. Los servicios 
 ## Conclusión
 
 El cloud en 2025 es más maduro, más regulado y más centrado en costes. Los profesionales IT deben adaptarse a estas tendencias para seguir siendo relevantes.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

@@ -137,3 +137,6 @@ traceroute 10.10.1.1
 ## Conclusión
 
 `nmcli` es una herramienta potente y flexible para la gestión de rutas estáticas. Su integración con NetworkManager garantiza la persistencia de las configuraciones entre reinicios y proporciona una interfaz consistente en todas las distribuciones Linux modernas.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

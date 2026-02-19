@@ -71,3 +71,6 @@ echo "Disco: $(df -h / | awk 'NR==2{print $3"/"$2" ("$5")"}')"
 ## Conclusión
 
 Automatizar tareas repetitivas con Bash ahorra tiempo y reduce errores. Guarda estos scripts en un repositorio y adáptalos a tu entorno.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

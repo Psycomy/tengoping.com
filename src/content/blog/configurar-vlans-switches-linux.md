@@ -56,3 +56,6 @@ bridge vlan show
 ## Conclusión
 
 Las VLANs son fundamentales para una red bien organizada. Dominar su configuración tanto en switches como en Linux es esencial para cualquier administrador de redes.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

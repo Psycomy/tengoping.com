@@ -83,3 +83,6 @@ WantedBy=timers.target
 ## Conclusión
 
 systemd ofrece un control granular sobre los servicios del sistema. Dominar sus comandos es esencial para cualquier administrador de sistemas.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

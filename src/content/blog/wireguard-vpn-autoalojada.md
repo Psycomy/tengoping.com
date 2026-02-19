@@ -218,3 +218,6 @@ sudo ufw allow 51820/udp
 ## Resumen
 
 Con WireGuard tienes una VPN moderna, rapida y facil de mantener. La configuracion es minima comparada con OpenVPN, el rendimiento es superior y anadir nuevos clientes se reduce a generar claves y agregar un bloque `[Peer]`. Todo tu trafico viaja cifrado entre tus dispositivos y tu servidor, sin depender de servicios VPN de terceros.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

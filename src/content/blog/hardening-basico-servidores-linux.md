@@ -223,3 +223,6 @@ sudo ausearch -k identity -ts recent
 ## Conclusión
 
 Estas medidas cubren lo esencial. No hacen el servidor invulnerable, pero elevan significativamente el nivel de esfuerzo necesario para comprometerlo. El siguiente paso sería implementar SELinux en modo enforcing y configurar un SIEM centralizado para correlacionar los logs de auditoría.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

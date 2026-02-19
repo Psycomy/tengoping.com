@@ -35,3 +35,6 @@ Los sysadmins que integren herramientas de IA en su flujo de trabajo serán más
 ## Conclusión
 
 La IA no va a eliminar al sysadmin, pero sí transformará su rol. Los profesionales que se adapten tendrán una ventaja competitiva significativa.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

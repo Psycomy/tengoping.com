@@ -238,3 +238,6 @@ Con Uptime Kuma tienes cubierta la monitorización de disponibilidad, pero la di
 Otra línea interesante es integrar Uptime Kuma con tu sistema de gestión de incidentes. Si usas algo como **Grafana OnCall** o **PagerDuty**, puedes encadenar las alertas de Uptime Kuma vía webhook para que se generen incidentes automáticamente con escalado y rotación de guardia.
 
 Sea cual sea tu siguiente movimiento, lo importante es que ya no estás a ciegas. Y eso, en administración de sistemas, marca toda la diferencia.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

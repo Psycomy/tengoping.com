@@ -153,3 +153,6 @@ Para implementarlo, en vez de borrar por antigüedad, marca los backups semanale
 ## Conclusión
 
 rsync con `--link-dest` es una solución elegante que no necesita software adicional. Cada backup es navegable como una copia completa pero ocupa una fracción del espacio. Combinado con systemd timers y una buena política de retención, tienes una estrategia de backup sólida y fiable.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

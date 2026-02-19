@@ -167,3 +167,6 @@ Despues, en **Configuracion > Administracion > Ajustes basicos**, selecciona **C
 - **Backups**: programa copias de seguridad del directorio de datos y de la base de datos con `mysqldump`.
 
 Con Nextcloud funcionando, tienes tu propia nube privada donde tus archivos, calendarios y contactos permanecen bajo tu control total.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

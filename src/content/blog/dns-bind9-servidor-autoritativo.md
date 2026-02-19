@@ -72,3 +72,6 @@ dig @localhost tengoping.com
 ## Conclusión
 
 BIND9 sigue siendo la referencia para servidores DNS en Linux. Con una configuración adecuada y buenas prácticas de seguridad, es una solución robusta y fiable.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

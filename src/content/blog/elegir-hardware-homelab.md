@@ -143,3 +143,6 @@ Un servidor enterprise a 150W con el mismo precio de electricidad cuesta unos 19
 ## Conclusion
 
 No necesitas gastar una fortuna para montar un homelab funcional. Un mini PC de segunda mano con suficiente RAM puede ser todo lo que necesitas para empezar. Prioriza la RAM sobre la CPU, elige SSD para el sistema y HDDs para almacenamiento masivo, y ten siempre en cuenta el consumo eléctrico a largo plazo. El mejor homelab es el que usas, no el que tiene más luces LED en un rack.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

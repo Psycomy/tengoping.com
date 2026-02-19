@@ -67,3 +67,6 @@ sudo nft list ruleset
 ## Conclusión
 
 firewalld simplifica la gestión del firewall para la mayoría de casos. Para escenarios avanzados, nftables ofrece la flexibilidad necesaria.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

@@ -179,3 +179,6 @@ qm clone 100 103 --name vm-full --full
 ## Conclusion
 
 Los snapshots y clones son herramientas fundamentales en la gestion de maquinas virtuales. Los snapshots te protegen ante cambios arriesgados; los clones te permiten replicar entornos rapidamente. Conocer como funcionan internamente y sus limitaciones te ayudara a usarlos de forma eficiente y segura.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

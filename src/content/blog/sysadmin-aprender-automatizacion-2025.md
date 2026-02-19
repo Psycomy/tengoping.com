@@ -110,3 +110,5 @@ Los perfiles que combinan conocimientos de sysadmin con habilidades de automatiz
 La automatización no reemplaza al sysadmin; lo potencia. Te permite dedicar tiempo a lo que realmente importa: diseñar soluciones robustas, mejorar la seguridad y resolver problemas complejos.
 
 > El mejor momento para empezar a automatizar fue hace cinco años. El segundo mejor momento es hoy.
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

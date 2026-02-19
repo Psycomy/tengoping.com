@@ -196,3 +196,5 @@ Tambien puedes usar servicios web como SSL Labs (ssllabs.com/ssltest) para obten
 - Configura cabeceras de seguridad complementarias: `Strict-Transport-Security` (HSTS), `X-Content-Type-Options`, `X-Frame-Options`.
 - Monitoriza la fecha de expiracion de tus certificados con alguna herramienta de alertas para detectar fallos de renovacion antes de que el certificado caduque.
 - Nunca compartas ni expongas la clave privada (`privkey.pem`). Si sospechas que se ha comprometido, revoca el certificado con `certbot revoke` y genera uno nuevo.
+  > [!NOTE]
+  > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

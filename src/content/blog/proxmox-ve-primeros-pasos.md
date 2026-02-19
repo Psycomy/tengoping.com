@@ -174,3 +174,6 @@ pveam update               # actualizar plantillas
 ## Conclusion
 
 Proxmox VE ofrece una plataforma completa de virtualizacion sin coste de licencia. Con KVM para VMs y LXC para contenedores, es una solucion versatil tanto para homelabs como para entornos de produccion. La combinacion de interfaz web y herramientas CLI permite gestionar toda la infraestructura de forma eficiente.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.
