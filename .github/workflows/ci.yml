@@ -38,3 +38,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Check internal links
+        run: npm run check-links
