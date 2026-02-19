@@ -142,15 +142,6 @@ const imageURL = new URL(image, Astro.site);
             url: site.url,
             description: site.description,
             inLanguage: 'es',
-            potentialAction: {
-              '@type': 'SearchAction',
-              target: {
-                '@type': 'EntryPoint',
-                urlTemplate: `${site.url}/?q={search_term_string}`,
-                actionPlatform: 'https://schema.org/DesktopWebPlatform',
-              },
-              'query-input': 'required name=search_term_string',
-            },
           })}
         />
       )
