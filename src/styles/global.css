@@ -676,3 +676,18 @@ h4 {
   background: var(--color-primary) !important;
   color: var(--color-bg) !important;
 }
+
+/* ─── Reduced Motion ────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  body {
+    transition: none;
+  }
+}
