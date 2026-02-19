@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import { getReadingTime } from '@utils/readingTime';
 
 interface Props {
   currentId: string;
@@ -28,7 +29,8 @@ const scored = allPosts
     const daysSincePublished =
       (now.valueOf() - post.data.pubDate.valueOf()) / (1000 * 60 * 60 * 24);
     const recencyBoost = Math.max(0, 1 - daysSincePublished / RECENCY_DAYS) * RECENCY_WEIGHT;
-    return { post, baseScore, score: baseScore + recencyBoost };
+    const readingTime = getReadingTime(post.body || '');
+    return { post, baseScore, score: baseScore + recencyBoost, readingTime };
   })
   .filter(({ baseScore }) => baseScore > 0)
   .sort((a, b) => b.score - a.score)
@@ -42,7 +44,7 @@ const scored = allPosts
         <span class="prompt">$</span> find ./blog --related
       </h3>
       <div class="related-grid">
-        {scored.map(({ post }) => (
+        {scored.map(({ post, readingTime }) => (
           <a href={`/blog/${post.id}`} class="related-card card-hover">
             {post.data.image && (
               <Image
@@ -58,6 +60,7 @@ const scored = allPosts
             <div class="related-content">
               <span class="badge badge-category">{post.data.category}</span>
               <h4>{post.data.title}</h4>
+              <span class="related-time">{readingTime} min</span>
             </div>
           </a>
         ))}
@@ -124,6 +127,11 @@ const scored = allPosts
 
   .related-card:hover h4 {
     color: var(--color-primary);
+  }
+
+  .related-time {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
   }
 
   @media (max-width: 768px) {
