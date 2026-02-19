@@ -95,8 +95,14 @@
         .catch(function () {
           const container = document.getElementById('search-pagefind');
           if (container) {
-            container.innerHTML =
-              '<p class="terminal-error">error: índice no encontrado. Ejecuta <code>npm run build</code> primero.</p>';
+            const p = document.createElement('p');
+            p.className = 'terminal-error';
+            p.appendChild(document.createTextNode('error: índice no encontrado. Ejecuta '));
+            const code = document.createElement('code');
+            code.textContent = 'npm run build';
+            p.appendChild(code);
+            p.appendChild(document.createTextNode(' primero.'));
+            container.appendChild(p);
           }
         });
     }
