@@ -60,7 +60,7 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
       <a href={`/blog/${post.id}`}>{title}</a>
     </h3>
     <p class="card-description">
-      {description.length > 120 ? description.slice(0, 120) + '...' : description}
+      {description}
     </p>
     <div class="card-tags">
       {
@@ -170,6 +170,10 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
     font-size: 0.8125rem;
     line-height: 1.6;
     color: var(--color-text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .card-tags {

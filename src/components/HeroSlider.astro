@@ -57,11 +57,7 @@ const { posts } = Astro.props;
                 ./{post.data.category}
               </a>
               <h2 class="slide-title">{post.data.title}</h2>
-              <p class="slide-description">
-                {post.data.description.length > 140
-                  ? post.data.description.slice(0, 140) + '...'
-                  : post.data.description}
-              </p>
+              <p class="slide-description">{post.data.description}</p>
               <a href={`/blog/${post.id}`} class="slide-cta" tabindex={i !== 0 ? -1 : undefined}>
                 [$ leer más →]
               </a>
@@ -171,6 +167,10 @@ const { posts } = Astro.props;
     color: var(--color-text-secondary);
     line-height: 1.6;
     margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .slide-cta {
