@@ -267,7 +267,8 @@ const imageURL = new URL(image, Astro.site);
       <button id="sw-reload-btn">[actualizar]</button>
     </div>
     <script is:inline>
-      if ('serviceWorker' in navigator) {
+      function registerServiceWorker() {
+        if (!('serviceWorker' in navigator)) return;
         navigator.serviceWorker.register('/sw.js');
         navigator.serviceWorker.addEventListener('message', (event) => {
           if (event.data?.type !== 'SW_UPDATED') return;
@@ -278,6 +279,12 @@ const imageURL = new URL(image, Astro.site);
         if (reloadBtn) {
           reloadBtn.addEventListener('click', () => location.reload());
         }
+      }
+
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(registerServiceWorker);
+      } else {
+        setTimeout(registerServiceWorker, 1);
       }
     </script>
   </body>

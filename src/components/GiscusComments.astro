@@ -25,6 +25,7 @@ const { giscus } = site;
   // Module-level reference so we can disconnect the previous observer before
   // attaching a new one when initGiscus() runs after astro:after-swap.
   let iframeObserver: MutationObserver | null = null;
+  let sectionObserver: IntersectionObserver | null = null;
 
   function initGiscus() {
     const section = document.getElementById('giscus-section');
@@ -70,6 +71,31 @@ const { giscus } = site;
     }
   }
 
+  function observeAndLoadGiscus() {
+    const section = document.getElementById('giscus-section');
+    if (!section) return;
+
+    sectionObserver?.disconnect();
+    sectionObserver = null;
+
+    if ('IntersectionObserver' in window) {
+      sectionObserver = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          initGiscus();
+          sectionObserver?.disconnect();
+          sectionObserver = null;
+        },
+        { rootMargin: '300px 0px' }
+      );
+      sectionObserver.observe(section);
+      return;
+    }
+
+    // Fallback for very old browsers: load immediately
+    initGiscus();
+  }
+
   // Observe data-theme changes on <html> to keep Giscus in sync with the site theme.
   // document.documentElement persists across page swaps, so this only needs to be
   // set up once at module level (bundled scripts run exactly once in Astro without
@@ -81,8 +107,8 @@ const { giscus } = site;
   });
   themeObserver.observe(document.documentElement, { attributes: true });
 
-  initGiscus();
-  document.addEventListener('astro:after-swap', initGiscus);
+  observeAndLoadGiscus();
+  document.addEventListener('astro:after-swap', observeAndLoadGiscus);
 </script>
 
 <style>

@@ -184,7 +184,11 @@
     }
   }
 
-  initSearch();
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(() => initSearch());
+  } else {
+    setTimeout(initSearch, 1);
+  }
   document.addEventListener('astro:after-swap', initSearch);
 </script>
 

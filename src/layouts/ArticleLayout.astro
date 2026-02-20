@@ -52,6 +52,10 @@ const authorData = authors.find((a) => a.id === authorId);
 const readingTime = getReadingTime(entry.body || '');
 const ogImage = `/og/${entry.id}.png`;
 const canonicalURL = new URL(`/blog/${entry.id}`, Astro.site).toString();
+const lastReviewDate = updatedDate ?? pubDate;
+const STALE_DAYS_THRESHOLD = 365;
+const articleAgeDays = Math.floor((Date.now() - lastReviewDate.getTime()) / (1000 * 60 * 60 * 24));
+const isStale = articleAgeDays > STALE_DAYS_THRESHOLD;
 const authorPageUrl = authorData
   ? new URL(`/autor/${authorData.id}`, Astro.site).toString()
   : undefined;
@@ -102,6 +106,14 @@ const authorJsonLd = authorData
       </div>
       <h1>{title}</h1>
       <p class="article-description">{description}</p>
+      {
+        isStale && (
+          <aside class="stale-warning" role="note" aria-live="polite">
+            [!] Este artículo puede estar desactualizado. Última revisión:{' '}
+            {formatDate(lastReviewDate)}.
+          </aside>
+        )
+      }
     </header>
 
     {
@@ -206,6 +218,18 @@ const authorJsonLd = authorData
     color: var(--color-text-secondary);
     max-width: 650px;
     margin: 0 auto;
+  }
+
+  .stale-warning {
+    margin: 1.25rem auto 0;
+    max-width: 650px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #f59e0b;
+    background: color-mix(in srgb, #f59e0b 12%, transparent);
+    color: var(--color-text);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    text-align: left;
   }
 
   .article-image {

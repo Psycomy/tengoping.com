@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Post-build script: runs after `astro build` to:
- * 1. Compute SHA-256 hashes of all inline scripts → CSP sin 'unsafe-inline'
+ * 1. Compute SHA-256 hashes of all inline scripts/styles → CSP sin 'unsafe-inline'
  * 2. Inject build ID into service worker → invalidación automática de caché
  * 3. Write dist/_headers con CSP hash-based
  */
@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, '..', 'dist');
 
-// --- 1. Collect SHA-256 hashes of inline scripts from built HTML ---
+// --- 1. Collect SHA-256 hashes of inline scripts/styles from built HTML ---
 
 function collectInlineScriptHashes(dir, hashes = new Set()) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -25,6 +25,26 @@ function collectInlineScriptHashes(dir, hashes = new Set()) {
       // Match inline <script> (no src=, no type="application/ld+json")
       const re =
         /<script(?![^>]*\bsrc\s*=)(?![^>]*type\s*=\s*["']application\/ld\+json["'])[^>]*>([\s\S]*?)<\/script>/gi;
+      let match;
+      while ((match = re.exec(html)) !== null) {
+        const content = match[1];
+        if (!content.trim()) continue;
+        const hash = createHash('sha256').update(content, 'utf-8').digest('base64');
+        hashes.add(`'sha256-${hash}'`);
+      }
+    }
+  }
+  return hashes;
+}
+
+function collectInlineStyleHashes(dir, hashes = new Set()) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      collectInlineStyleHashes(fullPath, hashes);
+    } else if (entry.name.endsWith('.html')) {
+      const html = readFileSync(fullPath, 'utf-8');
+      const re = /<style[^>]*>([\s\S]*?)<\/style>/gi;
       let match;
       while ((match = re.exec(html)) !== null) {
         const content = match[1];
@@ -53,13 +73,16 @@ function updateServiceWorker() {
 
 // --- 3. Write _headers with hash-based CSP ---
 
-function writeHeaders(hashes) {
-  const scriptSrc = ["'self'", ...hashes, "'wasm-unsafe-eval'", 'https://giscus.app'].join(' ');
+function writeHeaders(scriptHashes, styleHashes) {
+  const scriptSrc = ["'self'", ...scriptHashes, "'wasm-unsafe-eval'", 'https://giscus.app'].join(
+    ' '
+  );
+  const styleSrc = ["'self'", ...styleHashes].join(' ');
 
   const csp = [
     "default-src 'self'",
     `script-src ${scriptSrc}`,
-    "style-src 'self' 'unsafe-inline'",
+    `style-src ${styleSrc}`,
     "font-src 'self'",
     "img-src 'self' data: https:",
     'frame-src https://giscus.app',
@@ -89,8 +112,11 @@ function writeHeaders(hashes) {
 
 // --- Run ---
 
-const hashes = collectInlineScriptHashes(DIST);
+const scriptHashes = collectInlineScriptHashes(DIST);
+const styleHashes = collectInlineStyleHashes(DIST);
 const buildId = updateServiceWorker();
-writeHeaders([...hashes]);
+writeHeaders([...scriptHashes], [...styleHashes]);
 
-console.log(`postbuild: ${hashes.size} script hashes, SW build ID: ${buildId}`);
+console.log(
+  `postbuild: ${scriptHashes.size} script hashes, ${styleHashes.size} style hashes, SW build ID: ${buildId}`
+);
