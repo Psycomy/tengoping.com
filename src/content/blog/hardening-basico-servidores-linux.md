@@ -3,8 +3,8 @@ title: 'Hardening básico de servidores Linux'
 description: 'Lista de medidas esenciales para securizar un servidor Linux recién instalado: SSH, usuarios, firewall, kernel y auditoría.'
 author: 'antonio'
 pubDate: 2026-01-22
-category: 'Linux'
-tags: ['Seguridad', 'Hardening', 'SSH', 'Sysadmin']
+category: 'Seguridad'
+tags: ['Linux', 'Hardening', 'SSH', 'Sysadmin']
 image: '../../assets/images/linux-hardening.jpg'
 draft: false
 ---

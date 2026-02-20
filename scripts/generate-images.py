@@ -88,7 +88,7 @@ ARTICLES = [
      ["├── sshd_config", "├── authorized_keys", "└── fail2ban"]),
     ("linux-systemd.jpg", "SYSTEMD", "gestión de servicios", "Linux",
      ["├── systemctl", "├── journalctl", "└── unit files"]),
-    ("linux-hardening.jpg", "HARDENING", "securing linux servers", "Linux",
+    ("linux-hardening.jpg", "HARDENING", "securing linux servers", "Seguridad",
      ["├── config/", "├── scripts/", "└── docs/"]),
     ("linux-containers.jpg", "PODMAN", "contenedores sin root", "Linux",
      ["├── podman run", "├── Containerfile", "└── pods/"]),
