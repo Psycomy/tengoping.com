@@ -25,6 +25,9 @@ const { post } = Astro.props;
 const { title, description, author, pubDate, category, tags, image } = post.data;
 const authorData = authors.find((a) => a.id === author);
 const readingTime = post.body ? getReadingTime(post.body) : 1;
+const authorAvatarSmall = authorData?.avatar
+  ? authorData.avatar.replace('/images/', '/images/avatars/').replace(/\.png$/i, '-56.webp')
+  : null;
 ---
 
 <article class="article-card card-hover">
@@ -38,7 +41,7 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
           loading="lazy"
           width={300}
           height={200}
-          format="webp"
+          format="avif"
           sizes="(max-width: 768px) 100vw, 300px"
         />
       ) : (
@@ -77,7 +80,7 @@ const readingTime = post.body ? getReadingTime(post.body) : 1;
           authorData && (
             <a href={`/autor/${authorData.id}`}>
               <img
-                src={authorData.avatar}
+                src={authorAvatarSmall ?? authorData.avatar}
                 alt={authorData.name}
                 class="card-avatar"
                 loading="lazy"

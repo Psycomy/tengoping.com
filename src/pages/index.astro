@@ -38,6 +38,7 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
 ---
 
 <BaseLayout isHome={true}>
+  <h1 class="sr-only">Blog técnico en español para administradores de sistemas</h1>
   <HeroSlider posts={allPosts.slice(0, 5)} />
   {
     sortedCategories.map(([category, posts]) => (
@@ -47,7 +48,11 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
             <span class="category-icon" set:html={categoryMeta[category]?.icon || ''} />
             {category}
           </h2>
-          <a class="cat-link" href={`/categorias/${slugify(category)}`}>
+          <a
+            class="cat-link"
+            href={`/categorias/${slugify(category)}`}
+            aria-label={`Ver todos los artículos de ${category}`}
+          >
             [ver todos →]
           </a>
         </div>

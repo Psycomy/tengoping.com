@@ -108,6 +108,10 @@ const imageURL = new URL(image, Astro.site);
     />
     <!-- Prefetch Pagefind for instant search -->
     <link rel="prefetch" href="/pagefind/pagefind-ui.js" as="script" />
+    <link rel="prefetch" href="/pagefind/pagefind.js" as="script" />
+    <link rel="prefetch" href="/pagefind/pagefind-highlight.js" as="script" />
+    <link rel="prefetch" href="/pagefind/wasm.es-es.pagefind" as="fetch" crossorigin />
+    <link rel="prefetch" href="/pagefind/wasm.unknown.pagefind" as="fetch" crossorigin />
 
     {
       article && author && (

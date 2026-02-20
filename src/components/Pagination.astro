@@ -14,7 +14,7 @@ const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
   lastPage > 1 && (
     <nav class="pagination" aria-label="Paginación">
       {url.prev ? (
-        <a href={url.prev} class="pagination-btn">
+        <a href={url.prev} rel="prev" class="pagination-btn">
           [&lt; prev]
         </a>
       ) : (
@@ -36,7 +36,7 @@ const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
       </div>
 
       {url.next ? (
-        <a href={url.next} class="pagination-btn">
+        <a href={url.next} rel="next" class="pagination-btn">
           [next &gt;]
         </a>
       ) : (

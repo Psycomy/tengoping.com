@@ -31,7 +31,7 @@ const { posts } = Astro.props;
               class="slide-image"
               loading={i === 0 ? 'eager' : 'lazy'}
               fetchpriority={i === 0 ? 'high' : 'auto'}
-              format="webp"
+              format="avif"
               width={1200}
               height={450}
               sizes="100vw"
@@ -303,12 +303,6 @@ const { posts } = Astro.props;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .slider-pause {
-      display: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
     .slider-track {
       transition: none;
     }
@@ -336,11 +330,6 @@ const { posts } = Astro.props;
     }
 
     .slider-arrow {
-      display: none;
-    }
-
-    .slider-counter,
-    .slider-pause {
       display: none;
     }
 

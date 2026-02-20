@@ -11,7 +11,7 @@ const { title, category } = Astro.props;
 const categorySlug = slugify(category);
 
 const breadcrumbItems = [
-  { name: '~', url: '/' },
+  { name: 'Inicio', url: '/' },
   { name: 'blog', url: '/blog' },
   { name: category, url: `/categorias/${categorySlug}` },
   { name: title, url: Astro.url.pathname },
@@ -21,7 +21,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: '~', item: site.url },
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: site.url },
     { '@type': 'ListItem', position: 2, name: 'blog', item: `${site.url}/blog` },
     {
       '@type': 'ListItem',
