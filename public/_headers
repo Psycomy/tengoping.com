@@ -1,6 +1,8 @@
 # IMPORTANTE: Este archivo es una plantilla en el repositorio.
 # `npm run build` ejecuta `scripts/postbuild.mjs` que sobrescribe
 # `dist/_headers` con los hashes SHA-256 reales de los inline scripts.
+# Si defines `CSP_REPORT_ENDPOINT`, también añade `report-to` y headers
+# `Reporting-Endpoints`/`Report-To` al archivo generado en `dist/_headers`.
 # NO editar manualmente — los cambios se perderán en el próximo build.
 
 /*

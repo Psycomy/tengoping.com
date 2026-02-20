@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, '..', 'dist');
+const DEFAULT_REPORT_GROUP = 'csp';
 
 // --- 1. Collect SHA-256 hashes of inline scripts/styles from built HTML ---
 
@@ -73,7 +74,30 @@ function updateServiceWorker() {
 
 // --- 3. Write _headers with hash-based CSP ---
 
-function writeHeaders(scriptHashes, styleHashes) {
+function getReportingConfig() {
+  const endpoint = process.env.CSP_REPORT_ENDPOINT?.trim();
+  if (!endpoint) return null;
+
+  try {
+    const parsed = new URL(endpoint);
+    if (parsed.protocol !== 'https:') {
+      console.warn(
+        `postbuild: CSP reporting disabled, endpoint must use https (${process.env.CSP_REPORT_ENDPOINT})`
+      );
+      return null;
+    }
+  } catch {
+    console.warn(
+      `postbuild: CSP reporting disabled, invalid CSP_REPORT_ENDPOINT (${process.env.CSP_REPORT_ENDPOINT})`
+    );
+    return null;
+  }
+
+  const reportGroup = process.env.CSP_REPORT_GROUP?.trim() || DEFAULT_REPORT_GROUP;
+  return { endpoint, reportGroup };
+}
+
+function writeHeaders(scriptHashes, styleHashes, reportingConfig) {
   const scriptSrc = ["'self'", ...scriptHashes, "'wasm-unsafe-eval'", 'https://giscus.app'].join(
     ' '
   );
@@ -95,6 +119,19 @@ function writeHeaders(scriptHashes, styleHashes) {
     'upgrade-insecure-requests',
     "frame-ancestors 'none'",
   ].join('; ');
+  const cspWithReporting = reportingConfig
+    ? `${csp}; report-to ${reportingConfig.reportGroup}`
+    : csp;
+  const reportToHeader = reportingConfig
+    ? JSON.stringify({
+        group: reportingConfig.reportGroup,
+        max_age: 10886400,
+        endpoints: [{ url: reportingConfig.endpoint }],
+      })
+    : null;
+  const reportingHeaders = reportingConfig
+    ? `  Reporting-Endpoints: ${reportingConfig.reportGroup}="${reportingConfig.endpoint}"\n  Report-To: ${reportToHeader}\n`
+    : '';
 
   const content = `/*
   X-Frame-Options: DENY
@@ -104,7 +141,8 @@ function writeHeaders(scriptHashes, styleHashes) {
   X-XSS-Protection: 0
   X-Permitted-Cross-Domain-Policies: none
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: ${csp}
+  Content-Security-Policy: ${cspWithReporting}
+${reportingHeaders}
 `;
 
   writeFileSync(join(DIST, '_headers'), content);
@@ -115,8 +153,11 @@ function writeHeaders(scriptHashes, styleHashes) {
 const scriptHashes = collectInlineScriptHashes(DIST);
 const styleHashes = collectInlineStyleHashes(DIST);
 const buildId = updateServiceWorker();
-writeHeaders([...scriptHashes], [...styleHashes]);
+const reportingConfig = getReportingConfig();
+writeHeaders([...scriptHashes], [...styleHashes], reportingConfig);
 
 console.log(
-  `postbuild: ${scriptHashes.size} script hashes, ${styleHashes.size} style hashes, SW build ID: ${buildId}`
+  `postbuild: ${scriptHashes.size} script hashes, ${styleHashes.size} style hashes, SW build ID: ${buildId}, CSP reporting: ${
+    reportingConfig ? `enabled (${reportingConfig.reportGroup})` : 'disabled'
+  }`
 );

@@ -47,6 +47,16 @@ npm run preview
 
 > La búsqueda (Pagefind) solo funciona tras ejecutar `npm run build`, ya que indexa el HTML generado.
 
+## Variables de entorno (seguridad)
+
+El script `scripts/postbuild.mjs` permite habilitar reporting de violaciones CSP de forma opcional:
+
+- `CSP_REPORT_ENDPOINT` (opcional): URL HTTPS del endpoint receptor de reportes.
+- `CSP_REPORT_GROUP` (opcional): nombre del grupo de reporting. Por defecto: `csp`.
+
+Si `CSP_REPORT_ENDPOINT` no está definido (o no es una URL HTTPS válida), el build sigue funcionando y
+se genera CSP sin `report-to`.
+
 ## Crear un artículo
 
 Crea un archivo `.md` o `.mdx` en `src/content/blog/`:
