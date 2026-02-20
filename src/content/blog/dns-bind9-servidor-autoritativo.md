@@ -51,7 +51,7 @@ zone "tengoping.com" IN {
 ; /var/named/tengoping.com.zone
 $TTL 86400
 @   IN  SOA ns1.tengoping.com. admin.tengoping.com. (
-        2025020601  ; Serial
+        2026020601  ; Serial
         3600        ; Refresh
         1800        ; Retry
         604800      ; Expire

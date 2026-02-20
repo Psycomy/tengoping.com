@@ -152,9 +152,9 @@ done
 Esto produce una salida como:
 
 ```text
-20250901: 67
-20250908: 72
-20250915: 78
+20260901: 67
+20260908: 72
+20260915: 78
 ```
 
 Si el indice baja entre dos ejecuciones, revisa las diferencias en los archivos `.dat` para identificar que ha cambiado.

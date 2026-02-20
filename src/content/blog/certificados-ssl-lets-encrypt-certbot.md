@@ -112,7 +112,7 @@ Deberias ver algo como:
 
 ```text
 NEXT                         LEFT          LAST                         PASSED  UNIT
-2025-12-21 03:24:00 UTC      8h left       2025-12-20 15:24:00 UTC      4h ago  snap.certbot.renew.timer
+2026-12-21 03:24:00 UTC      8h left       2026-12-20 15:24:00 UTC      4h ago  snap.certbot.renew.timer
 ```
 
 Si usaste el paquete del sistema en lugar de snap, el timer puede llamarse `certbot.timer`:

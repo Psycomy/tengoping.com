@@ -133,7 +133,7 @@ No basta con hacer backups, hay que comprobar que funcionan:
 
 ```bash
 # Comparar origen y backup
-diff -rq /datos/ /backups/servidor01/2025-02-08_0300/
+diff -rq /datos/ /backups/servidor01/2026-02-08_0300/
 
 # Ver espacio real ocupado (con hardlinks)
 du -sh /backups/servidor01/*

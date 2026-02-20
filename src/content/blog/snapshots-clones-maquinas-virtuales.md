@@ -40,8 +40,8 @@ Salida tipica:
 ```
  Name          Creation Time              State
 -------------------------------------------------
- pre-upgrade   2025-10-20 14:30:00 +0200  running
- post-config   2025-10-21 09:15:00 +0200  shutoff
+ pre-upgrade   2026-10-20 14:30:00 +0200  running
+ post-config   2026-10-21 09:15:00 +0200  shutoff
 ```
 
 ### Obtener informacion de un snapshot

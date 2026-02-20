@@ -99,11 +99,9 @@ ARTICLES = [
     # Opinión
     ("opinion-devops.jpg", "DEVOPS", "cultura en equipos pequeños", "Opinión",
      ["├── ci-cd/", "├── iac/", "└── monitoring/"]),
-    ("opinion-cloud.jpg", "CLOUD 2025", "tendencias clave", "Opinión",
-     ["├── edge computing", "├── serverless", "└── multi-cloud"]),
     ("opinion-ia.jpg", "IA & SYSADMIN", "¿oportunidad o amenaza?", "Opinión",
      ["├── chatops/", "├── aiops/", "└── automation/"]),
-    ("sysadmin-automation.jpg", "AUTOMATIZACIÓN", "por qué aprender en 2025", "Opinión",
+    ("sysadmin-automation.jpg", "AUTOMATIZACIÓN", "por qué aprender en 2026", "Opinión",
      ["├── ansible/", "├── terraform/", "└── scripts/"]),
     ("por-que-este-blog.jpg", "ESTE BLOG", "por qué existe este sitio", "Opinión",
      ["├── notas/", "├── tutoriales/", "└── cheat-sheets/"]),
