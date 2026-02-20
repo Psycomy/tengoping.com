@@ -6,7 +6,7 @@ pubDate: 2026-02-10
 category: 'Virtualización'
 tags: ['Snapshots', 'KVM', 'Proxmox', 'Virtualización']
 image: '../../assets/images/vm-snapshots.jpg'
-draft: false
+draft: true
 ---
 
 ## Snapshots vs clones

@@ -20,11 +20,11 @@ Sin Fail2Ban, un servidor SSH publico puede recibir miles de intentos de login p
 En distribuciones basadas en RHEL y en Debian/Ubuntu:
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf install epel-release -y
 sudo dnf install fail2ban -y
 
-# Debian / Ubuntu
+# Ubuntu/Debian
 sudo apt update
 sudo apt install fail2ban -y
 ```

@@ -30,7 +30,7 @@ OpenVPN lleva anos siendo el estandar, pero WireGuard lo supera en varios aspect
 ### En el servidor
 
 ```bash
-# Debian / Ubuntu
+# Ubuntu/Debian
 sudo apt update && sudo apt install wireguard -y
 
 # RHEL / Rocky / Alma

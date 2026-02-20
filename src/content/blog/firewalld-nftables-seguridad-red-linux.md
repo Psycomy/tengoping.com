@@ -36,6 +36,26 @@ sudo firewall-cmd --zone=dmz --add-interface=eth1 --permanent
 sudo firewall-cmd --zone=dmz --add-service=http --permanent
 ```
 
+## UFW en Ubuntu/Debian
+
+UFW (Uncomplicated Firewall) simplifica la gestión del firewall en Ubuntu y Debian con una sintaxis directa.
+
+### Comandos básicos
+
+```bash
+sudo ufw status verbose
+sudo ufw enable
+```
+
+### Abrir puertos y servicios
+
+```bash
+sudo ufw allow OpenSSH
+sudo ufw allow 80/tcp
+sudo ufw allow 8080/tcp
+sudo ufw reload
+```
+
 ## nftables: control total
 
 nftables es el sucesor de iptables y ofrece una sintaxis unificada.
@@ -58,15 +78,15 @@ sudo nft list ruleset
 
 ## ¿Cuál usar?
 
-| Escenario         | Recomendación               |
-| ----------------- | --------------------------- |
-| Servidor estándar | firewalld                   |
-| Reglas complejas  | nftables directo            |
-| Entornos cloud    | security groups + firewalld |
+| Escenario         | Recomendación                    |
+| ----------------- | -------------------------------- |
+| Servidor estándar | firewalld o ufw                  |
+| Reglas complejas  | nftables directo                 |
+| Entornos cloud    | security groups + firewall local |
 
 ## Conclusión
 
-firewalld simplifica la gestión del firewall para la mayoría de casos. Para escenarios avanzados, nftables ofrece la flexibilidad necesaria.
+firewalld y ufw simplifican la gestión del firewall para la mayoría de casos según la distro. Para escenarios avanzados, nftables ofrece la flexibilidad necesaria.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

@@ -68,6 +68,60 @@ echo "RAM: $(free -h | awk '/Mem:/{print $3"/"$2}')"
 echo "Disco: $(df -h / | awk 'NR==2{print $3"/"$2" ("$5")"}')"
 ```
 
+## 6. Alerta de memoria alta
+
+```bash
+#!/bin/bash
+THRESHOLD=85
+usage=$(free | awk '/Mem:/{printf("%.0f", $3/$2*100)}')
+if [ "$usage" -ge "$THRESHOLD" ]; then
+  echo "ALERTA: uso de memoria al ${usage}%"
+fi
+```
+
+## 7. Sincronización de directorios con rsync
+
+```bash
+#!/bin/bash
+SOURCE="/srv/app/"
+DEST="backup@192.168.1.50:/data/app/"
+rsync -avz --delete "$SOURCE" "$DEST"
+```
+
+## 8. Comprobación de puertos críticos
+
+```bash
+#!/bin/bash
+PORTS=(22 80 443 5432)
+for port in "${PORTS[@]}"; do
+  if ! ss -lnt | awk '{print $4}' | grep -q ":$port$"; then
+    echo "ALERTA: puerto $port no está escuchando"
+  fi
+done
+```
+
+## 9. Renovación automática de certificados (Let's Encrypt)
+
+```bash
+#!/bin/bash
+certbot renew --quiet
+if [ $? -eq 0 ]; then
+  systemctl reload nginx
+fi
+```
+
+## 10. Inventario básico de servidores
+
+```bash
+#!/bin/bash
+OUT="/tmp/inventario-$(date +%F).csv"
+echo "host,ip,kernel,uptime" > "$OUT"
+for host in "$@"; do
+  ssh "$host" "echo -n \"$host,\"; hostname -I | awk '{print \$1}' | tr -d '\n'; echo -n ','; uname -r | tr -d '\n'; echo -n ','; uptime -p"
+done >> "$OUT"
+echo "Inventario generado en: $OUT"
+```
+
 ## Conclusión
 
 Automatizar tareas repetitivas con Bash ahorra tiempo y reduce errores. Guarda estos scripts en un repositorio y adáptalos a tu entorno.

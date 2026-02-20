@@ -6,7 +6,7 @@ pubDate: 2026-02-01
 category: 'Hardware'
 tags: ['Raspberry Pi', 'Homelab', 'Hardware', 'Linux']
 image: '../../assets/images/raspberry-pi-server.jpg'
-draft: false
+draft: true
 ---
 
 ## Introduccion

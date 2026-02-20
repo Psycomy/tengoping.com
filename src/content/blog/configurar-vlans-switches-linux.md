@@ -6,7 +6,7 @@ pubDate: 2026-01-05
 category: 'Redes'
 tags: ['VLAN', 'Redes', 'Switch', 'Linux']
 image: '../../assets/images/redes-vlan.jpg'
-draft: false
+draft: true
 ---
 
 ## ¿Qué es una VLAN?

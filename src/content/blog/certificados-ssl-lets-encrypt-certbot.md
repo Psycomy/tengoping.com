@@ -27,10 +27,10 @@ sudo ln -s /snap/bin/certbot /usr/bin/certbot
 Si prefieres usar el gestor de paquetes de tu distribucion:
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf install certbot python3-certbot-nginx -y
 
-# Debian / Ubuntu
+# Ubuntu/Debian
 sudo apt install certbot python3-certbot-nginx -y
 ```
 

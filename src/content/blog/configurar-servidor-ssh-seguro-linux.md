@@ -18,10 +18,10 @@ SSH (Secure Shell) es el protocolo estándar para la administración remota de s
 La mayoría de distribuciones incluyen OpenSSH por defecto. Para asegurarnos de que está instalado y activo:
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf install openssh-server -y
 
-# Ubuntu / Debian
+# Ubuntu/Debian
 sudo apt install openssh-server -y
 ```
 
@@ -76,12 +76,12 @@ ssh -p 2222 admin@servidor
 Abrimos el nuevo puerto antes de reiniciar SSH para no perder el acceso.
 
 ```bash
-# RHEL / Rocky / Oracle Linux (firewalld)
+# RHEL/Rocky/Oracle Linux (firewalld)
 sudo firewall-cmd --permanent --add-port=2222/tcp
 sudo firewall-cmd --permanent --remove-service=ssh
 sudo firewall-cmd --reload
 
-# Ubuntu / Debian (ufw)
+# Ubuntu/Debian (ufw)
 sudo ufw allow 2222/tcp
 sudo ufw delete allow ssh
 sudo ufw reload
@@ -92,11 +92,11 @@ sudo ufw reload
 Fail2ban protege contra ataques de fuerza bruta:
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf install epel-release -y
 sudo dnf install fail2ban -y
 
-# Ubuntu / Debian
+# Ubuntu/Debian
 sudo apt install fail2ban -y
 ```
 

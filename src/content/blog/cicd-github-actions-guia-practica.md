@@ -6,7 +6,7 @@ pubDate: 2026-02-15
 category: 'Software'
 tags: ['ci-cd', 'github-actions', 'devops', 'automatizacion']
 image: '../../assets/images/soft-cicd.jpg'
-draft: false
+draft: true
 ---
 
 ## Por qué CI/CD importa si administras servidores

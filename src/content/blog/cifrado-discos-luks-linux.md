@@ -6,7 +6,7 @@ pubDate: 2026-02-03
 category: 'Seguridad'
 tags: ['LUKS', 'Cifrado', 'Seguridad', 'Linux']
 image: '../../assets/images/luks-cifrado.jpg'
-draft: false
+draft: true
 ---
 
 ## Por que cifrar tus discos
@@ -20,10 +20,10 @@ LUKS (Linux Unified Key Setup) es el estandar de cifrado de disco en Linux. Util
 Necesitas el paquete `cryptsetup`, que suele estar instalado por defecto. Si no lo esta:
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf install cryptsetup -y
 
-# Debian / Ubuntu
+# Ubuntu/Debian
 sudo apt install cryptsetup -y
 ```
 

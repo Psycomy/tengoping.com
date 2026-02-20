@@ -116,10 +116,10 @@ Prometheus estará accesible en `http://servidor:9090`.
 ## Instalar Grafana
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf install -y https://dl.grafana.com/oss/release/grafana-11.1.0-1.x86_64.rpm
 
-# Ubuntu / Debian
+# Ubuntu/Debian
 wget -q -O /usr/share/keyrings/grafana.key https://apt.grafana.com/gpg.key
 echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" \
   | sudo tee /etc/apt/sources.list.d/grafana.list

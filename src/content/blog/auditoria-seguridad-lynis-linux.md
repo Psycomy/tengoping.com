@@ -22,10 +22,10 @@ Lynis esta disponible en los repositorios de la mayoria de distribuciones y tamb
 ### Desde el gestor de paquetes
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf install lynis -y
 
-# Debian / Ubuntu
+# Ubuntu/Debian
 sudo apt install lynis -y
 ```
 

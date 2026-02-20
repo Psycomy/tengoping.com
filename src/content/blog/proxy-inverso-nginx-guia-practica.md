@@ -19,7 +19,7 @@ Un proxy inverso recibe las peticiones de los clientes y las reenvía al servido
 # RHEL / Oracle Linux / Rocky
 sudo dnf install nginx
 
-# Debian / Ubuntu
+# Ubuntu/Debian
 sudo apt install nginx
 ```
 

@@ -6,7 +6,7 @@ pubDate: 2026-01-26
 category: 'Virtualización'
 tags: ['KVM', 'libvirt', 'Virtualización', 'Linux']
 image: '../../assets/images/kvm-libvirt.jpg'
-draft: false
+draft: true
 ---
 
 ## Que es KVM

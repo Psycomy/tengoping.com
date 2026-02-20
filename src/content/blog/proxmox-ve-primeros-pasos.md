@@ -6,7 +6,7 @@ pubDate: 2026-02-02
 category: 'Virtualización'
 tags: ['Proxmox', 'Virtualización', 'LXC', 'Homelab']
 image: '../../assets/images/proxmox-ve.jpg'
-draft: false
+draft: true
 ---
 
 ## Que es Proxmox VE

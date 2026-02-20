@@ -18,12 +18,12 @@ Un servidor Linux con la instalación por defecto no está preparado para produc
 Lo más básico y lo más efectivo:
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf update -y
 sudo dnf install dnf-automatic
 sudo systemctl enable --now dnf-automatic-install.timer
 
-# Debian / Ubuntu
+# Ubuntu/Debian
 sudo apt update && sudo apt upgrade -y
 sudo apt install unattended-upgrades
 sudo dpkg-reconfigure unattended-upgrades

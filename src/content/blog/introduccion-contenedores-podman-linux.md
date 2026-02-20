@@ -16,10 +16,10 @@ Podman es una herramienta para gestionar contenedores OCI que no requiere un dae
 ## Instalación
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf install podman -y
 
-# Ubuntu / Debian
+# Ubuntu/Debian
 sudo apt install podman -y
 
 podman --version

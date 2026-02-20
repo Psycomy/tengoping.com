@@ -6,7 +6,7 @@ pubDate: 2026-02-14
 category: 'Monitorización'
 tags: ['alertmanager', 'prometheus', 'alertas', 'monitoring']
 image: '../../assets/images/mon-alertmanager.jpg'
-draft: false
+draft: true
 ---
 
 ## El síndrome del pastor mentiroso

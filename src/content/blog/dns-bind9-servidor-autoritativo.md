@@ -16,11 +16,11 @@ Gestionar tu propio servidor DNS autoritativo te da control total sobre las zona
 ## Instalación de BIND9
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf install bind bind-utils -y
 sudo systemctl enable --now named
 
-# Ubuntu / Debian
+# Ubuntu/Debian
 sudo apt install bind9 bind9utils -y
 sudo systemctl enable --now bind9
 ```

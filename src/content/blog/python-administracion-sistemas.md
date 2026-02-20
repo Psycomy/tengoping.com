@@ -6,7 +6,7 @@ pubDate: 2026-02-18
 category: 'Software'
 tags: ['python', 'scripting', 'automatizacion', 'sysadmin']
 image: '../../assets/images/soft-python.jpg'
-draft: false
+draft: true
 ---
 
 Si llevas tiempo administrando sistemas, seguro que tienes una colección de scripts en Bash que resuelven problemas del día a día. Funcionan, los conoces bien y hacen su trabajo. Entonces, ¿por qué molestarse con Python?

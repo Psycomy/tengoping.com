@@ -6,7 +6,7 @@ pubDate: 2026-01-17
 category: 'Opinión'
 tags: ['DevOps', 'Opinión', 'Cultura', 'Equipos']
 image: '../../assets/images/opinion-devops.jpg'
-draft: false
+draft: true
 ---
 
 ## DevOps no es solo herramientas

@@ -16,10 +16,10 @@ Ansible permite automatizar la configuración de servidores de forma declarativa
 ## Instalación
 
 ```bash
-# RHEL / Rocky / Oracle Linux
+# RHEL/Rocky/Oracle Linux
 sudo dnf install ansible-core -y
 
-# Ubuntu / Debian
+# Ubuntu/Debian
 sudo apt install ansible -y
 
 ansible --version
@@ -57,12 +57,20 @@ db1.tengoping.com
         state: started
         enabled: true
 
-    - name: Abrir puerto 80
-      firewalld:
+    - name: Abrir puerto 80 en firewalld (RHEL/Rocky/Oracle)
+      ansible.posix.firewalld:
         port: 80/tcp
         permanent: true
         state: enabled
         immediate: true
+      when: ansible_os_family == "RedHat"
+
+    - name: Abrir puerto 80 en ufw (Ubuntu/Debian)
+      community.general.ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+      when: ansible_os_family == "Debian"
 ```
 
 ```bash

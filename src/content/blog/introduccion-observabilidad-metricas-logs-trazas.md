@@ -6,7 +6,7 @@ pubDate: 2026-02-17
 category: 'Monitorización'
 tags: ['observabilidad', 'metricas', 'logs', 'trazas', 'monitoring']
 image: '../../assets/images/mon-observabilidad.jpg'
-draft: false
+draft: true
 ---
 
 ## Son las 3 de la mañana y algo falla
