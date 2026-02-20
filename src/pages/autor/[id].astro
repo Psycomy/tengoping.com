@@ -19,9 +19,28 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { author, posts } = Astro.props;
+
+const authorSocial = author.social as { twitter?: string; github?: string; linkedin?: string };
+const authorSameAs = [authorSocial.github, authorSocial.twitter, authorSocial.linkedin].filter(
+  (v): v is string => Boolean(v)
+);
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': new URL(`/autor/${author.id}`, Astro.site).toString(),
+  name: author.name,
+  url: new URL(`/autor/${author.id}`, Astro.site).toString(),
+  description: author.bio,
+  image: {
+    '@type': 'ImageObject',
+    url: new URL(author.avatar, Astro.site).toString(),
+  },
+  ...(authorSameAs.length > 0 && { sameAs: authorSameAs }),
+};
 ---
 
 <BaseLayout title={author.name} description={author.bio}>
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
   <section class="container page-section">
     <div class="author-card">
       <div class="author-avatar-wrapper">

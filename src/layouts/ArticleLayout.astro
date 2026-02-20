@@ -50,16 +50,29 @@ const {
 
 const authorData = authors.find((a) => a.id === authorId);
 const readingTime = getReadingTime(entry.body || '');
-const ogImage = image?.src || `/og/${entry.id}.png`;
+const ogImage = `/og/${entry.id}.png`;
 const canonicalURL = new URL(`/blog/${entry.id}`, Astro.site).toString();
+const authorPageUrl = authorData
+  ? new URL(`/autor/${authorData.id}`, Astro.site).toString()
+  : undefined;
+
+const authorSocial = authorData?.social as
+  | { github?: string; twitter?: string; linkedin?: string }
+  | undefined;
+const authorSameAs = authorSocial
+  ? [authorSocial.github, authorSocial.twitter, authorSocial.linkedin].filter((v): v is string =>
+      Boolean(v)
+    )
+  : [];
 
 const authorJsonLd = authorData
   ? {
       '@context': 'https://schema.org',
       '@type': 'Person',
+      '@id': new URL(`/autor/${authorData.id}`, Astro.site).toString(),
       name: authorData.name,
       url: new URL(`/autor/${authorData.id}`, Astro.site).toString(),
-      ...(authorData.social?.github && { sameAs: [authorData.social.github] }),
+      ...(authorSameAs.length > 0 && { sameAs: authorSameAs }),
       ...(authorData.bioShort && { description: authorData.bioShort }),
     }
   : null;
@@ -73,6 +86,7 @@ const authorJsonLd = authorData
   publishDate={pubDate.toISOString()}
   modifiedDate={updatedDate?.toISOString()}
   author={authorData?.name}
+  authorUrl={authorPageUrl}
 >
   {authorJsonLd && <script type="application/ld+json" set:html={JSON.stringify(authorJsonLd)} />}
 

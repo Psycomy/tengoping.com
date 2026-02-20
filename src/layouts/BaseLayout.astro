@@ -13,6 +13,7 @@ interface Props {
   publishDate?: string;
   modifiedDate?: string;
   author?: string;
+  authorUrl?: string;
   noindex?: boolean;
   isHome?: boolean;
   canonicalOverride?: string;
@@ -26,6 +27,7 @@ const {
   publishDate,
   modifiedDate,
   author,
+  authorUrl,
   noindex = false,
   isHome = false,
   canonicalOverride,
@@ -78,6 +80,7 @@ const imageURL = new URL(image, Astro.site);
     <meta property="og:site_name" content={site.title} />
     {publishDate && <meta property="article:published_time" content={publishDate} />}
     {modifiedDate && <meta property="article:modified_time" content={modifiedDate} />}
+    {article && authorUrl && <meta property="article:author" content={authorUrl} />}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -113,11 +116,18 @@ const imageURL = new URL(image, Astro.site);
           set:html={JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'BlogPosting',
+            '@id': canonicalURL.toString(),
             headline: title,
             description: description,
             image: imageURL.toString(),
+            url: canonicalURL.toString(),
             datePublished: publishDate,
-            ...(modifiedDate && { dateModified: modifiedDate }),
+            dateModified: modifiedDate ?? publishDate,
+            inLanguage: 'es',
+            mainEntityOfPage: {
+              '@type': 'WebPage',
+              '@id': canonicalURL.toString(),
+            },
             author: {
               '@type': 'Person',
               name: author,
@@ -126,6 +136,10 @@ const imageURL = new URL(image, Astro.site);
               '@type': 'Organization',
               name: site.title,
               url: site.url,
+              logo: {
+                '@type': 'ImageObject',
+                url: `${site.url}/favicon.svg`,
+              },
             },
           })}
         />
@@ -139,6 +153,7 @@ const imageURL = new URL(image, Astro.site);
           set:html={JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'WebSite',
+            '@id': site.url,
             name: site.title,
             url: site.url,
             description: site.description,
@@ -157,7 +172,10 @@ const imageURL = new URL(image, Astro.site);
             '@type': 'Organization',
             name: site.title,
             url: site.url,
-            logo: `${site.url}/favicon.svg`,
+            logo: {
+              '@type': 'ImageObject',
+              url: `${site.url}/favicon.svg`,
+            },
             description: site.description,
             sameAs: ['https://github.com/Psycomy'],
           })}
