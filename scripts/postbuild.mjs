@@ -188,7 +188,7 @@ function writeHeaders(scriptHashes, styleHashes, reportingConfig) {
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), serial=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=()
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=()
   X-XSS-Protection: 0
   X-Permitted-Cross-Domain-Policies: none
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
