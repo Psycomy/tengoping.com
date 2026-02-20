@@ -11,58 +11,59 @@ const tagCounts = tags
     slug: slugify(tag),
     count: posts.filter((p) => p.data.tags.includes(tag)).length,
   }))
-  .sort((a, b) => b.count - a.count);
+  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 
-const maxCount = Math.max(...tagCounts.map((t) => t.count));
-const minCount = Math.min(...tagCounts.map((t) => t.count));
+// Umbrales dinámicos por percentil (escalan con el crecimiento del blog)
+const counts = tagCounts.map((t) => t.count);
+const sorted = [...counts].sort((a, b) => a - b);
+const p33 = sorted[Math.floor(sorted.length * 0.33)];
+const p66 = sorted[Math.floor(sorted.length * 0.66)];
 
-function getScale(count: number): number {
-  if (maxCount === minCount) return 1;
-  return 0.8 + ((count - minCount) / (maxCount - minCount)) * 0.6;
-}
+const populares = tagCounts.filter((t) => t.count > p66);
+const frecuentes = tagCounts.filter((t) => t.count <= p66 && t.count >= p33);
+const ocasionales = tagCounts.filter((t) => t.count < p33);
 
-function getLevel(count: number): number {
-  if (maxCount === minCount) return 2;
-  const ratio = (count - minCount) / (maxCount - minCount);
-  if (ratio >= 0.66) return 3;
-  if (ratio >= 0.33) return 2;
-  return 1;
-}
+const sections = [
+  { id: 'populares', label: 'Populares', tags: populares, level: 3 },
+  { id: 'frecuentes', label: 'Frecuentes', tags: frecuentes, level: 2 },
+  { id: 'ocasionales', label: 'Ocasionales', tags: ocasionales, level: 1 },
+].filter((s) => s.tags.length > 0);
 ---
 
 <BaseLayout title="Etiquetas" description="Todas las etiquetas del blog">
   <section class="container page-section">
     <div class="page-header">
-      <span class="meta-prompt">$ ls --tags</span>
+      <span class="meta-prompt">$ ls -la /etiquetas/ | sort -rn</span>
       <h1>Etiquetas</h1>
       <p class="subtitle">{tagCounts.length} etiquetas en {posts.length} artículos</p>
     </div>
-    <div class="tags-cloud">
-      {
-        tagCounts.map((tag) => (
-          <a
-            href={`/etiquetas/${tag.slug}`}
-            class="tag-link"
-            data-level={getLevel(tag.count)}
-            style={`font-size: ${getScale(tag.count)}rem`}
-          >
-            {tag.name}
-            <span class="tag-count">{tag.count}</span>
-          </a>
-        ))
-      }
-    </div>
+
+    {
+      sections.map((section) => (
+        <div class="tags-section" id={section.id}>
+          <h2 class={`section-title level-${section.level}`}>{section.label}</h2>
+          <div class="tags-grid">
+            {section.tags.map((tag) => (
+              <a href={`/etiquetas/${tag.slug}`} class={`tag-card level-${section.level}`}>
+                <span class="tag-name">{tag.name}</span>
+                <span class="tag-count">[{tag.count}]</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))
+    }
   </section>
 </BaseLayout>
 
 <style>
   .page-section {
     padding: 3rem 0 4rem;
-    text-align: center;
   }
 
   .page-header {
-    margin-bottom: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
   }
 
   .meta-prompt {
@@ -81,60 +82,107 @@ function getLevel(count: number): number {
     font-size: 0.875rem;
   }
 
-  .tags-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.75rem;
-    max-width: 900px;
-    margin: 0 auto;
+  /* Secciones */
+  .tags-section {
+    margin-bottom: 2.5rem;
   }
 
-  .tag-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 1rem;
-    border: 1px solid var(--color-border);
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-    transition:
-      color 0.2s,
-      border-color 0.2s,
-      background-color 0.2s;
+  .section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .tag-link[data-level='1'] {
+  .section-title::before {
+    content: '## ';
     color: var(--color-text-muted);
+    font-weight: 400;
   }
 
-  .tag-link[data-level='2'] {
-    color: var(--color-text-secondary);
+  .section-title.level-3::after {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #58d5a2;
+    margin-left: 0.5rem;
+    vertical-align: middle;
   }
 
-  .tag-link[data-level='3'] {
-    color: var(--color-primary);
+  .section-title.level-2::after {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #00bfff;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+
+  /* Grid de tarjetas */
+  .tags-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+  }
+
+  /* Tarjeta de tag */
+  .tag-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.6rem 0.875rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left-width: 3px;
+    text-decoration: none;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s;
+  }
+
+  .tag-card.level-3 {
+    border-left-color: #58d5a2;
+  }
+
+  .tag-card.level-2 {
+    border-left-color: #00bfff;
+  }
+
+  .tag-card.level-1 {
+    border-left-color: var(--color-border);
+  }
+
+  .tag-card:hover {
+    background-color: color-mix(in srgb, var(--color-primary) 6%, transparent);
     border-color: var(--color-primary);
+    border-left-color: var(--color-primary);
   }
 
-  .tag-link:hover {
+  .tag-name {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-text);
+    transition: color 0.2s;
+  }
+
+  .tag-card:hover .tag-name {
     color: var(--color-primary);
-    border-color: var(--color-primary);
-    background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
   }
 
   .tag-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.4em;
-    padding: 0.1rem 0.35rem;
-    font-size: 0.7em;
-    line-height: 1;
-    border: 1px solid currentColor;
-    opacity: 0.7;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+
+  .tag-card:hover .tag-count {
+    color: var(--color-primary);
   }
 </style>
