@@ -2,167 +2,284 @@
 title: 'Comandos esenciales de LVM: guía rápida'
 description: 'Cheatsheet con los comandos más usados de LVM (Logical Volume Manager) para la gestión de volúmenes lógicos en Linux.'
 author: 'antonio'
-pubDate: 2026-01-10
+pubDate: 2026-02-20
 category: 'Automatización'
 tags: ['LVM', 'Storage', 'Linux', 'Cheatsheet']
 image: '../../assets/images/lvm-storage.jpg'
 draft: false
 ---
 
-## Qué es LVM
+## Los comandos básicos de LVM organizados por nivel
 
-LVM (Logical Volume Manager) permite gestionar el almacenamiento de forma flexible, añadiendo capas de abstracción sobre los discos físicos. Sus tres componentes principales son:
+**1. Volúmenes Físicos (PV - Physical Volumes)**
 
-- **PV** (Physical Volume): disco o partición física
-- **VG** (Volume Group): agrupación de PVs
-- **LV** (Logical Volume): volúmenes que se formatean y montan
+- `pvs` - ver resumen de volúmenes físicos
+- `pvdisplay` - ver detalles completos
+- `pvcreate /dev/sdb` - crear un volumen físico
 
-## Volúmenes físicos (PV)
+**2. Grupos de Volúmenes (VG - Volume Groups)**
+
+- `vgs` - ver resumen de grupos
+- `vgdisplay` - ver detalles completos
+- `vgcreate nombre_vg /dev/sdb` - crear grupo
+- `vgextend nombre_vg /dev/sdc` - añadir disco al grupo
+
+**3. Volúmenes Lógicos (LV - Logical Volumes)**
+
+- `lvs` - ver resumen de volúmenes lógicos
+- `lvdisplay` - ver detalles completos
+- `lvcreate -L 10G -n nombre_lv nombre_vg` - crear volumen de 10GB
+- `lvextend -L +5G /dev/nombre_vg/nombre_lv` - ampliar 5GB más
+- `lvresize -L 20G /dev/nombre_vg/nombre_lv` - establecer tamaño fijo
+
+## Truco para recordarlos
+
+El patrón es siempre el mismo:
+
+- **Consulta rápida**: `pvs`, `vgs`, `lvs` (la "s" de summary)
+- **Consulta detallada**: `pvdisplay`, `vgdisplay`, `lvdisplay`
+- **Crear**: `pvcreate`, `vgcreate`, `lvcreate`
+- **Extender**: `vgextend`, `lvextend`
+
+## Secuencia típica que usarás
 
 ```bash
-# Crear un PV
+# 1. Ver qué discos tienes disponibles
+lsblk
+
+# 2. Crear volumen físico en el nuevo disco
 pvcreate /dev/sdb
 
-# Listar PVs
-pvs
-pvdisplay
+# 3. Añadirlo a un grupo existente
+vgextend vg_datos /dev/sdb
+# o crear uno nuevo
+vgcreate vg_datos /dev/sdb
 
-# Ver información detallada
-pvdisplay /dev/sdb
+# 4. Ampliar el volumen lógico
+lvextend -L +50G /dev/vg_datos/lv_archivos
+# o para usar todo el espacio disponible:
+lvextend -l +100%FREE /dev/vg_datos/lv_archivos
 
-# Eliminar un PV
-pvremove /dev/sdb
+# 5. Ampliar el sistema de archivos
+resize2fs /dev/vg_datos/lv_archivos  # para ext4
+# o
+xfs_growfs /dev/vg_datos/lv_archivos  # para xfs
+
 ```
 
-## Grupos de volúmenes (VG)
+## Proceso para extender un volumen LVM
+
+**1. Primero, verificar el estado actual**
 
 ```bash
-# Crear un VG
-vgcreate vg_data /dev/sdb /dev/sdc
-
-# Extender un VG con un nuevo disco
-vgextend vg_data /dev/sdd
-
-# Listar VGs
-vgs
-vgdisplay
-
-# Reducir un VG
-vgreduce vg_data /dev/sdd
-
-# Eliminar un VG
-vgremove vg_data
-```
-
-## Volúmenes lógicos (LV)
-
-### Crear volúmenes
-
-```bash
-# Crear LV de tamaño fijo
-lvcreate -L 50G -n lv_apps vg_data
-
-# Crear LV usando porcentaje del espacio libre
-lvcreate -l 100%FREE -n lv_logs vg_data
-
-# Crear LV con nombre específico
-lvcreate -L 10G -n lv_backups vg_data
-```
-
-### Listar y consultar
-
-```bash
-# Listar LVs
+# Ver los volúmenes lógicos y su tamaño
 lvs
-lvdisplay
 
-# Ver ruta del dispositivo
-ls -la /dev/vg_data/
+# Ver cuánto espacio libre tiene el grupo de volúmenes
+vgs
+
 ```
 
-### Redimensionar volúmenes
+**2. Extender el volumen lógico**
+
+Tienes dos opciones:
 
 ```bash
-# Extender un LV (+20GB)
-lvextend -L +20G /dev/vg_data/lv_apps
+# Opción A: Añadir una cantidad específica
+lvextend -L +10G /dev/nombre_vg/nombre_lv
 
-# Extender al máximo del espacio disponible
-lvextend -l +100%FREE /dev/vg_data/lv_apps
+# Opción B: Usar todo el espacio libre disponible
+lvextend -l +100%FREE /dev/nombre_vg/nombre_lv
 
-# Redimensionar el sistema de archivos (ext4)
-resize2fs /dev/vg_data/lv_apps
-
-# Extender LV y filesystem en un solo paso
-lvextend -L +20G --resizefs /dev/vg_data/lv_apps
-
-# Para XFS
-xfs_growfs /mount/point
 ```
 
-### Reducir volúmenes
+**3. Extender el sistema de archivos** (¡IMPORTANTE! Sin este paso no verás el espacio)
 
 ```bash
-# Reducir (solo ext4, NO xfs)
-umount /dev/vg_data/lv_apps
-e2fsck -f /dev/vg_data/lv_apps
-resize2fs /dev/vg_data/lv_apps 30G
-lvreduce -L 30G /dev/vg_data/lv_apps
-mount /dev/vg_data/lv_apps /mnt/apps
+# Para ext4
+resize2fs /dev/nombre_vg/nombre_lv
+
+# Para xfs
+xfs_growfs /dev/nombre_vg/nombre_lv
+
 ```
 
-### Eliminar volúmenes
+**4. Verificar que se aplicó**
 
 ```bash
-umount /dev/vg_data/lv_apps
-lvremove /dev/vg_data/lv_apps
+df -h
+
 ```
 
-## Snapshots
+## Ejemplo práctico completo
 
 ```bash
-# Crear snapshot
-lvcreate -s -L 5G -n snap_apps /dev/vg_data/lv_apps
+# 1. Ver estado
+lvs
+vgs
 
-# Restaurar desde snapshot
-lvconvert --merge /dev/vg_data/snap_apps
+# 2. Extender 20GB más al volumen
+lvextend -L +20G /dev/vg_datos/lv_home
 
-# Eliminar snapshot
-lvremove /dev/vg_data/snap_apps
+# 3. Extender el sistema de archivos
+resize2fs /dev/vg_datos/lv_home
+
+# 4. Confirmar
+df -h /home
+
 ```
 
-## Formatear y montar
+## ¿Y si no hay espacio libre en el VG?
+
+Si `vgs` muestra que no hay espacio libre (VFree = 0), primero necesitas añadir un disco nuevo:
 
 ```bash
-# Formatear con ext4
-mkfs.ext4 /dev/vg_data/lv_apps
+# 1. Preparar el nuevo disco
+pvcreate /dev/sdc
 
-# Formatear con XFS
-mkfs.xfs /dev/vg_data/lv_apps
+# 2. Añadirlo al grupo de volúmenes
+vgextend nombre_vg /dev/sdc
+
+# 3. Ahora sí, extender el volumen lógico
+lvextend -L +50G /dev/nombre_vg/nombre_lv
+
+# 4. Extender el sistema de archivos
+resize2fs /dev/nombre_vg/nombre_lv
+
+```
+
+## Casos típicos en administración LVM
+
+**1. Crear un nuevo volumen lógico desde cero**
+
+```bash
+# Ver espacio disponible
+vgs
+
+# Crear volumen de 50GB
+lvcreate -L 50G -n lv_backup vg_datos
+
+# Formatear
+mkfs.ext4 /dev/vg_datos/lv_backup
 
 # Montar
-mkdir -p /mnt/apps
-mount /dev/vg_data/lv_apps /mnt/apps
+mkdir /backup
+mount /dev/vg_datos/lv_backup /backup
 
-# Añadir a fstab para persistencia
-echo '/dev/vg_data/lv_apps /mnt/apps ext4 defaults 0 2' >> /etc/fstab
-```
-
-## Resumen visual del flujo
+# Hacerlo permanente (añadir a /etc/fstab)
+echo "/dev/vg_datos/lv_backup /backup ext4 defaults 0 2" >> /etc/fstab
 
 ```
-Disco (/dev/sdb) → PV → VG (vg_data) → LV (lv_apps) → Filesystem → Mount
-```
 
-## Comandos de diagnóstico
+**2. Reducir un volumen (¡CUIDADO! Puede perder datos)**
 
 ```bash
-# Ver todo el stack LVM
-lsblk
-df -hT
-vgs -o +vg_free
-lvs -o +lv_size,seg_pe_ranges
+# Primero desmontar
+umount /dev/vg_datos/lv_old
+
+# Verificar el sistema de archivos
+e2fsck -f /dev/vg_datos/lv_old
+
+# Reducir el sistema de archivos PRIMERO (siempre un poco menos)
+resize2fs /dev/vg_datos/lv_old 40G
+
+# Luego reducir el volumen lógico
+lvreduce -L 40G /dev/vg_datos/lv_old
+
+# Volver a montar
+mount /dev/vg_datos/lv_old /mnt/old
+
 ```
 
-> Recuerda: siempre haz un backup antes de modificar volúmenes en producción.
-> [!NOTE]
-> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.
+**3. Mover datos entre discos físicos (migración)**
+
+```bash
+# Añadir disco nuevo al VG
+pvcreate /dev/sdd
+vgextend vg_datos /dev/sdd
+
+# Mover datos del disco viejo al nuevo
+pvmove /dev/sdb /dev/sdd
+
+# Quitar el disco viejo del VG
+vgreduce vg_datos /dev/sdb
+pvremove /dev/sdb
+
+```
+
+**4. Crear snapshot (copia instantánea para backups)**
+
+```bash
+# Crear snapshot del volumen (necesita espacio libre en el VG)
+lvcreate -L 10G -s -n snap_home /dev/vg_datos/lv_home
+
+# Montar el snapshot para hacer backup
+mkdir /mnt/snapshot
+mount /dev/vg_datos/snap_home /mnt/snapshot
+
+# Hacer backup tranquilamente
+tar czf /backup/home.tar.gz /mnt/snapshot
+
+# Eliminar snapshot cuando termines
+umount /mnt/snapshot
+lvremove /dev/vg_datos/snap_home
+
+```
+
+**5. Ver información detallada cuando algo falla**
+
+```bash
+# Ver TODO sobre un volumen específico
+lvdisplay -m /dev/vg_datos/lv_home
+
+# Ver en qué discos físicos está un volumen
+lvs -o +devices /dev/vg_datos/lv_home
+
+# Ver todos los PV y su uso
+pvs -o +pv_used
+
+```
+
+**6. Renombrar volúmenes**
+
+```bash
+# Renombrar volumen lógico
+lvrename vg_datos lv_old lv_antiguo
+
+# Renombrar grupo de volúmenes
+vgrename vg_old vg_nuevo
+
+```
+
+**7. Eliminar volúmenes (orden inverso a la creación)**
+
+```bash
+# 1. Desmontar
+umount /mnt/datos
+
+# 2. Eliminar volumen lógico
+lvremove /dev/vg_datos/lv_temporal
+
+# 3. Si quieres eliminar el VG completo
+vgremove vg_datos
+
+# 4. Eliminar volúmenes físicos
+pvremove /dev/sdb
+
+```
+
+**8. Activar/desactivar volúmenes**
+
+```bash
+# Desactivar un volumen (para mantenimiento)
+lvchange -an /dev/vg_datos/lv_home
+
+# Reactivar
+lvchange -ay /dev/vg_datos/lv_home
+
+# Activar todos los VG (útil tras arranque o rescate)
+vgchange -ay
+
+```
+
+Los casos más frecuentes que verás en el día a día son el **1** (crear nuevos volúmenes), el **extender** que ya vimos, y el **4** (snapshots para backups seguros). El **3** (migración) lo usarás cuando cambies discos.

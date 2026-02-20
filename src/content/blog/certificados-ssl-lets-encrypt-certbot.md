@@ -6,7 +6,7 @@ pubDate: 2026-02-11
 category: 'Seguridad'
 tags: ['SSL', "Let's Encrypt", 'Certbot', 'Nginx']
 image: '../../assets/images/letsencrypt-ssl.jpg'
-draft: false
+draft: true
 ---
 
 ## Por que HTTPS es imprescindible
