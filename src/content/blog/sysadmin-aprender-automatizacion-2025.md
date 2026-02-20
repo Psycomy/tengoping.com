@@ -37,7 +37,7 @@ La herramienta más accesible para empezar. Su sintaxis YAML es fácil de aprend
   become: yes
   tasks:
     - name: Instalar Nginx
-      dnf:
+      ansible.builtin.package:
         name: nginx
         state: present
 

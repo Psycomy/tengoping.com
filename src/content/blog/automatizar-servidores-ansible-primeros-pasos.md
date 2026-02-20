@@ -16,7 +16,12 @@ Ansible permite automatizar la configuración de servidores de forma declarativa
 ## Instalación
 
 ```bash
+# RHEL / Rocky / Oracle Linux
 sudo dnf install ansible-core -y
+
+# Ubuntu / Debian
+sudo apt install ansible -y
+
 ansible --version
 ```
 
@@ -42,7 +47,7 @@ db1.tengoping.com
   become: true
   tasks:
     - name: Instalar nginx
-      dnf:
+      ansible.builtin.package:
         name: nginx
         state: present
 
