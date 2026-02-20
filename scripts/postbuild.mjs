@@ -5,14 +5,65 @@
  * 2. Inject build ID into service worker → invalidación automática de caché
  * 3. Write dist/_headers con CSP hash-based
  */
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import {
+  transformInlineStylesToClasses,
+  renderStyleClassMap,
+} from './utils/inline-style-transform.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = join(__dirname, '..', 'dist');
 const DEFAULT_REPORT_GROUP = 'csp';
+const INLINE_STYLESHEET_HREF = '/assets/inline-styles.css';
+const INLINE_STYLESHEET_PATH = join(DIST, 'assets', 'inline-styles.css');
+
+function getHtmlFiles(dir, htmlFiles = []) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      getHtmlFiles(fullPath, htmlFiles);
+    } else if (entry.name.endsWith('.html')) {
+      htmlFiles.push(fullPath);
+    }
+  }
+  return htmlFiles;
+}
+
+function externalizeInlineStyles() {
+  const htmlFiles = getHtmlFiles(DIST);
+  const styleClassMap = new Map();
+  let transformedAttributes = 0;
+  let transformedFiles = 0;
+
+  for (const htmlPath of htmlFiles) {
+    const html = readFileSync(htmlPath, 'utf-8');
+    const { html: transformedHtml, transformedCount } = transformInlineStylesToClasses(html, {
+      classPrefix: 'csp-style',
+      stylesheetHref: INLINE_STYLESHEET_HREF,
+      styleClassMap,
+    });
+
+    if (transformedCount > 0) {
+      transformedAttributes += transformedCount;
+      transformedFiles += 1;
+      writeFileSync(htmlPath, transformedHtml);
+    }
+  }
+
+  if (styleClassMap.size > 0) {
+    mkdirSync(join(DIST, 'assets'), { recursive: true });
+    writeFileSync(INLINE_STYLESHEET_PATH, renderStyleClassMap(styleClassMap));
+  }
+
+  return {
+    transformedAttributes,
+    transformedFiles,
+    generatedClasses: styleClassMap.size,
+  };
+}
 
 // --- 1. Collect SHA-256 hashes of inline scripts/styles from built HTML ---
 
@@ -150,6 +201,7 @@ ${reportingHeaders}
 
 // --- Run ---
 
+const inlineStyleStats = externalizeInlineStyles();
 const scriptHashes = collectInlineScriptHashes(DIST);
 const styleHashes = collectInlineStyleHashes(DIST);
 const buildId = updateServiceWorker();
@@ -157,7 +209,7 @@ const reportingConfig = getReportingConfig();
 writeHeaders([...scriptHashes], [...styleHashes], reportingConfig);
 
 console.log(
-  `postbuild: ${scriptHashes.size} script hashes, ${styleHashes.size} style hashes, SW build ID: ${buildId}, CSP reporting: ${
+  `postbuild: ${inlineStyleStats.transformedAttributes} inline style attrs externalized in ${inlineStyleStats.transformedFiles} HTML files (${inlineStyleStats.generatedClasses} classes), ${scriptHashes.size} script hashes, ${styleHashes.size} style hashes, SW build ID: ${buildId}, CSP reporting: ${
     reportingConfig ? `enabled (${reportingConfig.reportGroup})` : 'disabled'
   }`
 );
