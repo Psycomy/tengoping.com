@@ -1,24 +1,33 @@
 ---
-title: 'Cómo configurar un servidor SSH seguro en Oracle Linux 9'
-description: 'Guía paso a paso para configurar y securizar un servidor SSH en Oracle Linux 9, incluyendo autenticación por clave, fail2ban y mejores prácticas.'
+title: 'Cómo configurar un servidor SSH seguro en Linux'
+description: 'Guía paso a paso para configurar y securizar un servidor SSH en cualquier servidor Linux, incluyendo autenticación por clave, fail2ban y mejores prácticas.'
 author: 'antonio'
 pubDate: 2026-01-01
 category: 'Linux'
-tags: ['SSH', 'Oracle Linux', 'Seguridad', 'Sysadmin']
+tags: ['SSH', 'Linux', 'Seguridad', 'Sysadmin']
 image: '../../assets/images/ssh-server.jpg'
 draft: false
 ---
 
 ## Introducción
 
-SSH (Secure Shell) es el protocolo estándar para la administración remota de servidores Linux. En esta guía configuraremos un servidor SSH seguro en Oracle Linux 9, aplicando las mejores prácticas de seguridad.
+SSH (Secure Shell) es el protocolo estándar para la administración remota de servidores Linux. En esta guía configuraremos un servidor SSH seguro aplicando las mejores prácticas de seguridad, con instrucciones para las distribuciones más comunes.
 
 ## Instalación y verificación
 
-Oracle Linux 9 incluye OpenSSH por defecto. Verificamos que esté instalado y activo:
+La mayoría de distribuciones incluyen OpenSSH por defecto. Para asegurarnos de que está instalado y activo:
 
 ```bash
+# RHEL / Rocky / Oracle Linux
 sudo dnf install openssh-server -y
+
+# Ubuntu / Debian
+sudo apt install openssh-server -y
+```
+
+Activar el servicio:
+
+```bash
 sudo systemctl enable --now sshd
 sudo systemctl status sshd
 ```
@@ -64,12 +73,18 @@ ssh -p 2222 admin@servidor
 
 ## Configuración del firewall
 
-Abrimos el nuevo puerto en firewalld:
+Abrimos el nuevo puerto antes de reiniciar SSH para no perder el acceso.
 
 ```bash
+# RHEL / Rocky / Oracle Linux (firewalld)
 sudo firewall-cmd --permanent --add-port=2222/tcp
 sudo firewall-cmd --permanent --remove-service=ssh
 sudo firewall-cmd --reload
+
+# Ubuntu / Debian (ufw)
+sudo ufw allow 2222/tcp
+sudo ufw delete allow ssh
+sudo ufw reload
 ```
 
 ## Instalación de Fail2ban
@@ -77,8 +92,12 @@ sudo firewall-cmd --reload
 Fail2ban protege contra ataques de fuerza bruta:
 
 ```bash
+# RHEL / Rocky / Oracle Linux
 sudo dnf install epel-release -y
 sudo dnf install fail2ban -y
+
+# Ubuntu / Debian
+sudo apt install fail2ban -y
 ```
 
 Creamos la configuración local:
@@ -89,7 +108,7 @@ sudo tee /etc/fail2ban/jail.local << EOF
 enabled = true
 port = 2222
 filter = sshd
-logpath = /var/log/secure
+backend = systemd
 maxretry = 3
 bantime = 3600
 findtime = 600
