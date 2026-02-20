@@ -10,6 +10,7 @@ interface Props {
   description?: string;
   image?: string;
   article?: boolean;
+  section?: string;
   publishDate?: string;
   modifiedDate?: string;
   author?: string;
@@ -24,6 +25,7 @@ const {
   description = site.description,
   image = '/images/og-default.png',
   article = false,
+  section,
   publishDate,
   modifiedDate,
   author,
@@ -81,6 +83,7 @@ const imageURL = new URL(image, Astro.site);
     {publishDate && <meta property="article:published_time" content={publishDate} />}
     {modifiedDate && <meta property="article:modified_time" content={modifiedDate} />}
     {article && authorUrl && <meta property="article:author" content={authorUrl} />}
+    {article && section && <meta property="article:section" content={section} />}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
