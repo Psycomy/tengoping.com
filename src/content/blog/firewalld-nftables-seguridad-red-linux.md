@@ -1,5 +1,5 @@
 ---
-title: 'Firewalld y nftables: seguridad de red en Linux'
+title: 'Firewalld, UFW y nftables: seguridad de red en Linux'
 description: 'Aprende a configurar firewalld y nftables para proteger tus servidores Linux con reglas de filtrado de tráfico efectivas.'
 author: 'antonio'
 pubDate: 2026-01-21

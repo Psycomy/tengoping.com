@@ -6,7 +6,7 @@ pubDate: 2026-01-06
 category: 'Redes'
 tags: ['NetworkManager', 'nmcli', 'Routing', 'Linux']
 image: '../../assets/images/network-routes.jpg'
-draft: false
+draft: true
 ---
 
 ## Introducción
