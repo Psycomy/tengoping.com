@@ -107,3 +107,5 @@ Colores por categoría
   Seguridad        #F87171  (rojo)
   Self-Hosting     #34D399  (verde)
   Hardware         #FBBF24  (amarillo)
+  Software         #C084FC  (violeta)
+  Monitorización   #F472B6  (rosa)

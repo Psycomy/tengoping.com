@@ -168,7 +168,7 @@ El sitio se despliega automáticamente en **Cloudflare Pages** con cada push a `
 | ---------------- | --------------- |
 | Build command    | `npm run build` |
 | Output directory | `dist`          |
-| Node version     | `20`            |
+| Node version     | `24`            |
 
 ## Hecho con Claude
 

@@ -105,6 +105,8 @@ ARTICLES = [
      ["├── chatops/", "├── aiops/", "└── automation/"]),
     ("sysadmin-automation.jpg", "AUTOMATIZACIÓN", "por qué aprender en 2025", "Opinión",
      ["├── ansible/", "├── terraform/", "└── scripts/"]),
+    ("por-que-este-blog.jpg", "ESTE BLOG", "por qué existe este sitio", "Opinión",
+     ["├── notas/", "├── tutoriales/", "└── cheat-sheets/"]),
     # Redes
     ("redes-vlan.jpg", "VLANS", "switches y linux", "Redes",
      ["├── trunk ports", "├── ip link add", "└── bridge vlan"]),
