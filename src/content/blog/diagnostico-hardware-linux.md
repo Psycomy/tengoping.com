@@ -2,7 +2,7 @@
 title: 'Diagnóstico de hardware en Linux desde terminal'
 description: 'Herramientas de línea de comandos para diagnosticar CPU, RAM, discos y red en sistemas Linux.'
 author: 'antonio'
-pubDate: 2026-01-25
+pubDate: 2026-02-13
 category: 'Hardware'
 tags: ['Diagnóstico', 'Hardware', 'Linux', 'Sysadmin']
 image: '../../assets/images/linux-hardware-diag.jpg'

@@ -2,7 +2,7 @@
 title: 'Cómo elegir hardware para tu homelab'
 description: 'Consejos prácticos para montar un homelab sin arruinarte: mini PCs, servidores usados, almacenamiento y consumo eléctrico.'
 author: 'alois'
-pubDate: 2025-10-30
+pubDate: 2026-02-09
 category: 'Hardware'
 tags: ['Homelab', 'Hardware', 'Servidores', 'Self-Hosting']
 image: '../../assets/images/homelab-hardware.jpg'

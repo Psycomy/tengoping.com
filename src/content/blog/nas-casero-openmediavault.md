@@ -2,7 +2,7 @@
 title: 'Montar un NAS casero con OpenMediaVault'
 description: 'Guía para construir un NAS económico con OpenMediaVault: instalación, configuración de discos, carpetas compartidas y acceso remoto.'
 author: 'antonio'
-pubDate: 2025-07-28
+pubDate: 2026-02-05
 category: 'Hardware'
 tags: ['NAS', 'OpenMediaVault', 'Hardware', 'Almacenamiento']
 image: '../../assets/images/nas-omv.jpg'

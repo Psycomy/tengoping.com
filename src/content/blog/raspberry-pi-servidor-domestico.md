@@ -2,7 +2,7 @@
 title: 'Raspberry Pi como servidor doméstico'
 description: 'Cómo convertir una Raspberry Pi en un servidor doméstico para DNS, VPN, almacenamiento y más.'
 author: 'antonio'
-pubDate: 2025-05-03
+pubDate: 2026-02-01
 category: 'Hardware'
 tags: ['Raspberry Pi', 'Homelab', 'Hardware', 'Linux']
 image: '../../assets/images/raspberry-pi-server.jpg'

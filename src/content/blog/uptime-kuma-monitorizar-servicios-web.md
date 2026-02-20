@@ -2,7 +2,7 @@
 title: 'Monitorizar servicios web con Uptime Kuma'
 description: 'Despliega Uptime Kuma con Docker para monitorizar la disponibilidad de tus servicios web: checks HTTP, TCP, ping, notificaciones y dashboard en tiempo real.'
 author: 'antonio'
-pubDate: 2026-02-16
+pubDate: 2026-02-19
 category: 'Monitorización'
 tags: ['uptime-kuma', 'monitoring', 'self-hosting', 'disponibilidad']
 image: '../../assets/images/mon-uptimekuma.jpg'

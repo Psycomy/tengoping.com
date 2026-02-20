@@ -2,7 +2,7 @@
 title: 'Alertas inteligentes con Alertmanager y Prometheus'
 description: 'Configura alertas efectivas con Alertmanager: routing, agrupación, silenciamiento y buenas prácticas para evitar la fatiga de alertas en tu infraestructura.'
 author: 'antonio'
-pubDate: 2026-02-16
+pubDate: 2026-02-14
 category: 'Monitorización'
 tags: ['alertmanager', 'prometheus', 'alertas', 'monitoring']
 image: '../../assets/images/mon-alertmanager.jpg'

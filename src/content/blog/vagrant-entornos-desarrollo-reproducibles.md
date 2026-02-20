@@ -2,7 +2,7 @@
 title: 'Vagrant: entornos de desarrollo reproducibles'
 description: 'Aprende a usar Vagrant con libvirt o VirtualBox para crear y compartir entornos de desarrollo idénticos en segundos.'
 author: 'antonio'
-pubDate: 2025-08-15
+pubDate: 2026-02-06
 category: 'Virtualización'
 tags: ['Vagrant', 'Virtualización', 'DevOps', 'Automatización']
 image: '../../assets/images/vagrant-dev.jpg'

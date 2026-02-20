@@ -2,7 +2,7 @@
 title: 'Snapshots y clones en máquinas virtuales'
 description: 'Cómo usar snapshots y clones en KVM y Proxmox para proteger tus VMs y acelerar despliegues.'
 author: 'antonio'
-pubDate: 2025-11-05
+pubDate: 2026-02-10
 category: 'Virtualización'
 tags: ['Snapshots', 'KVM', 'Proxmox', 'Virtualización']
 image: '../../assets/images/vm-snapshots.jpg'

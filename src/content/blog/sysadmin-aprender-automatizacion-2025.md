@@ -2,7 +2,7 @@
 title: 'Por qué todo sysadmin debería aprender automatización en 2025'
 description: 'Reflexión sobre la importancia de la automatización para los administradores de sistemas en el panorama tecnológico actual y cómo empezar.'
 author: 'alois'
-pubDate: 2025-02-10
+pubDate: 2026-01-20
 category: 'Opinión'
 tags: ['Automatización', 'DevOps', 'Ansible', 'Carrera profesional']
 image: '../../assets/images/sysadmin-automation.jpg'

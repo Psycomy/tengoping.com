@@ -2,7 +2,7 @@
 title: 'Proxmox VE: primeros pasos con virtualización profesional'
 description: 'Cómo instalar y configurar Proxmox VE para gestionar máquinas virtuales y contenedores LXC desde una interfaz web.'
 author: 'alois'
-pubDate: 2025-05-22
+pubDate: 2026-02-02
 category: 'Virtualización'
 tags: ['Proxmox', 'Virtualización', 'LXC', 'Homelab']
 image: '../../assets/images/proxmox-ve.jpg'

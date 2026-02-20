@@ -2,7 +2,7 @@
 title: 'Pi-hole: bloquea publicidad en toda tu red'
 description: 'Cómo instalar Pi-hole como servidor DNS local para filtrar publicidad y rastreadores en todos los dispositivos de tu red.'
 author: 'antonio'
-pubDate: 2025-07-14
+pubDate: 2026-02-04
 category: 'Self-Hosting'
 tags: ['Pi-hole', 'DNS', 'Self-Hosting', 'Redes']
 image: '../../assets/images/pihole-dns.jpg'

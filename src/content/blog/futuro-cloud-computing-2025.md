@@ -2,7 +2,7 @@
 title: 'El futuro del cloud computing en 2025: tendencias clave'
 description: 'Análisis de las principales tendencias en cloud computing para 2025: edge computing, multicloud, FinOps y soberanía de datos.'
 author: 'antonio'
-pubDate: 2025-01-18
+pubDate: 2026-01-02
 category: 'Opinión'
 tags: ['Cloud', 'Tendencias', 'Opinión', 'Infraestructura']
 image: '../../assets/images/opinion-cloud.jpg'

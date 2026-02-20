@@ -2,7 +2,7 @@
 title: 'Permisos en Linux: chmod, chown y ACLs explicados'
 description: 'Entiende el sistema de permisos de Linux, desde los básicos con chmod y chown hasta las ACLs para control de acceso avanzado.'
 author: 'antonio'
-pubDate: 2025-02-10
+pubDate: 2026-01-18
 category: 'Linux'
 tags: ['Permisos', 'Linux', 'Seguridad', 'ACL']
 image: '../../assets/images/linux-permissions.jpg'

@@ -2,7 +2,7 @@
 title: 'CI/CD con GitHub Actions: guía práctica'
 description: 'Aprende a configurar pipelines de integración y despliegue continuo con GitHub Actions: workflows, jobs, secrets y ejemplos reales para automatizar tu infraestructura.'
 author: 'antonio'
-pubDate: 2026-02-16
+pubDate: 2026-02-15
 category: 'Software'
 tags: ['ci-cd', 'github-actions', 'devops', 'automatizacion']
 image: '../../assets/images/soft-cicd.jpg'

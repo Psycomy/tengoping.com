@@ -2,7 +2,7 @@
 title: 'Gestión de rutas estáticas con NetworkManager y nmcli'
 description: 'Aprende a gestionar rutas estáticas en Linux usando NetworkManager y nmcli. Guía completa con ejemplos prácticos para administradores de redes.'
 author: 'alois'
-pubDate: 2025-01-22
+pubDate: 2026-01-06
 category: 'Redes'
 tags: ['NetworkManager', 'nmcli', 'Routing', 'Linux']
 image: '../../assets/images/network-routes.jpg'

@@ -2,7 +2,7 @@
 title: 'Introducción a la observabilidad: métricas, logs y trazas'
 description: 'Descubre los tres pilares de la observabilidad moderna: métricas, logs y trazas. Qué son, por qué importan y qué herramientas usar para monitorizar tu infraestructura.'
 author: 'antonio'
-pubDate: 2026-02-16
+pubDate: 2026-02-17
 category: 'Monitorización'
 tags: ['observabilidad', 'metricas', 'logs', 'trazas', 'monitoring']
 image: '../../assets/images/mon-observabilidad.jpg'

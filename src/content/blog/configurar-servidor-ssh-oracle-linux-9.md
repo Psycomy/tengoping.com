@@ -2,7 +2,7 @@
 title: 'Cómo configurar un servidor SSH seguro en Oracle Linux 9'
 description: 'Guía paso a paso para configurar y securizar un servidor SSH en Oracle Linux 9, incluyendo autenticación por clave, fail2ban y mejores prácticas.'
 author: 'antonio'
-pubDate: 2025-01-15
+pubDate: 2026-01-01
 category: 'Linux'
 tags: ['SSH', 'Oracle Linux', 'Seguridad', 'Sysadmin']
 image: '../../assets/images/ssh-server.jpg'

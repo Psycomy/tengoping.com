@@ -2,7 +2,7 @@
 title: 'Backups incrementales con rsync en servidores Linux'
 description: 'Cómo implementar una estrategia de backups incrementales usando rsync y hardlinks para ahorrar espacio y tiempo en tus servidores.'
 author: 'antonio'
-pubDate: 2025-02-08
+pubDate: 2026-01-16
 category: 'Automatización'
 tags: ['Backup', 'rsync', 'Sysadmin', 'Scripts']
 image: '../../assets/images/auto-backup.jpg'

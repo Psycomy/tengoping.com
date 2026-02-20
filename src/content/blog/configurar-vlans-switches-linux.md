@@ -2,7 +2,7 @@
 title: 'Configurar VLANs en switches gestionados y Linux'
 description: 'Guía práctica para configurar VLANs tanto en switches gestionados como en interfaces de red Linux con ip y nmcli.'
 author: 'alois'
-pubDate: 2025-01-22
+pubDate: 2026-01-05
 category: 'Redes'
 tags: ['VLAN', 'Redes', 'Switch', 'Linux']
 image: '../../assets/images/redes-vlan.jpg'

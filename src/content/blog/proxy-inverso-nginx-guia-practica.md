@@ -2,7 +2,7 @@
 title: 'Proxy inverso con Nginx: guía práctica'
 description: 'Aprende a configurar Nginx como proxy inverso para redirigir tráfico a tus aplicaciones internas con HTTPS, cabeceras y balanceo de carga.'
 author: 'antonio'
-pubDate: 2025-01-28
+pubDate: 2026-01-09
 category: 'Redes'
 tags: ['Nginx', 'Proxy', 'Redes', 'Sysadmin']
 image: '../../assets/images/redes-proxy.jpg'

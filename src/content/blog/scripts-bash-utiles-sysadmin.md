@@ -2,7 +2,7 @@
 title: '10 scripts Bash útiles para el día a día del sysadmin'
 description: 'Colección de scripts Bash prácticos para monitorización, backups, limpieza de logs y tareas comunes de administración de sistemas.'
 author: 'alois'
-pubDate: 2025-02-05
+pubDate: 2026-01-14
 category: 'Automatización'
 tags: ['Bash', 'Scripts', 'Sysadmin', 'Automatización']
 image: '../../assets/images/auto-bash.jpg'
