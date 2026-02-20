@@ -101,24 +101,22 @@ const sections = [
     font-weight: 400;
   }
 
-  .section-title.level-3::after {
-    content: '';
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: #58d5a2;
-    margin-left: 0.5rem;
-    vertical-align: middle;
-  }
-
+  .section-title.level-3::after,
   .section-title.level-2::after {
     content: '';
     display: inline-block;
     width: 8px;
     height: 8px;
-    background: #00bfff;
     margin-left: 0.5rem;
     vertical-align: middle;
+  }
+
+  .section-title.level-3::after {
+    background: #58d5a2;
+  }
+
+  .section-title.level-2::after {
+    background: #00bfff;
   }
 
   /* Grid de tarjetas */
@@ -159,7 +157,6 @@ const sections = [
   .tag-card:hover {
     background-color: color-mix(in srgb, var(--color-primary) 6%, transparent);
     border-color: var(--color-primary);
-    border-left-color: var(--color-primary);
   }
 
   .tag-name {
