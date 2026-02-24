@@ -187,6 +187,8 @@ def main() -> None:
 
     # Destino
     stem = _slug_from_filename(src_path.name)
+    if not stem:
+        stem = src_path.stem  # fallback al nombre original sin normalizar
     dest = PUBLIC_IMAGES_DIR / post_slug / f"{stem}.webp"
 
     # Resolver conflicto si existe
@@ -202,11 +204,13 @@ def main() -> None:
     print(f"\n✓ {dest.relative_to(PROJECT_ROOT)} ({kb} KB)")
     ext = "x" if kind == "figure" else ""
     print(f"\nCopia esto en tu .md{ext}:\n")
+    if kind == "figure":
+        print('import Figure from \'@components/Figure.astro\';\n')
     print(build_snippet(public_path, alt, kind, caption))
 
     if kind == "figure":
         print("\nNota: <Figure> requiere que el artículo sea .mdx, no .md")
-        print("      Renombra el archivo si es necesario.")
+        print("      Añade el import al principio del artículo si no está ya.")
 
 
 if __name__ == "__main__":

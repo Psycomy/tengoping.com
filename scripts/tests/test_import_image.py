@@ -146,3 +146,9 @@ def test_build_snippet_figure_without_caption():
         kind="figure",
     )
     assert 'caption' not in result
+
+
+def test_build_snippet_invalid_kind():
+    """kind desconocido lanza ValueError."""
+    with pytest.raises(ValueError, match="kind desconocido"):
+        import_image.build_snippet("/img.webp", "alt", kind="gallery")
