@@ -7,7 +7,6 @@ Import Python: import import_image    (este archivo, con guión bajo)
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 from PIL import Image
