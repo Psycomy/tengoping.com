@@ -1,0 +1,61 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+const { src, alt, caption } = Astro.props;
+const filename = src.split('/').at(-1) ?? src;
+---
+
+<figure class="figure-block">
+  <div class="figure-header">
+    <span class="figure-title">$ {filename}</span>
+  </div>
+  <div class="figure-body">
+    <img src={src} alt={alt} loading="lazy" decoding="async" />
+  </div>
+  {caption && <figcaption class="figure-caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .figure-block {
+    margin: 2rem 0;
+    border: 1px solid var(--color-border);
+    font-family: var(--font-body);
+  }
+
+  .figure-header {
+    padding: 0.4rem 0.75rem;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .figure-title {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .figure-body {
+    padding: 1rem;
+    background: var(--color-surface);
+    text-align: center;
+  }
+
+  .figure-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .figure-caption {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+    margin: 0;
+  }
+</style>
