@@ -8,6 +8,7 @@ Import Python: import import_image    (este archivo, con guión bajo)
 from __future__ import annotations
 
 import sys
+import unicodedata
 from pathlib import Path
 
 from PIL import Image
@@ -108,9 +109,11 @@ def _ask_choice(prompt: str, options: list[str]) -> int:
 
 
 def _slug_from_filename(filename: str) -> str:
-    """Convierte nombre de archivo a slug sin extensión."""
+    """Convierte nombre de archivo a slug ASCII sin extensión."""
     stem = Path(filename).stem
-    return stem.replace(" ", "-").replace("_", "-").lower()
+    normalized = unicodedata.normalize("NFKD", stem)
+    ascii_stem = normalized.encode("ascii", "ignore").decode("ascii")
+    return ascii_stem.replace(" ", "-").replace("_", "-").lower()
 
 
 def _resolve_conflict(dest: Path, project_root: Path) -> Path | None:
@@ -127,9 +130,13 @@ def _resolve_conflict(dest: Path, project_root: Path) -> Path | None:
         elif choice == 2:  # cancelar
             return None
         else:  # cambiar nombre
-            new_name = input("\nNuevo nombre (sin extensión): ").strip()
-            if not new_name:
+            raw_name = input("\nNuevo nombre (sin extensión): ").strip()
+            if not raw_name:
                 print("  El nombre no puede estar vacío.")
+                continue
+            new_name = _slug_from_filename(raw_name + ".webp")  # aplica slugify
+            if not new_name:
+                print("  El nombre no es válido.")
                 continue
             dest = dest.parent / f"{new_name}.webp"
     return dest
@@ -148,9 +155,9 @@ def main() -> None:
     # Validar que Pillow puede abrir la imagen
     try:
         with Image.open(src_path) as img:
-            img.verify()
-    except Exception:
-        print(f"Error: '{src_path.name}' no es una imagen válida")
+            img.load()
+    except Exception as e:
+        print(f"Error: '{src_path.name}' no es una imagen válida: {e}")
         sys.exit(1)
 
     # Elegir post
@@ -190,7 +197,7 @@ def main() -> None:
 
     # Convertir y guardar
     kb = convert_and_save(str(src_path), str(dest))
-    public_path = "/" + str(dest.relative_to(PROJECT_ROOT / "public"))
+    public_path = "/" + dest.relative_to(PROJECT_ROOT / "public").as_posix()
 
     print(f"\n✓ {dest.relative_to(PROJECT_ROOT)} ({kb} KB)")
     ext = "x" if kind == "figure" else ""
