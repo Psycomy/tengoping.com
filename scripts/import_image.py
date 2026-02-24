@@ -12,6 +12,15 @@ from pathlib import Path
 
 from PIL import Image
 
+# ---------------------------------------------------------------------------
+# Constantes de módulo
+# ---------------------------------------------------------------------------
+SCRIPT_DIR = Path(__file__).parent
+PROJECT_ROOT = SCRIPT_DIR.parent
+CONTENT_DIR = PROJECT_ROOT / "src" / "content" / "blog"
+PUBLIC_IMAGES_DIR = PROJECT_ROOT / "public" / "images" / "blog"
+MAX_WIDTH = 750
+
 
 def get_posts(content_dir: str) -> list[str]:
     """Devuelve slugs de posts ordenados (sin extensión) desde content_dir.
