@@ -135,10 +135,7 @@ def test_build_snippet_figure_with_caption():
         kind="figure",
         caption="Descripción de la imagen",
     )
-    assert '<Figure' in result
-    assert 'src="/images/blog/mi-post/foto.webp"' in result
-    assert 'alt="Mi foto"' in result
-    assert 'caption="Descripción de la imagen"' in result
+    assert result == '<Figure src="/images/blog/mi-post/foto.webp" alt="Mi foto" caption="Descripción de la imagen" />'
 
 
 def test_build_snippet_figure_without_caption():
