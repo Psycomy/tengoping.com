@@ -1,0 +1,74 @@
+---
+title: 'Título del artículo'
+description: 'Descripción breve del artículo (aparece en listados y SEO).'
+author: 'antonio'
+pubDate: 2026-01-01
+category: 'Linux'
+tags: ['Tag1', 'Tag2', 'Tag3']
+image: '../../assets/images/nombre-imagen.jpg'
+draft: false
+---
+
+import Figure from '@components/Figure.astro';
+
+## Introducción
+
+Texto introductorio del artículo.
+
+## Primera sección
+
+Párrafo con texto normal. Puedes usar **negrita**, _cursiva_ y `código inline`.
+
+### Subsección
+
+```bash
+# Bloque de código con resaltado de sintaxis
+sudo systemctl status ssh
+```
+
+## Imagen suelta (sin caption)
+
+Markdown estándar — no necesita el import de Figure:
+
+![Descripción de la imagen](/images/blog/slug-del-articulo/nombre-imagen.webp)
+
+## Imagen con marco terminal (con caption)
+
+Usa el componente Figure — requiere el import al inicio del archivo:
+
+<Figure
+  src="/images/blog/slug-del-articulo/nombre-imagen.webp"
+  alt="Descripción de la imagen"
+  caption="Pie de foto descriptivo"
+/>
+
+También puedes usarlo sin caption:
+
+<Figure
+  src="/images/blog/slug-del-articulo/nombre-imagen.webp"
+  alt="Descripción de la imagen"
+/>
+
+## Callouts
+
+> [!NOTE]
+> Información complementaria útil.
+
+> [!TIP]
+> Consejo práctico.
+
+> [!WARNING]
+> Algo a tener en cuenta antes de continuar.
+
+> [!CAUTION]
+> Acción con riesgo o consecuencias irreversibles.
+
+> [!IMPORTANT]
+> Punto clave que no debe pasarse por alto.
+
+## Conclusión
+
+Resumen y cierre del artículo.
+
+> [!NOTE]
+> **Transparencia:** Este artículo ha sido redactado con asistencia de inteligencia artificial y revisado por el autor.
