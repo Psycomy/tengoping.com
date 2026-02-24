@@ -109,3 +109,29 @@ Colores por categoría
   Hardware         #FBBF24  (amarillo)
   Software         #C084FC  (violeta)
   Monitorización   #F472B6  (rosa)
+
+--------------------------------------------------------------------------------
+import_image.py — Importador de imágenes para artículos del blog
+--------------------------------------------------------------------------------
+
+Convierte cualquier imagen (JPG, PNG, GIF...) a WebP, la organiza en
+public/images/blog/[slug-post]/ y genera el snippet Markdown para pegar
+directamente en el artículo.
+
+Uso:
+  python3 scripts/import_image.py <ruta-imagen>
+
+Ejemplo:
+  python3 scripts/import_image.py ~/Descargas/diagrama.png
+
+Flujo:
+  1. Elige el artículo al que pertenece la imagen
+  2. Escribe el texto alternativo (alt)
+  3. Elige tipo: imagen suelta o figura con caption
+  4. Si elige figura: escribe el caption
+  5. Recibe el snippet listo para copiar en el .md / .mdx
+
+Notas:
+  - El componente <Figure> solo funciona en archivos .mdx, no en .md
+  - Requiere: pip install Pillow
+  - Tests: python -m pytest scripts/tests/ -v
