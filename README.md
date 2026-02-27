@@ -177,3 +177,5 @@ Este blog ha sido diseñado y desarrollado con la asistencia de [Claude](https:/
 ## Licencia
 
 Contenido del blog bajo [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/). Código fuente bajo [MIT](LICENSE).
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Psycomy/tengoping.com)
