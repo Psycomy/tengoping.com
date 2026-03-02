@@ -7,3 +7,8 @@ dist/
 .env.*
 .claude/
 .vscode/
+
+# Python
+scripts/.venv/
+**/__pycache__/
+*.pyc
