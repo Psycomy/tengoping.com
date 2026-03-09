@@ -12,7 +12,7 @@ const { prevPost, nextPost } = Astro.props;
     <nav class="article-nav" aria-label="Navegación entre artículos">
       <div class="nav-prev">
         {prevPost && (
-          <a href={`/blog/${prevPost.id}`} rel="prev">
+          <a href={`/blog/${prevPost.id}/`} rel="prev">
             <span class="nav-label">← Anterior</span>
             <span class="nav-title">{prevPost.data.title}</span>
           </a>
@@ -20,7 +20,7 @@ const { prevPost, nextPost } = Astro.props;
       </div>
       <div class="nav-next">
         {nextPost && (
-          <a href={`/blog/${nextPost.id}`} rel="next">
+          <a href={`/blog/${nextPost.id}/`} rel="next">
             <span class="nav-label">Siguiente →</span>
             <span class="nav-title">{nextPost.data.title}</span>
           </a>

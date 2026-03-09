@@ -14,11 +14,11 @@ const { author } = Astro.props;
 ---
 
 <aside class="author-card">
-  <a href={`/autor/${author.id}`}>
+  <a href={`/autor/${author.id}/`}>
     <img src={author.avatar} alt={author.name} class="author-avatar" loading="lazy" />
   </a>
   <div class="author-info">
-    <h3 class="author-name"><a href={`/autor/${author.id}`}>{author.name}</a></h3>
+    <h3 class="author-name"><a href={`/autor/${author.id}/`}>{author.name}</a></h3>
     <p class="author-bio">{author.bio}</p>
     <div class="author-links">
       <div class="author-social">
@@ -44,7 +44,7 @@ const { author } = Astro.props;
           )
         }
       </div>
-      <a href={`/autor/${author.id}`} class="author-all-posts">[ver todos los artículos]</a>
+      <a href={`/autor/${author.id}/`} class="author-all-posts">[ver todos los artículos]</a>
     </div>
   </div>
 </aside>

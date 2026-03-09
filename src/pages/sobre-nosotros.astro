@@ -37,7 +37,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
                 />
                 <div>
                   <h2>
-                    <a href={`/autor/${author.id}`}>{author.name}</a>
+                    <a href={`/autor/${author.id}/`}>{author.name}</a>
                   </h2>
                   <p class="author-role">{author.bioShort}</p>
                 </div>
@@ -71,7 +71,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
                   <ul>
                     {authorPosts.map((post) => (
                       <li>
-                        <a href={`/blog/${post.id}`}>{post.data.title}</a>
+                        <a href={`/blog/${post.id}/`}>{post.data.title}</a>
                       </li>
                     ))}
                   </ul>

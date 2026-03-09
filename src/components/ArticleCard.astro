@@ -31,7 +31,7 @@ const authorAvatarSmall = authorData?.avatar
 ---
 
 <article class="article-card card-hover">
-  <a href={`/blog/${post.id}`} class="card-image-link">
+  <a href={`/blog/${post.id}/`} class="card-image-link">
     {
       image ? (
         <Image
@@ -60,7 +60,7 @@ const authorAvatarSmall = authorData?.avatar
   <div class="card-content">
     <a href={`/categorias/${slugify(category)}`} class="badge badge-category">{category}</a>
     <h3 class="card-title">
-      <a href={`/blog/${post.id}`}>{title}</a>
+      <a href={`/blog/${post.id}/`}>{title}</a>
     </h3>
     <p class="card-description">
       {description}
@@ -78,7 +78,7 @@ const authorAvatarSmall = authorData?.avatar
       <div class="card-author">
         {
           authorData && (
-            <a href={`/autor/${authorData.id}`}>
+            <a href={`/autor/${authorData.id}/`}>
               <img
                 src={authorAvatarSmall ?? authorData.avatar}
                 alt={authorData.name}
@@ -91,7 +91,7 @@ const authorAvatarSmall = authorData?.avatar
             </a>
           )
         }
-        <a href={authorData ? `/autor/${authorData.id}` : '#'} class="card-author-link"
+        <a href={authorData ? `/autor/${authorData.id}/` : '#'} class="card-author-link"
           >{authorData ? authorData.name : author}</a
         >
       </div>

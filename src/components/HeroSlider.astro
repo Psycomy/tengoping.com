@@ -58,7 +58,7 @@ const { posts } = Astro.props;
               </a>
               <h2 class="slide-title">{post.data.title}</h2>
               <p class="slide-description">{post.data.description}</p>
-              <a href={`/blog/${post.id}`} class="slide-cta" tabindex={i !== 0 ? -1 : undefined}>
+              <a href={`/blog/${post.id}/`} class="slide-cta" tabindex={i !== 0 ? -1 : undefined}>
                 [$ leer más →]
               </a>
             </div>

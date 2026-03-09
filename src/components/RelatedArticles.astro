@@ -45,7 +45,7 @@ const scored = allPosts
       </h3>
       <div class="related-grid">
         {scored.map(({ post, readingTime }) => (
-          <a href={`/blog/${post.id}`} class="related-card card-hover">
+          <a href={`/blog/${post.id}/`} class="related-card card-hover">
             {post.data.image && (
               <Image
                 src={post.data.image}
