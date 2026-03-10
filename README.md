@@ -91,6 +91,51 @@ Contenido del artículo en Markdown...
 | `image`       | string   | No        | Ruta a imagen destacada                                   |
 | `draft`       | boolean  | No        | `true` para ocultar el artículo                           |
 
+## Insertar imágenes en un artículo
+
+### Script automatizado (recomendado)
+
+El script `scripts/import_image.py` convierte la imagen a WebP, la redimensiona si supera 750px de ancho y genera el snippet listo para pegar:
+
+```bash
+# Activar el entorno virtual (primera vez: python3 -m venv scripts/.venv && scripts/.venv/bin/pip install Pillow)
+source scripts/.venv/bin/activate
+
+python3 scripts/import_image.py /ruta/a/imagen.png
+```
+
+El script pregunta de forma interactiva:
+
+1. A qué artículo pertenece la imagen
+2. El texto alternativo (`alt`)
+3. El tipo de inserción: **imagen suelta** o **figura con caption**
+
+Al terminar muestra el snippet que debes copiar al artículo y guarda el WebP en `public/images/blog/<slug-post>/`.
+
+### Imagen suelta (Markdown estándar)
+
+Funciona en `.md` y `.mdx`. La imagen se sirve desde `public/`:
+
+```markdown
+![Descripción de la imagen](/images/blog/mi-post/nombre-imagen.webp)
+```
+
+### Figura con caption (componente `<Figure>`)
+
+Requiere que el archivo sea `.mdx`. Muestra la imagen con estética de terminal (cabecera `$ filename`, borde, caption opcional).
+
+```mdx
+import Figure from '@components/Figure.astro';
+
+<Figure
+  src="/images/blog/mi-post/nombre-imagen.webp"
+  alt="Descripción de la imagen"
+  caption="Texto de caption opcional"
+/>
+```
+
+> La imagen destacada del artículo (`image` en el frontmatter) es independiente y apunta a `src/assets/images/`, no a `public/`.
+
 ## Añadir un autor
 
 Edita `src/data/authors.json`:
