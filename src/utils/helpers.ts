@@ -25,5 +25,14 @@ export function getUniqueCategories(posts: { data: { category: string } }[]): st
 
 export function getUniqueTags(posts: { data: { tags: string[] } }[]): string[] {
   const tags = posts.flatMap((post) => post.data.tags);
-  return [...new Set(tags)].sort();
+  const seenSlugs = new Set<string>();
+  const unique: string[] = [];
+  for (const tag of tags) {
+    const slug = slugify(tag);
+    if (!seenSlugs.has(slug)) {
+      seenSlugs.add(slug);
+      unique.push(tag);
+    }
+  }
+  return unique.sort();
 }
