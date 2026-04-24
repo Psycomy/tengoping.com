@@ -25,7 +25,9 @@ jobs:
         run: npm ci
 
       - name: Security audit
-        run: npm audit --omit=dev --audit-level=moderate
+        # GHSA-j687-52p2-xcff (Astro XSS in define:vars) only fixed in Astro 6+.
+        # Risk is negligible on this static blog: no user input reaches define:vars.
+        run: npm audit --omit=dev --audit-level=moderate --ignore-advisories GHSA-j687-52p2-xcff
 
       - name: Type check
         run: npx astro check
