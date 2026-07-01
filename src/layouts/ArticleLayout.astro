@@ -61,8 +61,7 @@ const authorPageUrl = authorData
   : undefined;
 
 const authorSocial = authorData?.social as
-  | { github?: string; twitter?: string; linkedin?: string }
-  | undefined;
+  { github?: string; twitter?: string; linkedin?: string } | undefined;
 const authorSameAs = authorSocial
   ? [authorSocial.github, authorSocial.twitter, authorSocial.linkedin].filter((v): v is string =>
       Boolean(v)

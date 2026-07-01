@@ -72,11 +72,12 @@ Copia esto en tu .md:
 Renderiza una imagen con marco de estética terminal.
 
 **Props:**
-| Prop | Tipo | Requerido | Descripción |
-|------|------|-----------|-------------|
-| `src` | `string` | Sí | Ruta pública de la imagen |
-| `alt` | `string` | Sí | Texto alternativo |
-| `caption` | `string` | No | Pie de foto. Si se omite, no se renderiza la barra inferior |
+
+| Prop      | Tipo     | Requerido | Descripción                                                 |
+| --------- | -------- | --------- | ----------------------------------------------------------- |
+| `src`     | `string` | Sí        | Ruta pública de la imagen                                   |
+| `alt`     | `string` | Sí        | Texto alternativo                                           |
+| `caption` | `string` | No        | Pie de foto. Si se omite, no se renderiza la barra inferior |
 
 **Aspecto visual:**
 
