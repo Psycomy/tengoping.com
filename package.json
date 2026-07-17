@@ -15,11 +15,12 @@
     "check-links": "linkinator \"**/*.html\" --recurse --server-root ./dist --skip \"^https?://(?!localhost)\" --verbosity error"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.6",
+    "@astrojs/markdown-remark": "^7.2.1",
+    "@astrojs/mdx": "^7.0.3",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^6.4.8",
+    "astro": "^7.1.1",
     "astro-pagefind": "^2.0.1",
     "satori": "^0.26.0",
     "sharp": "^0.35.3"
