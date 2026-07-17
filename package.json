@@ -22,7 +22,7 @@
     "astro": "^6.4.8",
     "astro-pagefind": "^2.0.0",
     "satori": "^0.26.0",
-    "sharp": "^0.35.2"
+    "sharp": "^0.35.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
