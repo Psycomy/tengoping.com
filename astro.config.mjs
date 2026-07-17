@@ -7,6 +7,7 @@ import remarkGithubAlerts from './src/plugins/remark-github-alerts.mjs';
 
 export default defineConfig({
   site: 'https://tengoping.com',
+  compressHTML: true,
   integrations: [mdx(), sitemap(), pagefind()],
   markdown: {
     processor: unified({ remarkPlugins: [remarkGithubAlerts] }),
