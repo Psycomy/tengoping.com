@@ -18,7 +18,7 @@
 
 | Herramienta                      | Uso                                    |
 | -------------------------------- | -------------------------------------- |
-| [Astro 5](https://astro.build)   | Framework web estático                 |
+| [Astro 7](https://astro.build)   | Framework web estático                 |
 | [MDX](https://mdxjs.com)         | Markdown con componentes               |
 | [Pagefind](https://pagefind.app) | Búsqueda estática (~15KB)              |
 | [Shiki](https://shiki.style)     | Resaltado de sintaxis con temas duales |
