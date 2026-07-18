@@ -16,13 +16,5 @@
     "bio": "Administrador de sistemas y redes con experiencia en entornos Linux, virtualización y networking. Enfocado en soluciones prácticas, automatización y diseño de infraestructuras eficientes y robustas.",
     "bioShort": "Sysadmin Linux, Redes & Virtualización",
     "social": {}
-  },
-  {
-    "id": "orgise",
-    "name": "Orgise",
-    "avatar": "/images/arch.png",
-    "bio": "La tecnología debe servirnos, no esclavizarnos. Piensa que el software libre es necesario para una sociedad libre. Construyamos un mundo mejor para las generaciones venideras.",
-    "bioShort": "Frontend Web Developer",
-    "social": {}
   }
 ]

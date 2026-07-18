@@ -7,7 +7,7 @@ const blog = defineCollection({
     z.object({
       title: z.string(),
       description: z.string(),
-      author: z.enum(['antonio', 'alois', 'orgise']),
+      author: z.enum(['antonio', 'alois']),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       category: z.string(),
