@@ -12,14 +12,14 @@ const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 
 const categoryOrder = [
   'Linux',
-  'Software',
   'Redes',
   'Seguridad',
-  'Virtualización',
-  'Monitorización',
-  'Automatización',
   'Self-Hosting',
+  'Automatización',
+  'Monitorización',
+  'Virtualización',
   'Hardware',
+  'Software',
   'Opinión',
 ];
 
