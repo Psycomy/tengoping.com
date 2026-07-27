@@ -50,7 +50,7 @@ Defined in `tsconfig.json`: `@components/*`, `@layouts/*`, `@utils/*`, `@data/*`
 ### Theme System
 
 - CSS custom properties in `src/styles/global.css` under `:root` (light) and `[data-theme='dark']` (dark)
-- Light mode: primary `#1A73E8` (blue), accent `#FF6D00` (orange), bg `#F4F6F9`
+- Light mode: primary `#1967D2` (blue, AA sobre bg), accent `#FF6D00` (orange, solo fondos/logo — para texto usar `--color-accent-text` #C2410C), bg `#F4F6F9`
 - Dark mode: primary `#58D5A2` (green terminal), accent `#00BFFF` (electric blue), bg `#0D1117`
 - Theme flash prevented by inline sync script in `<head>` that reads `localStorage.getItem('theme')` before paint
 - Shiki code highlighting uses CSS variable-based dual themes (`github-light`/`github-dark`)
