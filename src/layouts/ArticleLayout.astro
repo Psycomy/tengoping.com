@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '@components/TableOfContents.astro';
 import AuthorCard from '@components/AuthorCard.astro';
@@ -14,26 +15,13 @@ import RelatedArticles from '@components/RelatedArticles.astro';
 import ShareButtons from '@components/ShareButtons.astro';
 import { getReadingTime } from '@utils/readingTime';
 import { formatDate, slugify } from '@utils/helpers';
-import authors from '@data/authors.json';
+import { authors } from '@data/authors';
 
 interface Props {
-  entry: {
-    id: string;
-    body?: string;
-    data: {
-      title: string;
-      description: string;
-      author: string;
-      pubDate: Date;
-      category: string;
-      tags: string[];
-      image?: ImageMetadata;
-      updatedDate?: Date;
-    };
-  };
-  headings: { depth: number; slug: string; text: string }[];
-  prevPost?: { id: string; data: { title: string } } | null;
-  nextPost?: { id: string; data: { title: string } } | null;
+  entry: CollectionEntry<'blog'>;
+  headings: MarkdownHeading[];
+  prevPost?: CollectionEntry<'blog'> | null;
+  nextPost?: CollectionEntry<'blog'> | null;
 }
 
 const { entry, headings, prevPost, nextPost } = Astro.props;
@@ -51,17 +39,16 @@ const {
 const authorData = authors.find((a) => a.id === authorId);
 const readingTime = getReadingTime(entry.body || '');
 const ogImage = `/og/${entry.id}.png`;
-const canonicalURL = new URL(`/blog/${entry.id}`, Astro.site).toString();
+const canonicalURL = new URL(`/blog/${entry.id}/`, Astro.site).toString();
 const lastReviewDate = updatedDate ?? pubDate;
 const STALE_DAYS_THRESHOLD = 730;
 const articleAgeDays = Math.floor((Date.now() - lastReviewDate.getTime()) / (1000 * 60 * 60 * 24));
 const isStale = articleAgeDays > STALE_DAYS_THRESHOLD;
 const authorPageUrl = authorData
-  ? new URL(`/autor/${authorData.id}`, Astro.site).toString()
+  ? new URL(`/autor/${authorData.id}/`, Astro.site).toString()
   : undefined;
 
-const authorSocial = authorData?.social as
-  { github?: string; twitter?: string; linkedin?: string } | undefined;
+const authorSocial = authorData?.social;
 const authorSameAs = authorSocial
   ? [authorSocial.github, authorSocial.twitter, authorSocial.linkedin].filter((v): v is string =>
       Boolean(v)
@@ -72,9 +59,9 @@ const authorJsonLd = authorData
   ? {
       '@context': 'https://schema.org',
       '@type': 'Person',
-      '@id': new URL(`/autor/${authorData.id}`, Astro.site).toString(),
+      '@id': new URL(`/autor/${authorData.id}/`, Astro.site).toString(),
       name: authorData.name,
-      url: new URL(`/autor/${authorData.id}`, Astro.site).toString(),
+      url: new URL(`/autor/${authorData.id}/`, Astro.site).toString(),
       ...(authorSameAs.length > 0 && { sameAs: authorSameAs }),
       ...(authorData.bioShort && { description: authorData.bioShort }),
     }

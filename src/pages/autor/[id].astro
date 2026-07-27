@@ -4,7 +4,7 @@ import BaseLayout from '@layouts/BaseLayout.astro';
 import ArticleCard from '@components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
 import { avatarVariant } from '@utils/helpers';
-import authors from '@data/authors.json';
+import { authors } from '@data/authors';
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -21,16 +21,16 @@ export const getStaticPaths = (async () => {
 
 const { author, posts } = Astro.props;
 
-const authorSocial = author.social as { twitter?: string; github?: string; linkedin?: string };
+const authorSocial = author.social;
 const authorSameAs = [authorSocial.github, authorSocial.twitter, authorSocial.linkedin].filter(
   (v): v is string => Boolean(v)
 );
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  '@id': new URL(`/autor/${author.id}`, Astro.site).toString(),
+  '@id': new URL(`/autor/${author.id}/`, Astro.site).toString(),
   name: author.name,
-  url: new URL(`/autor/${author.id}`, Astro.site).toString(),
+  url: new URL(`/autor/${author.id}/`, Astro.site).toString(),
   description: author.bio,
   image: {
     '@type': 'ImageObject',
@@ -61,30 +61,29 @@ const personSchema = {
         <p class="author-bio">{author.bio}</p>
         <div class="author-meta">
           <span class="meta-stat">{posts.length} artículos</span>
-          {
-            (() => {
-              const s = author.social as { twitter?: string; github?: string; linkedin?: string };
-              return (
-                <div class="author-social">
-                  {s.twitter && (
-                    <a href={s.twitter} target="_blank" rel="noopener noreferrer">
-                      [twitter]
-                    </a>
-                  )}
-                  {s.github && (
-                    <a href={s.github} target="_blank" rel="noopener noreferrer">
-                      [github]
-                    </a>
-                  )}
-                  {s.linkedin && (
-                    <a href={s.linkedin} target="_blank" rel="noopener noreferrer">
-                      [linkedin]
-                    </a>
-                  )}
-                </div>
-              );
-            })()
-          }
+          <div class="author-social">
+            {
+              author.social.twitter && (
+                <a href={author.social.twitter} target="_blank" rel="noopener noreferrer">
+                  [twitter]
+                </a>
+              )
+            }
+            {
+              author.social.github && (
+                <a href={author.social.github} target="_blank" rel="noopener noreferrer">
+                  [github]
+                </a>
+              )
+            }
+            {
+              author.social.linkedin && (
+                <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer">
+                  [linkedin]
+                </a>
+              )
+            }
+          </div>
         </div>
       </div>
     </div>
