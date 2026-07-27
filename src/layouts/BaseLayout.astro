@@ -40,6 +40,10 @@ const canonicalURL = canonicalOverride
   ? new URL(canonicalOverride, Astro.site)
   : new URL(Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.site);
+// alt de la imagen OG: describe la imagen, no el contenido del artículo
+const imageAlt = article
+  ? `Portada del artículo: ${title}`
+  : `Logo de ${site.title} sobre fondo de terminal`;
 ---
 
 <!doctype html>
@@ -51,7 +55,8 @@ const imageURL = new URL(image, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest-dark.json" id="manifest-link" />
-    <meta name="theme-color" content="#1967D2" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#1967D2" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#58D5A2" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" hreflang="es" href={canonicalURL} />
     <link rel="alternate" hreflang="x-default" href={canonicalURL} />
@@ -77,7 +82,7 @@ const imageURL = new URL(image, Astro.site);
     <meta property="og:image" content={imageURL} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={description} />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:site_name" content={site.title} />
     {publishDate && <meta property="article:published_time" content={publishDate} />}
@@ -90,7 +95,7 @@ const imageURL = new URL(image, Astro.site);
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageURL} />
-    <meta name="twitter:image:alt" content={description} />
+    <meta name="twitter:image:alt" content={imageAlt} />
 
     {article && <link rel="preconnect" href="https://giscus.app" crossorigin />}
 
@@ -138,7 +143,7 @@ const imageURL = new URL(image, Astro.site);
               url: site.url,
               logo: {
                 '@type': 'ImageObject',
-                url: `${site.url}/favicon.svg`,
+                url: `${site.url}/apple-touch-icon.png`,
               },
             },
           })}
@@ -174,7 +179,7 @@ const imageURL = new URL(image, Astro.site);
             url: site.url,
             logo: {
               '@type': 'ImageObject',
-              url: `${site.url}/favicon.svg`,
+              url: `${site.url}/apple-touch-icon.png`,
             },
             description: site.description,
             sameAs: ['https://github.com/Psycomy'],
@@ -227,8 +232,12 @@ const imageURL = new URL(image, Astro.site);
         // existe quien pueda revelarlas después (ver ArticleCard)
         document.documentElement.classList.add('js');
         function syncThemeMeta(theme) {
-          const meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', theme === 'dark' ? '#58D5A2' : '#1967D2');
+          // Hay dos metas theme-color (una por media query, para el estado sin JS);
+          // con el tema resuelto se fijan ambas al color activo
+          const color = theme === 'dark' ? '#58D5A2' : '#1967D2';
+          document.querySelectorAll('meta[name="theme-color"]').forEach(function (meta) {
+            meta.setAttribute('content', color);
+          });
           const manifestLink = document.getElementById('manifest-link');
           if (manifestLink)
             manifestLink.setAttribute(

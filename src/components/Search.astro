@@ -122,8 +122,12 @@
       if (!overlay || !overlay.classList.contains('active')) return;
       if (e.key !== 'Tab') return;
 
-      const focusable = overlay.querySelectorAll(
-        'input, button, a[href], [tabindex]:not([tabindex="-1"])'
+      const focusable = Array.prototype.filter.call(
+        overlay.querySelectorAll('input, button, a[href], [tabindex]:not([tabindex="-1"])'),
+        function (el) {
+          // Excluir elementos ocultos (p. ej. botones de Pagefind aún no visibles)
+          return el.offsetParent !== null;
+        }
       );
       if (!focusable.length) return;
 
@@ -172,11 +176,16 @@
         });
 
       document.addEventListener('keydown', function (e) {
-        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        // toLowerCase: que Ctrl+K funcione también con Bloq Mayús / Shift
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
           e.preventDefault();
           openSearch();
         }
-        if (e.key === 'Escape') closeSearch();
+        // Guard: sin él, ESC en cualquier página robaba el foco hacia
+        // lastFocusedElement aunque el overlay estuviera cerrado
+        if (e.key === 'Escape' && overlay && overlay.classList.contains('active')) {
+          closeSearch();
+        }
         trapFocus(e);
       });
 

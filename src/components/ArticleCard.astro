@@ -1,24 +1,12 @@
 ---
 import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
-import authors from '@data/authors.json';
+import type { CollectionEntry } from 'astro:content';
+import { authors } from '@data/authors';
 import { avatarVariant, formatDate, slugify } from '@utils/helpers';
 import { getReadingTime } from '@utils/readingTime';
 
 interface Props {
-  post: {
-    id: string;
-    body?: string;
-    data: {
-      title: string;
-      description: string;
-      author: string;
-      pubDate: Date;
-      category: string;
-      tags: string[];
-      image?: ImageMetadata;
-    };
-  };
+  post: CollectionEntry<'blog'>;
 }
 
 const { post } = Astro.props;
@@ -29,12 +17,16 @@ const authorAvatarSmall = authorData?.avatar ? avatarVariant(authorData.avatar, 
 ---
 
 <article class="article-card card-hover">
-  <a href={`/blog/${post.id}/`} class="card-image-link">
+  {
+    /* Duplica el enlace del título: oculto a AT y fuera del tab-order para no
+      anunciar dos veces el mismo destino */
+  }
+  <a href={`/blog/${post.id}/`} class="card-image-link" aria-hidden="true" tabindex="-1">
     {
       image ? (
         <Image
           src={image}
-          alt={title}
+          alt=""
           class="card-image"
           loading="lazy"
           width={300}
@@ -45,7 +37,7 @@ const authorAvatarSmall = authorData?.avatar ? avatarVariant(authorData.avatar, 
       ) : (
         <img
           src="/images/placeholder-article.svg"
-          alt={title}
+          alt=""
           class="card-image"
           loading="lazy"
           width="300"
@@ -77,10 +69,10 @@ const authorAvatarSmall = authorData?.avatar ? avatarVariant(authorData.avatar, 
       <div class="card-author">
         {
           authorData && (
-            <a href={`/autor/${authorData.id}/`}>
+            <a href={`/autor/${authorData.id}/`} aria-hidden="true" tabindex="-1">
               <img
                 src={authorAvatarSmall ?? authorData.avatar}
-                alt={authorData.name}
+                alt=""
                 class="card-avatar"
                 loading="lazy"
                 width="28"
@@ -90,9 +82,15 @@ const authorAvatarSmall = authorData?.avatar ? avatarVariant(authorData.avatar, 
             </a>
           )
         }
-        <a href={authorData ? `/autor/${authorData.id}/` : '#'} class="card-author-link"
-          >{authorData ? authorData.name : author}</a
-        >
+        {
+          authorData ? (
+            <a href={`/autor/${authorData.id}/`} class="card-author-link">
+              {authorData.name}
+            </a>
+          ) : (
+            <span class="card-author-link">{author}</span>
+          )
+        }
       </div>
       <div class="card-info">
         <time datetime={new Date(pubDate).toISOString()}>{formatDate(pubDate)}</time>

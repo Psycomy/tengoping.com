@@ -1,19 +1,10 @@
 ---
 import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
+import type { CollectionEntry } from 'astro:content';
 import { slugify } from '@utils/helpers';
 
 interface Props {
-  posts: {
-    id: string;
-    data: {
-      title: string;
-      description: string;
-      category: string;
-      image?: ImageMetadata;
-      pubDate: Date;
-    };
-  }[];
+  posts: CollectionEntry<'blog'>[];
 }
 
 const { posts } = Astro.props;
@@ -78,13 +69,12 @@ const { posts } = Astro.props;
       aria-atomic="true"
       aria-label={`Diapositiva 1 de ${posts.length}`}>[1/{posts.length}]</span
     >
-    <div class="slider-dots" role="tablist" aria-label="Navegación del slider">
+    <div class="slider-dots" role="group" aria-label="Navegación del slider">
       {
         posts.map((_, i) => (
           <button
             class={`slider-dot${i === 0 ? ' active' : ''}`}
-            role="tab"
-            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-current={i === 0 ? 'true' : undefined}
             aria-label={`Diapositiva ${i + 1}`}
             data-dot={i}
           />
@@ -379,7 +369,8 @@ const { posts } = Astro.props;
       });
       dots.forEach((d, i) => {
         d.classList.toggle('active', i === current);
-        d.setAttribute('aria-selected', String(i === current));
+        if (i === current) d.setAttribute('aria-current', 'true');
+        else d.removeAttribute('aria-current');
       });
       if (counter) {
         counter.textContent = `[${current + 1}/${total}]`;
