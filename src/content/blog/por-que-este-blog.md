@@ -1,6 +1,6 @@
 ---
 title: '¿Por qué este blog?'
-description: 'Descripción breve para SEO y tarjetas'
+description: 'Presentación del blog: qué encontrarás, el stack técnico (Astro, MDX) y por qué un sysadmin decidió escribir sobre Linux e infraestructura.'
 author: 'antonio'
 pubDate: 2026-02-20
 category: 'Opinión'

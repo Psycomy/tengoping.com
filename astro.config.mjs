@@ -8,7 +8,15 @@ import remarkGithubAlerts from './src/plugins/remark-github-alerts.mjs';
 export default defineConfig({
   site: 'https://tengoping.com',
   compressHTML: true,
-  integrations: [mdx(), sitemap(), pagefind()],
+  integrations: [
+    mdx(),
+    sitemap({
+      // Exclude paginated pages beyond page 1 (/blog/2/, /categorias/x/2/…) —
+      // these are marked noindex in BaseLayout, so they shouldn't be in the sitemap either.
+      filter: (page) => !/\/(blog|categorias\/[^/]+)\/\d+\/$/.test(page),
+    }),
+    pagefind(),
+  ],
   markdown: {
     processor: unified({ remarkPlugins: [remarkGithubAlerts] }),
     shikiConfig: {

@@ -14,7 +14,7 @@ export const getStaticPaths = (async () => {
     props: {
       tag,
       posts: posts
-        .filter((p) => p.data.tags.includes(tag))
+        .filter((p) => p.data.tags.some((t) => slugify(t) === slugify(tag)))
         .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
     },
   }));
