@@ -130,7 +130,24 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 <script>
   let escListenerRegistered = false;
 
+  let pagefindWarmed = false;
+
+  function warmPagefind() {
+    if (pagefindWarmed) return;
+    pagefindWarmed = true;
+    ['/pagefind/pagefind-ui.js', '/pagefind/pagefind.js'].forEach((href) => {
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = href;
+      document.head.appendChild(link);
+    });
+  }
+
   function setupHeader() {
+    const searchTrigger = document.querySelector('[data-search-trigger]');
+    searchTrigger?.addEventListener('pointerenter', warmPagefind, { once: true });
+    searchTrigger?.addEventListener('focus', warmPagefind, { once: true });
+
     const toggle = document.querySelector('.theme-toggle');
     toggle?.addEventListener('click', () => {
       const current = document.documentElement.getAttribute('data-theme');

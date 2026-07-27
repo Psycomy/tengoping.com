@@ -38,7 +38,13 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
 ---
 
 <BaseLayout isHome={true}>
-  <h1 class="sr-only">Blog técnico en español para administradores de sistemas</h1>
+  <section class="intro container">
+    <h1>Blog técnico de sysadmin y redes, en español</h1>
+    <p>
+      Guías prácticas de Linux, redes, seguridad y self-hosting para quien monta o mantiene
+      infraestructura — desde un homelab hasta un servidor en producción.
+    </p>
+  </section>
   <HeroSlider posts={allPosts.slice(0, 5)} />
   {
     sortedCategories.map(([category, posts]) => (
@@ -62,7 +68,7 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
           </div>
           {posts.length > 1 && (
             <div class="secondary">
-              {posts.slice(1, 4).map((post) => (
+              {posts.slice(1, 3).map((post) => (
                 <ArticleCard post={post} />
               ))}
             </div>
@@ -74,9 +80,34 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
 </BaseLayout>
 
 <style>
+  .intro {
+    padding: 2.5rem 0 1.5rem;
+    max-width: 700px;
+  }
+
+  .intro h1 {
+    font-size: 1.75rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .intro p {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .intro h1 {
+      font-size: 1.4rem;
+    }
+  }
+
   .category-section {
     padding: 2.5rem 0;
     border-bottom: 1px solid var(--color-border);
+    content-visibility: auto;
+    contain-intrinsic-size: auto 640px;
   }
 
   .category-section:last-child {

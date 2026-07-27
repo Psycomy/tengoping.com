@@ -119,7 +119,16 @@ const authorJsonLd = authorData
     {
       image && (
         <div class="article-image">
-          <Image src={image} alt={title} width={900} height={506} format="avif" loading="eager" />
+          <Image
+            src={image}
+            alt={title}
+            width={900}
+            height={506}
+            format="avif"
+            loading="eager"
+            fetchpriority="high"
+            sizes="(max-width: 900px) 100vw, 900px"
+          />
         </div>
       )
     }
