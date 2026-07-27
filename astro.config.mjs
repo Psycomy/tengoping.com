@@ -8,6 +8,9 @@ import remarkGithubAlerts from './src/plugins/remark-github-alerts.mjs';
 export default defineConfig({
   site: 'https://tengoping.com',
   compressHTML: true,
+  build: {
+    inlineStylesheets: 'always',
+  },
   integrations: [
     mdx(),
     sitemap({
