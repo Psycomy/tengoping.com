@@ -3,6 +3,7 @@ title: 'Gitea: monta tu propio servidor Git'
 description: 'Instala y configura Gitea como alternativa ligera a GitHub o GitLab para alojar repositorios Git en tu propio servidor.'
 author: 'antonio'
 pubDate: 2026-02-08
+updatedDate: 2026-07-27
 category: 'Self-Hosting'
 tags: ['Gitea', 'Git', 'Self-Hosting', 'DevOps']
 image: '../../assets/images/gitea-server.jpg'
@@ -30,7 +31,7 @@ Para servidores modestos o uso personal, Gitea es la mejor opcion por su bajo co
 
 ## Preparar el sistema
 
-Crea un usuario sin shell interactiva para ejecutar Gitea:
+Crea un usuario de sistema dedicado para ejecutar Gitea (se usa /bin/bash porque Gitea necesita ejecutar git-shell a través de SSH):
 
 ```bash
 sudo adduser --system --shell /bin/bash --group --home /home/gitea gitea
@@ -69,6 +70,10 @@ Usaremos PostgreSQL. Instalalo y crea la base de datos:
 ```bash
 sudo apt install postgresql -y
 sudo -u postgres psql
+```
+
+```bash
+sudo locale-gen es_ES.UTF-8 && sudo update-locale
 ```
 
 ```sql

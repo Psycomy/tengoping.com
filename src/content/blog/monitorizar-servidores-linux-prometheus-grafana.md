@@ -3,6 +3,7 @@ title: 'Monitorizar servidores Linux con Prometheus y Grafana'
 description: 'Guía paso a paso para desplegar un stack de monitorización con Prometheus y Grafana en servidores Linux usando Node Exporter.'
 author: 'antonio'
 pubDate: 2026-01-25
+updatedDate: 2026-07-27
 category: 'Monitorización'
 tags: ['Monitorización', 'Prometheus', 'Grafana', 'Sysadmin']
 image: '../../assets/images/linux-monitoring.jpg'
@@ -35,7 +36,7 @@ sudo mv node_exporter-1.8.1.linux-amd64/node_exporter /usr/local/bin/
 Crear el servicio de systemd:
 
 ```bash
-sudo cat <<EOF > /etc/systemd/system/node_exporter.service
+sudo tee /etc/systemd/system/node_exporter.service > /dev/null <<EOF
 [Unit]
 Description=Node Exporter
 After=network.target
@@ -90,7 +91,7 @@ scrape_configs:
 ### Crear el servicio
 
 ```bash
-sudo cat <<EOF > /etc/systemd/system/prometheus.service
+sudo tee /etc/systemd/system/prometheus.service > /dev/null <<EOF
 [Unit]
 Description=Prometheus
 After=network.target
@@ -120,7 +121,7 @@ Prometheus estará accesible en `http://servidor:9090`.
 sudo dnf install -y https://dl.grafana.com/oss/release/grafana-11.1.0-1.x86_64.rpm
 
 # Ubuntu/Debian
-wget -q -O /usr/share/keyrings/grafana.key https://apt.grafana.com/gpg.key
+wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/grafana.key > /dev/null
 echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" \
   | sudo tee /etc/apt/sources.list.d/grafana.list
 sudo apt update

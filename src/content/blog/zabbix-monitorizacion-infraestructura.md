@@ -2,7 +2,7 @@
 title: 'Zabbix: monitorización de infraestructura paso a paso'
 description: 'Instala Zabbix Server 7.0 LTS, añade hosts con el agente, define triggers y configura alertas por email para vigilar tu infraestructura.'
 author: 'antonio'
-pubDate: 2026-08-01
+pubDate: 2026-07-27
 category: 'Monitorización'
 tags: ['Zabbix', 'Monitorización', 'Sysadmin', 'Alertas']
 image: '../../assets/images/mon-zabbix.jpg'

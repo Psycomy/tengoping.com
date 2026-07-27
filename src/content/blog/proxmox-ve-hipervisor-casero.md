@@ -3,6 +3,7 @@ title: 'Proxmox VE: monta tu propio hipervisor casero'
 description: 'Instala y configura Proxmox VE como hipervisor tipo 1 para tu homelab: creación de VMs, snapshots, backups y primeros pasos con la red.'
 author: 'antonio'
 pubDate: 2026-07-25
+updatedDate: 2026-07-27
 category: 'Virtualización'
 tags: ['Proxmox', 'Virtualización', 'Homelab', 'Hipervisor']
 image: '../../assets/images/virt-proxmox.jpg'
@@ -23,7 +24,7 @@ Antes de instalar, ten en cuenta:
 - **Una interfaz de red** conectada a tu router o switch
 - Un **USB booteable** de al menos 2 GB para el instalador
 
-La versión actual es **Proxmox VE 9.2**, basada en Debian 13 "Trixie" con kernel Linux 7.0.
+La versión actual es **Proxmox VE 9.2**, basada en Debian 13 "Trixie" con kernel Linux 6.14.
 
 ## Instalación
 
@@ -82,7 +83,7 @@ También puedes hacerlo por línea de comandos con `qm create`, útil si quieres
 qm create 100 --name mi-vm --memory 4096 --cores 2 --net0 virtio,bridge=vmbr0
 qm set 100 --ide2 local:iso/debian-13.0.0-amd64-netinst.iso,media=cdrom
 qm set 100 --scsihw virtio-scsi-pci --scsi0 local-lvm:32
-qm set 100 --boot order=scsi0
+qm set 100 --boot "order=ide2;scsi0"
 ```
 
 ## Snapshots: guarda el estado de una VM

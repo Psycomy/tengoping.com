@@ -3,6 +3,7 @@ title: '10 scripts Bash útiles para el día a día del sysadmin'
 description: 'Colección de scripts Bash prácticos para monitorización, backups, limpieza de logs y tareas comunes de administración de sistemas.'
 author: 'alois'
 pubDate: 2026-01-14
+updatedDate: 2026-07-27
 category: 'Automatización'
 tags: ['Bash', 'Scripts', 'Sysadmin', 'Automatización']
 image: '../../assets/images/auto-bash.jpg'
@@ -117,7 +118,7 @@ fi
 OUT="/tmp/inventario-$(date +%F).csv"
 echo "host,ip,kernel,uptime" > "$OUT"
 for host in "$@"; do
-  ssh "$host" "echo -n \"$host,\"; hostname -I | awk '{print \$1}' | tr -d '\n'; echo -n ','; uname -r | tr -d '\n'; echo -n ','; uptime -p"
+  ssh "$host" "echo -n \"$host,\"; hostname -I | awk '{print \$1}' | tr -d '\n'; echo -n ','; uname -r | tr -d '\n'; echo -n ','; uptime -p | tr -d ','"
 done >> "$OUT"
 echo "Inventario generado en: $OUT"
 ```

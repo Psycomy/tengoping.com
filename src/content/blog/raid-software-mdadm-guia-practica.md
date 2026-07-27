@@ -2,7 +2,8 @@
 title: 'RAID por software con mdadm: guía práctica'
 description: 'Crea arrays RAID 0, 1, 5 y 10 con mdadm en Linux, monitoriza su estado con alertas por email y recupera un array tras el fallo de un disco.'
 author: 'antonio'
-pubDate: 2026-08-15
+pubDate: 2026-07-27
+updatedDate: 2026-07-27
 category: 'Hardware'
 tags: ['RAID', 'mdadm', 'Storage', 'Linux']
 image: '../../assets/images/hard-raid-mdadm.jpg'
@@ -18,7 +19,7 @@ mdadm soporta varios niveles, cada uno con un compromiso distinto entre capacida
 - **RAID 0 (stripe)**: reparte los datos entre discos sin redundancia. Mínimo 2 discos. Máximo rendimiento y capacidad total (100% del espacio combinado), pero **si falla un disco, pierdes todos los datos del array**. mdadm no soporta hot-spare ni resincronización en RAID 0, precisamente porque no hay nada que reconstruir. Solo tiene sentido para datos desechables o combinado con backups aparte.
 - **RAID 1 (mirror)**: duplica los datos en todos los discos del array. Mínimo 2 discos. Tolera el fallo de todos los discos menos uno. Capacidad útil = la del disco más pequeño, independientemente de cuántos discos añadas.
 - **RAID 5**: distribuye datos y paridad entre discos. Mínimo 3 discos. Con n discos, la capacidad útil es la de (n-1) discos — un disco se "pierde" en paridad, pero esa paridad está repartida entre todos, no en uno solo. Tolera el fallo de un disco.
-- **RAID 10 (1+0)**: combina mirroring y striping — en la práctica, un RAID 0 hecho de varios pares RAID 1. Requiere un número par de discos, mínimo 4 en la configuración típica (aunque técnicamente funciona con 2, en cuyo caso equivale a RAID 1). Mejor rendimiento que RAID 5 en escrituras y reconstrucción más rápida tras un fallo, a costa de perder la mitad de la capacidad total.
+- **RAID 10 (1+0)**: combina mirroring y striping — en la práctica, un RAID 0 hecho de varios pares RAID 1. El RAID 1+0 anidado clásico requiere un número par de discos, mínimo 4 en la configuración típica (aunque técnicamente funciona con 2, en cuyo caso equivale a RAID 1). El RAID10 nativo de mdadm (`--level=10`), en cambio, admite número impar de discos (por ejemplo 3 o 5) gracias a sus layouts near/far/offset. Mejor rendimiento que RAID 5 en escrituras y reconstrucción más rápida tras un fallo, a costa de perder la mitad de la capacidad total.
 
 Para un homelab con presupuesto limitado, RAID 1 es la opción más simple y predecible. Si tienes 4+ discos y priorizas rendimiento sobre capacidad máxima, RAID 10 reconstruye más rápido que RAID 5 tras sustituir un disco, lo que reduce la ventana de exposición a un segundo fallo.
 
@@ -89,6 +90,8 @@ En distribuciones con systemd, el monitor se gestiona como servicio (`mdmonitor`
 ```bash
 sudo systemctl enable --now mdmonitor
 ```
+
+Este comando de habilitar y arrancar el servicio manualmente aplica a **RHEL/Fedora**. En **Debian/Ubuntu** no hace falta (ni existe como tal): el servicio `mdmonitor` se activa normalmente mediante udev al detectar arrays mdadm, no con `systemctl enable --now`.
 
 Para comprobar que el envío de correo funciona sin esperar a un fallo real:
 

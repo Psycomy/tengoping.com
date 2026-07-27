@@ -3,6 +3,7 @@ title: 'Vagrant: entornos de desarrollo reproducibles'
 description: 'Aprende a usar Vagrant con libvirt o VirtualBox para crear y compartir entornos de desarrollo idénticos en segundos.'
 author: 'antonio'
 pubDate: 2026-02-06
+updatedDate: 2026-07-27
 category: 'Virtualización'
 tags: ['Vagrant', 'Virtualización', 'DevOps', 'Automatización']
 image: '../../assets/images/vagrant-dev.jpg'
@@ -41,6 +42,7 @@ Si usas libvirt (recomendado en Linux):
 
 ```bash
 sudo apt install libvirt-daemon-system qemu-kvm -y
+sudo apt install -y build-essential libvirt-dev libxslt-dev libxml2-dev zlib1g-dev ruby-dev pkg-config
 vagrant plugin install vagrant-libvirt
 ```
 

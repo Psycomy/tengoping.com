@@ -2,7 +2,7 @@
 title: 'VLANs explicadas: segmenta tu red doméstica o de laboratorio'
 description: 'Qué son las VLANs y el etiquetado 802.1Q, cómo configurarlas en un switch gestionado y en Linux, y cuándo merece la pena segmentar tu red de homelab.'
 author: 'antonio'
-pubDate: 2026-08-22
+pubDate: 2026-07-27
 category: 'Redes'
 tags: ['VLAN', 'Redes', 'Segmentación', 'Switching']
 image: '../../assets/images/redes-vlan.jpg'

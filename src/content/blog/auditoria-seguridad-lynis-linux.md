@@ -3,6 +3,7 @@ title: 'Auditoría de seguridad con Lynis en Linux'
 description: 'Cómo usar Lynis para auditar la seguridad de servidores Linux, interpretar resultados y aplicar las recomendaciones.'
 author: 'antonio'
 pubDate: 2026-02-07
+updatedDate: 2026-07-27
 category: 'Seguridad'
 tags: ['Lynis', 'Auditoría', 'Hardening', 'Seguridad']
 image: '../../assets/images/lynis-audit.jpg'
@@ -46,6 +47,9 @@ Verifica la version instalada:
 lynis show version
 ```
 
+> [!NOTE]
+> Los comandos de las siguientes secciones (`lynis show version`, `sudo lynis audit system`, `--profile /etc/lynis/custom.prf`) asumen que Lynis esta en el PATH, como ocurre con la instalacion por paquete. Si lo instalaste clonando el repositorio en /opt/lynis, invoca `./lynis` desde ese directorio o crea un symlink: `sudo ln -s /opt/lynis/lynis /usr/local/bin/lynis`.
+
 ## Ejecutar una auditoria basica
 
 La auditoria completa del sistema se lanza con un unico comando. Ejecutala como root para que Lynis tenga acceso a todos los archivos de configuracion:
@@ -85,7 +89,7 @@ sudo grep Warning /var/log/lynis.log
 Recomendaciones de mejora ordenadas por prioridad. Cada sugerencia incluye un identificador, una descripcion y en muchos casos un enlace a documentacion adicional:
 
 ```bash
-sudo grep Suggestion /var/log/lynis-report.dat
+sudo grep 'suggestion\[\]=' /var/log/lynis-report.dat
 ```
 
 Ejemplo de sugerencia tipica:

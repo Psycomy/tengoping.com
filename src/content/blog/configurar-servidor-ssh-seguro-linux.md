@@ -3,6 +3,7 @@ title: 'Cómo configurar un servidor SSH seguro en Linux'
 description: 'Guía paso a paso para configurar y securizar un servidor SSH en cualquier servidor Linux, incluyendo autenticación por clave, fail2ban y mejores prácticas.'
 author: 'antonio'
 pubDate: 2026-01-01
+updatedDate: 2026-07-27
 category: 'Linux'
 tags: ['SSH', 'Linux', 'Seguridad', 'Sysadmin']
 image: '../../assets/images/ssh-server.jpg'
@@ -86,6 +87,15 @@ sudo ufw allow 2222/tcp
 sudo ufw delete allow ssh
 sudo ufw reload
 ```
+
+Con el puerto ya abierto en el firewall, aplicamos los cambios reiniciando el servicio SSH:
+
+```bash
+sudo systemctl restart sshd
+```
+
+> [!CAUTION]
+> No cierres la sesión SSH actual. Mantenla abierta como red de seguridad y verifica el nuevo acceso (puerto 2222, login por clave) desde una terminal distinta antes de desconectarte.
 
 ## Instalación de Fail2ban
 

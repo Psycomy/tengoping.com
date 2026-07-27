@@ -3,6 +3,7 @@ title: 'Pi-hole: bloquea publicidad en toda tu red'
 description: 'Cómo instalar Pi-hole como servidor DNS local para filtrar publicidad y rastreadores en todos los dispositivos de tu red.'
 author: 'antonio'
 pubDate: 2026-02-04
+updatedDate: 2026-07-27
 category: 'Self-Hosting'
 tags: ['Pi-hole', 'DNS', 'Self-Hosting', 'Redes']
 image: '../../assets/images/pihole-dns.jpg'
@@ -136,7 +137,7 @@ Revisa periodicamente que las listas de bloqueo esten actualizadas y que el sist
 
 ## Alternativa con Docker
 
-Si prefieres contenedores, Pi-hole tiene imagen oficial. Crea un archivo `docker-compose.yml`:
+Si prefieres contenedores, Pi-hole tiene imagen oficial. Crea un archivo `docker-compose.yml` (en Pi-hole v6, la contraseña del panel se define con `FTLCONF_webserver_api_password`; en versiones anteriores de la imagen se usaba la variable `WEBPASSWORD`):
 
 ```yaml
 services:
@@ -149,7 +150,7 @@ services:
       - '80:80/tcp'
     environment:
       TZ: 'Europe/Madrid'
-      WEBPASSWORD: 'tu_password_segura'
+      FTLCONF_webserver_api_password: 'tu_password_segura'
     volumes:
       - './etc-pihole:/etc/pihole'
       - './etc-dnsmasq.d:/etc/dnsmasq.d'

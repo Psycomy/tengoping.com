@@ -3,6 +3,7 @@ title: 'Cómo elegir hardware para tu homelab'
 description: 'Consejos prácticos para montar un homelab sin arruinarte: mini PCs, servidores usados, almacenamiento y consumo eléctrico.'
 author: 'alois'
 pubDate: 2026-02-09
+updatedDate: 2026-07-27
 category: 'Hardware'
 tags: ['Homelab', 'Hardware', 'Servidores', 'Self-Hosting']
 image: '../../assets/images/homelab-hardware.jpg'
@@ -19,7 +20,7 @@ Los mini PCs de segunda mano son probablemente la mejor relación calidad-precio
 
 ### Lenovo ThinkCentre Tiny (M720q, M920q, M75q)
 
-Compactos, fiables y fáciles de encontrar en el mercado de segunda mano. Los modelos con procesador Intel de octava o novena generación ofrecen un rendimiento excelente para virtualización. Soportan hasta 64 GB de RAM (SO-DIMM DDR4) y tienen una bahía para disco M.2 NVMe más una bahía SATA de 2.5 pulgadas.
+Compactos, fiables y fáciles de encontrar en el mercado de segunda mano. El M720q y el M920q montan procesadores Intel de octava o novena generación con un rendimiento excelente para virtualización; el M75q, en cambio, es una plataforma AMD Ryzen PRO (Zen+/Zen2). Soportan hasta 64 GB de RAM (SO-DIMM DDR4) y tienen una bahía para disco M.2 NVMe más una bahía SATA de 2.5 pulgadas.
 
 ### HP EliteDesk 800 G5/G6 Mini
 
@@ -118,7 +119,7 @@ Para calcular el coste anual aproximado:
 # Formula: Vatios * 24h * 365 dias / 1000 * precio_kWh
 # Ejemplo: mini PC a 12W con electricidad a 0.15 EUR/kWh
 echo "scale=2; 12 * 24 * 365 / 1000 * 0.15" | bc
-# Resultado: 15.77 EUR/anio
+# Resultado: 15.76 EUR/anio
 ```
 
 Un servidor enterprise a 150W con el mismo precio de electricidad cuesta unos 197 EUR al año solo en electricidad. Merece la pena tenerlo en cuenta.

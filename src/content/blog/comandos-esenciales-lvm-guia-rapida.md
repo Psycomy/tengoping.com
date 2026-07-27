@@ -3,6 +3,7 @@ title: 'Comandos esenciales de LVM: guía rápida'
 description: 'Cheatsheet con los comandos más usados de LVM (Logical Volume Manager) para la gestión de volúmenes lógicos en Linux.'
 author: 'antonio'
 pubDate: 2026-02-20
+updatedDate: 2026-07-27
 category: 'Automatización'
 tags: ['LVM', 'Storage', 'Linux', 'Cheatsheet']
 image: '../../assets/images/lvm-storage.jpg'
@@ -62,8 +63,8 @@ lvextend -l +100%FREE /dev/vg_datos/lv_archivos
 
 # 5. Ampliar el sistema de archivos
 resize2fs /dev/vg_datos/lv_archivos  # para ext4
-# o
-xfs_growfs /dev/vg_datos/lv_archivos  # para xfs
+# o (xfs_growfs necesita el punto de montaje, no el dispositivo; sustituye por el punto de montaje real de tu volumen)
+xfs_growfs /mnt/archivos  # para xfs
 
 ```
 
@@ -99,8 +100,8 @@ lvextend -l +100%FREE /dev/nombre_vg/nombre_lv
 # Para ext4
 resize2fs /dev/nombre_vg/nombre_lv
 
-# Para xfs
-xfs_growfs /dev/nombre_vg/nombre_lv
+# Para xfs (necesita el punto de montaje, no el dispositivo; sustituye por el punto de montaje real de tu volumen)
+xfs_growfs /punto/de/montaje
 
 ```
 
@@ -181,7 +182,7 @@ umount /dev/vg_datos/lv_old
 e2fsck -f /dev/vg_datos/lv_old
 
 # Reducir el sistema de archivos PRIMERO (siempre un poco menos)
-resize2fs /dev/vg_datos/lv_old 40G
+resize2fs /dev/vg_datos/lv_old 38G
 
 # Luego reducir el volumen lógico
 lvreduce -L 40G /dev/vg_datos/lv_old

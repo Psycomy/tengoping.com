@@ -3,6 +3,7 @@ title: 'Montar un servidor DNS autoritativo con BIND9'
 description: 'Cómo instalar y configurar un servidor DNS autoritativo con BIND9 en Linux para gestionar tus propias zonas DNS.'
 author: 'alois'
 pubDate: 2026-01-15
+updatedDate: 2026-07-27
 category: 'Redes'
 tags: ['DNS', 'BIND9', 'Redes', 'Linux']
 image: '../../assets/images/redes-dns.jpg'
@@ -27,6 +28,10 @@ sudo systemctl enable --now bind9
 
 ## Configuración principal
 
+La ruta del archivo principal y el directorio de zonas cambian según la distribución.
+
+En RHEL/Rocky/Oracle Linux:
+
 ```bash
 sudo vi /etc/named.conf
 ```
@@ -45,10 +50,37 @@ zone "tengoping.com" IN {
 };
 ```
 
-## Archivo de zona
+En Ubuntu/Debian (paquete `bind9`), la configuración se reparte en `/etc/bind/named.conf.options` y `/etc/bind/named.conf.local`, y AppArmor bloquea el acceso a `/var/named`, por lo que el directorio de zonas debe ser `/var/cache/bind`:
+
+```bash
+sudo vi /etc/bind/named.conf.options
+```
 
 ```
-; /var/named/tengoping.com.zone
+options {
+    listen-on port 53 { any; };
+    directory "/var/cache/bind";
+    allow-query { any; };
+    recursion no;
+};
+```
+
+```bash
+sudo vi /etc/bind/named.conf.local
+```
+
+```
+zone "tengoping.com" IN {
+    type master;
+    file "tengoping.com.zone";
+};
+```
+
+## Archivo de zona
+
+En RHEL/Rocky/Oracle Linux el archivo se guarda en `/var/named/tengoping.com.zone`; en Ubuntu/Debian, en `/var/cache/bind/tengoping.com.zone`.
+
+```
 $TTL 86400
 @   IN  SOA ns1.tengoping.com. admin.tengoping.com. (
         2026020601  ; Serial
@@ -70,7 +102,13 @@ www IN  A   203.0.113.10
 
 ```bash
 named-checkconf
+
+# RHEL/Rocky/Oracle Linux
 named-checkzone tengoping.com /var/named/tengoping.com.zone
+
+# Ubuntu/Debian
+named-checkzone tengoping.com /var/cache/bind/tengoping.com.zone
+
 dig @localhost tengoping.com
 ```
 

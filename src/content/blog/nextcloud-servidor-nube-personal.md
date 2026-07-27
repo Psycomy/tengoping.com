@@ -3,6 +3,7 @@ title: 'Montar tu propia nube con Nextcloud'
 description: 'Guía completa para instalar Nextcloud en un servidor Linux y tener tu propio almacenamiento en la nube sin depender de terceros.'
 author: 'alois'
 pubDate: 2026-01-27
+updatedDate: 2026-07-27
 category: 'Self-Hosting'
 tags: ['Nextcloud', 'Self-Hosting', 'Nube', 'Linux']
 image: '../../assets/images/nextcloud-server.jpg'
@@ -20,14 +21,14 @@ Necesitas un servidor Linux con acceso root y una pila LAMP o LEMP funcional:
 - **Sistema operativo**: Debian 12, Ubuntu 22.04+ o similar
 - **Servidor web**: Apache o Nginx
 - **Base de datos**: MariaDB 10.6+ o MySQL 8.0+
-- **PHP**: 8.2 o superior con modulos necesarios
+- **PHP**: 8.1 o superior con modulos necesarios (Ubuntu 22.04 LTS instala PHP 8.1 desde sus repos oficiales)
 
 ### Instalar dependencias
 
 ```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt install apache2 mariadb-server libapache2-mod-php \
-  php php-gd php-json php-mysql php-curl php-mbstring \
+  php php-gd php-mysql php-curl php-mbstring \
   php-intl php-imagick php-xml php-zip php-bcmath php-gmp \
   unzip wget -y
 ```
@@ -102,7 +103,7 @@ Si prefieres Nginx, la configuracion del bloque server seria similar. Apunta el 
 Edita el archivo de configuracion de PHP para mejorar el rendimiento:
 
 ```bash
-sudo nano /etc/php/8.2/apache2/php.ini
+sudo nano /etc/php/8.1/apache2/php.ini
 ```
 
 Modifica estos valores:

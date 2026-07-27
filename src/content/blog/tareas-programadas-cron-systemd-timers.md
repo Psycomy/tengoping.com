@@ -3,6 +3,7 @@ title: 'Tareas programadas: cron vs systemd timers'
 description: 'Comparativa entre cron y systemd timers para programar tareas automáticas en Linux, con ejemplos prácticos de ambos.'
 author: 'antonio'
 pubDate: 2026-01-23
+updatedDate: 2026-07-27
 category: 'Automatización'
 tags: ['Cron', 'systemd', 'Automatización', 'Linux']
 image: '../../assets/images/auto-cron.jpg'
@@ -41,6 +42,16 @@ sudo crontab -u www-data -l  # tareas de otro usuario
 ## systemd timers: la alternativa moderna
 
 ### Crear un timer
+
+```ini
+# /etc/systemd/system/backup.service
+[Unit]
+Description=Backup diario
+
+[Service]
+Type=oneshot
+ExecStart=/opt/scripts/backup.sh
+```
 
 ```ini
 # /etc/systemd/system/backup.timer

@@ -3,6 +3,7 @@ title: 'Backups incrementales con rsync en servidores Linux'
 description: 'Cómo implementar una estrategia de backups incrementales usando rsync y hardlinks para ahorrar espacio y tiempo en tus servidores.'
 author: 'antonio'
 pubDate: 2026-01-16
+updatedDate: 2026-07-27
 category: 'Automatización'
 tags: ['Backup', 'rsync', 'Sysadmin', 'Scripts']
 image: '../../assets/images/auto-backup.jpg'
@@ -53,7 +54,7 @@ else
 fi
 
 # Limpiar backups antiguos
-find "$DESTINO" -maxdepth 1 -type d -mtime +$RETENCION -exec rm -rf {} \;
+find "$DESTINO" -mindepth 1 -maxdepth 1 -type d -mtime +$RETENCION -exec rm -rf {} \;
 echo "[OK] Limpieza completada: eliminados backups de más de $RETENCION días"
 ```
 

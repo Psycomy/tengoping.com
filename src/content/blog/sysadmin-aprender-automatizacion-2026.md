@@ -3,6 +3,7 @@ title: 'Por qué todo sysadmin debería aprender automatización en 2026'
 description: 'Reflexión sobre la importancia de la automatización para los administradores de sistemas en el panorama tecnológico actual y cómo empezar.'
 author: 'alois'
 pubDate: 2026-01-20
+updatedDate: 2026-07-27
 category: 'Opinión'
 tags: ['Automatización', 'DevOps', 'Ansible', 'Carrera profesional']
 image: '../../assets/images/sysadmin-automation.jpg'
@@ -54,6 +55,7 @@ Para infraestructura como código en la nube:
 
 ```hcl
 resource "aws_instance" "web" {
+  # ID de ejemplo ilustrativo: sustitúyelo por una AMI vigente en tu región
   ami           = "ami-0c55b159cbfafe1f0"
   instance_type = "t3.micro"
 

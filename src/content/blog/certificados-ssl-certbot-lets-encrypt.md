@@ -2,7 +2,7 @@
 title: "Certificados SSL gratis con Certbot y Let's Encrypt"
 description: 'Cómo funciona la validación ACME, cuándo usar HTTP-01 o DNS-01, cómo emitir certificados wildcard y cómo funciona realmente la renovación automática de Certbot.'
 author: 'antonio'
-pubDate: 2026-08-08
+pubDate: 2026-07-27
 category: 'Seguridad'
 tags: ['SSL', 'Certbot', "Let's Encrypt", 'HTTPS']
 image: '../../assets/images/certbot-ssl.jpg'

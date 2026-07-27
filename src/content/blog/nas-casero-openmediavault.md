@@ -3,6 +3,7 @@ title: 'Montar un NAS casero con OpenMediaVault'
 description: 'Guía para construir un NAS económico con OpenMediaVault: instalación, configuración de discos, carpetas compartidas y acceso remoto.'
 author: 'antonio'
 pubDate: 2026-02-05
+updatedDate: 2026-07-27
 category: 'Hardware'
 tags: ['NAS', 'OpenMediaVault', 'Hardware', 'Almacenamiento']
 image: '../../assets/images/nas-omv.jpg'
@@ -80,7 +81,7 @@ sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sdb /dev/sdc
 cat /proc/mdstat
 
 # Guardar la configuración
-sudo mdadm --detail --scan >> /etc/mdadm/mdadm.conf
+sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
 ```
 
 ### Crear el sistema de archivos
@@ -137,7 +138,7 @@ Para que se monte automáticamente al arrancar, añade la línea correspondiente
 
 ## Copias de seguridad con rsync
 
-OpenMediaVault incluye un plugin de rsync para programar copias de seguridad. Instálalo desde **Sistema > Plugins** buscando `openmediavault-rsnapshot` o usa rsync directamente:
+OpenMediaVault incluye de forma nativa la programación de tareas rsync (en **Servicios > Rsync** o **Sistema > Tareas programadas**), sin necesidad de instalar nada adicional. Si prefieres copias basadas en snapshots incrementales, existe el plugin alternativo `openmediavault-rsnapshot` (basado en la herramienta rsnapshot), pero no es un requisito para usar rsync. También puedes lanzar rsync directamente por línea de comandos:
 
 ```bash
 # Copia de seguridad local entre discos

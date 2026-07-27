@@ -3,6 +3,7 @@ title: 'Git para sysadmins: control de versiones en infraestructura'
 description: 'Guía práctica de Git orientada a administradores de sistemas: versiona configuraciones, gestiona infraestructura como código y colabora en equipo sin miedo a romper nada.'
 author: 'antonio'
 pubDate: 2026-02-16
+updatedDate: 2026-07-27
 category: 'Software'
 tags: ['git', 'control-de-versiones', 'sysadmin', 'infraestructura-como-codigo']
 image: '../../assets/images/soft-git.jpg'
@@ -125,7 +126,7 @@ git merge feature/http3
 
 # Si no funciona, descartar
 git checkout main
-git branch -d feature/http3
+git branch -D feature/http3
 ```
 
 Este flujo es ideal para cambios en producción: preparas todo en una rama, pruebas, y solo si funciona lo integras.

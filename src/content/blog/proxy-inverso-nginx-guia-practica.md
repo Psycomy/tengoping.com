@@ -3,6 +3,7 @@ title: 'Proxy inverso con Nginx: guía práctica'
 description: 'Aprende a configurar Nginx como proxy inverso para redirigir tráfico a tus aplicaciones internas con HTTPS, cabeceras y balanceo de carga.'
 author: 'antonio'
 pubDate: 2026-01-09
+updatedDate: 2026-07-27
 category: 'Redes'
 tags: ['Nginx', 'Proxy', 'Redes', 'Sysadmin']
 image: '../../assets/images/redes-proxy.jpg'
@@ -51,6 +52,10 @@ Las cabeceras `X-Real-IP` y `X-Forwarded-For` permiten que la aplicación conozc
 ## Añadir HTTPS con Let's Encrypt
 
 ```bash
+# RHEL/Rocky/Oracle Linux
+sudo dnf install epel-release -y
+# En RHEL/Rocky 9 puede ser necesario habilitar también el repositorio crb:
+# sudo dnf config-manager --set-enabled crb
 sudo dnf install certbot python3-certbot-nginx
 sudo certbot --nginx -d app.ejemplo.com
 ```
@@ -60,7 +65,7 @@ Certbot modifica automáticamente la configuración de Nginx para escuchar en el
 Para renovar automáticamente:
 
 ```bash
-sudo systemctl enable --now certbot-renew.timer
+sudo systemctl enable --now certbot.timer
 ```
 
 ## Múltiples aplicaciones en un servidor

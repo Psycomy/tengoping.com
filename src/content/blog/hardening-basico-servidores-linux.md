@@ -3,6 +3,7 @@ title: 'Hardening básico de servidores Linux'
 description: 'Lista de medidas esenciales para securizar un servidor Linux recién instalado: SSH, usuarios, firewall, kernel y auditoría.'
 author: 'antonio'
 pubDate: 2026-01-22
+updatedDate: 2026-07-27
 category: 'Seguridad'
 tags: ['Linux', 'Hardening', 'SSH', 'Sysadmin']
 image: '../../assets/images/linux-hardening.jpg'
@@ -44,21 +45,25 @@ ClientAliveCountMax 2
 AllowUsers admin deploy
 ```
 
+Antes de reiniciar SSH, abre el nuevo puerto en el firewall para no quedarte fuera (se detalla en el siguiente apartado):
+
+```bash
+sudo firewall-cmd --permanent --remove-service=ssh
+sudo firewall-cmd --permanent --add-port=2222/tcp
+sudo firewall-cmd --reload
+```
+
 Aplica los cambios:
 
 ```bash
 sudo systemctl restart sshd
 ```
 
-Recuerda abrir el nuevo puerto en el firewall **antes** de reiniciar SSH para no quedarte fuera.
-
 ## 3. Configurar el firewall
 
-Abre solo lo necesario:
+El puerto SSH ya se abrió en el paso anterior; ahora abre el resto de lo necesario:
 
 ```bash
-sudo firewall-cmd --permanent --remove-service=ssh
-sudo firewall-cmd --permanent --add-port=2222/tcp
 sudo firewall-cmd --permanent --add-service=http
 sudo firewall-cmd --permanent --add-service=https
 sudo firewall-cmd --reload
@@ -149,6 +154,7 @@ sudo systemctl disable --now bluetooth
 ## 8. Configurar fail2ban
 
 ```bash
+sudo dnf install epel-release -y
 sudo dnf install fail2ban
 ```
 
