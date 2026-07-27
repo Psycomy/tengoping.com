@@ -180,7 +180,9 @@ function writeHeaders(scriptHashes, styleHashes, reportingConfig) {
     `script-src ${scriptSrc}`,
     `style-src ${styleSrc}`,
     "font-src 'self'",
-    "img-src 'self' data: https:",
+    // Sin https:: el contenido no usa imágenes externas (los avatares de
+    // Giscus cargan dentro de su iframe, con la CSP de giscus.app)
+    "img-src 'self' data:",
     'frame-src https://giscus.app',
     "connect-src 'self' https://giscus.app https://api.github.com",
     "worker-src 'self'",
@@ -212,6 +214,8 @@ function writeHeaders(scriptHashes, styleHashes, reportingConfig) {
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=()
   X-XSS-Protection: 0
   X-Permitted-Cross-Domain-Policies: none
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Content-Security-Policy: ${cspWithReporting}
 ${reportingHeaders}${CACHE_RULES}`;

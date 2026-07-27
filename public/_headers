@@ -12,8 +12,10 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=()
   X-XSS-Protection: 0
   X-Permitted-Cross-Domain-Policies: none
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://giscus.app; style-src 'self'; font-src 'self'; img-src 'self' data: https:; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://api.github.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://giscus.app; style-src 'self'; font-src 'self'; img-src 'self' data:; frame-src https://giscus.app; connect-src 'self' https://giscus.app https://api.github.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests; frame-ancestors 'none'
 
 # Caché larga solo para rutas con hash de contenido en el nombre de archivo
 # (más las fuentes, que nunca cambian). Los assets sin hash (/sw.js,
