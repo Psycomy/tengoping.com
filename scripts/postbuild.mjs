@@ -4,9 +4,11 @@
  * 1. Compute SHA-256 hashes of all inline scripts/styles → CSP sin 'unsafe-inline'
  * 2. Inject build ID into service worker → invalidación automática de caché
  * 3. Write dist/_headers con CSP hash-based
+ * 4. Borrar de dist/_astro los assets que Astro emite pero ningún HTML referencia
+ *    (p. ej. los .jpg originales de las imágenes de portada, que solo se sirven en AVIF)
  */
-import { readFileSync, writeFileSync, readdirSync, mkdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, statSync, rmSync } from 'node:fs';
+import { join, dirname, basename, extname, sep } from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import {
@@ -199,6 +201,51 @@ ${reportingHeaders}
   writeFileSync(join(DIST, '_headers'), content);
 }
 
+// --- 4. Prune build assets that Astro emits but no output file references ---
+// (e.g. the raw source image Astro keeps alongside the AVIF variants actually used)
+
+const TEXT_ASSET_EXTENSIONS = new Set(['.html', '.xml', '.json', '.txt', '.js', '.css']);
+
+function collectFiles(dir, files = []) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      collectFiles(fullPath, files);
+    } else {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
+
+function pruneUnreferencedAssets() {
+  const astroDir = join(DIST, '_astro');
+  let astroFiles;
+  try {
+    astroFiles = collectFiles(astroDir);
+  } catch {
+    return { deletedFiles: 0, bytesFreed: 0 };
+  }
+
+  const otherFiles = collectFiles(DIST).filter((f) => !f.startsWith(astroDir + sep));
+  let haystack = '';
+  for (const file of otherFiles) {
+    if (!TEXT_ASSET_EXTENSIONS.has(extname(file))) continue;
+    haystack += readFileSync(file, 'utf-8');
+  }
+
+  let deletedFiles = 0;
+  let bytesFreed = 0;
+  for (const file of astroFiles) {
+    if (haystack.includes(basename(file))) continue;
+    bytesFreed += statSync(file).size;
+    rmSync(file);
+    deletedFiles += 1;
+  }
+
+  return { deletedFiles, bytesFreed };
+}
+
 // --- Run ---
 
 const inlineStyleStats = externalizeInlineStyles();
@@ -207,9 +254,10 @@ const styleHashes = collectInlineStyleHashes(DIST);
 const buildId = updateServiceWorker();
 const reportingConfig = getReportingConfig();
 writeHeaders([...scriptHashes], [...styleHashes], reportingConfig);
+const pruneStats = pruneUnreferencedAssets();
 
 console.log(
   `postbuild: ${inlineStyleStats.transformedAttributes} inline style attrs externalized in ${inlineStyleStats.transformedFiles} HTML files (${inlineStyleStats.generatedClasses} classes), ${scriptHashes.size} script hashes, ${styleHashes.size} style hashes, SW build ID: ${buildId}, CSP reporting: ${
     reportingConfig ? `enabled (${reportingConfig.reportGroup})` : 'disabled'
-  }`
+  }, ${pruneStats.deletedFiles} unreferenced assets pruned (${(pruneStats.bytesFreed / 1024).toFixed(0)}KB)`
 );
