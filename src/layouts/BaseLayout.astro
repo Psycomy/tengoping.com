@@ -51,7 +51,7 @@ const imageURL = new URL(image, Astro.site);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest-dark.json" id="manifest-link" />
-    <meta name="theme-color" content="#1A73E8" />
+    <meta name="theme-color" content="#1967D2" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" hreflang="es" href={canonicalURL} />
     <link rel="alternate" hreflang="x-default" href={canonicalURL} />
@@ -225,7 +225,7 @@ const imageURL = new URL(image, Astro.site);
       (function () {
         function syncThemeMeta(theme) {
           const meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', theme === 'dark' ? '#58D5A2' : '#1A73E8');
+          if (meta) meta.setAttribute('content', theme === 'dark' ? '#58D5A2' : '#1967D2');
           const manifestLink = document.getElementById('manifest-link');
           if (manifestLink)
             manifestLink.setAttribute(

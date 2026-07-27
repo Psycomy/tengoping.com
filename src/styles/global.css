@@ -17,11 +17,17 @@
 /* ===== Custom Properties ===== */
 :root {
   color-scheme: light dark;
-  --color-primary: #1a73e8;
+  /* #1967d2 (no #1a73e8): 4.95:1 sobre --color-bg — texto pequeño cumple WCAG AA */
+  --color-primary: #1967d2;
   --color-primary-light: #4a90ed;
   --color-primary-dark: #1557b0;
   --color-accent: #ff6d00;
   --color-accent-light: #ff8f33;
+  /* Accent para TEXTO sobre fondo claro (#ff6d00 da 2.5-2.9:1, falla AA).
+     El naranja vivo queda solo para fondos (badges) y el logotipo (exento). */
+  --color-accent-text: #c2410c;
+  /* Hover de enlaces: en claro se oscurece (aclarar rompía el contraste) */
+  --color-link-hover: var(--color-primary-dark);
 
   --color-bg: #f4f6f9;
   --color-bg-secondary: #e8ecf1;
@@ -51,7 +57,7 @@
   /* Shiki dual theme */
   --astro-code-color-text: #1c1c2e;
   --astro-code-color-background: #edf0f5;
-  --astro-code-token-constant: #1a73e8;
+  --astro-code-token-constant: #1967d2;
   --astro-code-token-string: #032f62;
   --astro-code-token-comment: #718096;
   --astro-code-token-keyword: #d73a49;
@@ -59,7 +65,7 @@
   --astro-code-token-function: #6f42c1;
   --astro-code-token-string-expression: #032f62;
   --astro-code-token-punctuation: #1c1c2e;
-  --astro-code-token-link: #1a73e8;
+  --astro-code-token-link: #1967d2;
   --color-success: #10b981;
 }
 
@@ -69,6 +75,8 @@
   --color-primary-dark: #3fbf8a;
   --color-accent: #00bfff;
   --color-accent-light: #33ccff;
+  --color-accent-text: var(--color-accent);
+  --color-link-hover: var(--color-primary-light);
 
   --color-bg: #0d1117;
   --color-bg-secondary: #161b22;
@@ -130,7 +138,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-primary-light);
+  color: var(--color-link-hover);
 }
 
 img {
@@ -246,6 +254,9 @@ h4 {
   font-style: normal;
 }
 
+/* Título del callout: color con AA sobre fondo claro; el borde queda vivo
+   (decorativo). En dark se restauran los tonos brillantes originales. */
+
 /* NOTE — verde terminal */
 .prose blockquote.callout-note {
   border-left-color: #58d5a2;
@@ -253,6 +264,10 @@ h4 {
 }
 
 .prose blockquote.callout-note .callout-title {
+  color: #047857;
+}
+
+[data-theme='dark'] .prose blockquote.callout-note .callout-title {
   color: #58d5a2;
 }
 
@@ -263,6 +278,10 @@ h4 {
 }
 
 .prose blockquote.callout-tip .callout-title {
+  color: #0369a1;
+}
+
+[data-theme='dark'] .prose blockquote.callout-tip .callout-title {
   color: #00bfff;
 }
 
@@ -273,6 +292,10 @@ h4 {
 }
 
 .prose blockquote.callout-important .callout-title {
+  color: #6d28d9;
+}
+
+[data-theme='dark'] .prose blockquote.callout-important .callout-title {
   color: #a78bfa;
 }
 
@@ -283,6 +306,10 @@ h4 {
 }
 
 .prose blockquote.callout-warning .callout-title {
+  color: #92600a;
+}
+
+[data-theme='dark'] .prose blockquote.callout-warning .callout-title {
   color: #f59e0b;
 }
 
@@ -293,6 +320,10 @@ h4 {
 }
 
 .prose blockquote.callout-caution .callout-title {
+  color: #b91c1c;
+}
+
+[data-theme='dark'] .prose blockquote.callout-caution .callout-title {
   color: #ef4444;
 }
 
@@ -303,7 +334,7 @@ h4 {
 }
 
 .prose a:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .prose img {
@@ -346,7 +377,7 @@ h4 {
   background: var(--color-bg-code);
   padding: 0.2em 0.4em;
   border: 1px solid var(--color-border);
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   word-break: break-all;
 }
 
@@ -641,7 +672,7 @@ h4 {
 
 .pagefind-ui .pagefind-ui__result-excerpt mark {
   background: none !important;
-  color: var(--color-accent) !important;
+  color: var(--color-accent-text) !important;
   font-weight: 600 !important;
 }
 
