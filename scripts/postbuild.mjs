@@ -3,7 +3,7 @@
  * Post-build script: runs after `astro build` to:
  * 1. Compute SHA-256 hashes of all inline scripts/styles → CSP sin 'unsafe-inline'
  * 2. Inject build ID into service worker → invalidación automática de caché
- * 3. Write dist/_headers con CSP hash-based
+ * 3. Write dist/_headers con CSP hash-based y reglas de Cache-Control
  * 4. Borrar de dist/_astro los assets que Astro emite pero ningún HTML referencia
  *    (p. ej. los .jpg originales de las imágenes de portada, que solo se sirven en AVIF)
  */
@@ -150,6 +150,25 @@ function getReportingConfig() {
   return { endpoint, reportGroup };
 }
 
+// Solo rutas cuyo nombre de archivo lleva hash de contenido (más las fuentes,
+// que nunca cambian) pueden ser immutable. El resto de assets sin hash en la URL
+// (/sw.js, /pagefind/pagefind*.js, /pagefind/pagefind-entry.json,
+// /assets/inline-styles.css, /images/*) cambia entre builds manteniendo la misma
+// URL: deben seguir revalidándose (default de Cloudflare Pages: max-age=0).
+const CACHE_RULES = `
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/pagefind/index/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/pagefind/fragment/*
+  Cache-Control: public, max-age=31536000, immutable
+`;
+
 function writeHeaders(scriptHashes, styleHashes, reportingConfig) {
   const scriptSrc = ["'self'", ...scriptHashes, "'wasm-unsafe-eval'", 'https://giscus.app'].join(
     ' '
@@ -195,8 +214,7 @@ function writeHeaders(scriptHashes, styleHashes, reportingConfig) {
   X-Permitted-Cross-Domain-Policies: none
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Content-Security-Policy: ${cspWithReporting}
-${reportingHeaders}
-`;
+${reportingHeaders}${CACHE_RULES}`;
 
   writeFileSync(join(DIST, '_headers'), content);
 }
