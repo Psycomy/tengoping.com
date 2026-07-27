@@ -3,6 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import BaseLayout from '@layouts/BaseLayout.astro';
 import ArticleCard from '@components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
+import { avatarVariant } from '@utils/helpers';
 import authors from '@data/authors.json';
 
 export const getStaticPaths = (async () => {
@@ -45,7 +46,7 @@ const personSchema = {
     <div class="author-card">
       <div class="author-avatar-wrapper">
         <img
-          src={author.avatar}
+          src={avatarVariant(author.avatar, 400)}
           alt={author.name}
           class="author-avatar"
           width="300"

@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import authors from '@data/authors.json';
-import { formatDate, slugify } from '@utils/helpers';
+import { avatarVariant, formatDate, slugify } from '@utils/helpers';
 import { getReadingTime } from '@utils/readingTime';
 
 interface Props {
@@ -25,9 +25,7 @@ const { post } = Astro.props;
 const { title, description, author, pubDate, category, tags, image } = post.data;
 const authorData = authors.find((a) => a.id === author);
 const readingTime = post.body ? getReadingTime(post.body) : 1;
-const authorAvatarSmall = authorData?.avatar
-  ? authorData.avatar.replace('/images/', '/images/avatars/').replace(/\.png$/i, '-56.webp')
-  : null;
+const authorAvatarSmall = authorData?.avatar ? avatarVariant(authorData.avatar, 56) : null;
 ---
 
 <article class="article-card card-hover">

@@ -1,4 +1,6 @@
 ---
+import { avatarVariant } from '@utils/helpers';
+
 interface Props {
   author: {
     id: string;
@@ -15,7 +17,15 @@ const { author } = Astro.props;
 
 <aside class="author-card">
   <a href={`/autor/${author.id}/`}>
-    <img src={author.avatar} alt={author.name} class="author-avatar" loading="lazy" />
+    <img
+      src={avatarVariant(author.avatar, 160)}
+      alt={author.name}
+      class="author-avatar"
+      width="80"
+      height="80"
+      loading="lazy"
+      decoding="async"
+    />
   </a>
   <div class="author-info">
     <h3 class="author-name"><a href={`/autor/${author.id}/`}>{author.name}</a></h3>

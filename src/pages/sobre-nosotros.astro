@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { avatarVariant } from '@utils/helpers';
 import authors from '@data/authors.json';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
@@ -27,7 +28,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
             <div class="author-profile">
               <div class="author-header">
                 <img
-                  src={author.avatar}
+                  src={avatarVariant(author.avatar, 160)}
                   alt={author.name}
                   class="author-avatar"
                   width="80"
