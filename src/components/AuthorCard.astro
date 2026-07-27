@@ -1,15 +1,9 @@
 ---
 import { avatarVariant } from '@utils/helpers';
+import type { Author } from '@data/authors';
 
 interface Props {
-  author: {
-    id: string;
-    name: string;
-    avatar: string;
-    bio: string;
-    bioShort: string;
-    social: { twitter?: string; github?: string; linkedin?: string };
-  };
+  author: Author;
 }
 
 const { author } = Astro.props;
