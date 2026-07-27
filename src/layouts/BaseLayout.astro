@@ -223,6 +223,9 @@ const imageURL = new URL(image, Astro.site);
     <!-- Theme script (prevent flash + sync with OS) -->
     <script is:inline>
       (function () {
+        // Marca que hay JS: el CSS solo oculta imágenes tras skeletons si
+        // existe quien pueda revelarlas después (ver ArticleCard)
+        document.documentElement.classList.add('js');
         function syncThemeMeta(theme) {
           const meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', theme === 'dark' ? '#58D5A2' : '#1967D2');

@@ -146,15 +146,17 @@ const authorAvatarSmall = authorData?.avatar ? avatarVariant(authorData.avatar, 
     height: 100%;
     object-fit: cover;
     border-right: 1px solid var(--color-border);
-    opacity: 0;
     transition: opacity 0.3s ease;
   }
 
-  .card-image-link.is-loaded .card-image {
-    opacity: 1;
+  /* Solo con JS activo (html.js) se ocultan imagen y muestra skeleton:
+     sin JS nadie añadiría .is-loaded y las imágenes quedarían invisibles */
+  :global(html.js) .card-image-link:not(.is-loaded) .card-image {
+    opacity: 0;
   }
 
   .card-image-skeleton {
+    display: none;
     position: absolute;
     inset: 0;
     background: linear-gradient(
@@ -167,8 +169,8 @@ const authorAvatarSmall = authorData?.avatar ? avatarVariant(authorData.avatar, 
     animation: card-skeleton-shimmer 1.4s ease infinite;
   }
 
-  .card-image-link.is-loaded .card-image-skeleton {
-    display: none;
+  :global(html.js) .card-image-link:not(.is-loaded) .card-image-skeleton {
+    display: block;
   }
 
   @keyframes card-skeleton-shimmer {
