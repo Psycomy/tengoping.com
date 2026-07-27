@@ -1,6 +1,6 @@
 ---
 title: 'Recuperar contraseña root con livecd y LVM'
-description: '¿Olvidaste la contraseña de root en tu sistema Linux con LVM? Este artículo te guía paso a paso para recuperarla usando un live CD: monta los volúmenes lógicos, haz chroot y cambia la contraseña de forma rápida y segura.'
+description: '¿Olvidaste la contraseña de root en Linux con LVM? Recupérala con un live CD: monta los volúmenes lógicos, haz chroot y cámbiala de forma rápida y segura.'
 author: 'antonio'
 pubDate: 2026-03-03
 category: 'Linux'

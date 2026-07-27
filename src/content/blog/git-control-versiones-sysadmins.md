@@ -1,6 +1,6 @@
 ---
 title: 'Git para sysadmins: control de versiones en infraestructura'
-description: 'Guía práctica de Git orientada a administradores de sistemas: versiona configuraciones, gestiona infraestructura como código y colabora en equipo sin miedo a romper nada.'
+description: 'Guía práctica de Git para sysadmins: versiona configuraciones, gestiona infraestructura como código y colabora en equipo sin miedo a romper nada.'
 author: 'antonio'
 pubDate: 2026-02-16
 updatedDate: 2026-07-27
