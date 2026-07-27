@@ -14,9 +14,9 @@ import BaseLayout from '@layouts/BaseLayout.astro';
             >{Astro.url.pathname}</span
           >
         </p>
-        <p class="terminal-line response-line">
+        <h1 class="terminal-line response-line">
           HTTP/1.1 <span class="status-code">404</span> Not Found
-        </p>
+        </h1>
         <p class="terminal-line response-line">Content-Type: text/html; charset=utf-8</p>
         <p class="terminal-line response-line">Server: tengoping</p>
         <p class="terminal-line">&nbsp;</p>
@@ -82,18 +82,29 @@ import BaseLayout from '@layouts/BaseLayout.astro';
     word-break: break-all;
   }
 
+  /* El h1 es la línea de respuesta HTTP: mismo cuerpo que el resto del terminal */
+  h1.terminal-line {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+
   .prompt {
     color: var(--color-primary);
     font-weight: 700;
   }
 
   .path {
-    color: var(--color-accent);
+    color: var(--color-accent-text);
   }
 
   .status-code {
-    color: #ef4444;
+    color: #b91c1c;
     font-weight: 700;
+  }
+
+  :global([data-theme='dark']) .status-code {
+    color: #ef4444;
   }
 
   .response-line {
