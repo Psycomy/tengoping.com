@@ -1,0 +1,134 @@
+---
+title: 'Zabbix: monitorización de infraestructura paso a paso'
+description: 'Instala Zabbix Server 7.0 LTS, añade hosts con el agente, define triggers y configura alertas por email para vigilar tu infraestructura.'
+author: 'antonio'
+pubDate: 2026-08-01
+category: 'Monitorización'
+tags: ['Zabbix', 'Monitorización', 'Sysadmin', 'Alertas']
+image: '../../assets/images/mon-zabbix.jpg'
+draft: false
+---
+
+Zabbix es una plataforma de monitorización open source todo-en-uno: servidor, base de datos, frontend web y agentes, sin necesidad de combinar varias herramientas como ocurre con el stack Prometheus + Grafana que ya vimos en este blog. Si buscas una solución centralizada con gestión de alertas integrada y sin montar piezas sueltas, Zabbix es una alternativa sólida y madura — lleva más de 20 años de desarrollo activo.
+
+A diferencia de Prometheus, que sondea métricas mediante scraping HTTP y delega la visualización en Grafana, Zabbix incluye su propio frontend, su propio motor de alertas (acciones y notificaciones) y soporta tanto sondeo activo como pasivo desde los agentes. Este artículo cubre la instalación del servidor, el registro de un host monitorizado y la configuración de una alerta por email.
+
+## Arquitectura de Zabbix
+
+Antes de instalar, conviene entender las piezas:
+
+- **Zabbix server**: el daemon central que procesa los datos, evalúa triggers y dispara acciones
+- **Base de datos**: MySQL o PostgreSQL, donde se guarda la configuración y el histórico de datos
+- **Frontend web**: interfaz PHP para configurar hosts, ver gráficas y gestionar alertas
+- **Zabbix agent (o Agent 2)**: se instala en cada máquina a monitorizar y recopila métricas del sistema
+- **Zabbix proxy** (opcional): para distribuir la carga de monitorización en redes grandes o segmentadas
+
+Zabbix Agent 2 es la reimplementación en Go del agente clásico en C. Usa un scheduler interno y arquitectura de plugins para gestionar comprobaciones concurrentes con menos overhead que el agente original.
+
+## Requisitos previos
+
+- Un servidor Linux (Debian/Ubuntu en este artículo) para el Zabbix server
+- PostgreSQL o MySQL/MariaDB como base de datos
+- Un servidor web (Nginx o Apache)
+- La versión estable actual es **Zabbix 7.0 LTS**, con soporte hasta junio de 2029. Zabbix 8.0 LTS estaba en fase beta en el momento de escribir este artículo, así que 7.0 sigue siendo la recomendada para producción
+
+## Instalación del servidor
+
+En Debian 12/13 (sustituye `debian12` por `debian13` en la URL si usas Trixie):
+
+```bash
+# Añade el repositorio oficial de Zabbix
+wget https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_latest+debian12_all.deb
+sudo dpkg -i zabbix-release_latest+debian12_all.deb
+sudo apt update
+
+# Instala servidor, frontend, agente y conector PostgreSQL
+sudo apt install zabbix-server-pgsql zabbix-frontend-php zabbix-nginx-conf zabbix-sql-scripts zabbix-agent2 postgresql -y
+```
+
+Crea la base de datos y el usuario:
+
+```bash
+sudo -u postgres createuser --pwprompt zabbix
+sudo -u postgres createdb -O zabbix zabbix
+```
+
+Importa el esquema inicial (pide la contraseña que acabas de definir):
+
+```bash
+zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql zabbix
+```
+
+Edita `/etc/zabbix/zabbix_server.conf` con los datos de conexión a la base de datos:
+
+```
+DBHost=localhost
+DBName=zabbix
+DBUser=zabbix
+DBPassword=tu_contraseña_segura
+```
+
+Reinicia los servicios y actívalos al arranque (ajusta `php8.2-fpm` a la versión de PHP de tu sistema: 8.2 en Debian 12, 8.4 en Debian 13):
+
+```bash
+sudo systemctl restart zabbix-server zabbix-agent2 nginx php8.2-fpm
+sudo systemctl enable zabbix-server zabbix-agent2 nginx php8.2-fpm
+```
+
+Accede al frontend en `http://IP-DEL-SERVIDOR` y completa el asistente de configuración inicial (idioma, conexión a base de datos ya configurada, usuario admin). Las credenciales por defecto del frontend son `Admin` / `zabbix` — cámbialas nada más entrar.
+
+## Comprobaciones activas vs pasivas
+
+Zabbix Agent puede reportar datos de dos formas distintas, y elegir la correcta importa para el diseño de tu firewall:
+
+- **Pasivas**: el servidor Zabbix se conecta al agente por el puerto **TCP 10050** y le pide el valor de un ítem. El agente solo responde.
+- **Activas**: el agente se conecta al servidor por el puerto **TCP 10051** (el puerto "trapper"), pide la lista de ítems que debe reportar y empuja los datos él mismo, por defecto cada dos minutos.
+
+En la práctica: usa comprobaciones pasivas cuando el servidor Zabbix puede alcanzar directamente a los hosts monitorizados; usa activas cuando el host está detrás de NAT o en una red segmentada donde no puedes abrir tráfico entrante hacia el agente. Puedes mezclar ambos tipos de ítem en el mismo host.
+
+## Añadir un host monitorizado
+
+1. Instala el agente en la máquina a monitorizar (mismo paquete `zabbix-agent2` que en el servidor).
+2. Edita `/etc/zabbix/zabbix_agent2.conf` en esa máquina:
+
+```
+Server=IP-DEL-SERVIDOR-ZABBIX
+ServerActive=IP-DEL-SERVIDOR-ZABBIX
+Hostname=nombre-del-host
+```
+
+3. Reinicia el agente: `sudo systemctl restart zabbix-agent2`
+4. En el frontend, ve a **Data collection > Hosts > Create host**.
+5. Define el nombre del host (debe coincidir con `Hostname` del agente), el grupo de hosts, y en **Interfaces** añade la interfaz de agente con la IP correspondiente.
+6. En la pestaña **Templates**, vincula una plantilla oficial como `Linux by Zabbix agent`, que ya trae ítems y triggers predefinidos para CPU, memoria, disco y red — no hace falta crearlos desde cero.
+
+En unos minutos, el host empezará a reportar datos visibles en **Monitoring > Latest data**.
+
+## Triggers: cuándo se considera un problema
+
+Un trigger define la condición que convierte un dato recogido en un problema. Se construyen con una expresión lógica sobre uno o más ítems, por ejemplo:
+
+```
+last(/nombre-del-host/vfs.fs.size[/,pfree]) < 10
+```
+
+Este trigger se dispara cuando el espacio libre en `/` cae por debajo del 10%. Las plantillas oficiales de Zabbix ya incluyen triggers razonables para los recursos más comunes (CPU, memoria, disco, disponibilidad del agente), así que en la mayoría de casos no necesitas escribirlos desde cero — basta con ajustar sus umbrales si no encajan con tu entorno.
+
+## Configurar alertas por email
+
+Zabbix separa la notificación en tres piezas: **media type** (el canal, p. ej. email), **usuario con medio configurado** (a quién y por dónde avisar) y **acción** (qué condición dispara el aviso y qué operación ejecuta).
+
+1. **Alerts > Media types**, edita el medio `Email` y configura tu servidor SMTP (host, puerto, remitente).
+2. **Users**, edita tu usuario y en la pestaña **Media** añade el email configurado.
+3. **Alerts > Actions > Trigger actions**, crea una acción nueva:
+   - En **Conditions**, puedes dejarla sin condiciones específicas para que actúe sobre cualquier cambio de estado `OK → Problem`, o acotarla por severidad o grupo de hosts.
+   - En **Operations**, añade una operación que envíe el mensaje al usuario mediante el medio Email.
+
+Con esto, cualquier trigger que pase a estado "Problem" generará un email automáticamente, usando las plantillas de mensaje por defecto de Zabbix (personalizables en la pestaña **Message templates** de la propia acción).
+
+## Siguiente paso
+
+Con el servidor instalado, un host monitorizado con plantilla oficial y una acción de alerta por email, ya tienes una base de monitorización funcional. A partir de aquí, los pasos naturales son añadir más hosts, explorar plantillas para servicios específicos (bases de datos, contenedores, servicios web) y, si tu red crece, introducir un Zabbix proxy para centralizar la recolección de datos sin abrir tráfico directo desde el servidor central a cada host.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.
