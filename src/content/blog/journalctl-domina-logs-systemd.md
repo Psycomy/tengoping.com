@@ -2,7 +2,7 @@
 title: 'journalctl: domina los logs de systemd'
 description: 'Domina journalctl para filtrar logs de systemd por servicio, prioridad y fecha, seguirlos en tiempo real y controlar el espacio que ocupan.'
 author: 'antonio'
-pubDate: 2026-08-01
+pubDate: 2026-08-01T08:00:00
 category: 'Linux'
 tags: ['systemd', 'Linux', 'Sysadmin', 'Logs']
 image: '../../assets/images/linux-journalctl.jpg'

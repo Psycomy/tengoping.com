@@ -2,7 +2,7 @@
 title: 'auditd: audita el sistema en Linux'
 description: 'auditd registra en el kernel quién cambió qué archivo y cuándo. Aprende reglas -w y -a/-S, ausearch, aureport y el modo inmutable -e 2.'
 author: 'antonio'
-pubDate: 2026-08-01
+pubDate: 2026-08-01T11:00:00
 category: 'Seguridad'
 tags: ['Auditoría', 'Seguridad', 'Hardening', 'Linux']
 image: '../../assets/images/linux-auditd.jpg'

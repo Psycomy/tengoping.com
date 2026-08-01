@@ -2,7 +2,7 @@
 title: 'KVM y libvirt: virtualización nativa en Linux'
 description: 'Instala KVM y libvirt en Linux sin Proxmox: crea máquinas virtuales con virt-install, gestiónalas con virsh y configura la red por defecto.'
 author: 'antonio'
-pubDate: 2026-08-01
+pubDate: 2026-08-01T09:00:00
 category: 'Virtualización'
 tags: ['KVM', 'Virtualización', 'Linux', 'Homelab']
 image: '../../assets/images/virt-kvm.jpg'

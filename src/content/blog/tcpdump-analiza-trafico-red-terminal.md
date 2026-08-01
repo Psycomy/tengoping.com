@@ -2,7 +2,7 @@
 title: 'tcpdump: analiza tráfico de red en terminal'
 description: 'Guía práctica de tcpdump: sintaxis de filtros, lectura de paquetes y captura en archivos pcap para depurar problemas de red desde terminal.'
 author: 'antonio'
-pubDate: 2026-08-01
+pubDate: 2026-08-01T12:00:00
 category: 'Redes'
 tags: ['tcpdump', 'Redes', 'Sysadmin', 'Linux']
 image: '../../assets/images/redes-tcpdump.jpg'

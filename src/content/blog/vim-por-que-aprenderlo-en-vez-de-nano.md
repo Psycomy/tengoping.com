@@ -2,7 +2,7 @@
 title: 'Vim: por qué merece la pena frente a nano'
 description: 'Vim parece complicado pero no lo es: aprende a salir, moverte y editar con lo mínimo imprescindible, sin miedo y sin memorizar todo de golpe.'
 author: 'antonio'
-pubDate: 2026-08-01
+pubDate: 2026-08-01T13:00:00
 category: 'Software'
 tags: ['Terminal', 'Sysadmin', 'Cheatsheet', 'Linux']
 image: '../../assets/images/soft-vim.jpg'
