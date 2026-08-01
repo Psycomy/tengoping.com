@@ -61,6 +61,8 @@ sudo setfacl -d -m g:developers:rwx /opt/app/src
 
 ## Permisos especiales
 
+Los permisos SUID/SGID excesivos son precisamente uno de los puntos que revisa [Lynis](/blog/auditoria-seguridad-lynis-linux/) al auditar un servidor.
+
 | Permiso | Octal | Uso                              |
 | ------- | ----- | -------------------------------- |
 | SUID    | 4000  | Ejecutar como propietario        |
@@ -69,7 +71,7 @@ sudo setfacl -d -m g:developers:rwx /opt/app/src
 
 ## Conclusión
 
-Comprender los permisos en Linux es fundamental para la seguridad del sistema. Las ACLs complementan los permisos tradicionales cuando se necesita mayor granularidad.
+Comprender los permisos en Linux es fundamental para la seguridad del sistema, y es una de las bases de cualquier [hardening básico de un servidor](/blog/hardening-basico-servidores-linux/). Las ACLs complementan los permisos tradicionales cuando se necesita mayor granularidad.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

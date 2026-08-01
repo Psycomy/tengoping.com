@@ -74,7 +74,7 @@ El informe completo se guarda en `/var/log/lynis.log` y los datos estructurados 
 
 ### Indice de hardening
 
-Una puntuacion de 0 a 100 que refleja el estado general de seguridad. Un servidor recien instalado suele puntuar entre 55 y 65. Con un hardening basico puedes superar los 80 puntos.
+Una puntuacion de 0 a 100 que refleja el estado general de seguridad. Un servidor recien instalado suele puntuar entre 55 y 65. Con un [hardening básico](/blog/hardening-basico-servidores-linux/) puedes superar los 80 puntos.
 
 ### Warnings
 
@@ -103,11 +103,11 @@ suggestion[]=SSH-7408|Consider hardening SSH configuration: AllowTcpForwarding (
 
 Centrate primero en estas areas para obtener el mayor impacto:
 
-- **SSH configuration**: desactivar root login, forzar claves, limitar cifrados debiles.
+- **SSH configuration**: [desactivar root login, forzar claves](/blog/configurar-servidor-ssh-seguro-linux/), limitar cifrados debiles.
 - **File permissions**: archivos con permisos excesivos, SUID/SGID innecesarios.
 - **Kernel hardening**: parametros sysctl como `net.ipv4.conf.all.rp_filter` o `kernel.randomize_va_space`.
 - **Authentication**: politica de contrasenas, cuentas sin password, usuarios inactivos.
-- **Firewall**: verificar que hay un firewall activo y configurado.
+- **Firewall**: verificar que hay un [firewall activo y configurado](/blog/firewalld-nftables-seguridad-red-linux/).
 - **Logging and auditing**: comprobar que rsyslog/journald y auditd estan activos.
 
 ## Automatizar auditorias con cron

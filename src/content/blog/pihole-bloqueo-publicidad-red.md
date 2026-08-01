@@ -12,7 +12,7 @@ draft: false
 
 ## Que es Pi-hole
 
-Pi-hole es un servidor DNS local que actua como sumidero de publicidad. Cuando un dispositivo de tu red intenta resolver un dominio de publicidad o rastreo, Pi-hole responde con una direccion nula y el anuncio nunca se carga. Funciona a nivel de red, asi que protege todos los dispositivos conectados sin necesidad de instalar extensiones en cada navegador.
+Pi-hole es un servidor DNS local que actua como sumidero de publicidad. Cuando un dispositivo de tu red intenta resolver un dominio de publicidad o rastreo, Pi-hole responde con una direccion nula y el anuncio nunca se carga. Funciona a nivel de red, asi que protege todos los dispositivos conectados sin necesidad de instalar extensiones en cada navegador. A diferencia de un DNS autoritativo como [BIND9](/blog/dns-bind9-servidor-autoritativo/), que publica las zonas de un dominio, Pi-hole solo filtra y reenvia consultas.
 
 ## Requisitos
 
@@ -163,7 +163,7 @@ docker compose up -d
 
 ## Resultado
 
-Con Pi-hole funcionando como DNS de tu red, la navegacion sera mas rapida y limpia. Reduciras el consumo de ancho de banda, eliminaras rastreadores y tendras visibilidad total sobre las consultas DNS que generan tus dispositivos.
+Con Pi-hole funcionando como DNS de tu red, la navegacion sera mas rapida y limpia. Reduciras el consumo de ancho de banda, eliminaras rastreadores y tendras visibilidad total sobre las consultas DNS que generan tus dispositivos. Si quieres que el filtrado tambien se aplique fuera de casa, combinalo con una VPN como [WireGuard](/blog/wireguard-vpn-autoalojada/) apuntando el DNS del cliente a Pi-hole.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

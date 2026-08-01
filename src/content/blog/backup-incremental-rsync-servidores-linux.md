@@ -60,7 +60,7 @@ echo "[OK] Limpieza completada: eliminados backups de más de $RETENCION días"
 
 ## Backup remoto por SSH
 
-Para copiar datos desde otro servidor:
+Para copiar datos desde otro servidor, por ejemplo hacia un NAS como el que vimos en la guía de [OpenMediaVault](/blog/nas-casero-openmediavault/):
 
 ```bash
 rsync -avz --delete \
@@ -97,7 +97,7 @@ rsync -avz --delete --exclude-from=/etc/rsync-exclude.txt /origen/ /destino/
 
 ## Automatizar con systemd timer
 
-Crea el servicio `/etc/systemd/system/backup.service`:
+Aquí el mínimo necesario para este script; para entender a fondo cron frente a systemd timers (y cuándo usar cada uno) consulta la guía de [tareas programadas](/blog/tareas-programadas-cron-systemd-timers/). Crea el servicio `/etc/systemd/system/backup.service`:
 
 ```ini
 [Unit]
@@ -153,7 +153,7 @@ Para implementarlo, en vez de borrar por antigüedad, marca los backups semanale
 
 ## Conclusión
 
-rsync con `--link-dest` es una solución elegante que no necesita software adicional. Cada backup es navegable como una copia completa pero ocupa una fracción del espacio. Combinado con systemd timers y una buena política de retención, tienes una estrategia de backup sólida y fiable.
+rsync con `--link-dest` es una solución elegante que no necesita software adicional. Cada backup es navegable como una copia completa pero ocupa una fracción del espacio. Combinado con systemd timers y una buena política de retención, tienes una estrategia de backup sólida y fiable — y complementa, no sustituye, a la redundancia de un [array RAID](/blog/raid-software-mdadm-guia-practica/).
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

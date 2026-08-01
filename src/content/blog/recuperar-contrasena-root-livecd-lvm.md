@@ -9,7 +9,7 @@ image: '../../assets/images/recuperar-contrasena-root-livecd-lvm.jpg'
 draft: false
 ---
 
-Para recuperar la contraseña root en un sistema con LVM, necesitas algunos pasos adicionales. Te explico el proceso completo:
+Para recuperar la contraseña root en un sistema con [LVM](/blog/comandos-esenciales-lvm-guia-rapida/), necesitas algunos pasos adicionales. Te explico el proceso completo:
 
 ## Pasos desde el LiveCD
 

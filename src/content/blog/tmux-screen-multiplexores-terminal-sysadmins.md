@@ -195,7 +195,7 @@ A partir de ahí, `tmuxinator start servidor-web` levanta la sesión completa �
 
 ## Siguiente paso
 
-Con lo anterior ya puedes sustituir `nohup` y sesiones SSH frágiles por sesiones tmux persistentes, y automatizar los layouts que uses a diario. Si administras varios servidores con el mismo flujo de trabajo, vale la pena mantener tus archivos `.tmux.conf` y de `tmuxinator` versionados en Git — el mismo enfoque de infraestructura como código que se explica en la guía de Git para sysadmins.
+Con lo anterior ya puedes sustituir `nohup` y sesiones SSH frágiles por sesiones tmux persistentes, y automatizar los layouts que uses a diario. Si administras varios servidores con el mismo flujo de trabajo, vale la pena mantener tus archivos `.tmux.conf` y de `tmuxinator` versionados en Git — el mismo enfoque de infraestructura como código que se explica en la [guía de Git para sysadmins](/blog/git-control-versiones-sysadmins/).
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

@@ -14,7 +14,7 @@ draft: false
 
 Cuantas veces has escuchado "en mi maquina funciona"? Vagrant elimina ese problema. Es una herramienta de HashiCorp que permite definir entornos de desarrollo como codigo: un fichero de texto (Vagrantfile) describe la maquina virtual, su configuracion y el software necesario. Cualquier miembro del equipo puede levantar un entorno identico con un solo comando.
 
-Vagrant no es un hipervisor. Trabaja sobre proveedores como VirtualBox, libvirt/KVM o VMware, abstrayendo las diferencias entre ellos para ofrecer un flujo de trabajo unificado.
+A diferencia de un hipervisor tipo 1 como [Proxmox VE](/blog/proxmox-ve-hipervisor-casero/), Vagrant no es un hipervisor en sí mismo: trabaja sobre proveedores como VirtualBox, libvirt/KVM o VMware, abstrayendo las diferencias entre ellos para ofrecer un flujo de trabajo unificado.
 
 ## Instalacion
 
@@ -156,7 +156,7 @@ El aprovisionamiento se ejecuta solo en el primer `vagrant up`. Para forzar su e
 vagrant provision
 ```
 
-Vagrant soporta otros provisioners como Ansible, Puppet o Chef, pero los scripts de shell son la opcion mas directa para empezar.
+Vagrant soporta otros provisioners como [Ansible](/blog/automatizar-servidores-ansible-primeros-pasos/), Puppet o Chef, pero los scripts de shell son la opcion mas directa para empezar.
 
 ## Entornos multi-maquina
 
@@ -228,7 +228,7 @@ vagrant package          # empaquetar VM como box
 
 ## Conclusion
 
-Vagrant convierte la creacion de entornos de desarrollo en un proceso predecible y repetible. Con un Vagrantfile versionado en Git, todos los miembros del equipo trabajan sobre la misma base. Combinado con aprovisionamiento automatico, puedes tener un entorno completo funcionando en minutos.
+Vagrant convierte la creacion de entornos de desarrollo en un proceso predecible y repetible. Con un Vagrantfile versionado en [Git](/blog/git-control-versiones-sysadmins/), todos los miembros del equipo trabajan sobre la misma base. Combinado con aprovisionamiento automatico, puedes tener un entorno completo funcionando en minutos.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

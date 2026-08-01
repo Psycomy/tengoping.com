@@ -12,7 +12,7 @@ draft: false
 
 ## ¿Por qué un DNS propio?
 
-Gestionar tu propio servidor DNS autoritativo te da control total sobre las zonas de tu dominio, reduce la dependencia de terceros y permite configuraciones avanzadas.
+Gestionar tu propio servidor DNS autoritativo te da control total sobre las zonas de tu dominio, reduce la dependencia de terceros y permite configuraciones avanzadas. Si lo que buscas es un resolutor que bloquee publicidad en tu red local en vez de publicar zonas de un dominio, ese es el caso de uso de [Pi-hole](/blog/pihole-bloqueo-publicidad-red/), no el de BIND9.
 
 ## Instalación de BIND9
 
@@ -114,7 +114,7 @@ dig @localhost tengoping.com
 
 ## Conclusión
 
-BIND9 sigue siendo la referencia para servidores DNS en Linux. Con una configuración adecuada y buenas prácticas de seguridad, es una solución robusta y fiable.
+BIND9 sigue siendo la referencia para servidores DNS en Linux. Con una configuración adecuada y buenas prácticas de seguridad, es una solución robusta y fiable. Si el servidor va a responder consultas desde fuera de tu red, no olvides abrir el puerto 53 (TCP/UDP) siguiendo la guía de [firewalld, UFW y nftables](/blog/firewalld-nftables-seguridad-red-linux/).
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

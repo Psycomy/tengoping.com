@@ -23,13 +23,13 @@ El juicio humano sigue siendo insustituible para decisiones de arquitectura, ges
 
 ## Cómo adaptarse
 
-Los sysadmins que integren herramientas de IA en su flujo de trabajo serán más productivos. No se trata de competir con la IA, sino de utilizarla como multiplicador.
+Los sysadmins que integren herramientas de IA en su flujo de trabajo serán más productivos. No se trata de competir con la IA, sino de utilizarla como multiplicador — la misma lógica que ya defendíamos al hablar de [por qué todo sysadmin debería aprender automatización](/blog/sysadmin-aprender-automatizacion-2026/).
 
 ## Habilidades del futuro
 
 - Prompt engineering para herramientas de operaciones
 - Interpretación de resultados de modelos ML
-- Automatización inteligente con scripts asistidos por IA
+- Automatización inteligente con [scripts](/blog/scripts-bash-utiles-sysadmin/) asistidos por IA
 - Comprensión de pipelines de datos
 
 ## Conclusión

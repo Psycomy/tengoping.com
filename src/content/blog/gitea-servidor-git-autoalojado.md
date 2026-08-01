@@ -12,7 +12,7 @@ draft: false
 
 ## Por que autoalojar Git
 
-Tener tus repositorios en GitHub o GitLab es practico, pero dependes de sus politicas, disponibilidad y precios. Con un servidor Git propio mantienes el control total sobre tu codigo, defines tus propias reglas de acceso y no tienes limites de repositorios privados ni de almacenamiento mas alla de tu disco.
+Tener tus repositorios en GitHub o GitLab es practico, pero dependes de sus politicas, disponibilidad y precios. Con un servidor [Git](/blog/git-control-versiones-sysadmins/) propio mantienes el control total sobre tu codigo, defines tus propias reglas de acceso y no tienes limites de repositorios privados ni de almacenamiento mas alla de tu disco.
 
 ## Gitea vs GitLab vs Forgejo
 
@@ -153,7 +153,7 @@ sudo systemctl restart gitea
 
 ## Proxy inverso con Nginx
 
-Para servir Gitea con HTTPS a traves de Nginx:
+Aquí el bloque mínimo; para el flujo completo de proxy inverso y cómo emitir el certificado con Certbot, consulta las guías de [proxy inverso con Nginx](/blog/proxy-inverso-nginx-guia-practica/) y [certificados SSL con Let's Encrypt](/blog/certificados-ssl-certbot-lets-encrypt/):
 
 ```nginx
 server {

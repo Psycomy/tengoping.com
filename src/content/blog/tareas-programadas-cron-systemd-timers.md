@@ -12,7 +12,7 @@ draft: false
 
 ## Introducción
 
-Programar tareas es esencial en la administración de sistemas. Linux ofrece dos enfoques principales: el clásico cron y los modernos systemd timers.
+Programar tareas es esencial en la administración de sistemas. Linux ofrece dos enfoques principales: el clásico cron y los modernos systemd timers, que se apoyan en las mismas unidades que ya vimos en la [guía de systemd](/blog/guia-systemd-servicios-linux/).
 
 ## Cron: el clásico
 
@@ -40,6 +40,8 @@ sudo crontab -u www-data -l  # tareas de otro usuario
 ```
 
 ## systemd timers: la alternativa moderna
+
+El ejemplo de backup diario es el mismo patrón que usamos para automatizar los [backups incrementales con rsync](/blog/backup-incremental-rsync-servidores-linux/).
 
 ### Crear un timer
 
@@ -85,7 +87,7 @@ systemctl status backup.timer
 
 ## Conclusión
 
-Cron sigue siendo válido para tareas simples. Los systemd timers ofrecen mejor integración con el sistema y control de dependencias para escenarios más complejos.
+Cron sigue siendo válido para tareas simples, como lanzar alguno de estos [scripts Bash útiles para el sysadmin](/blog/scripts-bash-utiles-sysadmin/). Los systemd timers ofrecen mejor integración con el sistema y control de dependencias para escenarios más complejos.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

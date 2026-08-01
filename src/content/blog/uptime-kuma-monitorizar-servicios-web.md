@@ -83,7 +83,7 @@ Accede a `http://tu-servidor:3001` y verás la pantalla de configuración inicia
 
 ### Detrás de un proxy inverso
 
-En producción, lo habitual es colocar Uptime Kuma detrás de un proxy inverso como Nginx, Caddy o Traefik para gestionar HTTPS. Si usas Nginx, una configuración básica sería:
+En producción, lo habitual es colocar Uptime Kuma detrás de un [proxy inverso](/blog/proxy-inverso-nginx-guia-practica/) como Nginx, Caddy o Traefik para gestionar HTTPS con un [certificado de Let's Encrypt](/blog/certificados-ssl-certbot-lets-encrypt/). Si usas Nginx, una configuración básica sería:
 
 ```bash
 server {
@@ -233,7 +233,7 @@ La base de datos se migra automáticamente entre versiones. Aun así, nunca est�
 
 ## Siguiente paso
 
-Con Uptime Kuma tienes cubierta la monitorización de disponibilidad, pero la disponibilidad es solo una parte de la ecuación. El siguiente paso lógico es añadir monitorización de métricas de sistema (CPU, RAM, disco, red) con herramientas como **Prometheus + Grafana** o **Netdata**. Combinando ambos enfoques tendrás visibilidad completa: sabrás no solo si tus servicios están arriba, sino cómo de sanos están por dentro.
+Con Uptime Kuma tienes cubierta la monitorización de disponibilidad, pero la disponibilidad es solo una parte de la ecuación. El siguiente paso lógico es añadir monitorización de métricas de sistema (CPU, RAM, disco, red) con herramientas como [Prometheus + Grafana](/blog/monitorizar-servidores-linux-prometheus-grafana/) o **Netdata**. Combinando ambos enfoques tendrás visibilidad completa: sabrás no solo si tus servicios están arriba, sino cómo de sanos están por dentro.
 
 Otra línea interesante es integrar Uptime Kuma con tu sistema de gestión de incidentes. Si usas algo como **Grafana OnCall** o **PagerDuty**, puedes encadenar las alertas de Uptime Kuma vía webhook para que se generen incidentes automáticamente con escalado y rotación de guardia.
 

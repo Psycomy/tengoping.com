@@ -66,7 +66,7 @@ sudo wipefs -a /dev/sdc
 
 ### Crear un array RAID con mdadm
 
-Si tienes dos o más discos, configura RAID para proteger tus datos. Desde la interfaz web, ve a **Almacenamiento > Gestión de RAID**:
+Si tienes dos o más discos, configura RAID para proteger tus datos. Desde la interfaz web, ve a **Almacenamiento > Gestión de RAID**. Para monitorización activa y el procedimiento de recuperación cuando un disco falla de verdad, la guía de [RAID por software con mdadm](/blog/raid-software-mdadm-guia-practica/) entra en más detalle:
 
 - **RAID 1 (mirror)**: duplica los datos en dos discos. Pierdes el 50% de capacidad pero aguanta la caída de un disco.
 - **RAID 5**: requiere mínimo 3 discos. Pierde la capacidad de uno pero soporta un fallo.
@@ -138,7 +138,7 @@ Para que se monte automáticamente al arrancar, añade la línea correspondiente
 
 ## Copias de seguridad con rsync
 
-OpenMediaVault incluye de forma nativa la programación de tareas rsync (en **Servicios > Rsync** o **Sistema > Tareas programadas**), sin necesidad de instalar nada adicional. Si prefieres copias basadas en snapshots incrementales, existe el plugin alternativo `openmediavault-rsnapshot` (basado en la herramienta rsnapshot), pero no es un requisito para usar rsync. También puedes lanzar rsync directamente por línea de comandos:
+OpenMediaVault incluye de forma nativa la programación de tareas rsync (en **Servicios > Rsync** o **Sistema > Tareas programadas**), sin necesidad de instalar nada adicional. Si prefieres copias basadas en snapshots incrementales, existe el plugin alternativo `openmediavault-rsnapshot` (basado en la herramienta rsnapshot), pero no es un requisito para usar rsync. Si quieres entender las opciones de rsync con más profundidad, la guía de [backups incrementales con rsync](/blog/backup-incremental-rsync-servidores-linux/) lo cubre fuera del contexto de OMV. También puedes lanzar rsync directamente por línea de comandos:
 
 ```bash
 # Copia de seguridad local entre discos
@@ -168,7 +168,7 @@ Configura alertas por correo en **Sistema > Notificaciones** para recibir avisos
 
 Para acceder a tu NAS fuera de casa, las opciones más seguras son:
 
-- **VPN**: monta un servidor WireGuard o OpenVPN en tu red y accede al NAS como si estuvieras en casa
+- **VPN**: monta un servidor [WireGuard](/blog/wireguard-vpn-autoalojada/) o OpenVPN en tu red y accede al NAS como si estuvieras en casa
 - **Tailscale/ZeroTier**: VPN mesh sin necesidad de abrir puertos en el router
 - **SSH tunnel**: reenvía el puerto del panel web a tu equipo local
 

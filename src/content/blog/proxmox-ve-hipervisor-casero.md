@@ -12,11 +12,11 @@ draft: false
 
 Proxmox VE es un hipervisor tipo 1 basado en Debian que te permite ejecutar máquinas virtuales KVM y contenedores LXC directamente sobre el hardware, sin pasar por un sistema operativo anfitrión. Es la opción más habitual para montar un servidor de virtualización casero: es gratuito, de código abierto, y ofrece una interfaz web completa para gestionar todo el clúster sin tocar la línea de comandos si no quieres.
 
-A diferencia de Vagrant —que ya vimos en este blog y que orquesta VMs sobre un hipervisor existente como VirtualBox o libvirt—, Proxmox VE _es_ el hipervisor. No necesitas otro sistema operativo por debajo: lo instalas directamente en el hardware y desde ahí administras todas tus VMs y contenedores.
+A diferencia de [Vagrant](/blog/vagrant-entornos-desarrollo-reproducibles/) —que ya vimos en este blog y que orquesta VMs sobre un hipervisor existente como VirtualBox o libvirt—, Proxmox VE _es_ el hipervisor. No necesitas otro sistema operativo por debajo: lo instalas directamente en el hardware y desde ahí administras todas tus VMs y contenedores.
 
 ## Requisitos previos
 
-Antes de instalar, ten en cuenta:
+Si aún no tienes claro en qué máquina vas a instalarlo, la guía de [cómo elegir hardware para tu homelab](/blog/elegir-hardware-homelab/) repasa las opciones habituales. Antes de instalar, ten en cuenta:
 
 - **CPU de 64 bits** con soporte de virtualización por hardware (Intel VT-x o AMD-V), activado en la BIOS/UEFI
 - **RAM**: 2 GB es el mínimo para el propio Proxmox, pero en la práctica necesitas sumar la memoria que vayas a asignar a cada VM o contenedor. Para un homelab con varias VMs ligeras, 16-32 GB es un punto de partida razonable
@@ -60,7 +60,7 @@ iface vmbr0 inet static
     bridge-fd 0
 ```
 
-Si más adelante quieres segmentar tráfico por VLANs entre tus VMs, Proxmox soporta VLANs (IEEE 802.1q) directamente sobre este puente sin necesidad de crear interfaces adicionales — pero eso da para un artículo aparte.
+Si más adelante quieres segmentar tráfico por [VLANs](/blog/vlans-explicadas-segmentar-red/) entre tus VMs, Proxmox soporta VLANs (IEEE 802.1q) directamente sobre este puente sin necesidad de crear interfaces adicionales.
 
 ## Crear tu primera máquina virtual
 

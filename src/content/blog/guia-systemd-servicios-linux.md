@@ -42,6 +42,8 @@ sudo systemctl enable --now nginx
 
 ## Crear un servicio personalizado
 
+Este es el mismo patrón de unidad que usamos para levantar [Gitea como servicio](/blog/gitea-servidor-git-autoalojado/):
+
 ```ini
 # /etc/systemd/system/mi-app.service
 [Unit]
@@ -66,6 +68,8 @@ sudo systemctl enable --now mi-app
 ```
 
 ## Timers como alternativa a cron
+
+Aquí el ejemplo mínimo; para una comparativa completa entre cron y systemd timers, con sus ventajas y desventajas, consulta la guía de [tareas programadas](/blog/tareas-programadas-cron-systemd-timers/):
 
 ```ini
 # /etc/systemd/system/backup.timer

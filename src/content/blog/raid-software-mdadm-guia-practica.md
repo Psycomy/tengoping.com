@@ -10,7 +10,7 @@ image: '../../assets/images/hard-raid-mdadm.jpg'
 draft: false
 ---
 
-mdadm es la herramienta estándar en Linux para crear y gestionar arrays RAID por software, sin depender de una controladora RAID hardware dedicada. Ya vimos un uso puntual en el post de OpenMediaVault para levantar un RAID 1 rápido en un NAS; aquí profundizamos en los distintos niveles disponibles, cómo vigilar la salud de un array activamente y, sobre todo, qué hacer cuando un disco falla de verdad — que es el motivo real por el que montas RAID.
+mdadm es la herramienta estándar en Linux para crear y gestionar arrays RAID por software, sin depender de una controladora RAID hardware dedicada. Ya vimos un uso puntual en el post de [OpenMediaVault](/blog/nas-casero-openmediavault/) para levantar un RAID 1 rápido en un NAS; aquí profundizamos en los distintos niveles disponibles, cómo vigilar la salud de un array activamente y, sobre todo, qué hacer cuando un disco falla de verdad — que es el motivo real por el que montas RAID.
 
 ## Niveles RAID: cuál elegir
 
@@ -135,7 +135,7 @@ El disco de reemplazo debe tener al menos el mismo tamaño que el original, o md
 
 ## Siguiente paso
 
-Con esto tienes lo necesario para elegir el nivel RAID adecuado a tu caso, crear el array, vigilar su salud de forma proactiva en lugar de reactiva, y actuar con un procedimiento claro cuando un disco falle de verdad. RAID no sustituye a las copias de seguridad — protege contra el fallo de un disco, no contra un borrado accidental o un ransomware — así que combínalo con la estrategia de backups incrementales con rsync que ya vimos en este blog.
+Con esto tienes lo necesario para elegir el nivel RAID adecuado a tu caso, crear el array, vigilar su salud de forma proactiva en lugar de reactiva, y actuar con un procedimiento claro cuando un disco falle de verdad. RAID no sustituye a las copias de seguridad — protege contra el fallo de un disco, no contra un borrado accidental o un ransomware — así que combínalo con la estrategia de [backups incrementales con rsync](/blog/backup-incremental-rsync-servidores-linux/) que ya vimos en este blog.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

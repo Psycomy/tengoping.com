@@ -29,6 +29,8 @@ done
 
 ## 2. Backup con rotación
 
+Para algo más robusto que un `tar` con rotación por fecha —copias incrementales, exclusiones, backups remotos por SSH— consulta la guía de [backups incrementales con rsync](/blog/backup-incremental-rsync-servidores-linux/).
+
 ```bash
 #!/bin/bash
 BACKUP_DIR="/backups"
@@ -103,6 +105,8 @@ done
 
 ## 9. Renovación automática de certificados (Let's Encrypt)
 
+Este wrapper es un extra sobre el timer que ya instala Certbot por defecto; la guía de [certificados SSL con Certbot y Let's Encrypt](/blog/certificados-ssl-certbot-lets-encrypt/) explica qué hace realmente la renovación automática por debajo.
+
 ```bash
 #!/bin/bash
 certbot renew --quiet
@@ -125,7 +129,7 @@ echo "Inventario generado en: $OUT"
 
 ## Conclusión
 
-Automatizar tareas repetitivas con Bash ahorra tiempo y reduce errores. Guarda estos scripts en un repositorio y adáptalos a tu entorno.
+Automatizar tareas repetitivas con Bash ahorra tiempo y reduce errores. Guarda estos scripts en un repositorio y adáptalos a tu entorno. Para que se ejecuten solos en vez de a mano, prográmalos con [cron o systemd timers](/blog/tareas-programadas-cron-systemd-timers/).
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

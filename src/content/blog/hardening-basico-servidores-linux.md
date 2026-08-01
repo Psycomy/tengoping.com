@@ -32,7 +32,7 @@ sudo dpkg-reconfigure unattended-upgrades
 
 ## 2. Securizar SSH
 
-Edita `/etc/ssh/sshd_config`:
+Para una guía completa paso a paso —incluyendo claves públicas y verificación de la conexión antes de cerrar la sesión— consulta [cómo configurar un servidor SSH seguro](/blog/configurar-servidor-ssh-seguro-linux/). Aquí el resumen: edita `/etc/ssh/sshd_config`:
 
 ```text
 Port 2222
@@ -61,7 +61,7 @@ sudo systemctl restart sshd
 
 ## 3. Configurar el firewall
 
-El puerto SSH ya se abrió en el paso anterior; ahora abre el resto de lo necesario:
+El puerto SSH ya se abrió en el paso anterior; ahora abre el resto de lo necesario. Si necesitas reglas más avanzadas que abrir servicios sueltos, la guía de [firewalld, UFW y nftables](/blog/firewalld-nftables-seguridad-red-linux/) entra en más detalle:
 
 ```bash
 sudo firewall-cmd --permanent --add-service=http
@@ -152,6 +152,8 @@ sudo systemctl disable --now bluetooth
 ```
 
 ## 8. Configurar fail2ban
+
+Configuración mínima aquí; para filtros personalizados, jails adicionales y gestión de baneos consulta la [guía dedicada de Fail2Ban](/blog/configurar-fail2ban-proteger-servicios/).
 
 ```bash
 sudo dnf install epel-release -y

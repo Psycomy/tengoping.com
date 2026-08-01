@@ -12,7 +12,7 @@ draft: false
 
 ## Qué es un proxy inverso
 
-Un proxy inverso recibe las peticiones de los clientes y las reenvía al servidor interno correspondiente. El cliente nunca se conecta directamente al backend. Esto permite centralizar HTTPS, añadir cabeceras de seguridad, cachear contenido y distribuir carga.
+Un proxy inverso recibe las peticiones de los clientes y las reenvía al servidor interno correspondiente. El cliente nunca se conecta directamente al backend. Esto permite centralizar HTTPS, añadir cabeceras de seguridad, cachear contenido y distribuir carga. Es habitual usarlo delante de servicios autoalojados como [Nextcloud](/blog/nextcloud-servidor-nube-personal/) o [Gitea](/blog/gitea-servidor-git-autoalojado/) para exponerlos con un dominio propio y HTTPS en vez de un puerto suelto.
 
 ## Instalación
 
@@ -50,6 +50,8 @@ server {
 Las cabeceras `X-Real-IP` y `X-Forwarded-For` permiten que la aplicación conozca la IP real del cliente en lugar de ver siempre `127.0.0.1`.
 
 ## Añadir HTTPS con Let's Encrypt
+
+Aquí el flujo específico para Nginx; para entender cómo funciona Certbot y la renovación automática en más detalle, consulta la guía de [certificados SSL con Certbot y Let's Encrypt](/blog/certificados-ssl-certbot-lets-encrypt/).
 
 ```bash
 # RHEL/Rocky/Oracle Linux

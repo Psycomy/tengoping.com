@@ -134,6 +134,7 @@ PersistentKeepalive = 25
 
 - **AllowedIPs = 0.0.0.0/0**: enruta todo el trafico a traves de la VPN (full tunnel). Si solo quieres acceder a la red del servidor, usa `10.0.0.0/24`.
 - **PersistentKeepalive**: mantiene el tunel activo cuando el cliente esta detras de NAT.
+- **DNS**: en lugar de un resolutor publico como `1.1.1.1`, puedes apuntar a un servidor [Pi-hole](/blog/pihole-bloqueo-publicidad-red/) de tu propia red para filtrar publicidad tambien cuando estas conectado en remoto.
 
 ## Levantar y bajar el tunel
 
@@ -201,7 +202,7 @@ Cada cliente debe tener una IP unica dentro de la subred `10.0.0.0/24`.
 
 ## Abrir el puerto en el firewall
 
-Asegurate de que el puerto UDP de WireGuard esta accesible:
+Asegurate de que el puerto UDP de WireGuard esta accesible; si necesitas repasar la sintaxis de cada herramienta, consulta la guia de [firewalld, UFW y nftables](/blog/firewalld-nftables-seguridad-red-linux/):
 
 ```bash
 # Con nftables
@@ -217,7 +218,7 @@ sudo ufw allow 51820/udp
 
 ## Resumen
 
-Con WireGuard tienes una VPN moderna, rapida y facil de mantener. La configuracion es minima comparada con OpenVPN, el rendimiento es superior y anadir nuevos clientes se reduce a generar claves y agregar un bloque `[Peer]`. Todo tu trafico viaja cifrado entre tus dispositivos y tu servidor, sin depender de servicios VPN de terceros.
+Con WireGuard tienes una VPN moderna, rapida y facil de mantener. La configuracion es minima comparada con OpenVPN, el rendimiento es superior y anadir nuevos clientes se reduce a generar claves y agregar un bloque `[Peer]`. Todo tu trafico viaja cifrado entre tus dispositivos y tu servidor, sin depender de servicios VPN de terceros — un uso habitual es acceder de forma segura a servicios autoalojados como [Nextcloud](/blog/nextcloud-servidor-nube-personal/) cuando estas fuera de casa.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

@@ -9,7 +9,7 @@ image: '../../assets/images/mon-zabbix.jpg'
 draft: false
 ---
 
-Zabbix es una plataforma de monitorización open source todo-en-uno: servidor, base de datos, frontend web y agentes, sin necesidad de combinar varias herramientas como ocurre con el stack Prometheus + Grafana que ya vimos en este blog. Si buscas una solución centralizada con gestión de alertas integrada y sin montar piezas sueltas, Zabbix es una alternativa sólida y madura — lleva más de 20 años de desarrollo activo.
+Zabbix es una plataforma de monitorización open source todo-en-uno: servidor, base de datos, frontend web y agentes, sin necesidad de combinar varias herramientas como ocurre con el stack [Prometheus + Grafana](/blog/monitorizar-servidores-linux-prometheus-grafana/) que ya vimos en este blog. Si buscas una solución centralizada con gestión de alertas integrada y sin montar piezas sueltas, Zabbix es una alternativa sólida y madura — lleva más de 20 años de desarrollo activo.
 
 A diferencia de Prometheus, que sondea métricas mediante scraping HTTP y delega la visualización en Grafana, Zabbix incluye su propio frontend, su propio motor de alertas (acciones y notificaciones) y soporta tanto sondeo activo como pasivo desde los agentes. Este artículo cubre la instalación del servidor, el registro de un host monitorizado y la configuración de una alerta por email.
 
@@ -84,7 +84,7 @@ Zabbix Agent puede reportar datos de dos formas distintas, y elegir la correcta 
 - **Pasivas**: el servidor Zabbix se conecta al agente por el puerto **TCP 10050** y le pide el valor de un ítem. El agente solo responde.
 - **Activas**: el agente se conecta al servidor por el puerto **TCP 10051** (el puerto "trapper"), pide la lista de ítems que debe reportar y empuja los datos él mismo, por defecto cada dos minutos.
 
-En la práctica: usa comprobaciones pasivas cuando el servidor Zabbix puede alcanzar directamente a los hosts monitorizados; usa activas cuando el host está detrás de NAT o en una red segmentada donde no puedes abrir tráfico entrante hacia el agente. Puedes mezclar ambos tipos de ítem en el mismo host.
+En la práctica: usa comprobaciones pasivas cuando el servidor Zabbix puede alcanzar directamente a los hosts monitorizados; usa activas cuando el host está detrás de NAT o en una red segmentada donde no puedes abrir tráfico entrante hacia el agente. Puedes mezclar ambos tipos de ítem en el mismo host. En cualquier caso, recuerda abrir los puertos correspondientes en el [firewall](/blog/firewalld-nftables-seguridad-red-linux/) de cada máquina.
 
 ## Añadir un host monitorizado
 
@@ -128,7 +128,7 @@ Con esto, cualquier trigger que pase a estado "Problem" generará un email autom
 
 ## Siguiente paso
 
-Con el servidor instalado, un host monitorizado con plantilla oficial y una acción de alerta por email, ya tienes una base de monitorización funcional. A partir de aquí, los pasos naturales son añadir más hosts, explorar plantillas para servicios específicos (bases de datos, contenedores, servicios web) y, si tu red crece, introducir un Zabbix proxy para centralizar la recolección de datos sin abrir tráfico directo desde el servidor central a cada host.
+Con el servidor instalado, un host monitorizado con plantilla oficial y una acción de alerta por email, ya tienes una base de monitorización funcional. A partir de aquí, los pasos naturales son añadir más hosts, explorar plantillas para servicios específicos (bases de datos, contenedores, servicios web) y, si tu red crece, introducir un Zabbix proxy para centralizar la recolección de datos sin abrir tráfico directo desde el servidor central a cada host. Si lo único que necesitas es saber si un servicio web está caído, sin toda esta infraestructura, [Uptime Kuma](/blog/uptime-kuma-monitorizar-servicios-web/) es una alternativa mucho más ligera.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

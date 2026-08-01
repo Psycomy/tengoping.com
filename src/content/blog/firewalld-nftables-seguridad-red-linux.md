@@ -31,6 +31,8 @@ sudo firewall-cmd --reload
 
 ### Zonas
 
+Las zonas de firewalld son un buen complemento a la segmentación de red con [VLANs](/blog/vlans-explicadas-segmentar-red/): cada zona puede mapear a una interfaz o VLAN distinta con sus propias reglas.
+
 ```bash
 sudo firewall-cmd --zone=dmz --add-interface=eth1 --permanent
 sudo firewall-cmd --zone=dmz --add-service=http --permanent
@@ -62,6 +64,8 @@ nftables es el sucesor de iptables y ofrece una sintaxis unificada.
 
 ### Reglas básicas
 
+El puerto 22 en el ejemplo es el de [SSH](/blog/configurar-servidor-ssh-seguro-linux/); cámbialo si ya lo has movido a otro puerto.
+
 ```bash
 sudo nft add table inet filtro
 sudo nft add chain inet filtro input { type filter hook input priority 0 \; policy drop \; }
@@ -86,7 +90,7 @@ sudo nft list ruleset
 
 ## Conclusión
 
-firewalld y ufw simplifican la gestión del firewall para la mayoría de casos según la distro. Para escenarios avanzados, nftables ofrece la flexibilidad necesaria.
+firewalld y ufw simplifican la gestión del firewall para la mayoría de casos según la distro. Para escenarios avanzados, nftables ofrece la flexibilidad necesaria. Si vas a exponer servicios como una VPN —por ejemplo [WireGuard](/blog/wireguard-vpn-autoalojada/)— no olvides abrir también su puerto UDP correspondiente.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

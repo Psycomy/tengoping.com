@@ -12,7 +12,7 @@ draft: false
 
 ## Que es un homelab
 
-Un homelab es un laboratorio doméstico donde experimentas con tecnología de servidores, redes y servicios que normalmente encontrarías en un entorno empresarial. Puede ser algo tan sencillo como una Raspberry Pi corriendo Pi-hole o tan complejo como un rack con varios servidores, switches gestionables y almacenamiento compartido. El objetivo es aprender, practicar y autohospedar servicios sin depender de la nube.
+Un homelab es un laboratorio doméstico donde experimentas con tecnología de servidores, redes y servicios que normalmente encontrarías en un entorno empresarial. Puede ser algo tan sencillo como una Raspberry Pi corriendo [Pi-hole](/blog/pihole-bloqueo-publicidad-red/) o tan complejo como un rack con varios servidores, switches gestionables y almacenamiento compartido. El objetivo es aprender, practicar y autohospedar servicios sin depender de la nube.
 
 ## Mini PCs: la opción silenciosa y eficiente
 
@@ -48,7 +48,7 @@ El inconveniente principal de estos servidores es el ruido y el consumo. Un R730
 
 ## RAM y CPU: que priorizar
 
-Para virtualización con Proxmox, ESXi o KVM, la RAM es generalmente más importante que la CPU. Cada máquina virtual o contenedor necesita su porción de memoria, y quedarse sin RAM es el cuello de botella más habitual.
+Para virtualización con [Proxmox](/blog/proxmox-ve-hipervisor-casero/), ESXi o KVM, la RAM es generalmente más importante que la CPU. Cada máquina virtual o contenedor necesita su porción de memoria, y quedarse sin RAM es el cuello de botella más habitual.
 
 Orientaciones según uso:
 
@@ -91,7 +91,7 @@ lsblk -d -o NAME,SIZE,MODEL,ROTA
 
 ### Switch gestionable
 
-Un switch gestionable barato (TP-Link TL-SG108E, Netgear GS308E) por 30-40 EUR permite crear VLANs para segmentar tu red: una VLAN para los servicios del homelab, otra para IoT, otra para el tráfico doméstico normal.
+Un switch gestionable barato (TP-Link TL-SG108E, Netgear GS308E) por 30-40 EUR permite crear [VLANs](/blog/vlans-explicadas-segmentar-red/) para segmentar tu red: una VLAN para los servicios del homelab, otra para IoT, otra para el tráfico doméstico normal.
 
 ### 2.5 GbE
 

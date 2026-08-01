@@ -9,7 +9,7 @@ image: '../../assets/images/certbot-ssl.jpg'
 draft: false
 ---
 
-Let's Encrypt es una autoridad de certificación gratuita que emite certificados SSL/TLS validados automáticamente mediante el protocolo ACME, y Certbot es su cliente oficial para gestionarlos desde línea de comandos. Ya vimos en el post de proxy inverso con Nginx cómo activar HTTPS con un único comando (`certbot --nginx`), pero ese comando esconde decisiones importantes: qué tipo de validación usa, si puedes emitir certificados wildcard, y cómo funciona realmente la renovación automática. Este artículo entra en esas decisiones.
+Let's Encrypt es una autoridad de certificación gratuita que emite certificados SSL/TLS validados automáticamente mediante el protocolo ACME, y Certbot es su cliente oficial para gestionarlos desde línea de comandos. Ya vimos en el post de [proxy inverso con Nginx](/blog/proxy-inverso-nginx-guia-practica/) cómo activar HTTPS con un único comando (`certbot --nginx`), pero ese comando esconde decisiones importantes: qué tipo de validación usa, si puedes emitir certificados wildcard, y cómo funciona realmente la renovación automática. Este artículo entra en esas decisiones.
 
 ## Cómo funciona la validación ACME
 
@@ -110,7 +110,7 @@ Por eso conviene probar siempre primero con `--dry-run` o añadiendo `--test-cer
 
 ## Siguiente paso
 
-Con esto tienes criterio para elegir el tipo de validación correcto (HTTP-01 para dominios simples accesibles públicamente, DNS-01 si necesitas wildcards o el servidor no es accesible desde fuera), el modo de emisión que mejor encaja con tu servidor web, y entiendes qué hace realmente la renovación automática por debajo. El siguiente paso natural es automatizar la emisión de certificados en infraestructura como código (por ejemplo, integrando Certbot en tus playbooks de Ansible) si gestionas varios servidores.
+Con esto tienes criterio para elegir el tipo de validación correcto (HTTP-01 para dominios simples accesibles públicamente, DNS-01 si necesitas wildcards o el servidor no es accesible desde fuera), el modo de emisión que mejor encaja con tu servidor web, y entiendes qué hace realmente la renovación automática por debajo. El siguiente paso natural es automatizar la emisión de certificados en infraestructura como código (por ejemplo, integrando Certbot en tus playbooks de [Ansible](/blog/automatizar-servidores-ansible-primeros-pasos/)) si gestionas varios servidores.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

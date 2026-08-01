@@ -10,6 +10,8 @@ image: '../../assets/images/lvm-storage.jpg'
 draft: false
 ---
 
+Esta chuleta cubre los comandos que necesitarás tanto en el día a día como en escenarios de rescate, por ejemplo al [recuperar la contraseña de root desde un LiveCD](/blog/recuperar-contrasena-root-livecd-lvm/) en un sistema con LVM.
+
 ## Los comandos básicos de LVM organizados por nivel
 
 **1. Volúmenes Físicos (PV - Physical Volumes)**
@@ -283,4 +285,4 @@ vgchange -ay
 
 ```
 
-Los casos más frecuentes que verás en el día a día son el **1** (crear nuevos volúmenes), el **extender** que ya vimos, y el **4** (snapshots para backups seguros). El **3** (migración) lo usarás cuando cambies discos.
+Los casos más frecuentes que verás en el día a día son el **1** (crear nuevos volúmenes), el **extender** que ya vimos, y el **4** (snapshots para backups seguros, un buen complemento a un [backup incremental con rsync](/blog/backup-incremental-rsync-servidores-linux/)). El **3** (migración) lo usarás cuando cambies discos.

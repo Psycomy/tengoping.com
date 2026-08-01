@@ -11,7 +11,7 @@ draft: false
 
 ## ¿Por qué Ansible?
 
-Ansible permite automatizar la configuración de servidores de forma declarativa, sin agentes y usando SSH. Es ideal para sysadmins que quieren dar el salto a la infraestructura como código.
+Ansible permite automatizar la configuración de servidores de forma declarativa, sin agentes y usando SSH. Es ideal para sysadmins que quieren dar el salto a la infraestructura como código, versionada en [Git](/blog/git-control-versiones-sysadmins/) igual que cualquier otro proyecto.
 
 ## Instalación
 
@@ -86,7 +86,7 @@ ansible-galaxy init roles/webserver
 
 ## Conclusión
 
-Ansible reduce el trabajo manual y garantiza consistencia en la configuración. Empieza con playbooks simples y evoluciona hacia roles reutilizables.
+Ansible reduce el trabajo manual y garantiza consistencia en la configuración. Empieza con playbooks simples y evoluciona hacia roles reutilizables. Si quieres probarlos contra una VM desechable antes de tocar un servidor real, combínalos con [Vagrant](/blog/vagrant-entornos-desarrollo-reproducibles/), que ya soporta Ansible como provisioner.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

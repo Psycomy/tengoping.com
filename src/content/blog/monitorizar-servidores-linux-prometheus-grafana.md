@@ -12,7 +12,7 @@ draft: false
 
 ## Por qué monitorizar
 
-Sin monitorización, los problemas se detectan cuando ya es demasiado tarde. Un stack basado en Prometheus y Grafana permite recopilar métricas, configurar alertas y visualizar el estado de toda tu infraestructura desde un solo panel.
+Sin monitorización, los problemas se detectan cuando ya es demasiado tarde. Un stack basado en Prometheus y Grafana permite recopilar métricas, configurar alertas y visualizar el estado de toda tu infraestructura desde un solo panel. Es más flexible pero también más laborioso de mantener que una solución todo-en-uno como [Zabbix](/blog/zabbix-monitorizacion-infraestructura/), o que un monitor de disponibilidad ligero como [Uptime Kuma](/blog/uptime-kuma-monitorizar-servicios-web/) si solo necesitas saber si un servicio está caído.
 
 ## Arquitectura del stack
 

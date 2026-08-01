@@ -11,7 +11,7 @@ draft: false
 
 Una VLAN (Virtual LAN) divide una red física en varias redes lógicas independientes que comparten el mismo cableado y los mismos switches, pero no ven el tráfico entre sí salvo que un router lo permita explícitamente. Es la herramienta estándar para separar, por ejemplo, tu red de IoT de tus servidores de homelab sin tener que tirar cable nuevo ni comprar switches adicionales.
 
-Ya la mencionamos de pasada al hablar del bridge `vmbr0` de Proxmox y al elegir hardware de homelab; aquí es donde entramos en cómo funciona realmente el etiquetado 802.1Q, cómo configurar puertos trunk y access en un switch gestionado, y cómo crear interfaces VLAN en Linux.
+Ya la mencionamos de pasada al hablar del bridge `vmbr0` de Proxmox y al [elegir hardware de homelab](/blog/elegir-hardware-homelab/); aquí es donde entramos en cómo funciona realmente el etiquetado 802.1Q, cómo configurar puertos trunk y access en un switch gestionado, y cómo crear interfaces VLAN en Linux.
 
 ## Cómo funciona el etiquetado 802.1Q
 
@@ -71,7 +71,7 @@ Para que esto funcione, la interfaz física `eth0` debe estar conectada a un pue
 
 ## VLANs y Proxmox
 
-En el post sobre Proxmox VE ya vimos que el bridge `vmbr0` se crea sobre la interfaz física durante la instalación. Para asignar una VM a una VLAN concreta sin crear subinterfaces manuales, basta con indicar el VLAN Tag en la configuración de red de esa VM (campo `VLAN Tag` en la pestaña de red del hardware de la VM). Proxmox etiqueta el tráfico de esa VM con el ID indicado sobre el mismo bridge, siempre que el puerto físico al que está conectado el host esté configurado como trunk en el switch.
+En el post sobre [Proxmox VE](/blog/proxmox-ve-hipervisor-casero/) ya vimos que el bridge `vmbr0` se crea sobre la interfaz física durante la instalación. Para asignar una VM a una VLAN concreta sin crear subinterfaces manuales, basta con indicar el VLAN Tag en la configuración de red de esa VM (campo `VLAN Tag` en la pestaña de red del hardware de la VM). Proxmox etiqueta el tráfico de esa VM con el ID indicado sobre el mismo bridge, siempre que el puerto físico al que está conectado el host esté configurado como trunk en el switch.
 
 ## Casos de uso en un homelab
 
@@ -84,7 +84,7 @@ Segmentar la red no es solo un ejercicio técnico; resuelve problemas concretos:
 
 ## Siguiente paso
 
-Con el etiquetado 802.1Q, los puertos trunk/access y las interfaces VLAN de Linux ya tienes lo necesario para segmentar tu red de homelab. El siguiente paso natural es definir reglas de firewall entre VLANs (qué VLAN puede iniciar conexiones hacia cuál) usando lo que ya vimos en el post de firewalld/nftables, para que la segmentación sea real y no solo una separación de broadcast domains.
+Con el etiquetado 802.1Q, los puertos trunk/access y las interfaces VLAN de Linux ya tienes lo necesario para segmentar tu red de homelab. El siguiente paso natural es definir reglas de firewall entre VLANs (qué VLAN puede iniciar conexiones hacia cuál) usando lo que ya vimos en el post de [firewalld/nftables](/blog/firewalld-nftables-seguridad-red-linux/), para que la segmentación sea real y no solo una separación de broadcast domains.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

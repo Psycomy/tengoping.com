@@ -14,7 +14,7 @@ draft: false
 
 Todos hemos estado ahí: `sshd_config.bak`, `sshd_config.bak2`, `sshd_config.FUNCIONA`. Si gestionas servidores y todavía versionas archivos con copias manuales, Git va a cambiar tu forma de trabajar.
 
-Git no es solo para desarrolladores. Cualquier archivo de texto que modifiques con frecuencia — configuraciones de Nginx, playbooks de Ansible, reglas de firewall, scripts de mantenimiento — se beneficia de un historial de cambios rastreable, reversible y compartible.
+Git no es solo para desarrolladores. Cualquier archivo de texto que modifiques con frecuencia — configuraciones de Nginx, playbooks de [Ansible](/blog/automatizar-servidores-ansible-primeros-pasos/), reglas de [firewall](/blog/firewalld-nftables-seguridad-red-linux/), scripts de mantenimiento — se beneficia de un historial de cambios rastreable, reversible y compartible.
 
 ## Requisitos previos
 
@@ -133,7 +133,7 @@ Este flujo es ideal para cambios en producción: preparas todo en una rama, prue
 
 ## Repositorios remotos: colaboración y backup
 
-Un repositorio remoto (en Gitea, GitLab o GitHub) te da backup automático y colaboración con el equipo:
+Un repositorio remoto (en [Gitea](/blog/gitea-servidor-git-autoalojado/), GitLab o GitHub) te da backup automático y colaboración con el equipo:
 
 ```bash
 # Conectar con un remoto

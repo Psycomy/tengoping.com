@@ -74,7 +74,7 @@ ssh -p 2222 admin@servidor
 
 ## Configuración del firewall
 
-Abrimos el nuevo puerto antes de reiniciar SSH para no perder el acceso.
+Abrimos el nuevo puerto antes de reiniciar SSH para no perder el acceso. Si quieres ir más allá de abrir un puerto suelto y aplicar una política de firewall completa, la guía de [firewalld, UFW y nftables](/blog/firewalld-nftables-seguridad-red-linux/) cubre las reglas con más detalle.
 
 ```bash
 # RHEL/Rocky/Oracle Linux (firewalld)
@@ -99,7 +99,7 @@ sudo systemctl restart sshd
 
 ## Instalación de Fail2ban
 
-Fail2ban protege contra ataques de fuerza bruta:
+[Fail2ban](/blog/configurar-fail2ban-proteger-servicios/) protege contra ataques de fuerza bruta:
 
 ```bash
 # RHEL/Rocky/Oracle Linux
@@ -152,7 +152,7 @@ sudo last -n 20
 
 ## Conclusión
 
-Con estas configuraciones tendremos un servidor SSH robusto y seguro. Recuerda mantener el sistema actualizado y revisar los logs periódicamente.
+Con estas configuraciones tendremos un servidor SSH robusto y seguro. Recuerda mantener el sistema actualizado y revisar los logs periódicamente. Si quieres seguir reforzando el servidor más allá de SSH, la guía de [hardening básico de servidores Linux](/blog/hardening-basico-servidores-linux/) es el siguiente paso lógico.
 
 > La seguridad es un proceso continuo, no un estado. Revisa y actualiza tus configuraciones regularmente.
 > [!NOTE]

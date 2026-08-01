@@ -13,7 +13,7 @@ draft: false
 
 Fail2Ban es un daemon que monitoriza los logs del sistema en busca de patrones de autenticacion fallida. Cuando detecta un numero determinado de intentos fallidos desde una misma IP, la banea automaticamente durante un tiempo configurable. Es la primera linea de defensa contra ataques de fuerza bruta en cualquier servidor expuesto a Internet.
 
-Sin Fail2Ban, un servidor SSH publico puede recibir miles de intentos de login por hora. Fail2Ban reduce ese ruido a practicamente cero con una configuracion minima.
+Sin Fail2Ban, un [servidor SSH](/blog/configurar-servidor-ssh-seguro-linux/) publico puede recibir miles de intentos de login por hora. Fail2Ban reduce ese ruido a practicamente cero con una configuracion minima.
 
 ## Instalacion
 
@@ -172,7 +172,7 @@ Algunos ajustes adicionales que conviene tener en cuenta:
 - Activa el **baneo incremental** con `bantime.increment = true` para que las IPs reincidentes reciban baneos cada vez mas largos.
 - Configura notificaciones por correo con la accion `sendmail-whois` para recibir alertas de cada baneo.
 - Revisa periodicamente los logs de Fail2Ban en `/var/log/fail2ban.log` para detectar patrones y ajustar las reglas.
-- Combina Fail2Ban con otras medidas: claves SSH, firewall con listas de permitidos, port knocking o VPN.
+- Combina Fail2Ban con otras medidas: claves SSH, [firewall con listas de permitidos](/blog/firewalld-nftables-seguridad-red-linux/), port knocking o [VPN](/blog/wireguard-vpn-autoalojada/).
 
 Fail2Ban no sustituye una configuracion de seguridad solida, pero es un complemento imprescindible para cualquier servidor Linux expuesto a la red.
 

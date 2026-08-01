@@ -29,7 +29,7 @@ Las empresas gestionan cada vez más infraestructura. Lo que antes eran 10 servi
 
 ### Ansible
 
-La herramienta más accesible para empezar. Su sintaxis YAML es fácil de aprender y no requiere agentes en los servidores:
+La herramienta más accesible para empezar — tienes una guía de [primeros pasos](/blog/automatizar-servidores-ansible-primeros-pasos/) en este mismo blog. Su sintaxis YAML es fácil de aprender y no requiere agentes en los servidores:
 
 ```yaml
 ---
@@ -68,7 +68,7 @@ resource "aws_instance" "web" {
 
 ### Scripts Bash estructurados
 
-Incluso los scripts bash pueden ser más robustos con buenas prácticas:
+Incluso los scripts bash pueden ser más robustos con buenas prácticas — aquí tienes [10 ejemplos prácticos](/blog/scripts-bash-utiles-sysadmin/) para el día a día:
 
 ```bash
 #!/usr/bin/env bash
@@ -89,7 +89,7 @@ No necesitas aprenderlo todo de golpe. Mi recomendación:
 
 1. **Identifica tareas repetitivas** que haces cada semana
 2. **Empieza con Ansible** para automatizar esas tareas
-3. **Versiona tu código** con Git desde el primer día
+3. **Versiona tu código** con [Git](/blog/git-control-versiones-sysadmins/) desde el primer día
 4. **Documenta mientras automatizas**: los playbooks son documentación viva
 5. **Prueba en entornos de desarrollo** antes de tocar producción
 
@@ -109,7 +109,7 @@ Los perfiles que combinan conocimientos de sysadmin con habilidades de automatiz
 
 ## Conclusión
 
-La automatización no reemplaza al sysadmin; lo potencia. Te permite dedicar tiempo a lo que realmente importa: diseñar soluciones robustas, mejorar la seguridad y resolver problemas complejos.
+La automatización no reemplaza al sysadmin; lo potencia. Te permite dedicar tiempo a lo que realmente importa: diseñar soluciones robustas, mejorar la seguridad y resolver problemas complejos. Es la misma idea que desarrollamos al hablar de [la IA en la administración de sistemas](/blog/ia-administracion-sistemas-oportunidad-amenaza/): las herramientas cambian el trabajo del sysadmin, no lo eliminan.
 
 > El mejor momento para empezar a automatizar fue hace cinco años. El segundo mejor momento es hoy.
 > [!NOTE]
