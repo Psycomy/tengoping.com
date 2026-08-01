@@ -21,6 +21,24 @@ mdadm soporta varios niveles, cada uno con un compromiso distinto entre capacida
 - **RAID 5**: distribuye datos y paridad entre discos. Mínimo 3 discos. Con n discos, la capacidad útil es la de (n-1) discos — un disco se "pierde" en paridad, pero esa paridad está repartida entre todos, no en uno solo. Tolera el fallo de un disco.
 - **RAID 10 (1+0)**: combina mirroring y striping — en la práctica, un RAID 0 hecho de varios pares RAID 1. El RAID 1+0 anidado clásico requiere un número par de discos, mínimo 4 en la configuración típica (aunque técnicamente funciona con 2, en cuyo caso equivale a RAID 1). El RAID10 nativo de mdadm (`--level=10`), en cambio, admite número impar de discos (por ejemplo 3 o 5) gracias a sus layouts near/far/offset. Mejor rendimiento que RAID 5 en escrituras y reconstrucción más rápida tras un fallo, a costa de perder la mitad de la capacidad total.
 
+```
+RAID 0  (stripe, mín. 2 discos)
+  [sdb: A1,A3,A5]  [sdc: A2,A4,A6]          ← datos repartidos, sin copia
+  capacidad = 100% suma de discos · tolera 0 fallos
+
+RAID 1  (mirror, mín. 2 discos)
+  [sdb: A1,A2,A3]  [sdc: A1,A2,A3]          ← copia idéntica en cada disco
+  capacidad = 1 disco · tolera el fallo de todos menos uno
+
+RAID 5  (paridad distribuida, mín. 3 discos)
+  [sdb: A1,A2,Pc]  [sdc: A1,Pb,A3]  [sdd: Pa,A2,A3]
+  capacidad = (n-1) discos · tolera el fallo de 1 disco
+
+RAID 10  (mirror + stripe, mín. 4 discos)
+  [sdb≡sdc: A1]  [sdd≡sde: A2]              ← pares en mirror, stripe entre pares
+  capacidad = n/2 discos · tolera 1 fallo por par
+```
+
 Para un homelab con presupuesto limitado, RAID 1 es la opción más simple y predecible. Si tienes 4+ discos y priorizas rendimiento sobre capacidad máxima, RAID 10 reconstruye más rápido que RAID 5 tras sustituir un disco, lo que reduce la ventana de exposición a un segundo fallo.
 
 ## Crear un array

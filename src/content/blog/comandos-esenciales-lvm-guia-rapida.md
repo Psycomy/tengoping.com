@@ -14,6 +14,22 @@ Esta chuleta cubre los comandos que necesitarás tanto en el día a día como en
 
 ## Los comandos básicos de LVM organizados por nivel
 
+```
+/dev/sdb, /dev/sdc, /dev/sdd    (discos o particiones físicas)
+   │
+   │  pvcreate
+   ▼
+PV — Volúmenes físicos
+   │
+   │  vgcreate / vgextend
+   ▼
+vg_datos                        (grupo de volúmenes: el "pool" de espacio)
+   │
+   │  lvcreate
+   ├── lv_home    (ej. 50G)
+   └── lv_backup  (ej. 50G)     ← formateas y montas cada LV como un disco normal
+```
+
 **1. Volúmenes Físicos (PV - Physical Volumes)**
 
 - `pvs` - ver resumen de volúmenes físicos
