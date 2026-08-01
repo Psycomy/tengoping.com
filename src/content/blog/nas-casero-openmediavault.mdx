@@ -10,6 +10,8 @@ image: '../../assets/images/nas-omv.jpg'
 draft: false
 ---
 
+import Figure from '@components/Figure.astro';
+
 ## Que es un NAS y por que montar uno propio
 
 Un NAS (Network Attached Storage) es un dispositivo de almacenamiento conectado a tu red local que permite compartir archivos entre todos tus equipos. Las soluciones comerciales como Synology o QNAP funcionan bien, pero sus precios son elevados y dependes de su ecosistema propietario. Montar tu propio NAS con OpenMediaVault te da control total sobre el hardware y el software, a una fracción del coste.
@@ -55,6 +57,12 @@ Accede al panel web desde cualquier navegador en `http://IP_DEL_NAS`. Las creden
 
 > [!IMPORTANT]
 > Cambia la contraseña inmediatamente desde **Sistema > Configuración general > Contraseña de administrador web**. Mientras uses las credenciales por defecto, cualquiera en tu red puede acceder al panel de administración.
+
+<Figure
+  src="/images/blog/nas-casero-openmediavault/openmediavault-dashboard.webp"
+  alt="Dashboard de OpenMediaVault mostrando el estado de los servicios activos y la información del sistema"
+  caption="Dashboard de OpenMediaVault. Captura: Luxamman, Wikimedia Commons, licencia CC BY-SA 4.0."
+/>
 
 ## Configurar los discos
 

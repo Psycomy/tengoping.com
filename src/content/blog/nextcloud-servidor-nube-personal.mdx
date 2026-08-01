@@ -10,6 +10,8 @@ image: '../../assets/images/nextcloud-server.jpg'
 draft: false
 ---
 
+import Figure from '@components/Figure.astro';
+
 ## Por que autoalojar tu almacenamiento en la nube
 
 Servicios como Google Drive o Dropbox son comodos, pero tus datos quedan en servidores ajenos. Con Nextcloud puedes tener sincronizacion de archivos, calendario, contactos y mucho mas bajo tu propio control. Tu decides donde se almacenan los datos, quien accede y durante cuanto tiempo se conservan.
@@ -134,6 +136,12 @@ Abre el navegador y accede a `http://nube.tudominio.com`. El asistente de instal
 3. **Base de datos**: selecciona MySQL/MariaDB e introduce los datos creados antes (usuario `nextcloud`, contrasena y nombre de base de datos `nextcloud`).
 
 Haz clic en instalar y espera a que termine el proceso.
+
+<Figure
+  src="/images/blog/nextcloud-servidor-nube-personal/nextcloud-archivos.webp"
+  alt="Aplicación de archivos de Nextcloud mostrando carpetas y documentos en el navegador"
+  caption="La app de Archivos de Nextcloud: tu propio almacenamiento en la nube, accesible desde el navegador."
+/>
 
 ## Habilitar aplicaciones
 

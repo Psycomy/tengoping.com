@@ -9,6 +9,8 @@ image: '../../assets/images/mon-zabbix.jpg'
 draft: false
 ---
 
+import Figure from '@components/Figure.astro';
+
 Zabbix es una plataforma de monitorización open source todo-en-uno: servidor, base de datos, frontend web y agentes, sin necesidad de combinar varias herramientas como ocurre con el stack [Prometheus + Grafana](/blog/monitorizar-servidores-linux-prometheus-grafana/) que ya vimos en este blog. Si buscas una solución centralizada con gestión de alertas integrada y sin montar piezas sueltas, Zabbix es una alternativa sólida y madura — lleva más de 20 años de desarrollo activo.
 
 A diferencia de Prometheus, que sondea métricas mediante scraping HTTP y delega la visualización en Grafana, Zabbix incluye su propio frontend, su propio motor de alertas (acciones y notificaciones) y soporta tanto sondeo activo como pasivo desde los agentes. Este artículo cubre la instalación del servidor, el registro de un host monitorizado y la configuración de una alerta por email.
@@ -106,6 +108,12 @@ Hostname=nombre-del-host
 6. En la pestaña **Templates**, vincula una plantilla oficial como `Linux by Zabbix agent`, que ya trae ítems y triggers predefinidos para CPU, memoria, disco y red — no hace falta crearlos desde cero.
 
 En unos minutos, el host empezará a reportar datos visibles en **Monitoring > Latest data**.
+
+<Figure
+  src="/images/blog/zabbix-monitorizacion-infraestructura/zabbix-dashboard.webp"
+  alt="Dashboard Global view de Zabbix mostrando el estado del servidor, hosts monitorizados y problemas por severidad"
+  caption="Dashboard 'Global view' de Zabbix: estado del servidor, hosts y problemas activos de un vistazo."
+/>
 
 ## Triggers: cuándo se considera un problema
 

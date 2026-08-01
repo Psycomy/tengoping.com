@@ -10,6 +10,8 @@ image: '../../assets/images/linux-monitoring.jpg'
 draft: false
 ---
 
+import Figure from '@components/Figure.astro';
+
 ## Por qué monitorizar
 
 Sin monitorización, los problemas se detectan cuando ya es demasiado tarde. Un stack basado en Prometheus y Grafana permite recopilar métricas, configurar alertas y visualizar el estado de toda tu infraestructura desde un solo panel. Es más flexible pero también más laborioso de mantener que una solución todo-en-uno como [Zabbix](/blog/zabbix-monitorizacion-infraestructura/), o que un monitor de disponibilidad ligero como [Uptime Kuma](/blog/uptime-kuma-monitorizar-servicios-web/) si solo necesitas saber si un servicio está caído.
@@ -156,6 +158,12 @@ El dashboard más popular para Node Exporter es el **1860**:
 4. Pulsa **Import**
 
 Tendrás un panel completo con CPU, memoria, disco, red y más para cada servidor.
+
+<Figure
+  src="/images/blog/monitorizar-servidores-linux-prometheus-grafana/grafana-dashboard.webp"
+  alt="Dashboard de Grafana con paneles de uso de CPU, memoria RAM y disco en tiempo real"
+  caption="Ejemplo de dashboard en Grafana: series temporales de CPU y RAM, y un gauge de uso de disco."
+/>
 
 ## Consultas PromQL útiles
 

@@ -10,6 +10,8 @@ image: '../../assets/images/pihole-dns.jpg'
 draft: false
 ---
 
+import Figure from '@components/Figure.astro';
+
 ## Que es Pi-hole
 
 Pi-hole es un servidor DNS local que actua como sumidero de publicidad. Cuando un dispositivo de tu red intenta resolver un dominio de publicidad o rastreo, Pi-hole responde con una direccion nula y el anuncio nunca se carga. Funciona a nivel de red, asi que protege todos los dispositivos conectados sin necesidad de instalar extensiones en cada navegador. A diferencia de un DNS autoritativo como [BIND9](/blog/dns-bind9-servidor-autoritativo/), que publica las zonas de un dominio, Pi-hole solo filtra y reenvia consultas.
@@ -56,6 +58,12 @@ Accede al panel web en `http://192.168.1.100/admin`. Desde alli puedes ver:
 - **Dashboard**: estadisticas en tiempo real con el porcentaje de consultas bloqueadas, total de peticiones y dominios mas frecuentes.
 - **Query Log**: registro detallado de cada consulta DNS con su estado (permitida, bloqueada, cacheada).
 - **Long-Term Data**: graficos historicos de actividad DNS.
+
+<Figure
+  src="/images/blog/pihole-bloqueo-publicidad-red/pihole-dashboard.webp"
+  alt="Dashboard de Pi-hole mostrando el total de consultas DNS, el porcentaje bloqueado y el gráfico de actividad"
+  caption="Panel de administración de Pi-hole: consultas totales, bloqueadas y porcentaje de filtrado."
+/>
 
 ## Gestionar listas de bloqueo
 

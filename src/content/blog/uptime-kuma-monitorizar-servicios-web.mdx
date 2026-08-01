@@ -9,6 +9,8 @@ image: '../../assets/images/mon-uptimekuma.jpg'
 draft: false
 ---
 
+import Figure from '@components/Figure.astro';
+
 ## Por qué necesitas monitorizar tus servicios
 
 Si administras servidores, sabes que la pregunta no es si algo va a caer, sino cuándo. Un servicio web puede dejar de responder por mil razones: un certificado SSL que expira, un disco que se llena, un proceso que consume toda la RAM o simplemente un proveedor de hosting que tiene un mal día.
@@ -31,6 +33,12 @@ Sus características principales incluyen:
 - **Dashboard en tiempo real**: gráficos de latencia, historial de disponibilidad y tiempos de respuesta.
 
 Todo esto con una instalación que ocupa menos de 200 MB de RAM en reposo y se despliega en un minuto con Docker.
+
+<Figure
+  src="/images/blog/uptime-kuma-monitorizar-servicios-web/uptime-kuma-dashboard.webp"
+  alt="Dashboard de Uptime Kuma mostrando tres monitores: dos servicios funcionales y uno caído, con el historial de eventos"
+  caption="Dashboard de Uptime Kuma: estado en tiempo real de los monitores y registro de eventos."
+/>
 
 ## Requisitos previos
 

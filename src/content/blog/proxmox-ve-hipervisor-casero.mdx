@@ -10,6 +10,8 @@ image: '../../assets/images/virt-proxmox.jpg'
 draft: false
 ---
 
+import Figure from '@components/Figure.astro';
+
 Proxmox VE es un hipervisor tipo 1 basado en Debian que te permite ejecutar máquinas virtuales KVM y contenedores LXC directamente sobre el hardware, sin pasar por un sistema operativo anfitrión. Es la opción más habitual para montar un servidor de virtualización casero: es gratuito, de código abierto, y ofrece una interfaz web completa para gestionar todo el clúster sin tocar la línea de comandos si no quieres.
 
 A diferencia de [Vagrant](/blog/vagrant-entornos-desarrollo-reproducibles/) —que ya vimos en este blog y que orquesta VMs sobre un hipervisor existente como VirtualBox o libvirt—, Proxmox VE _es_ el hipervisor. No necesitas otro sistema operativo por debajo: lo instalas directamente en el hardware y desde ahí administras todas tus VMs y contenedores.
@@ -40,6 +42,12 @@ La versión actual es **Proxmox VE 9.2**, basada en Debian 13 "Trixie" con kerne
 6. Termina la instalación y reinicia. El servidor arrancará directamente en Proxmox VE.
 
 Tras el primer arranque, accede a la interfaz web en `https://IP-DEL-SERVIDOR:8006` con el usuario `root` y la contraseña que definiste.
+
+<Figure
+  src="/images/blog/proxmox-ve-hipervisor-casero/proxmox-datacenter.webp"
+  alt="Vista Datacenter de Proxmox VE con el nodo, sus VMs/LXC y el almacenamiento configurado (nombres de VM ocultos)"
+  caption="Vista 'Datacenter' de Proxmox VE: nodo, máquinas virtuales, contenedores y almacenamiento de un homelab real (nombres de VM difuminados por privacidad)."
+/>
 
 > [!TIP]
 > Si vas a usar Proxmox en producción (no solo para pruebas), ten en cuenta que el repositorio `pve-enterprise` requiere suscripción de pago. Para uso doméstico, cambia al repositorio `pve-no-subscription`, gratuito, desde `Actualizaciones del sistema > Repositorios` en la interfaz web, o editando `/etc/apt/sources.list.d/`.

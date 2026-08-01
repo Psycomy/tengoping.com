@@ -10,6 +10,8 @@ image: '../../assets/images/gitea-server.jpg'
 draft: false
 ---
 
+import Figure from '@components/Figure.astro';
+
 ## Por que autoalojar Git
 
 Tener tus repositorios en GitHub o GitLab es practico, pero dependes de sus politicas, disponibilidad y precios. Con un servidor [Git](/blog/git-control-versiones-sysadmins/) propio mantienes el control total sobre tu codigo, defines tus propias reglas de acceso y no tienes limites de repositorios privados ni de almacenamiento mas alla de tu disco.
@@ -195,6 +197,12 @@ Accede al panel web, crea un repositorio y clonalo:
 ```bash
 git clone git@git.tudominio.com:admin/mi-proyecto.git
 ```
+
+<Figure
+  src="/images/blog/gitea-servidor-git-autoalojado/gitea-repositorio.webp"
+  alt="Interfaz web de Gitea mostrando un repositorio recién creado con su README y el primer commit"
+  caption="Vista de un repositorio en Gitea: código, commits, ramas y descripción del proyecto."
+/>
 
 ## Configurar acceso SSH
 
