@@ -20,7 +20,7 @@ SCRIPT_DIR = Path(__file__).parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 CONTENT_DIR = PROJECT_ROOT / "src" / "content" / "blog"
 PUBLIC_IMAGES_DIR = PROJECT_ROOT / "public" / "images" / "blog"
-MAX_WIDTH = 750
+MAX_WIDTH = 1600
 
 
 def get_posts(content_dir: str) -> list[str]:
@@ -38,11 +38,16 @@ def get_posts(content_dir: str) -> list[str]:
     return sorted(stems)
 
 
-def convert_and_save(src_path: str, dest_path: str, max_width: int = 750) -> int:
+def convert_and_save(src_path: str, dest_path: str, max_width: int = MAX_WIDTH) -> int:
     """Convierte src_path a WebP, redimensiona si supera max_width.
 
     Crea carpetas intermedias. Devuelve el tamaño del archivo resultante
     en KB (entero, mínimo 1).
+
+    max_width por defecto es mayor que el ancho de la columna de prosa (750px)
+    a propósito: el <img> en línea siempre se ve limitado por CSS al ancho de
+    columna, pero el lightbox (ver ImageLightbox.astro) necesita píxeles de
+    sobra en el archivo para poder ampliar la imagen de verdad.
     """
     src = Path(src_path)
     dest = Path(dest_path)

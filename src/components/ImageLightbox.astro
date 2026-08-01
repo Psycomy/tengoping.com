@@ -1,0 +1,205 @@
+---
+// Global script: click-to-zoom lightbox for content images (.prose img)
+---
+
+<div
+  class="lightbox-overlay"
+  id="lightbox-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+>
+  <div class="lightbox-window">
+    <div class="lightbox-titlebar">
+      <span class="lightbox-title" id="lightbox-title">$ imagen</span>
+      <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar imagen ampliada">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="lightbox-body">
+      <img id="lightbox-img" src="" alt="" />
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initLightbox() {
+    const overlay = document.getElementById('lightbox-overlay');
+    const closeBtn = document.getElementById('lightbox-close');
+    const bigImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+    const titleEl = document.getElementById('lightbox-title');
+    const captionEl = document.getElementById('lightbox-caption');
+    if (!overlay || !closeBtn || !bigImg || !titleEl || !captionEl) return;
+
+    let lastFocused: HTMLElement | null = null;
+
+    function closeLightbox() {
+      overlay!.classList.remove('active');
+      overlay!.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('lightbox-open');
+      document.removeEventListener('keydown', onKeydown);
+      bigImg!.src = '';
+      lastFocused?.focus();
+    }
+
+    function onKeydown(e: KeyboardEvent) {
+      if (e.key === 'Escape') closeLightbox();
+    }
+
+    function openLightbox(img: HTMLImageElement) {
+      lastFocused = document.activeElement as HTMLElement;
+
+      const src = img.currentSrc || img.src;
+      bigImg!.src = src;
+      bigImg!.alt = img.alt;
+      titleEl!.textContent = '$ ' + (src.split('/').pop() || 'imagen');
+
+      const figure = img.closest('figure');
+      const caption = figure?.querySelector('figcaption')?.textContent?.trim();
+      captionEl!.textContent = caption || '';
+      captionEl!.hidden = !caption;
+
+      overlay!.classList.add('active');
+      overlay!.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('lightbox-open');
+      document.addEventListener('keydown', onKeydown);
+      closeBtn!.focus();
+    }
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const img = target.closest('.prose img') as HTMLImageElement | null;
+      if (img) {
+        openLightbox(img);
+        return;
+      }
+      if (target === overlay || target === bigImg) closeLightbox();
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+  }
+
+  initLightbox();
+  document.addEventListener('astro:after-swap', initLightbox);
+</script>
+
+<style>
+  :global(.prose img) {
+    cursor: zoom-in;
+  }
+
+  .lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: var(--lightbox-backdrop);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    --lightbox-backdrop: rgba(0, 0, 0, 0.85);
+  }
+
+  .lightbox-overlay.active {
+    display: flex;
+  }
+
+  .lightbox-window {
+    max-width: 90vw;
+    max-height: 90vh;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    animation: lightboxOpen 0.2s ease-out;
+  }
+
+  @keyframes lightboxOpen {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .lightbox-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .lightbox-title {
+    flex: 1;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .lightbox-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    padding: 0.2rem;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+
+  .lightbox-close:hover {
+    color: var(--color-text);
+  }
+
+  .lightbox-body {
+    padding: 1rem;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .lightbox-body img {
+    display: block;
+    max-width: 100%;
+    max-height: calc(90vh - 8rem);
+    border: none;
+    cursor: zoom-out;
+  }
+
+  .lightbox-caption {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    max-width: 60ch;
+  }
+
+  .lightbox-caption[hidden] {
+    display: none;
+  }
+
+  :global(body.lightbox-open) {
+    overflow: hidden;
+  }
+</style>
