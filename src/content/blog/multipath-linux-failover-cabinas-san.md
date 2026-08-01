@@ -2,7 +2,7 @@
 title: 'Multipath en Linux: failover y HA con cabinas SAN'
 description: 'Configura DM-Multipath en Linux para eliminar puntos únicos de fallo hacia la cabina SAN: instalación, multipath.conf y failover.'
 author: 'antonio'
-pubDate: 2026-08-01
+pubDate: 2026-08-01T14:00:00
 category: 'Hardware'
 tags: ['Multipath', 'SAN', 'Storage', 'Sysadmin']
 image: '../../assets/images/multipath-san.jpg'
