@@ -78,6 +78,9 @@ ansible-playbook site.yml --check
 ansible-playbook site.yml
 ```
 
+> [!TIP]
+> `--check` simula la ejecución sin aplicar ningún cambio real (modo dry-run) y te muestra qué tareas se marcarían como "changed". Ejecútalo siempre antes del playbook real cuando toques un playbook nuevo o modificado — así detectas errores de sintaxis o cambios inesperados antes de que afecten al servidor.
+
 ## Roles para organizar
 
 ```bash

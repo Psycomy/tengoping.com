@@ -96,7 +96,10 @@ lvextend -l +100%FREE /dev/nombre_vg/nombre_lv
 
 ```
 
-**3. Extender el sistema de archivos** (¡IMPORTANTE! Sin este paso no verás el espacio)
+**3. Extender el sistema de archivos**
+
+> [!IMPORTANT]
+> `lvextend` solo amplía el volumen lógico. Sin este paso adicional el sistema de archivos sigue viendo el tamaño antiguo y no verás el espacio nuevo disponible.
 
 ```bash
 # Para ext4
@@ -174,7 +177,10 @@ echo "/dev/vg_datos/lv_backup /backup ext4 defaults 0 2" >> /etc/fstab
 
 ```
 
-**2. Reducir un volumen (¡CUIDADO! Puede perder datos)**
+**2. Reducir un volumen**
+
+> [!CAUTION]
+> Reducir un volumen lógico puede provocar pérdida de datos si el sistema de archivos no se reduce primero, o si el tamaño calculado es incorrecto. Haz una copia de seguridad antes de continuar.
 
 ```bash
 # Primero desmontar

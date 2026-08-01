@@ -45,7 +45,8 @@ ClientAliveCountMax 2
 AllowUsers admin deploy
 ```
 
-Antes de reiniciar SSH, abre el nuevo puerto en el firewall para no quedarte fuera (se detalla en el siguiente apartado):
+> [!CAUTION]
+> Antes de reiniciar SSH, abre el nuevo puerto en el firewall para no quedarte fuera (se detalla en el siguiente apartado). Si reinicias el servicio sin haber abierto el puerto o sin mantener una sesión activa como red de seguridad, puedes perder el acceso remoto al servidor.
 
 ```bash
 sudo firewall-cmd --permanent --remove-service=ssh

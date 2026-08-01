@@ -75,7 +75,10 @@ sudo systemctl restart zabbix-server zabbix-agent2 nginx php8.2-fpm
 sudo systemctl enable zabbix-server zabbix-agent2 nginx php8.2-fpm
 ```
 
-Accede al frontend en `http://IP-DEL-SERVIDOR` y completa el asistente de configuración inicial (idioma, conexión a base de datos ya configurada, usuario admin). Las credenciales por defecto del frontend son `Admin` / `zabbix` — cámbialas nada más entrar.
+Accede al frontend en `http://IP-DEL-SERVIDOR` y completa el asistente de configuración inicial (idioma, conexión a base de datos ya configurada, usuario admin).
+
+> [!IMPORTANT]
+> Las credenciales por defecto del frontend son `Admin` / `zabbix` — cámbialas nada más entrar.
 
 ## Comprobaciones activas vs pasivas
 

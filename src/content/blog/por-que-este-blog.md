@@ -48,7 +48,7 @@ El stack tecnológico es el siguiente:
 
 | Herramienta | Uso                                |
 | ----------- | ---------------------------------- |
-| Astro 5     | Framework web estático             |
+| Astro 7     | Framework web estático             |
 | MDX         | Markdown con componentes           |
 | Pagefind    | Búsqueda estática (~15KB)          |
 | Shiki       | Resaltado de sintaxis              |

@@ -58,9 +58,15 @@ find "$DESTINO" -mindepth 1 -maxdepth 1 -type d -mtime +$RETENCION -exec rm -rf 
 echo "[OK] Limpieza completada: eliminados backups de más de $RETENCION días"
 ```
 
+> [!CAUTION]
+> La línea `find ... -exec rm -rf {} \;` borra directorios completos sin pedir confirmación. Antes de programar el script, comprueba a mano que `$DESTINO` y `$RETENCION` apuntan donde crees — un valor mal puesto puede borrar backups que aún necesitas.
+
 ## Backup remoto por SSH
 
 Para copiar datos desde otro servidor, por ejemplo hacia un NAS como el que vimos en la guía de [OpenMediaVault](/blog/nas-casero-openmediavault/):
+
+> [!IMPORTANT]
+> `--delete` borra en el destino cualquier archivo que ya no exista en el origen. Si inviertes por error el orden origen/destino, el comando borrará datos en producción en vez de en la copia de seguridad. Revisa siempre qué ruta va primero antes de ejecutar.
 
 ```bash
 rsync -avz --delete \

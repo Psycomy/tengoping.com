@@ -106,7 +106,8 @@ Let's Encrypt aplica límites para evitar abuso, y es fácil toparse con ellos s
 - **5 certificados con el mismo conjunto exacto de nombres cada 7 días** — este es el límite que más rápido se agota si repites pruebas con el mismo dominio
 - **5 fallos de validación por nombre de dominio cada hora**
 
-Por eso conviene probar siempre primero con `--dry-run` o añadiendo `--test-cert` (que usa el entorno de staging), y reservar las peticiones reales para cuando la configuración ya funciona.
+> [!IMPORTANT]
+> Prueba siempre primero con `--dry-run` o añadiendo `--test-cert` (que usa el entorno de staging), y reserva las peticiones reales para cuando la configuración ya funciona. Agotar el límite de 5 peticiones por dominio en 7 días te deja sin poder emitir certificados reales hasta que se recargue.
 
 ## Siguiente paso
 

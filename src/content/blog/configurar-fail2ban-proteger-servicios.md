@@ -159,11 +159,14 @@ Si bloqueas una IP por error (por ejemplo, la tuya propia tras varios intentos c
 ```bash
 # Desbanear una IP de una jail concreta
 sudo fail2ban-client set sshd unbanip 203.0.113.10
-
-# Para evitar banearte a ti mismo, anade tu IP a la lista blanca
-# en la seccion [DEFAULT] de jail.local
-ignoreip = 127.0.0.1/8 ::1 10.0.0.0/8 192.168.1.0/24
 ```
+
+> [!IMPORTANT]
+> Para evitar banearte a ti mismo, añade tu IP a la lista blanca en la sección `[DEFAULT]` de `jail.local` antes de que ocurra:
+>
+> ```
+> ignoreip = 127.0.0.1/8 ::1 10.0.0.0/8 192.168.1.0/24
+> ```
 
 ## Recomendaciones finales
 

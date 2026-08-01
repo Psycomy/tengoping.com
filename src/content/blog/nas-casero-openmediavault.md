@@ -31,6 +31,9 @@ Para un NAS doméstico serio, lo ideal es un equipo con al menos dos bahías par
 
 Descarga la ISO de OpenMediaVault desde su web oficial. Es un sistema basado en Debian, así que la instalación es familiar:
 
+> [!CAUTION]
+> `dd` escribe byte a byte sin pedir confirmación. Comprueba con `lsblk` cuál es el dispositivo correcto de tu USB antes de ejecutar el comando — si te equivocas de `/dev/sdX` puedes sobrescribir el disco equivocado, incluidos tus discos de datos.
+
 ```bash
 # Grabar la ISO en un USB desde Linux
 sudo dd if=openmediavault-7.x-amd64.iso of=/dev/sdX bs=4M status=progress
@@ -50,7 +53,8 @@ Accede al panel web desde cualquier navegador en `http://IP_DEL_NAS`. Las creden
 - **Usuario**: admin
 - **Contraseña**: openmediavault
 
-Cambia la contraseña inmediatamente desde **Sistema > Configuración general > Contraseña de administrador web**.
+> [!IMPORTANT]
+> Cambia la contraseña inmediatamente desde **Sistema > Configuración general > Contraseña de administrador web**. Mientras uses las credenciales por defecto, cualquiera en tu red puede acceder al panel de administración.
 
 ## Configurar los discos
 
@@ -177,7 +181,8 @@ Para acceder a tu NAS fuera de casa, las opciones más seguras son:
 ssh -L 8080:localhost:80 usuario@IP_PUBLICA_DE_TU_RED
 ```
 
-Nunca expongas el panel web de OMV directamente a internet sin protección adicional.
+> [!WARNING]
+> Nunca expongas el panel web de OMV directamente a internet sin protección adicional.
 
 ## Conclusion
 

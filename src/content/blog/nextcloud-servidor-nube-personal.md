@@ -49,7 +49,8 @@ FLUSH PRIVILEGES;
 EXIT;
 ```
 
-Usa una contrasena robusta. Nunca dejes la contrasena por defecto en produccion.
+> [!IMPORTANT]
+> Usa una contraseña robusta para el usuario de la base de datos. Nunca dejes la contraseña de ejemplo en producción.
 
 ## Descargar e instalar Nextcloud
 
@@ -162,10 +163,13 @@ Despues, en **Configuracion > Administracion > Ajustes basicos**, selecciona **C
 
 ## Recomendaciones finales
 
-- **HTTPS**: configura un [certificado SSL con Let's Encrypt](/blog/certificados-ssl-certbot-lets-encrypt/) usando `certbot`. Nunca expongas Nextcloud sin cifrado.
+- **HTTPS**: configura un [certificado SSL con Let's Encrypt](/blog/certificados-ssl-certbot-lets-encrypt/) usando `certbot`.
 - **Firewall**: abre unicamente los puertos 80 y 443, siguiendo la guía de [firewalld, UFW y nftables](/blog/firewalld-nftables-seguridad-red-linux/). Bloquea todo lo demas.
 - **Actualizaciones**: revisa las actualizaciones periodicamente desde el panel de administracion o con `sudo -u www-data php /var/www/nextcloud/updater/updater.phar`.
 - **Backups**: programa copias de seguridad del directorio de datos y de la base de datos, por ejemplo con la estrategia de [backups incrementales con rsync](/blog/backup-incremental-rsync-servidores-linux/).
+
+> [!WARNING]
+> Nunca expongas Nextcloud a internet sin cifrado. Sin HTTPS, las credenciales y los archivos viajan en texto plano y pueden interceptarse en cualquier punto de la red.
 
 Con Nextcloud funcionando, tienes tu propia nube privada donde tus archivos, calendarios y contactos permanecen bajo tu control total.
 

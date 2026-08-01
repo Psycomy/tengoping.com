@@ -233,7 +233,8 @@ git commit -m "fix: resolver timeout en proxy hacia backend API (504)"
 
 **Commits atómicos:** Cada commit debe ser un cambio lógico completo. No mezcles la configuración de Nginx con las reglas del firewall en el mismo commit.
 
-**Nunca versiones secretos:** Usa herramientas como `ansible-vault`, `sops` o variables de entorno para las credenciales. Si un secreto llega a Git por error, considera que está comprometido.
+> [!WARNING]
+> Nunca versiones secretos. Usa herramientas como `ansible-vault`, `sops` o variables de entorno para las credenciales. Si un secreto llega a Git por error, considera que está comprometido — bórralo del historial y rótalo, no basta con borrar el archivo en un commit posterior.
 
 **Etiqueta las versiones estables:** Cuando una configuración está probada y en producción, márcala:
 

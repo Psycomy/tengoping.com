@@ -136,6 +136,9 @@ sudo systemctl enable --now grafana-server
 
 Accede a `http://servidor:3000` (usuario y contraseña por defecto: `admin`/`admin`).
 
+> [!IMPORTANT]
+> Grafana te pedirá cambiar la contraseña en el primer login — no la omitas. Mientras uses las credenciales por defecto, cualquiera con acceso a ese puerto puede entrar al panel.
+
 ### Conectar con Prometheus
 
 1. Ve a **Connections > Data Sources > Add data source**

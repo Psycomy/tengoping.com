@@ -22,7 +22,10 @@ Los puertos de un switch gestionado se comportan de una de estas dos formas:
 - **Puerto access (no etiquetado)**: pertenece a una única VLAN. El switch añade la etiqueta al recibir tráfico y la quita antes de entregarlo al dispositivo conectado, que nunca ve ninguna etiqueta 802.1Q. Es el modo normal para conectar un PC, una impresora o un dispositivo IoT.
 - **Puerto trunk (etiquetado)**: transporta tráfico de varias VLANs por el mismo cable físico, manteniendo la etiqueta en cada trama para que el switch o dispositivo del otro extremo sepa a qué VLAN pertenece. Se usa entre switches, o entre un switch y un hipervisor/router que necesita distinguir varias VLANs en una sola interfaz de red.
 
-Cada puerto tiene además un **PVID** (Port VLAN ID): la VLAN a la que se asigna el tráfico que llega sin etiquetar por ese puerto. En un puerto access, el PVID coincide con la única VLAN configurada. El PVID por defecto en la mayoría de switches es la VLAN 1 (la "VLAN nativa"), y es buena práctica no dejar dispositivos importantes en la VLAN 1 por defecto, precisamente porque es el valor que todo el mundo asume.
+Cada puerto tiene además un **PVID** (Port VLAN ID): la VLAN a la que se asigna el tráfico que llega sin etiquetar por ese puerto. En un puerto access, el PVID coincide con la única VLAN configurada. El PVID por defecto en la mayoría de switches es la VLAN 1 (la "VLAN nativa").
+
+> [!TIP]
+> Evita dejar dispositivos importantes en la VLAN 1 por defecto, precisamente porque es el valor que todo el mundo asume y el más probable objetivo de un ataque genérico contra la red.
 
 ## Configurar VLANs en un switch gestionado
 
@@ -32,7 +35,8 @@ El proceso varía según el fabricante, pero el flujo es el mismo en switches ge
 2. **Configura cada puerto** como access de una VLAN concreta (para dispositivos finales) o como trunk (para el enlace hacia el router o hacia otro switch), indicando qué VLANs permite el trunk y cuál es su PVID para tráfico sin etiquetar.
 3. **Verifica que el router o firewall** que conecta las VLANs tenga una interfaz o subinterfaz por cada VLAN que necesite enrutar tráfico entre ellas — sin esto, las VLANs quedan aisladas entre sí, que es precisamente el objetivo si no necesitas que se hablen.
 
-Un error habitual: dejar el puerto que conecta al router en modo access de una sola VLAN cuando en realidad necesitas que routee varias. Si el router debe ver tráfico de VLAN 10 y VLAN 20 por el mismo cable físico, ese puerto debe configurarse como trunk en el switch, y el router necesita una subinterfaz etiquetada por cada VLAN.
+> [!IMPORTANT]
+> Un error habitual es dejar el puerto que conecta al router en modo access de una sola VLAN cuando en realidad necesitas que routee varias. Si el router debe ver tráfico de VLAN 10 y VLAN 20 por el mismo cable físico, ese puerto debe configurarse como trunk en el switch, y el router necesita una subinterfaz etiquetada por cada VLAN.
 
 ## Crear interfaces VLAN en Linux
 

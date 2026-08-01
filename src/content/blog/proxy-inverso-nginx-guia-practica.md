@@ -161,7 +161,8 @@ location /ws {
 
 ## Verificar la configuración
 
-Siempre antes de reiniciar:
+> [!IMPORTANT]
+> Ejecuta siempre `nginx -t` antes de recargar. Si la configuración tiene un error de sintaxis y recargas a ciegas, nginx puede fallar al aplicar los cambios y tumbar todos los sitios que proxea, no solo el que estabas editando.
 
 ```bash
 sudo nginx -t

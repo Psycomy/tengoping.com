@@ -66,6 +66,9 @@ nftables es el sucesor de iptables y ofrece una sintaxis unificada.
 
 El puerto 22 en el ejemplo es el de [SSH](/blog/configurar-servidor-ssh-seguro-linux/); cámbialo si ya lo has movido a otro puerto.
 
+> [!CAUTION]
+> La segunda línea aplica `policy drop` antes de que exista ninguna regla `accept`. Si ejecutas estos comandos uno a uno sobre una sesión SSH remota, te quedarás fuera nada más crear la chain, antes de llegar a la regla que permite el puerto 22. Pega el bloque completo de una vez, o ten una consola alternativa (acceso físico, IPMI) a mano.
+
 ```bash
 sudo nft add table inet filtro
 sudo nft add chain inet filtro input { type filter hook input priority 0 \; policy drop \; }

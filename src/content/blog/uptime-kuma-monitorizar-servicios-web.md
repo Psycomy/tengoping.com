@@ -79,7 +79,10 @@ Levanta el servicio:
 docker compose up -d
 ```
 
-Accede a `http://tu-servidor:3001` y verás la pantalla de configuración inicial donde crearás tu usuario administrador. Elige una contraseña fuerte: esta interfaz no debería estar expuesta a internet sin autenticación adicional.
+Accede a `http://tu-servidor:3001` y verás la pantalla de configuración inicial donde crearás tu usuario administrador.
+
+> [!IMPORTANT]
+> Elige una contraseña fuerte: esta interfaz no debería estar expuesta a internet sin autenticación adicional.
 
 ### Detrás de un proxy inverso
 

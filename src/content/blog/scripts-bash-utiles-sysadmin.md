@@ -41,6 +41,9 @@ find "$BACKUP_DIR" -name "backup-*.tar.gz" -mtime +$DAYS -delete
 
 ## 3. Limpieza de logs
 
+> [!CAUTION]
+> `truncate -s 0` vacía el contenido de los logs de forma irreversible. Ajusta el `-mtime +30` a tu política de retención real antes de programar este script — no hay forma de recuperar el historial una vez borrado.
+
 ```bash
 #!/bin/bash
 find /var/log -name "*.log" -mtime +30 -exec truncate -s 0 {} \;
