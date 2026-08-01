@@ -62,6 +62,26 @@ sudo ufw reload
 
 nftables es el sucesor de iptables y ofrece una sintaxis unificada.
 
+```
+paquete entra por la interfaz
+   │
+   ▼
+PREROUTING            (DNAT, antes de decidir destino)
+   │
+   ▼
+¿destino es este host?
+   ├── sí → INPUT → proceso local (sshd, nginx...) → OUTPUT
+   └── no → FORWARD  (tráfico enrutado; p. ej. un router/firewall entre redes)
+   │
+   ▼
+POSTROUTING           (SNAT/masquerade, antes de salir —
+   │                    llegan tanto INPUT→OUTPUT como FORWARD)
+   ▼
+paquete sale por la interfaz
+```
+
+El ejemplo de abajo engancha su regla justo en el hook `input`, el punto donde llega el tráfico dirigido a este host.
+
 ### Reglas básicas
 
 El puerto 22 en el ejemplo es el de [SSH](/blog/configurar-servidor-ssh-seguro-linux/); cámbialo si ya lo has movido a otro puerto.

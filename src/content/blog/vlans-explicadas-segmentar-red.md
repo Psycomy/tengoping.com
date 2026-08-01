@@ -35,6 +35,18 @@ El proceso varía según el fabricante, pero el flujo es el mismo en switches ge
 2. **Configura cada puerto** como access de una VLAN concreta (para dispositivos finales) o como trunk (para el enlace hacia el router o hacia otro switch), indicando qué VLANs permite el trunk y cuál es su PVID para tráfico sin etiquetar.
 3. **Verifica que el router o firewall** que conecta las VLANs tenga una interfaz o subinterfaz por cada VLAN que necesite enrutar tráfico entre ellas — sin esto, las VLANs quedan aisladas entre sí, que es precisamente el objetivo si no necesitas que se hablen.
 
+```
+Router / Firewall  (una interfaz o subinterfaz por VLAN)
+   │
+   │ puerto trunk 802.1Q → transporta VLAN 10, 20 y 30 etiquetadas
+   │
+Switch gestionado
+   │
+   ├── puertos access, VLAN 10 "Homelab"    → servidor, NAS
+   ├── puertos access, VLAN 20 "IoT"        → cámaras, enchufes inteligentes
+   └── puertos access, VLAN 30 "Invitados"  → punto de acceso Wi-Fi
+```
+
 > [!IMPORTANT]
 > Un error habitual es dejar el puerto que conecta al router en modo access de una sola VLAN cuando en realidad necesitas que routee varias. Si el router debe ver tráfico de VLAN 10 y VLAN 20 por el mismo cable físico, ese puerto debe configurarse como trunk en el switch, y el router necesita una subinterfaz etiquetada por cada VLAN.
 

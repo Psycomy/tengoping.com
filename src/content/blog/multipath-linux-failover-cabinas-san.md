@@ -28,6 +28,19 @@ Todo esto se apoya en el subsistema **device-mapper** del kernel, el mismo que u
 
 Cada LUN expuesta por la cabina tiene un **WWID** (World Wide Identifier), un identificador único y persistente entre reinicios que no cambia aunque cambie el nombre del dispositivo (`/dev/sdX`) o el orden en que el kernel lo detecta. Multipath usa el WWID para reconocer que `/dev/sda`, `/dev/sdb`, `/dev/sdc` y `/dev/sdd` son en realidad la misma LUN vista por cuatro rutas distintas, y las agrupa bajo un único dispositivo lógico, típicamente en `/dev/mapper/`.
 
+```
+Servidor                                        Cabina SAN
+  ├── HBA1 → Switch FC A → Controladora A   →   /dev/sda
+  ├── HBA1 → Switch FC A → Controladora B   →   /dev/sdb
+  ├── HBA2 → Switch FC B → Controladora A   →   /dev/sdc
+  └── HBA2 → Switch FC B → Controladora B   →   /dev/sdd
+
+multipath agrupa las 4 rutas por su WWID común
+                     │
+                     ▼
+        /dev/mapper/datos-oracle
+```
+
 ```bash
 # Consultar el WWID que multipath asignaría a un dispositivo
 scsi_id --whitelisted --device=/dev/sda

@@ -60,6 +60,16 @@ chmod 600 /etc/wireguard/client_private.key
 
 Guarda las claves publicas de ambos extremos. Las necesitaras para la configuracion cruzada.
 
+```
+Cliente                          Internet                    Servidor
+wg0: 10.0.0.2/24                                        wg0: 10.0.0.1/24
+   │                                                             │
+   └── túnel cifrado (UDP) ──► IP_PUBLICA_SERVIDOR:51820 ───────┘
+        AllowedIPs = 0.0.0.0/0                    PostUp: nft masquerade
+        (todo el tráfico del cliente                     hacia eth0 (NAT)
+         sale por la VPN)
+```
+
 ## Configurar el servidor
 
 Crea el archivo de configuracion de la interfaz WireGuard:

@@ -14,6 +14,18 @@ draft: false
 
 Un proxy inverso recibe las peticiones de los clientes y las reenvía al servidor interno correspondiente. El cliente nunca se conecta directamente al backend. Esto permite centralizar HTTPS, añadir cabeceras de seguridad, cachear contenido y distribuir carga. Es habitual usarlo delante de servicios autoalojados como [Nextcloud](/blog/nextcloud-servidor-nube-personal/) o [Gitea](/blog/gitea-servidor-git-autoalojado/) para exponerlos con un dominio propio y HTTPS en vez de un puerto suelto.
 
+```
+Clientes (HTTPS, 443)
+   │
+   ▼
+Nginx — proxy inverso, certificado TLS único
+   │
+   ├── app.ejemplo.com  → 127.0.0.1:3000        (Nextcloud, Gitea...)
+   ├── api.ejemplo.com  → 127.0.0.1:8080
+   └── otro.ejemplo.com → upstream backend_app   (varios backends,
+                                                    balanceo de carga)
+```
+
 ## Instalación
 
 ```bash

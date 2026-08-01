@@ -14,6 +14,20 @@ draft: false
 
 Gestionar tu propio servidor DNS autoritativo te da control total sobre las zonas de tu dominio, reduce la dependencia de terceros y permite configuraciones avanzadas. Si lo que buscas es un resolutor que bloquee publicidad en tu red local en vez de publicar zonas de un dominio, ese es el caso de uso de [Pi-hole](/blog/pihole-bloqueo-publicidad-red/), no el de BIND9.
 
+```
+Cliente ("www.tengoping.com?")
+   │
+   ▼
+Resolver recursivo (tu ISP, 1.1.1.1, un Pi-hole...)
+   │
+   │  no tiene la respuesta en caché → pregunta a quien SÍ sabe
+   ▼
+Servidor autoritativo de la zona (este BIND9)
+   ├── ns1.tengoping.com  → 203.0.113.10
+   ├── ns2.tengoping.com  → 203.0.113.11
+   └── www.tengoping.com  → A 203.0.113.10   (la respuesta)
+```
+
 ## Instalación de BIND9
 
 ```bash
