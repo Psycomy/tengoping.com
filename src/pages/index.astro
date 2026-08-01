@@ -35,15 +35,45 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
   const ib = categoryOrder.indexOf(b[0]);
   return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
 });
+
+const lastUpdated = new Intl.DateTimeFormat('es-ES', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+}).format(allPosts[0].data.pubDate);
 ---
 
 <BaseLayout isHome={true}>
   <section class="intro container">
-    <h1>Blog técnico de sysadmin y redes, en español</h1>
-    <p>
-      Guías prácticas de Linux, redes, seguridad y self-hosting para quien monta o mantiene
-      infraestructura — desde un homelab hasta un servidor en producción.
-    </p>
+    <div class="intro-grid">
+      <div class="intro-main">
+        <p class="intro-prompt">
+          <span class="prompt">$</span> cat bienvenida.md<span class="cursor-blink">_</span>
+        </p>
+        <h1 class="intro-title">
+          Blog técnico de <span class="accent">sysadmin y redes</span>, en español
+        </h1>
+        <p class="intro-desc">
+          Guías prácticas de Linux, redes, seguridad y self-hosting para quien monta o mantiene
+          infraestructura — desde un homelab hasta un servidor en producción.
+        </p>
+      </div>
+      <dl class="intro-stats">
+        <p class="stats-prompt"><span class="prompt">$</span> stat ./blog</p>
+        <div class="stat-row">
+          <dt>artículos</dt>
+          <dd>{allPosts.length}</dd>
+        </div>
+        <div class="stat-row">
+          <dt>categorías</dt>
+          <dd>{sortedCategories.length}</dd>
+        </div>
+        <div class="stat-row">
+          <dt>actualizado</dt>
+          <dd>{lastUpdated}</dd>
+        </div>
+      </dl>
+    </div>
   </section>
   <HeroSlider posts={allPosts.slice(0, 5)} />
   {
@@ -81,25 +111,120 @@ const sortedCategories = [...categoryMap.entries()].sort((a, b) => {
 
 <style>
   .intro {
-    padding: 2.5rem 0 1.5rem;
-    max-width: 700px;
+    padding: 3.5rem 0 2.25rem;
   }
 
-  .intro h1 {
-    font-size: 1.75rem;
-    margin: 0 0 0.75rem;
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: center;
   }
 
-  .intro p {
+  .intro-prompt {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 0 0 1rem;
+  }
+
+  .intro-prompt .prompt {
+    color: var(--color-primary);
+    font-weight: 700;
+    margin-right: 0.4rem;
+  }
+
+  .intro-title {
+    font-size: 2.5rem;
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    max-width: 800px;
+    margin: 0 0 1.25rem;
+  }
+
+  .intro-title .accent {
+    color: var(--color-primary);
+  }
+
+  .intro-desc {
     color: var(--color-text-secondary);
-    font-size: 1rem;
+    font-size: 1.0625rem;
     line-height: 1.6;
+    max-width: 620px;
     margin: 0;
   }
 
+  .intro-stats {
+    justify-self: end;
+    width: 260px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 1.25rem 1.5rem;
+    margin: 0;
+  }
+
+  .stats-prompt {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin: 0 0 0.9rem;
+  }
+
+  .stats-prompt .prompt {
+    color: var(--color-primary);
+    font-weight: 700;
+    margin-right: 0.4rem;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.8125rem;
+  }
+
+  .stat-row:first-of-type {
+    border-top: none;
+  }
+
+  .stat-row dt {
+    color: var(--color-text-secondary);
+  }
+
+  .stat-row dd {
+    margin: 0;
+    font-weight: 700;
+    color: var(--color-primary);
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 900px) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .intro-stats {
+      justify-self: stretch;
+      width: 100%;
+      max-width: 340px;
+    }
+  }
+
   @media (max-width: 768px) {
-    .intro h1 {
-      font-size: 1.4rem;
+    .intro {
+      padding: 2rem 0 1.5rem;
+    }
+
+    .intro-title {
+      font-size: 1.75rem;
+    }
+
+    .intro-desc {
+      font-size: 0.95rem;
     }
   }
 
