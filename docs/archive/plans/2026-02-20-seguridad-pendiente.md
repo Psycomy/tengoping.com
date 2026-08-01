@@ -1,6 +1,6 @@
 # Seguridad — Tareas pendientes
 
-Trabajo completado: `docs/plans/2026-02-20-seguridad-design.md` y `2026-02-20-seguridad.md`
+Trabajo completado: `docs/archive/plans/2026-02-20-seguridad-design.md` y `2026-02-20-seguridad.md`
 
 ---
 

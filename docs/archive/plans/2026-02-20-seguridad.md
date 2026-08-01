@@ -17,7 +17,7 @@ verificación es lint + astro check + build exitoso + inspección del `dist/_hea
 
 ## Contexto previo al plan
 
-- Diseño aprobado: `docs/plans/2026-02-20-seguridad-design.md`
+- Diseño aprobado: `docs/archive/plans/2026-02-20-seguridad-design.md`
 - Archivo de headers plantilla: `public/_headers` (NO editar a mano — lo sobrescribe postbuild)
 - El archivo que genera los headers reales: `scripts/postbuild.mjs`
 - Comandos de verificación: `npm run lint`, `npm run build`, `npx astro check`

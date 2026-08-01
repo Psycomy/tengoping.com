@@ -13,7 +13,7 @@ El proyecto está **bien construido** — arquitectura sólida Astro 5, buenas c
 
 ## 1. Seguridad
 
-> Plan de implementación: `docs/plans/2026-02-18-seguridad.md`
+> Plan de implementación: `docs/archive/plans/2026-02-18-seguridad.md`
 
 ### Confirmado e implementado (no requiere acción)
 
