@@ -18,7 +18,7 @@ Pagefind search only works after `npm run build` — it indexes the built HTML.
 
 ## Architecture
 
-Astro 5 static blog in Spanish (es). Zero JS frameworks — all interactivity is vanilla JS in `<script>` tags. Terminal-inspired visual design: monospace font throughout (JetBrains Mono), sharp corners (border-radius: 0), solid borders instead of shadows.
+Astro 7 static blog in Spanish (es). Zero JS frameworks — all interactivity is vanilla JS in `<script>` tags. Terminal-inspired visual design: monospace font throughout (JetBrains Mono), sharp corners (border-radius: 0), solid borders instead of shadows.
 
 **No View Transitions** — use the `setupFn(); document.addEventListener('astro:after-swap', setupFn);` pattern for script re-initialization, NOT `astro:page-load`.
 
