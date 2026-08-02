@@ -1,0 +1,212 @@
+---
+title: 'Wireshark: analiza tráfico de red visualmente'
+description: 'Guía práctica de Wireshark: instalación, captura sin root, filtros de visualización, inspección de capas y seguimiento de flujos TCP con ejemplos reales.'
+author: 'antonio'
+pubDate: 2026-08-02
+category: 'Redes'
+tags: ['Wireshark', 'Redes', 'Sysadmin', 'Linux']
+image: '../../assets/images/redes-wireshark.jpg'
+draft: false
+---
+
+import Figure from '@components/Figure.astro';
+
+Wireshark es un analizador de protocolos de red con interfaz gráfica: captura el tráfico que pasa por una interfaz y te deja inspeccionar cada paquete capa por capa, desde las tramas Ethernet hasta el contenido de la aplicación. Donde [`tcpdump`](/blog/tcpdump-analiza-trafico-red-terminal/) te da una línea de texto por paquete en terminal, Wireshark te da un árbol navegable, filtros interactivos y la posibilidad de reconstruir una conversación TCP completa como si fuera texto plano. Todas las capturas de este artículo son reales: se han generado y analizado expresamente para ilustrarlo.
+
+## Requisitos previos
+
+- Acceso a una terminal Linux con privilegios `sudo` para la instalación
+- Conocimientos básicos de TCP/IP (direcciones, puertos, el concepto de paquete)
+- Una interfaz de red activa para capturar tráfico (cableada, Wi-Fi o loopback)
+
+## Instalación
+
+Wireshark está en los repositorios de todas las distribuciones principales:
+
+```bash
+# Debian / Ubuntu
+sudo apt install wireshark
+
+# Fedora
+sudo dnf install wireshark
+
+# Arch Linux
+sudo pacman -S wireshark-qt
+```
+
+El instalador de Debian/Ubuntu pregunta si quieres permitir que usuarios sin privilegios capturen paquetes; di que sí. En macOS se instala con `brew install --cask wireshark`, y en Windows el instalador incluye [Npcap](https://npcap.com/), la librería de captura que sustituyó a la antigua WinPcap.
+
+> [!IMPORTANT]
+> Sea cual sea la distribución, comprueba la versión que te sirve el repositorio con `wireshark --version`: Ubuntu 24.04 LTS, por ejemplo, distribuye la rama 4.2, mientras que la web oficial ya va por la serie 4.6. Para funciones muy recientes puede que necesites el repositorio del proyecto en vez del de tu distro.
+
+## Captura sin privilegios de root
+
+Wireshark necesita acceso de bajo nivel a la interfaz de red para capturar paquetes, pero ejecutar la aplicación gráfica completa como root es innecesario y aumenta la superficie de ataque. La solución estándar en Linux es delegar solo el permiso de captura al binario `dumpcap` mediante capabilities de Linux, y restringir su uso al grupo `wireshark`:
+
+```bash
+sudo usermod -aG wireshark $USER
+```
+
+Cierra sesión y vuelve a entrar (o ejecuta `newgrp wireshark` en la terminal actual) para que el cambio de grupo surta efecto. A partir de ahí, `dumpcap` ya tiene asignadas las capabilities `cap_net_raw` y `cap_net_admin` — puedes comprobarlo con `getcap $(which dumpcap)` — y cualquier usuario del grupo `wireshark` puede capturar sin sudo.
+
+> [!CAUTION]
+> Pertenecer al grupo `wireshark` equivale a poder ver todo el tráfico no cifrado que pasa por las interfaces de red de esa máquina, incluido el de otros usuarios del mismo sistema. Añade solo las cuentas que realmente necesiten capturar paquetes.
+
+## La interfaz principal
+
+Al abrir una captura (en vivo o desde un archivo `.pcap`), Wireshark organiza la información en tres paneles apilados verticalmente:
+
+1. **Lista de paquetes** (arriba): un paquete por fila, con número, marca de tiempo, origen, destino, protocolo y una descripción resumida.
+2. **Detalle del protocolo** (medio): el árbol de capas del paquete seleccionado, de Ethernet hacia arriba.
+3. **Volcado hexadecimal** (abajo): los bytes crudos del paquete, con la porción correspondiente a la capa seleccionada resaltada en el panel del medio.
+
+<Figure
+  src="/images/blog/wireshark-analiza-trafico-red-visualmente/01-interfaz-general.webp"
+  alt="Vista general de la interfaz de Wireshark con los tres paneles: lista de paquetes, árbol de protocolos y volcado hexadecimal"
+  caption="Los tres paneles clásicos de Wireshark sobre una captura real con tráfico DNS, TCP y TLS."
+/>
+
+Por defecto, cada fila de la lista de paquetes se colorea según reglas configurables en **Ver → Reglas de coloreado**: el tráfico TCP normal aparece en tonos morado/lila, UDP en azul pálido, HTTP en verde, y los paquetes con problemas (retransmisiones, ACKs duplicados, checksums inválidos) se marcan en negro sobre rojo. Es la forma más rápida de detectar a simple vista dónde está el problema en una captura larga.
+
+## Filtros de captura y filtros de visualización
+
+Wireshark tiene dos sistemas de filtrado que no se pueden mezclar porque usan sintaxis distinta:
+
+- **Filtros de captura** (campo en la ventana de "Opciones de captura"): usan sintaxis BPF (Berkeley Packet Filter), la misma que `tcpdump`. Se aplican _antes_ de capturar, así que los paquetes descartados nunca llegan a guardarse. Ejemplo: `tcp port 443`.
+- **Filtros de visualización** (la barra superior de la ventana principal, con fondo verde cuando la sintaxis es válida): usan el lenguaje propio de Wireshark, basado en los disectores de protocolo. Se aplican _después_ de capturar, sobre paquetes ya almacenados. Ejemplo equivalente: `tcp.port == 443`.
+
+En la práctica, para trabajar sobre una captura ya hecha (o mientras decides qué mirar) usarás casi siempre filtros de visualización — son más expresivos y no obligan a decidir de antemano qué vas a necesitar.
+
+<Figure
+  src="/images/blog/wireshark-analiza-trafico-red-visualmente/02-filtro-dns.webp"
+  alt="Filtro de visualización 'dns' aplicado en Wireshark, mostrando solo las consultas y respuestas DNS de la captura"
+  caption="El filtro `dns` reduce una captura de 363 paquetes a solo las 22 consultas y respuestas DNS."
+/>
+
+Algunos filtros de visualización que cubren la mayoría de las depuraciones del día a día:
+
+| Filtro                                     | Qué muestra                                           |
+| ------------------------------------------ | ----------------------------------------------------- |
+| `ip.addr == 192.168.1.10`                  | Todo el tráfico hacia o desde esa IP                  |
+| `tcp.port == 443`                          | Tráfico TCP en el puerto 443 (HTTPS)                  |
+| `http`                                     | Peticiones y respuestas HTTP en texto plano           |
+| `dns`                                      | Consultas y respuestas DNS                            |
+| `tcp.flags.syn == 1 && tcp.flags.ack == 0` | Solo los SYN iniciales de establecimiento de conexión |
+| `tcp.analysis.retransmission`              | Paquetes que Wireshark marca como retransmisiones     |
+| `!(arp or icmp)`                           | Oculta ARP e ICMP para centrarte en el resto          |
+
+> [!TIP]
+> Puedes construir un filtro sin memorizar la sintaxis: clic derecho sobre cualquier campo del árbol de protocolos → **Aplicar como filtro** → **Selected**. Wireshark genera la expresión exacta por ti.
+
+## Inspeccionar las capas de un paquete
+
+Cada paquete capturado es, en realidad, una serie de capas anidadas: Ethernet envuelve a IP, IP envuelve a TCP o UDP, y estos envuelven al protocolo de aplicación (HTTP, DNS, TLS...). El panel de detalle te deja expandir cada capa por separado para ver exactamente qué campos viajan en ella.
+
+<Figure
+  src="/images/blog/wireshark-analiza-trafico-red-visualmente/03-arbol-protocolos.webp"
+  alt="Árbol de protocolos expandido para una petición HTTP GET, mostrando las cabeceras Host y User-Agent"
+  caption="Capa HTTP expandida de una petición GET real: se ven la cabecera Host, el User-Agent (curl/8.5.0) y el byte a byte resaltado en la parte derecha."
+/>
+
+Al hacer clic en cualquier línea del árbol, Wireshark resalta automáticamente los bytes correspondientes en el panel hexadecimal — muy útil para entender, por ejemplo, dónde empieza exactamente la carga útil de un protocolo o cuántos bytes ocupa una cabecera.
+
+## Seguir una conversación completa: Follow TCP Stream
+
+Filtrar paquete a paquete es útil para ver cabeceras, pero cuando necesitas leer una conversación completa como si fuera texto — el cuerpo de una respuesta HTTP, una sesión FTP, un intercambio de comandos en texto plano — la función que ahorra tiempo es **Seguir → Flujo TCP** (clic derecho sobre cualquier paquete de esa conexión).
+
+<Figure
+  src="/images/blog/wireshark-analiza-trafico-red-visualmente/04-follow-tcp-stream.webp"
+  alt="Ventana Seguir flujo TCP de Wireshark mostrando una petición y respuesta HTTP completas en texto plano"
+  caption="La ventana 'Seguir flujo TCP' reconstruye la conversación completa: en rojo lo que envía el cliente, en azul la respuesta del servidor."
+/>
+
+Wireshark reensambla todos los segmentos TCP de esa conversación en orden y te los presenta como un único flujo de texto, coloreando en rojo lo que envía el cliente y en azul lo que responde el servidor (colores que puedes personalizar en **Editar → Preferencias → Apariencia → Fuentes y colores**). Es la forma más directa de confirmar, por ejemplo, qué cabeceras exactas envía tu aplicación o qué está devolviendo realmente un servidor, sin tener que reconstruir la conversación paquete a paquete.
+
+> [!NOTE]
+> Esto solo funciona con protocolos en texto plano. Si la conexión va cifrada con TLS (la inmensa mayoría del tráfico HTTPS actual), Follow TCP Stream te mostrará bytes cifrados ilegibles a menos que le proporciones las claves de sesión — por ejemplo, apuntando la variable de entorno `SSLKEYLOGFILE` a un archivo antes de lanzar el navegador, y cargando ese archivo en **Editar → Preferencias → Protocols → TLS → (Pre)-Master-Secret log filename**.
+
+## Extraer archivos de una captura: Export Objects
+
+Cuando lo que necesitas no es leer una conversación sino recuperar un archivo completo que viajó por la red — una imagen, un ejecutable, un documento — no hace falta reconstruirlo a mano desde el hexadecimal. **Archivo → Exportar objetos** reensambla automáticamente los archivos transferidos en los protocolos que soporta (HTTP, FTP-DATA, SMB, TFTP, DICOM e IMF) y te deja guardarlos a disco con un clic.
+
+<Figure
+  src="/images/blog/wireshark-analiza-trafico-red-visualmente/06-export-objects.webp"
+  alt="Ventana Exportar objetos HTTP de Wireshark listando los archivos HTML transferidos en la captura con su tamaño y tipo de contenido"
+  caption="Archivo → Exportar objetos → HTTP lista cada objeto transferido con su tipo de contenido, tamaño y nombre — listo para guardar con 'Guardar' o 'Guardar todo'."
+/>
+
+Es una de las funciones más usadas en análisis forense y de seguridad: si sospechas que un endpoint descargó un binario malicioso por HTTP, o necesitas confirmar exactamente qué imagen sirvió un servidor, Export Objects te da el archivo tal cual viajó por el cable, sin depender de logs de aplicación que puede que ni existan.
+
+## Estadísticas de la captura
+
+Además del árbol de protocolos, el menú **Estadísticas** tiene varias vistas agregadas que ayudan a orientarte antes de perder tiempo mirando paquete a paquete.
+
+### Jerarquía de protocolos
+
+Cuando la captura es grande y no sabes por dónde empezar, **Estadísticas → Jerarquía de protocolo** te da una vista de pájaro: qué proporción del tráfico corresponde a cada protocolo, cuántos paquetes y bytes representa cada uno.
+
+<Figure
+  src="/images/blog/wireshark-analiza-trafico-red-visualmente/05-jerarquia-protocolos.webp"
+  alt="Ventana de jerarquía de protocolos de Wireshark mostrando el desglose porcentual de TCP, UDP, DNS, HTTP y otros protocolos"
+  caption="Jerarquía de protocolos de una captura de 363 paquetes: el 70,5% es TCP, con HTTP y FTP como protocolos de aplicación más presentes."
+/>
+
+Es el punto de partida habitual antes de aplicar un filtro de visualización: te dice de un vistazo si hay tráfico inesperado (un protocolo que no debería estar ahí, un volumen de ICMP anormal) antes de que empieces a mirar paquete a paquete.
+
+### Conversaciones y puntos finales
+
+**Estadísticas → Conversaciones** agrupa los paquetes por par origen-destino (por pestaña: Ethernet, IPv4, IPv6, TCP o UDP) y te dice cuántos paquetes y bytes intercambió cada par, en qué dirección y a qué velocidad. **Puntos finales**, justo al lado en el mismo menú, hace lo mismo pero por host individual en vez de por par.
+
+<Figure
+  src="/images/blog/wireshark-analiza-trafico-red-visualmente/07-conversaciones.webp"
+  alt="Ventana de Conversaciones de Wireshark, pestaña TCP, mostrando pares IP:puerto con paquetes, bytes y velocidad en cada dirección"
+  caption="Pestaña TCP de Conversaciones: qué host habló con quién, cuántos bytes en cada dirección y durante cuánto tiempo."
+/>
+
+Es la vista que responde a "¿quién está generando todo este tráfico?" sin tener que sumarlo a mano — muy útil para localizar, por ejemplo, qué proceso está saturando el enlace o qué conexión lleva abierta sospechosamente mucho tiempo.
+
+### Gráfica de E/S
+
+**Estadísticas → Gráficas de E/S** dibuja el volumen de tráfico a lo largo del tiempo — paquetes o bytes por segundo — y te deja superponer varias líneas, cada una con su propio filtro de visualización. Por defecto Wireshark ya te ofrece una línea con todo el tráfico y otra con los errores TCP (`tcp.analysis.flags`), lo que hace muy fácil ver de un vistazo si un pico de tráfico coincide con un pico de retransmisiones.
+
+<Figure
+  src="/images/blog/wireshark-analiza-trafico-red-visualmente/08-io-graph.webp"
+  alt="Gráfica de E/S de Wireshark mostrando paquetes por segundo a lo largo del tiempo, con una línea de tráfico total y barras de errores TCP"
+  caption="Gráfica de E/S con dos series: la línea es el tráfico total (paquetes/seg) y las barras rojas marcan los intervalos con errores TCP."
+/>
+
+Es la herramienta natural cuando el síntoma es "algo va lento" pero no sabes cuándo empezó: te permite ubicar visualmente el momento exacto del problema y luego acotar la captura a ese rango de tiempo antes de bajar al detalle de paquete.
+
+## Caso práctico: diagnosticar por qué una web carga lenta
+
+Para ver estas piezas trabajando juntas, un flujo de investigación real —no la lista de funciones por separado— suele verse así:
+
+1. **Reproduce el problema mientras capturas.** Aplica un filtro de captura acotado al host en cuestión (`host neverssl.com`, por ejemplo) para no llenarte de ruido, y carga la página mientras Wireshark captura.
+2. **Mira la Gráfica de E/S primero.** Si hay un pico de errores TCP (retransmisiones, ACKs duplicados) justo antes del momento en que la página tarda, el problema probablemente está en la red o en el servidor, no en el navegador.
+3. **Filtra por ese host y protocolo** con `http && ip.addr == <ip_del_servidor>` para quedarte solo con las peticiones relevantes, y fíjate en la columna `Time`: una petición con una respuesta que tarda varios segundos en llegar apunta a un servidor lento, no a la red.
+4. **Sigue el flujo TCP** de esa conexión concreta para leer la petición y la respuesta completas — confirmas ahí mismo qué cabeceras envió tu cliente y qué devolvió realmente el servidor (código de estado, `Content-Length`, si hubo redirecciones de por medio).
+5. **Si la respuesta trae un archivo pesado** (una imagen sin comprimir, un bundle de JavaScript enorme), Export Objects te lo confirma con el tamaño exacto sin tener que sumar segmentos a mano.
+
+Cinco pasos, todos con la misma captura, sin adivinar nada a partir de logs de aplicación que a lo mejor ni siquiera existen.
+
+## Wireshark, tshark o tcpdump: cuándo usar cada uno
+
+No son herramientas competidoras, sino complementarias, y es habitual usar varias en el mismo flujo de trabajo:
+
+- **`tcpdump`** es ligero, no necesita entorno gráfico y es la opción natural para capturar en un servidor remoto por SSH o dejar corriendo en segundo plano. Su [sintaxis de filtros](/blog/tcpdump-analiza-trafico-red-terminal/) es la misma BPF que usan los filtros de captura de Wireshark.
+- **`tshark`** es la versión de terminal del propio Wireshark: mismos disectores de protocolo y misma sintaxis de filtros de visualización (`tshark -Y 'http'`), pero sin interfaz gráfica. En Debian/Ubuntu es un paquete aparte del `wireshark` de escritorio — `sudo apt install tshark` — y es la opción natural si quieres los filtros de Wireshark en un servidor sin entorno gráfico, sin tener que volcar a un `.pcap` primero.
+- **Wireshark** brilla en el análisis: inspección visual de capas, Follow TCP Stream, Export Objects, estadísticas y gráficas. Su flujo típico en un servidor sin entorno gráfico es capturar con `tcpdump -w captura.pcap` o `dumpcap` por SSH, y luego abrir ese archivo `.pcap` en Wireshark en tu máquina local para analizarlo con calma.
+
+## Consideraciones antes de capturar en producción
+
+> [!WARNING]
+> Capturar tráfico de una red que no es tuya, o de sistemas para los que no tienes autorización explícita, puede ser ilegal según la legislación de tu país y casi siempre viola las políticas de uso aceptable de la organización. Usa Wireshark solo en redes propias, de laboratorio, o con permiso explícito por escrito.
+
+Ten en cuenta también el volumen: una interfaz con mucho tráfico puede generar archivos de captura enormes en minutos. Si vas a dejar una captura corriendo un rato, limita el alcance con un filtro de captura (por ejemplo, restringido a un host o puerto concreto) y con un límite de tamaño o duración en **Captura → Opciones → Salida**.
+
+## Siguiente paso
+
+Con estos conceptos — filtros de visualización, inspección de capas, Follow TCP Stream, Export Objects y las estadísticas de conversaciones y gráfica de E/S — ya cubres el grueso de las depuraciones de red del día a día, incluido el flujo completo de investigación del caso práctico anterior. El siguiente paso natural es practicar con capturas propias: levanta una petición HTTP con `curl`, ábrela en Wireshark y sigue el flujo TCP completo para ver, byte a byte, qué es exactamente lo que viaja por el cable cuando tu navegador carga una página. Si trabajas habitualmente con [DNS](/blog/pihole-bloqueo-publicidad-red/) o con redes [segmentadas en VLANs](/blog/vlans-explicadas-segmentar-red/), verás enseguida cómo Wireshark confirma en segundos cosas que de otro modo tocaría adivinar a partir de logs.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.
