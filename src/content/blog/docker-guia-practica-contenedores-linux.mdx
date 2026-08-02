@@ -1,0 +1,335 @@
+---
+title: 'Docker: guía práctica de contenedores en Linux'
+description: 'Guía práctica de Docker: arquitectura, capas de imagen, redes, volúmenes, Docker Compose y buenas prácticas de seguridad, con ejemplos reales.'
+author: 'antonio'
+pubDate: 2026-08-02
+category: 'Linux'
+tags: ['Docker', 'Contenedores', 'Linux', 'DevOps']
+image: '../../assets/images/linux-docker.jpg'
+draft: false
+---
+
+import Figure from '@components/Figure.astro';
+
+Docker es la herramienta que empaqueta una aplicación junto con todas sus dependencias en una unidad aislada y reproducible — un contenedor — que arranca en segundos y se comporta igual en tu portátil, en un servidor de pruebas o en producción. A diferencia de una máquina virtual, no virtualiza hardware ni arranca un kernel propio: usa mecanismos del kernel Linux (namespaces y cgroups) para aislar procesos que, en realidad, siguen corriendo sobre el mismo sistema operativo host. Esa diferencia es la razón por la que un contenedor arranca en milisegundos y una VM tarda segundos o minutos.
+
+## Requisitos previos
+
+- Un servidor o máquina Linux con acceso `sudo` (Ubuntu/Debian en los ejemplos, aunque Docker funciona igual en cualquier distro moderna)
+- Conocimientos básicos de terminal y de cómo funciona una aplicación web sencilla (servidor + base de datos)
+- Al menos 2 GB de RAM libres para seguir el caso práctico con varios contenedores a la vez
+
+## Instalación
+
+El paquete `docker.io` de los repositorios de Ubuntu/Debian suele ir varias versiones por detrás. El método recomendado por Docker es añadir su repositorio oficial:
+
+```bash
+# Añade la clave GPG y el repositorio oficial de Docker
+sudo apt update
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Instala Docker Engine, el plugin de Compose y el de build
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Verifica que funciona
+sudo docker run hello-world
+```
+
+> [!TIP]
+> Para no escribir `sudo` antes de cada comando, añade tu usuario al grupo `docker`: `sudo usermod -aG docker $USER`, y vuelve a iniciar sesión (o ejecuta `newgrp docker`). Ten en cuenta que ese grupo equivale a root en la práctica — lo explicamos en la sección de seguridad.
+
+## Arquitectura de Docker: de la CLI al kernel
+
+Cuando ejecutas `docker run`, la petición atraviesa varias capas antes de convertirse en un proceso aislado real:
+
+```
+docker CLI            (docker run, docker build, docker ps...)
+   │
+   │  API REST sobre socket Unix (/var/run/docker.sock)
+   ▼
+dockerd                (daemon: gestiona API, red, volúmenes, builds)
+   │
+   │  gRPC
+   ▼
+containerd             (ciclo de vida del contenedor, descarga de capas de imagen)
+   │
+   ▼
+runc                   (implementación de referencia del OCI runtime-spec)
+   │
+   ▼
+kernel Linux
+   ├── namespaces (PID, NET, MNT, UTS, IPC...)  → aíslan lo que el contenedor ve
+   └── cgroups                                   → limitan CPU, RAM e I/O que puede usar
+```
+
+`dockerd` es el daemon que expone la API y coordina todo; `containerd` gestiona el ciclo de vida real del contenedor (descargar imágenes, desempaquetar capas); y `runc` es quien finalmente le pide al kernel que cree los namespaces y cgroups — es la implementación de referencia de la especificación OCI (Open Container Initiative), el estándar abierto que también implementan `crun` o el propio Podman, lo que hace que las imágenes sean portables entre herramientas.
+
+## Imágenes y capas: cómo funciona un Dockerfile
+
+Una imagen no es un único archivo, sino una pila de capas de solo lectura, cada una generada por una instrucción del `Dockerfile`, unidas mediante un sistema de archivos por capas (OverlayFS es el driver de almacenamiento por defecto en Docker moderno). Con un `Dockerfile` típico de una app Python:
+
+```dockerfile
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+CMD ["python", "app.py"]
+```
+
+Cada instrucción genera su propia capa:
+
+```
+FROM python:3.12-slim                    capa 1 (imagen base, solo lectura)
+   │
+   ▼
+WORKDIR /app                             capa 2
+   │
+   ▼
+COPY requirements.txt .                  capa 3
+   │
+   ▼
+RUN pip install -r requirements.txt      capa 4 — cacheada mientras 1-3 no cambien
+   │
+   ▼
+COPY . .                                 capa 5 — se invalida en cada cambio de código
+   │
+   ▼
+capa de lectura/escritura del contenedor (efímera, se pierde al eliminarlo)
+```
+
+> [!IMPORTANT]
+> El orden de las instrucciones importa para la cache de build. Si copias todo el código (`COPY . .`) antes de instalar dependencias, cualquier cambio en un solo archivo invalida también la capa de `pip install`, obligando a reinstalar todas las dependencias en cada build. Copiar primero solo `requirements.txt`, instalar, y copiar el resto del código después — como en el ejemplo — mantiene esa capa cacheada mientras las dependencias no cambien.
+
+## Comandos esenciales
+
+Un flujo de trabajo típico con contenedores individuales (sin Compose todavía):
+
+```bash
+# Descarga una imagen del registro (Docker Hub por defecto)
+docker pull nginx:alpine
+
+# Arranca un contenedor en segundo plano, publicando el puerto 8081 del host al 80 del contenedor
+docker run -d --name web-nginx -p 8081:80 nginx:alpine
+
+# Lista los contenedores en marcha
+docker ps
+
+# Ve los logs (con -f para seguirlos en tiempo real)
+docker logs -f web-nginx
+
+# Abre una shell dentro del contenedor para inspeccionar
+docker exec -it web-nginx sh
+
+# Para y elimina el contenedor
+docker stop web-nginx
+docker rm web-nginx
+
+# Construye una imagen propia a partir de un Dockerfile en el directorio actual
+docker build -t mi-app:1.0 .
+```
+
+`docker images` lista lo que ya tienes descargado o construido localmente:
+
+```
+REPOSITORY                TAG          IMAGE ID       SIZE
+nginx                     alpine       4a73073bd557   93.6MB
+postgres                  16-alpine    57c72fd2a128   420MB
+redis                     alpine       978f0e01593e   160MB
+portainer/portainer-ce    latest       f6bc23d16955   187MB
+```
+
+## Redes en Docker
+
+Cada contenedor arranca conectado a una red virtual gestionada por Docker. El modo por defecto es `bridge`:
+
+```
+docker run --network bridge   (modo por defecto, no hace falta especificarlo)
+
+Host
+ │
+ └── docker0   172.17.0.0/16          (bridge virtual creado por Docker)
+       ├── web-nginx     172.17.0.2   (NAT hacia el exterior vía -p 8081:80)
+       └── cache-redis   172.17.0.3   (sin puertos publicados, solo accesible desde otros contenedores)
+
+docker run --network host
+
+Host   (el contenedor usa directamente la pila de red del host: mismas interfaces,
+        mismos puertos, sin NAT ni aislamiento de red)
+
+docker run --network none
+
+Host
+ │
+ └── contenedor sin interfaz de red propia (solo loopback 127.0.0.1)
+```
+
+En modo `bridge`, Docker crea el interfaz virtual `docker0` en el host (subred `172.17.0.0/16` por defecto) y le asigna una IP interna a cada contenedor. Si no publicas un puerto con `-p`, el contenedor sigue siendo accesible desde otros contenedores de la misma red, pero no desde fuera del host — es el comportamiento correcto para, por ejemplo, una base de datos que solo debe hablar con tu aplicación.
+
+## Volúmenes y persistencia de datos
+
+Un contenedor es efímero por diseño: al eliminarlo, su capa de escritura desaparece con él. Para persistir datos, Docker ofrece tres mecanismos:
+
+```
+Contenedor demoapp-db-1
+ │
+ ├── /app/config/token.json   ← bind mount ←   ./app/config/token.json
+ │                              (ruta real del host, cambios visibles en ambos lados al instante)
+ │
+ ├── /var/lib/postgresql/data ← named volume ← demoapp_db_data
+ │                              (gestionado por Docker en /var/lib/docker/volumes/,
+ │                               sobrevive a `docker compose down` salvo que uses down -v)
+ │
+ └── /tmp/cache-sesion        ← tmpfs
+                                (vive solo en RAM, se pierde al parar el contenedor)
+```
+
+- **Bind mount** (`-v ./config:/app/config`): monta una ruta concreta del host. Útil en desarrollo, para editar código sin reconstruir la imagen.
+- **Named volume** (`-v db_data:/var/lib/postgresql/data`): Docker gestiona dónde vive el dato. Es la opción recomendada para datos de producción como bases de datos, porque no depende de una ruta concreta del host.
+- **tmpfs** (`--tmpfs /tmp/cache`): almacenamiento solo en memoria, útil para datos temporales sensibles que no deben tocar disco.
+
+## Docker Compose: orquestar varios contenedores
+
+La mayoría de aplicaciones reales necesitan más de un contenedor — una app web y su base de datos, por ejemplo — y coordinarlos a mano con `docker run` se vuelve tedioso. Docker Compose describe toda la pila en un único archivo YAML:
+
+```yaml
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - '8082:80'
+    depends_on:
+      - db
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: cambia-esto
+      POSTGRES_DB: appdb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
+```
+
+```bash
+docker compose up -d      # levanta toda la pila en segundo plano
+docker compose ps         # lista los servicios de este proyecto
+docker compose logs -f    # sigue los logs de todos los servicios a la vez
+docker compose down       # para y elimina los contenedores (mantiene los volúmenes)
+```
+
+> [!NOTE]
+> Desde 2023 el comando es `docker compose` (plugin integrado en Docker Engine), no `docker-compose` con guion — esa versión en Python (Compose V1) dejó de recibir soporte en mayo de 2024. Si ves tutoriales con guion, están desactualizados.
+
+Compose crea automáticamente una red bridge dedicada para el proyecto, con resolución DNS interna entre servicios:
+
+```
+docker-compose.yml  (proyecto "demoapp")
+   │
+   │  red creada automáticamente: demoapp_default (bridge, aislada del resto de contenedores)
+   │
+   ├── servicio web   (nginx:alpine)        172.18.0.3
+   │     └── host:8082 → contenedor:80
+   │
+   └── servicio db    (postgres:16-alpine)  172.18.0.2
+         └── volumen demoapp_db_data → /var/lib/postgresql/data
+
+Dentro de la red, "web" alcanza la base de datos con el hostname "db" (DNS interno de Compose) —
+nunca hace falta conocer ni fijar la IP.
+```
+
+## Gestión visual con Portainer
+
+La CLI cubre todo lo que necesitas, pero si prefieres una interfaz gráfica para ver de un vistazo qué está corriendo, [Portainer](https://www.portainer.io/) es la opción más extendida para gestionar Docker desde el navegador. Se instala como un contenedor más:
+
+```bash
+docker volume create portainer_data
+docker run -d -p 9443:9443 --name portainer --restart=always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v portainer_data:/data \
+  portainer/portainer-ce:latest
+```
+
+<Figure
+  src="/images/blog/docker-guia-practica-contenedores-linux/01-portainer-dashboard.webp"
+  alt="Dashboard de Portainer mostrando el resumen del entorno Docker local: 1 stack, 5 contenedores en ejecución, 7 imágenes, 5 volúmenes y 4 redes"
+  caption="Dashboard de Portainer sobre un entorno Docker real: stacks, contenedores, imágenes, volúmenes y redes de un vistazo."
+/>
+
+<Figure
+  src="/images/blog/docker-guia-practica-contenedores-linux/02-portainer-containers.webp"
+  alt="Lista de contenedores en Portainer mostrando nombre, estado, stack, imagen, IP y puertos publicados de cada contenedor"
+  caption="Listado de contenedores en Portainer: estado, a qué stack de Compose pertenece cada uno, imagen, IP interna y puertos publicados."
+/>
+
+> [!CAUTION]
+> El comando de arriba monta `/var/run/docker.sock` dentro de Portainer, lo que le da control total sobre el daemon Docker del host — en la práctica, equivale a acceso root. Es el trato habitual para este tipo de herramientas de gestión, pero no lo repitas a la ligera en cualquier contenedor: mira la sección de seguridad más abajo.
+
+## Caso práctico: levantar una app con base de datos desde cero
+
+Para ver todas las piezas encajando, así es el flujo completo para poner en marcha una aplicación con persistencia real:
+
+1. **Escribe el `docker-compose.yml`** con los servicios `web` y `db` (el ejemplo de la sección anterior sirve tal cual) y un volumen con nombre para los datos de Postgres.
+2. **Levanta la pila**: `docker compose up -d`. Compose crea la red del proyecto, descarga las imágenes que falten y arranca ambos contenedores en el orden correcto gracias a `depends_on`.
+3. **Comprueba que todo está sano**: `docker compose ps` debe mostrar ambos servicios como `running`; `docker compose logs db` confirma que Postgres terminó de inicializar sin errores.
+4. **Verifica la persistencia**: para el stack con `docker compose down` (sin `-v`) y vuelve a levantarlo con `up -d`. Los datos de `db_data` siguen ahí porque el volumen con nombre sobrevive a la eliminación de los contenedores — solo desaparece si añades `-v` explícitamente.
+5. **Si algo falla**, `docker compose logs -f db` te da los logs en vivo, y `docker exec -it demoapp-db-1 psql -U postgres -d appdb` te mete directamente dentro de la base de datos para inspeccionar sin salir de la terminal.
+
+Cinco pasos, sin tocar `docker run` a mano ni recordar en qué orden arrancar cada pieza.
+
+## Buenas prácticas de seguridad
+
+> [!CAUTION]
+> Cualquier proceso con acceso al socket `/var/run/docker.sock` puede arrancar un contenedor con `-v /:/host` y montar el disco completo del host — es privilegio de root, aunque el usuario que ejecuta `docker` no lo sea. Nunca expongas ese socket a un contenedor que no sea de plena confianza, y ten en cuenta que pertenecer al grupo `docker` equivale, en la práctica, a tener acceso root en esa máquina.
+
+- **No ejecutes procesos como root dentro del contenedor** si no es necesario: añade `USER appuser` en el `Dockerfile` después de crear un usuario sin privilegios.
+- **Usa un `.dockerignore`** (misma sintaxis que `.gitignore`) para no copiar `.git/`, `node_modules/` o secretos dentro de la imagen por accidente.
+- **Evita la etiqueta `latest`** en producción: fija versiones concretas (`postgres:16-alpine`, no `postgres:latest`) para que un `docker pull` no cambie de versión sin que lo esperes.
+- **Usa builds multi-etapa** para no dejar herramientas de compilación ni dependencias de desarrollo en la imagen final — reduce tanto el tamaño como la superficie de ataque.
+- **Analiza tus imágenes** con `docker scout` (integrado desde Docker Desktop y la CLI reciente) o herramientas como Trivy antes de desplegarlas, para detectar CVEs conocidas en las dependencias.
+
+## Mantenimiento: liberar espacio en disco
+
+Las imágenes, capas de build cacheadas y volúmenes huérfanos se acumulan con el tiempo. `docker system df` muestra cuánto ocupa cada categoría:
+
+```
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          7         4         2.38GB    1.52GB (63%)
+Containers      5         5         204.8kB   0B (0%)
+Local Volumes   5         2         949.2MB   901.1MB (94%)
+Build Cache     186       0         18.02GB   16.89GB
+```
+
+```bash
+docker system prune            # elimina contenedores parados, redes sin usar y build cache huérfano
+docker system prune -a         # además elimina imágenes sin usar por ningún contenedor
+docker system prune -a --volumes  # incluye también volúmenes sin usar — irreversible, revisa antes
+```
+
+> [!WARNING]
+> `--volumes` borra permanentemente cualquier volumen que no esté referenciado por un contenedor activo. Revisa `docker volume ls` antes de ejecutarlo si tienes datos que no quieres perder.
+
+## Docker o Podman: cuándo usar cada uno
+
+Ambos implementan el mismo estándar OCI y comparten buena parte de la sintaxis de comandos, pero difieren en arquitectura:
+
+- **Docker** usa un daemon (`dockerd`) que normalmente corre como root y gestiona todos los contenedores del sistema de forma centralizada. Tiene rootless mode disponible, pero requiere configuración adicional y no es el modo por defecto en la mayoría de instalaciones.
+- **[Podman](/blog/introduccion-contenedores-podman-linux/)** es daemonless: cada comando `podman` lanza su propio proceso, y es rootless por defecto — no necesitas configurar nada extra para que un usuario sin privilegios gestione sus propios contenedores de forma aislada.
+
+Para uso en un homelab o servidor donde ya confías en quien tiene acceso, la diferencia rara vez es determinante y Docker sigue teniendo el ecosistema más grande (Docker Hub, Docker Compose, Portainer). Si te importa especialmente minimizar lo que corre como root — por ejemplo, en un servidor multiusuario — Podman parte con ventaja de fábrica.
+
+## Siguiente paso
+
+Con la arquitectura, las capas de imagen, redes, volúmenes y Compose ya tienes la base para llevar cualquier aplicación a contenedores. El siguiente paso natural es dockerizar algo propio: escribe el `Dockerfile` de una aplicación pequeña que ya tengas, súbela con Compose junto a su base de datos, y comprueba tú mismo que los datos sobreviven a un `docker compose down`. Si ya tienes servicios corriendo con Compose — como los de [Pi-hole](/blog/pihole-bloqueo-publicidad-red/) o [Uptime Kuma](/blog/uptime-kuma-monitorizar-servicios-web/) — verás enseguida cómo se aplican los mismos conceptos de redes y volúmenes que acabas de repasar aquí.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

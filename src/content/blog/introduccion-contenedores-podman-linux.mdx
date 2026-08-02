@@ -1,0 +1,261 @@
+---
+title: 'Introducción a contenedores con Podman en Linux'
+description: 'Podman en profundidad: arquitectura sin daemon, rootless por defecto, pods, integración con systemd/Quadlet, Cockpit y comparación con Docker.'
+author: 'antonio'
+pubDate: 2026-01-04
+updatedDate: 2026-08-02
+category: 'Linux'
+tags: ['Podman', 'Contenedores', 'Linux', 'Docker']
+image: '../../assets/images/linux-containers.jpg'
+draft: false
+---
+
+import Figure from '@components/Figure.astro';
+
+Podman es un motor de contenedores compatible con OCI que, a diferencia de [Docker](/blog/docker-guia-practica-contenedores-linux/), no depende de un daemon central corriendo como root: cada comando `podman` lanza su propio proceso, y es rootless por defecto — cualquier usuario sin privilegios especiales puede construir y ejecutar sus propios contenedores de forma aislada, sin tocar ninguna configuración adicional. Su CLI es prácticamente un calco de la de Docker (`podman run`, `podman ps`, `podman build...`), lo que hace la transición casi transparente para quien ya conoce una.
+
+## Requisitos previos
+
+- Una máquina Linux con acceso `sudo` (los ejemplos usan Ubuntu/Debian, aunque Podman también es el motor de contenedores por defecto en Fedora y RHEL)
+- Haber trasteado antes con `docker run` o conceptos básicos de contenedores ayuda, aunque no es imprescindible
+- Para la sección de Cockpit, acceso a un navegador desde la misma red que el servidor
+
+## Instalación
+
+```bash
+# Fedora / RHEL / Rocky Linux (Podman viene preinstalado en Fedora Server y Silverblue)
+sudo dnf install podman -y
+
+# Ubuntu / Debian
+sudo apt install podman -y
+
+podman --version
+```
+
+> [!IMPORTANT]
+> La versión que instala `apt` suele quedarse bastante por detrás de la última estable: Ubuntu 24.04 LTS distribuye Podman 4.9, mientras que la rama activa del proyecto ya va por la serie 5.x. Algunas diferencias de comportamiento que mencionamos más abajo (como el motor de red rootless por defecto) dependen directamente de qué versión tengas instalada — comprueba la tuya con el comando de arriba antes de dar por hecho un comportamiento concreto.
+
+## Arquitectura de Podman: sin daemon central
+
+La diferencia de fondo con Docker está en qué proceso queda vivo de fondo. Docker tiene un daemon (`dockerd`) que corre permanentemente y gestiona todos los contenedores del sistema; Podman no:
+
+```
+podman CLI
+   │
+   │  fork + exec directo — no hay ningún daemon intermediario escuchando en un socket
+   ▼
+conmon                    (proceso monitor: uno por contenedor, gestiona su ciclo de vida)
+   │
+   ▼
+runc / crun               (mismo estándar OCI runtime-spec que usa Docker)
+   │
+   ▼
+kernel Linux
+   ├── namespaces (PID, NET, MNT, USER...)
+   └── cgroups
+```
+
+Cuando ejecutas `podman run`, el propio comando `podman` hace fork y arranca `conmon`, que a su vez delega en `runc` (o `crun`, más ligero y usado por defecto en muchas distros) para pedirle al kernel los namespaces y cgroups — igual que en la [arquitectura de Docker](/blog/docker-guia-practica-contenedores-linux/#arquitectura-de-docker-de-la-cli-al-kernel), pero sin el intermediario `dockerd`/`containerd` corriendo de fondo todo el rato. Si matas la sesión de terminal, los contenedores siguen vivos porque `conmon` sobrevive de forma independiente — no dependen de que la CLI de `podman` siga abierta.
+
+## Rootless por defecto: cómo funciona el aislamiento sin root
+
+Cuando un usuario sin privilegios ejecuta `podman run`, Podman usa namespaces de usuario (`user namespaces`) para remapear los UID dentro del contenedor a un rango de UID sin privilegios reales en el host:
+
+```
+Usuario del host (UID 1000, sin privilegios de root)
+   │
+   │  /etc/subuid:  <usuario>:100000:65536
+   │  /etc/subgid:  <usuario>:100000:65536
+   ▼
+Namespace de usuario del contenedor
+   ├── UID 0 dentro del contenedor   ←→  UID 100000 en el host (root "de mentira")
+   ├── UID 1 dentro del contenedor   ←→  UID 100001 en el host
+   └── ... hasta 65536 UID remapeados, ninguno con privilegios reales fuera del contenedor
+
+Almacenamiento:  ~/.local/share/containers/storage
+                 (ruta por usuario — no existe un /var/lib/containers compartido como en Docker)
+```
+
+Root dentro de un contenedor rootless sigue pareciendo root (`whoami` devuelve `root`), pero ese UID 0 está mapeado a un UID sin privilegios del host — si el contenedor consigue escapar de su aislamiento, lo que se encuentra fuera es una cuenta de usuario normal, no la raíz real del sistema. Esto requiere que el usuario tenga un rango asignado en `/etc/subuid` y `/etc/subgid` (los paquetes de Podman en Ubuntu/Debian lo configuran automáticamente al instalar).
+
+> [!TIP]
+> Puedes comprobar tu propio rango con `grep $(whoami) /etc/subuid /etc/subgid`. Si no aparece nada, añádelo con `sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $(whoami)`.
+
+## Comandos esenciales
+
+La CLI es, en el día a día, un calco de la de Docker:
+
+```bash
+# Descarga una imagen — usa el nombre completo del registro, Podman no asume Docker Hub por defecto
+podman pull docker.io/library/nginx:alpine
+
+# Arranca un contenedor en segundo plano
+podman run -d --name web -p 8080:80 docker.io/library/nginx:alpine
+
+# Lista contenedores, ve logs, entra a una shell
+podman ps
+podman logs -f web
+podman exec -it web sh
+
+# Para y elimina
+podman stop web
+podman rm web
+```
+
+> [!NOTE]
+> A diferencia de Docker, Podman no asume un registro por defecto si no configuras `unqualified-search-registries` en `/etc/containers/registries.conf` — usa siempre el nombre completo (`docker.io/library/nginx`) para evitar el error `short-name did not resolve to an alias`.
+
+Si ya tienes scripts o flujos de trabajo escritos para `docker`, funciona el alias más simple del mundo:
+
+```bash
+alias docker=podman
+```
+
+## Redes en modo rootless
+
+Sin privilegios de root, Podman no puede crear un bridge de kernel como el `docker0` de Docker — en su lugar, delega la red en un proceso de usuario:
+
+```
+Contenedor rootless
+   │
+   └── slirp4netns / pasta   (proceso de espacio de usuario que emula la pila de red)
+         │
+         └── Host   (el contenedor sale a la red a través de este proceso, sin bridge de kernel)
+```
+
+- **`slirp4netns`** fue el motor por defecto en Podman hasta la serie 4.x: crea una red NAT independiente para el contenedor.
+- **`pasta`** es su sustituto, más rápido, por defecto desde Podman 5.0 (marzo de 2024): copia la configuración de red del host directamente, sin NAT.
+
+En este mismo servidor, con Podman 4.9.3 de los repositorios de Ubuntu 24.04, el motor sigue siendo `slirp4netns` — puedes comprobar cuál usa el tuyo mirando los procesos de un contenedor en marcha:
+
+```
+$ ps aux | grep slirp4netns
+usuario   102757  /usr/bin/slirp4netns --disable-host-loopback --mtu=65520 ...
+```
+
+## Pods: contenedores que comparten namespace
+
+Podman soporta pods de forma nativa — un grupo de contenedores que comparten el namespace de red y de IPC, exactamente el mismo concepto que un Pod de Kubernetes:
+
+```
+Pod "demo-pod"
+   │
+   │  namespace de red e IPC compartido entre todos los contenedores del pod
+   │
+   ├── contenedor infra   (solo mantiene vivos los namespaces compartidos, no hace nada más)
+   ├── pod-web  (nginx)     → escucha en localhost:80 dentro del pod
+   └── pod-db   (postgres)  → escucha en localhost:5432 dentro del pod
+
+Dentro del pod, los contenedores se hablan por "localhost" — no necesitan resolución DNS
+ni red propia entre ellos, al contrario que los servicios de un docker-compose.yml,
+que tienen cada uno su IP y se resuelven por nombre de servicio.
+```
+
+```bash
+podman pod create --name demo-pod -p 8090:80
+podman run -d --pod demo-pod --name pod-web docker.io/library/nginx:alpine
+podman pod ps
+```
+
+```
+POD ID        NAME        STATUS      CREATED                 INFRA ID      # OF CONTAINERS
+e57f57ac0cd9  demo-pod    Running     Less than a second ago  19b11102b650  2
+```
+
+Es la unidad natural cuando varios procesos deben compartir red de forma tan estrecha como si corrieran en la misma máquina — por ejemplo, un sidecar de logging que lee del `localhost` de la aplicación principal.
+
+## Integración con systemd: Quadlet
+
+Aquí es donde Podman saca ventaja real para un sysadmin: puedes describir un contenedor como un archivo declarativo y dejar que systemd lo gestione como cualquier otro servicio del sistema — arranque automático, `Restart=`, dependencias, todo con las herramientas que ya conoces de `systemctl`.
+
+```ini
+# ~/.config/containers/systemd/webapp.container
+[Unit]
+Description=Contenedor webapp gestionado por Quadlet
+
+[Container]
+Image=docker.io/library/nginx:alpine
+PublishPort=8091:80
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
+```
+
+```bash
+systemctl --user daemon-reload    # el generador de Quadlet lee el .container y crea el .service al vuelo
+systemctl --user start webapp.service
+systemctl --user enable webapp.service   # arranque automático con la sesión del usuario
+```
+
+`systemctl --user status` confirma que, a ojos de systemd, es un servicio más:
+
+```
+● webapp.service - Contenedor webapp gestionado por Quadlet
+     Loaded: loaded (/home/usuario/.config/containers/systemd/webapp.container; generated)
+     Active: active (running) since Sun 2026-08-02 13:58:20 CEST; 2s ago
+   Main PID: 103270 (conmon)
+      Tasks: 21
+     Memory: 10.1M
+        CPU: 243ms
+     CGroup: /user.slice/user-1000.slice/user@1000.service/app.slice/webapp.service
+             └─ nginx: master process nginx -g daemon off;
+```
+
+> [!IMPORTANT]
+> `podman generate systemd` (generar la unidad a partir de un contenedor ya creado) está marcado como obsoleto en la documentación oficial de Podman desde hace varias versiones: sigue funcionando y recibe parches de seguridad, pero no incorpora funciones nuevas. Quadlet es el método que Podman recomienda activamente para esto — escribe el archivo declarativo primero, no generes la unidad a partir de un contenedor que ya existe.
+
+## Gestión visual con Cockpit
+
+[Cockpit](https://cockpit-project.org/) es la consola web de administración de sistemas que trae Fedora/RHEL por defecto (también instalable en Ubuntu/Debian), y con el paquete `cockpit-podman` añade una pestaña dedicada a gestionar contenedores Podman desde el navegador — sin depender de una herramienta de terceros como haría falta con Docker:
+
+```bash
+sudo apt install cockpit cockpit-podman -y
+# Cockpit queda escuchando en el puerto 9090 (HTTPS), con las mismas credenciales del sistema
+```
+
+<Figure
+  src="/images/blog/introduccion-contenedores-podman-linux/01-cockpit-podman.webp"
+  alt="Módulo de contenedores Podman en Cockpit mostrando tres contenedores en ejecución y un pod con un contenedor dentro, con uso de CPU y memoria de cada uno"
+  caption="Cockpit gestionando Podman en modo rootless: contenedores individuales y un pod, con CPU y memoria en tiempo real. (Usuario y hostname redactados)."
+/>
+
+Cockpit se autentica con las credenciales reales del sistema operativo (vía PAM), no con una cuenta propia como Portainer — cualquier usuario que pueda iniciar sesión en el servidor por SSH puede entrar aquí con la misma contraseña, y ve únicamente sus propios contenedores rootless salvo que tenga privilegios de administrador.
+
+## Caso práctico: un pod gestionado como servicio del sistema
+
+Uniendo pods y Quadlet, así se monta una aplicación con red compartida que además arranca sola con el sistema:
+
+1. **Crea el pod y publica el puerto una sola vez**, en el propio pod: `podman pod create --name miapp -p 8090:80`.
+2. **Añade los contenedores al pod** (`podman run --pod miapp ...`) para la app y, si hace falta, un sidecar — todos comparten `localhost` entre sí.
+3. **Convierte el pod en una unidad de systemd** con un archivo `.pod` de Quadlet en `~/.config/containers/systemd/`, análogo al `.container` de más arriba pero para el pod completo.
+4. **`systemctl --user daemon-reload && systemctl --user enable --now miapp-pod.service`**: a partir de aquí, systemd arranca el pod automáticamente al iniciar sesión (o al arrancar la máquina, si usas `loginctl enable-linger` para que el servicio de usuario sobreviva sin sesión activa).
+5. **Verifica en Cockpit** que el pod aparece como grupo con sus contenedores dentro y en estado "Ejecutándose" — la misma vista que acabamos de capturar arriba.
+
+Sin escribir una sola línea de un orquestador completo, tienes un grupo de contenedores con red compartida gestionado con las mismas herramientas (`systemctl`, Cockpit) que cualquier otro servicio Linux.
+
+## Buenas prácticas de seguridad
+
+- **Prefiere siempre rootless** salvo que tengas una razón concreta para no hacerlo (acceso a puertos privilegiados por debajo de `1024`, por ejemplo). Es el modo por defecto y el que aprovecha todo el aislamiento de namespaces de usuario.
+- **No ejecutes Podman con `sudo`** solo para evitar escribir el rango de subuid: si necesitas privilegios reales de forma habitual, es una señal de que el diseño del contenedor necesita revisión, no que el usuario deba ser root.
+- **Revisa `/etc/subuid` y `/etc/subgid` periódicamente** en servidores multiusuario: cada usuario con un rango asignado puede crear contenedores rootless de forma independiente, así que audita quién tiene qué rango.
+- **Usa `podman generate kube`** para exportar un pod ya probado a un YAML compatible con Kubernetes si el siguiente paso es escalar a un clúster real — es una migración mucho más suave que reescribir todo desde cero.
+
+> [!CAUTION]
+> Aunque el aislamiento rootless reduce mucho el impacto de un contenedor comprometido, sigue sin ser una barrera absoluta: montar el socket de Podman (`--security-opt label=disable` combinado con acceso a `podman.sock`) dentro de otro contenedor le da control sobre tus propios contenedores rootless, igual que pasa con `/var/run/docker.sock` en Docker. Trata ese socket con la misma cautela.
+
+## Podman o Docker: cuándo usar cada uno
+
+- **[Docker](/blog/docker-guia-practica-contenedores-linux/)** tiene el ecosistema más grande: Docker Hub, Docker Compose maduro, Portainer, y una comunidad más numerosa. Su daemon puede correr en rootless mode, pero requiere configuración adicional y no es el modo por defecto en la mayoría de instalaciones.
+- **Podman** es rootless y daemonless de fábrica, se integra de forma nativa con systemd vía Quadlet, y viene preinstalado en Fedora/RHEL — la opción natural si ya usas esa familia de distros o si minimizar lo que corre como root es una prioridad explícita, por ejemplo en un servidor multiusuario.
+
+Para un homelab con un único administrador de confianza, la diferencia práctica es pequeña y Docker sigue teniendo más documentación y ejemplos disponibles. Para servidores compartidos entre varios usuarios, o si tu distro base ya es RHEL/Fedora, Podman parte con ventaja de fábrica.
+
+## Siguiente paso
+
+Con la arquitectura daemonless, el modelo rootless, pods y la integración con Quadlet, ya tienes lo necesario para migrar un flujo de trabajo de Docker a Podman sin sorpresas. El siguiente paso natural es convertir un `docker-compose.yml` que ya tengas en pods gestionados por Quadlet, y comprobar tú mismo en [Cockpit](https://cockpit-project.org/) que todo sigue visible y gestionable sin añadir una sola herramienta de terceros. Si además gestionas esos servicios con [systemd](/blog/guia-systemd-servicios-linux/), verás que Quadlet no es más que una extensión natural de algo que ya conoces.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.
