@@ -1,0 +1,184 @@
+---
+title: 'Home Assistant: domótica autoalojada'
+description: 'Instala Home Assistant OS como VM en Proxmox, por qué conviene evitar el LXC, primeros pasos con el dashboard y cómo aislar tu domótica en su propia VLAN.'
+author: 'antonio'
+pubDate: 2026-08-03
+category: 'Self-Hosting'
+tags: ['Home Assistant', 'Domótica', 'Self-Hosting', 'Proxmox', 'Docker']
+image: '../../assets/images/home-assistant-server.jpg'
+draft: false
+---
+
+import Figure from '@components/Figure.astro';
+
+Home Assistant es la plataforma de domótica open source más usada para controlar dispositivos inteligentes desde un hub que corre en tu propia red, sin depender de la nube del fabricante de cada bombilla o enchufe. Todo el procesamiento y la automatización ocurren en local: si se cae tu conexión a internet, las luces y los sensores de casa siguen funcionando igual.
+
+## Instalarlo en Proxmox: HAOS como VM
+
+Si ya tienes un hipervisor montado siguiendo la guía de [Proxmox VE](/blog/proxmox-ve-hipervisor-casero/), la forma recomendada de instalar Home Assistant ahí es como **Home Assistant OS (HAOS)** en una máquina virtual completa, no como contenedor. HAOS es un sistema operativo completo que trae su propio Supervisor —el componente que gestiona actualizaciones, add-ons y copias de seguridad desde la propia interfaz web— y ese Supervisor espera tener una VM entera a su disposición.
+
+La vía más rápida es el script [Home Assistant OS de Proxmox VE Helper-Scripts](https://community-scripts.org/scripts/haos-vm), que automatiza la descarga de la imagen oficial y la creación de la VM:
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/vm/haos-vm.sh)"
+```
+
+> [!CAUTION]
+> Antes de ejecutar cualquier script de la comunidad con `curl | bash`, revisa su contenido en el repositorio de GitHub. Es una práctica habitual en el ecosistema Proxmox, pero estás dándole control total a un script que no has escrito tú.
+
+Si prefieres el camino manual, sin scripts de terceros, estos son los pasos equivalentes contra la Shell del nodo Proxmox. Consulta primero la [página de releases de HAOS](https://github.com/home-assistant/operating-system/releases) para usar la versión estable más reciente en vez de una fija que quedará obsoleta:
+
+```bash
+# Sustituye VERSION por la última versión estable (ej. 18.2)
+wget https://github.com/home-assistant/operating-system/releases/download/VERSION/haos_ova-VERSION.qcow2.xz
+xz -d haos_ova-VERSION.qcow2.xz
+
+# Crea la VM con firmware UEFI (obligatorio para HAOS)
+qm create 200 --name haos --memory 4096 --cores 2 --cpu host \
+  --bios ovmf --machine q35 --net0 virtio,bridge=vmbr0 --ostype l26 --agent 1
+
+# Añade el disco EFI y adjunta la imagen importada
+qm set 200 --efidisk0 local-lvm:1,efitype=4m
+qm importdisk 200 haos_ova-VERSION.qcow2 local-lvm
+qm set 200 --scsi0 local-lvm:vm-200-disk-1,cache=writethrough,discard=on,ssd=1
+qm set 200 --boot order=scsi0
+```
+
+Arranca la VM y espera un par de minutos a que HAOS termine de expandirse en el disco antes de acceder a `http://<ip-de-la-vm>:8123`.
+
+A partir de ahí, las actualizaciones de HAOS no vuelven a pasar por la Shell de Proxmox: se gestionan desde `Configuración → Sistema → Actualizaciones`, donde el propio Supervisor descarga la nueva versión, comprueba compatibilidad con tus add-ons y aplica el cambio con un botón.
+
+## LXC o VM: aquí sí importa la diferencia
+
+Ya escribí sobre cuándo tiene sentido un [contenedor de sistema con Incus/LXC](/blog/incus-lxc-contenedores-sistema-linux/) frente a una VM completa con [KVM y libvirt](/blog/kvm-libvirt-virtualizacion-nativa-linux/), y Home Assistant en Proxmox es uno de los casos donde esa elección no es solo una cuestión de gustos:
+
+- **HAOS en LXC no está soportado oficialmente.** HAOS es un sistema operativo completo que gestiona su propio kernel y orquesta contenedores internos a través del Supervisor — meterlo dentro de un LXC, que comparte el kernel del host, rompe ese contrato de diseño. El Supervisor y los add-ons dejan de funcionar como se espera.
+- **El passthrough de USB es mucho más fiable en una VM.** Si conectas un dongle Zigbee o Z-Wave, pasarlo a una VM completa por ID de dispositivo es un mecanismo estable y bien soportado por Proxmox; hacerlo funcionar dentro de un LXC exige montar el dispositivo manualmente y requiere que el contenedor corra en modo privilegiado, con las implicaciones de seguridad que eso conlleva.
+- **La comunidad de Home Assistant no da soporte sobre LXC.** Si algo falla en esa configuración nadie te va a poder ayudar oficialmente, porque HA Supervised sobre LXC es una combinación explícitamente no soportada por el proyecto.
+
+> [!IMPORTANT]
+> Para Home Assistant OS, usa siempre una VM (KVM) en Proxmox, no un contenedor LXC. Es la única configuración con Supervisor, add-ons y soporte oficial funcionando como se espera.
+
+La excepción es instalar **Home Assistant Container** (el Core sin Supervisor) para usuarios avanzados que no necesitan add-ons y ya gestionan cada integración por su cuenta — pero esa es una decisión consciente, no la ruta por defecto. La siguiente sección detalla exactamente qué pierdes si eliges ese camino.
+
+> [!TIP]
+> Si pasas un dongle Zigbee o Z-Wave a la VM, referencia el dispositivo por su ruta estable `/dev/serial/by-id/...` en vez de `/dev/ttyACM0` — la numeración de `ttyACMx` puede cambiar si añades o quitas otros dispositivos USB, y perderías la conexión con el coordinador tras un reinicio.
+
+## Alternativa: Home Assistant Container con Docker
+
+Si ya administras un host Docker (por ejemplo siguiendo la guía de [Docker en Linux](/blog/docker-guia-practica-contenedores-linux/)) y prefieres no dedicar una VM entera solo para esto, **Home Assistant Container** es la variante oficial pensada para eso: Home Assistant Core corriendo como un contenedor más, sin Supervisor.
+
+```yaml
+# docker-compose.yml
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: 'ghcr.io/home-assistant/home-assistant:stable'
+    volumes:
+      - /ruta/a/tu/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    environment:
+      TZ: Europe/Madrid
+```
+
+```bash
+docker compose up -d
+```
+
+Antes de elegir esta vía, ten claras sus limitaciones frente a HAOS en una VM de Proxmox:
+
+- **Sin Supervisor ni tienda de add-ons.** Cosas que en HAOS son un clic (Mosquitto, ESPHome, Zigbee2MQTT como add-on, copias de seguridad integradas) aquí las gestionas tú mismo como contenedores o servicios aparte.
+- **`privileged: true` y `network_mode: host` son necesarios, no opcionales.** El modo host es imprescindible para que el descubrimiento automático por mDNS/SSDP encuentre Chromecasts, HomeKit o Sonos en tu red; sin él, buena parte de esas integraciones simplemente no detectan nada. Pero un contenedor privilegiado con red de host tiene mucha menos aislación que el resto de tus contenedores — no lo trates como "un contenedor más" a la hora de pensar en superficie de exposición.
+- **Las actualizaciones son manuales.** Sin Supervisor, actualizar significa `docker compose pull && docker compose up -d`, sin la comprobación de compatibilidad que hace HAOS antes de aplicar una actualización mayor.
+
+En resumen: Docker es una vía razonable si ya vives en ese ecosistema y tus integraciones no dependen de add-ons, pero para domótica "en serio" —con Zigbee/Z-Wave, add-ons y actualizaciones gestionadas— HAOS en una VM de Proxmox sigue siendo la opción con menos fricción a largo plazo.
+
+## Primeros pasos: el asistente de configuración
+
+Al acceder por primera vez a `http://<ip>:8123`, Home Assistant lanza un asistente que crea tu cuenta de usuario, pregunta la ubicación aproximada de tu casa (para calcular amanecer/atardecer y usar las unidades correctas) y detecta automáticamente dispositivos compatibles ya presentes en tu red local, como Chromecasts o algunas bombillas inteligentes.
+
+<Figure
+  src="/images/blog/home-assistant-domotica-autoalojada/dashboard.webp"
+  alt="Dashboard de Home Assistant recién instalado, con áreas de ejemplo Living Room, Kitchen, Bedroom y Dispositivos en la barra lateral"
+  caption="Vista general de Home Assistant tras completar el asistente de configuración inicial."
+/>
+
+Al terminar el asistente llegas a la "Vista general": un dashboard que Home Assistant genera automáticamente a partir de las áreas y dispositivos que detecta, organizados por zonas de la casa. A partir de ahí, cada integración nueva que añadas (desde `Configuración → Dispositivos y servicios`) aparece sola en el dashboard sin que tengas que diseñar nada a mano, aunque el editor de tarjetas permite personalizarlo por completo si lo prefieres.
+
+## Tu primera automatización
+
+El dashboard muestra el estado de tus dispositivos, pero el valor real de Home Assistant está en las automatizaciones: reglas de "cuando pase X, haz Y" que corren solas en segundo plano. Se crean desde `Configuración → Automatizaciones y escenas → Crear automatización` con un editor visual, pero por debajo cada una se guarda como un bloque `triggers` / `conditions` / `actions`. Un ejemplo típico — encender la luz del salón si un sensor detecta movimiento después del atardecer:
+
+```yaml
+automation:
+  - alias: 'Luz del salón con movimiento nocturno'
+    triggers:
+      - trigger: state
+        entity_id: binary_sensor.salon_movimiento
+        to: 'on'
+    conditions:
+      - condition: sun
+        after: sunset
+    actions:
+      - action: light.turn_on
+        target:
+          entity_id: light.salon
+```
+
+El `trigger` observa el sensor de movimiento, la `condition` filtra para que solo actúe después de que anochezca (aunque haya movimiento a mediodía) y la `action` enciende la luz. No necesitas escribir este YAML a mano — el editor visual genera exactamente esta estructura —, pero entender el patrón trigger/condition/action ayuda a leer y depurar cualquier automatización, la hayas creado tú o la hayas copiado de la comunidad.
+
+```
+Automatización "Luz del salón con movimiento nocturno"
+   │
+   ▼
+1. trigger     binary_sensor.salon_movimiento pasa a "on"
+   │
+   ▼
+2. condition   sun after sunset (¿ya anocheció?)
+   │
+   ├── no se cumple → la automatización termina aquí, sin acción
+   └── se cumple     → 3. action   light.turn_on → light.salon
+```
+
+## Acceso remoto: Nabu Casa o tu propio proxy inverso
+
+Si te fijas en la captura de la sección anterior, la propia pantalla de bienvenida menciona "Home Assistant Cloud": es el servicio de suscripción de pago de Nabu Casa, la empresa que sostiene el desarrollo del proyecto. A cambio de la cuota, te da acceso remoto seguro y control por voz con Alexa o Google Assistant sin abrir un solo puerto ni gestionar certificados tú mismo — la opción más simple si no quieres complicarte.
+
+La alternativa autoalojada es exponer Home Assistant tú mismo detrás de un proxy inverso con TLS, igual que cualquier otro servicio del homelab: [Traefik](/blog/traefik-proxy-inverso-contenedores/) si ya gestionas contenedores por labels, o [Nginx](/blog/proxy-inverso-nginx-guia-practica/) con un `server {}` manual. En ambos casos hace falta decirle a Home Assistant que confíe en ese proxy, o rechazará las peticiones — en `configuration.yaml`:
+
+```yaml
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24 # red del proxy inverso (ajusta a la tuya)
+```
+
+> [!IMPORTANT]
+> Sin `trusted_proxies` y `use_x_forwarded_for`, Home Assistant no reconoce las peticiones que le llegan a través de un proxy inverso y las rechaza directamente — es un paso obligatorio, no opcional, si eliges la vía autoalojada.
+
+## Segmentar tu domótica en su propia VLAN
+
+Los dispositivos IoT (bombillas, enchufes, cámaras) suelen tener el firmware menos auditado de toda tu red doméstica, así que aislarlos del resto del tráfico es una medida de seguridad razonable. Si ya sigues la guía de [VLANs para segmentar red](/blog/vlans-explicadas-segmentar-red/), el ejemplo de esa guía incluye precisamente una VLAN 20 dedicada a "IoT" para cámaras y enchufes inteligentes — Home Assistant encaja en ese mismo esquema, normalmente ubicado en la VLAN de gestión o en la misma VLAN de IoT si necesita descubrimiento automático por mDNS de los dispositivos.
+
+> [!NOTE]
+> El descubrimiento automático de dispositivos (mDNS/SSDP) no cruza routers entre VLANs sin ayuda. Si separas Home Assistant de sus dispositivos en VLANs distintas, necesitarás un repetidor mDNS o añadir las integraciones manualmente por IP en vez de depender del descubrimiento automático.
+
+## Backups
+
+Con HAOS en una VM de Proxmox tienes dos capas de respaldo independientes, y conviene usar las dos:
+
+- **Snapshots de Proxmox a nivel de VM**: capturan el disco completo, útiles antes de una actualización mayor de HAOS para poder revertir en segundos si algo sale mal.
+- **Copias de seguridad propias de Home Assistant** (`Configuración → Sistema → Copias de seguridad`): exportan la configuración, el historial y los add-ons en un formato que puedes restaurar incluso en otro host, independiente de Proxmox.
+
+Los snapshots de VM te protegen de un fallo catastrófico del sistema; las copias de Home Assistant te protegen si necesitas migrar a otro servidor o simplemente deshacer un cambio de configuración sin tocar la VM entera.
+
+## Siguiente paso
+
+Con Home Assistant funcionando, los candidatos naturales para las primeras integraciones son los servicios que ya tengas montados en el homelab: si usas [Pi-hole](/blog/pihole-bloqueo-publicidad-red/) puedes monitorizar el bloqueo de anuncios desde el mismo dashboard, y si aún no has decidido en qué hardware montar todo esto, la guía de [cómo elegir hardware para tu homelab](/blog/elegir-hardware-homelab/) cubre ese paso previo.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.
