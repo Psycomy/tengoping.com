@@ -155,5 +155,6 @@ sudo last -n 20
 Con estas configuraciones tendremos un servidor SSH robusto y seguro. Recuerda mantener el sistema actualizado y revisar los logs periódicamente. Si quieres seguir reforzando el servidor más allá de SSH, la guía de [hardening básico de servidores Linux](/blog/hardening-basico-servidores-linux/) es el siguiente paso lógico.
 
 > La seguridad es un proceso continuo, no un estado. Revisa y actualiza tus configuraciones regularmente.
+
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

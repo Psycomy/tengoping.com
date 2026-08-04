@@ -192,7 +192,7 @@ devices {
 - **`prio alua`**: le dice a multipath que calcule la prioridad de cada ruta consultando el estado ALUA reportado por la cabina en lugar de usar un valor fijo.
 
 > [!NOTE]
-> Desde el kernel 4.3, Linux detecta automáticamente el soporte ALUA en dispositivos SCSI-3 compatibles y aplica `hardware_handler`/`prio alua` sin necesidad de declararlo a mano en la mayoría de los casos. Aun así, revisar la sección `devices` recomendada por el fabricante de tu cabina evita sorpresas si el autodetect falla o el array necesita un ajuste fino, como `no_path_retry queue` en vez de un valor numérico.
+> Desde el kernel 4.4, Linux detecta automáticamente el soporte ALUA en dispositivos SCSI-3 compatibles y aplica `hardware_handler`/`prio alua` sin necesidad de declararlo a mano en la mayoría de los casos. Aun así, revisar la sección `devices` recomendada por el fabricante de tu cabina evita sorpresas si el autodetect falla o el array necesita un ajuste fino, como `no_path_retry queue` en vez de un valor numérico.
 
 ## Construir sobre el dispositivo multipath, no sobre /dev/sdX
 

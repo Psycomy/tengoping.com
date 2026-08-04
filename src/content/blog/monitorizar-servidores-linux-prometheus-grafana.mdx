@@ -1,5 +1,5 @@
 ---
-title: 'Monitorizar servidores Linux con Prometheus y Grafana'
+title: 'Monitoriza Linux con Prometheus y Grafana'
 description: 'Guía paso a paso para desplegar un stack de monitorización con Prometheus y Grafana en servidores Linux usando Node Exporter.'
 author: 'antonio'
 pubDate: 2026-01-25
@@ -24,15 +24,28 @@ El flujo es sencillo:
 2. **Prometheus** recopila esas métricas periódicamente (scraping)
 3. **Grafana** las visualiza en dashboards interactivos
 
+```
+Servidor monitorizado
+   │
+   ▼
+1. Node Exporter — expone métricas en :9100/metrics
+   │
+   ▼
+2. Prometheus — scrapea :9100 y las almacena en :9090
+   │
+   ▼
+3. Grafana — consulta Prometheus y las visualiza en :3000
+```
+
 ## Instalar Node Exporter en los servidores
 
 Node Exporter se ejecuta en cada máquina que quieras monitorizar.
 
 ```bash
-# Descargar la última versión
-wget https://github.com/prometheus/node_exporter/releases/download/v1.8.1/node_exporter-1.8.1.linux-amd64.tar.gz
-tar xvfz node_exporter-1.8.1.linux-amd64.tar.gz
-sudo mv node_exporter-1.8.1.linux-amd64/node_exporter /usr/local/bin/
+# Comprueba la última versión en https://github.com/prometheus/node_exporter/releases
+wget https://github.com/prometheus/node_exporter/releases/download/v1.12.1/node_exporter-1.12.1.linux-amd64.tar.gz
+tar xvfz node_exporter-1.12.1.linux-amd64.tar.gz
+sudo mv node_exporter-1.12.1.linux-amd64/node_exporter /usr/local/bin/
 ```
 
 Crear el servicio de systemd:
@@ -67,9 +80,10 @@ Las métricas estarán disponibles en `http://servidor:9100/metrics`.
 En el servidor central de monitorización:
 
 ```bash
-wget https://github.com/prometheus/prometheus/releases/download/v2.53.0/prometheus-2.53.0.linux-amd64.tar.gz
-tar xvfz prometheus-2.53.0.linux-amd64.tar.gz
-sudo mv prometheus-2.53.0.linux-amd64/{prometheus,promtool} /usr/local/bin/
+# Comprueba la última versión en https://github.com/prometheus/prometheus/releases
+wget https://github.com/prometheus/prometheus/releases/download/v3.13.1/prometheus-3.13.1.linux-amd64.tar.gz
+tar xvfz prometheus-3.13.1.linux-amd64.tar.gz
+sudo mv prometheus-3.13.1.linux-amd64/{prometheus,promtool} /usr/local/bin/
 sudo mkdir -p /etc/prometheus /var/lib/prometheus
 ```
 
@@ -119,8 +133,8 @@ Prometheus estará accesible en `http://servidor:9090`.
 ## Instalar Grafana
 
 ```bash
-# RHEL/Rocky/Oracle Linux
-sudo dnf install -y https://dl.grafana.com/oss/release/grafana-11.1.0-1.x86_64.rpm
+# RHEL/Rocky/Oracle Linux — comprueba la última versión en https://grafana.com/grafana/download?edition=oss
+sudo dnf install -y https://dl.grafana.com/oss/release/grafana-13.1.1-1.x86_64.rpm
 
 # Ubuntu/Debian
 wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/grafana.key > /dev/null

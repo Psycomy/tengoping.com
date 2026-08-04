@@ -11,6 +11,29 @@ draft: false
 
 Para recuperar la contraseña root en un sistema con [LVM](/blog/comandos-esenciales-lvm-guia-rapida/), necesitas algunos pasos adicionales. Te explico el proceso completo:
 
+```
+LiveCD arrancado
+   │
+   ▼
+1. vgscan / vgchange -ay
+   │  → activa el grupo de volúmenes
+   ▼
+2. mount /dev/nombre_vg/root /mnt/recuperacion
+   │
+   ▼
+3. mount /dev/sdaX /mnt/recuperacion/boot
+   │  → solo si /boot está fuera del LVM
+   ▼
+4. chroot /mnt/recuperacion
+   │  → ya estás "dentro" del sistema
+   ▼
+5. passwd root
+   │  → nueva contraseña, dos veces
+   ▼
+6. exit + umount + reboot
+   → sistema listo con la contraseña cambiada
+```
+
 ## Pasos desde el LiveCD
 
 **1. Identificar los volúmenes LVM**

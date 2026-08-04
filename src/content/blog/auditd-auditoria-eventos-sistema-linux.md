@@ -87,6 +87,22 @@ sudo augenrules --load
 sudo auditctl -l
 ```
 
+Todo esto se junta en un flujo continuo, desde que defines la regla hasta que consultas lo que registró:
+
+```
+1. Regla cargada (augenrules --load)
+   -w /etc/passwd -p wa -k identity
+   │
+   ▼
+2. El kernel intercepta el acceso que coincide con la regla
+   │
+   ▼
+3. Evento registrado en /var/log/audit/audit.log
+   │
+   ├── ausearch -k identity   → eventos concretos, línea a línea
+   └── aureport --summary     → resumen agregado, visión general
+```
+
 ## Bloquear la configuración con -e 2
 
 `auditctl -e` controla el estado del propio subsistema: `0` lo desactiva temporalmente, `1` lo deja activo (el estado normal). El valor `2` es distinto a los otros dos:

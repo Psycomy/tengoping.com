@@ -1,5 +1,5 @@
 ---
-title: 'tmux y screen: multiplexores de terminal para sysadmins'
+title: 'tmux y screen: multiplexores de terminal'
 description: 'Guía práctica de tmux y screen para mantener sesiones vivas tras cortes de SSH, dividir la terminal en paneles y trabajar más rápido en producción.'
 author: 'antonio'
 pubDate: 2026-07-18

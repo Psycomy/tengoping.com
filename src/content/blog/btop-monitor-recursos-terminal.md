@@ -67,7 +67,7 @@ Estos son los que vas a usar en el día a día:
 | `F`                   | Filtrar la lista de procesos por nombre, PID o usuario        |
 | `E`                   | Alternar la vista de árbol de procesos (jerarquía padre-hijo) |
 | `R`                   | Invertir el orden de la lista de procesos                     |
-| `C`                   | Alternar el gráfico de CPU entre total y por núcleo           |
+| `C`                   | Mostrar el uso de CPU por núcleo de cada proceso en la lista  |
 | `←` / `→`             | Cambiar la columna por la que se ordenan los procesos         |
 | `P`                   | Rotar entre los presets de disposición guardados              |
 | `T`                   | Terminar el proceso seleccionado (señal SIGTERM)              |

@@ -146,6 +146,22 @@ virsh dumpxml vm-web01        # ver la configuración XML completa de la VM
 
 La red `default` (NAT) es perfecta para desarrollo y pruebas, pero si necesitas que la VM tenga su propia IP en tu red local — por ejemplo, para exponer un servicio web directamente — necesitas una interfaz bridge en el host que conecte directamente a tu red física, y arrancar la VM con `--network bridge=br0` en vez de `--network network=default`. La configuración exacta del bridge depende de tu gestor de red (`netplan`, `NetworkManager` o `/etc/network/interfaces`) y queda fuera del alcance de esta guía, pero es el primer paso a buscar si necesitas acceso directo desde el resto de tu red.
 
+```
+Red "default" (NAT vía virbr0, 192.168.122.0/24)
+   │
+   │ host = 192.168.122.1, DHCP 192.168.122.2-254
+   │
+   ├── vm-web01  → solo accesible desde el host, sale a internet por NAT
+   └── vm-web02  → solo accesible desde el host, sale a internet por NAT
+
+Red con bridge (br0, misma red física que el host)
+   │
+   │ sin NAT: las VMs son un host más de tu LAN
+   │
+   ├── vm-web01  → IP de tu LAN, accesible desde el resto de la red
+   └── vm-web02  → IP de tu LAN, accesible desde el resto de la red
+```
+
 ## Dónde se guardan los discos: storage pools
 
 Todos los ejemplos anteriores usan `/var/lib/libvirt/images/`, que es el storage pool que libvirt crea automáticamente al instalarse (se llama, sin sorpresas, `default`). Para consultarlo:

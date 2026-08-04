@@ -9,21 +9,21 @@ image: '../../assets/images/wireguard-vpn.jpg'
 draft: false
 ---
 
-## Por que WireGuard y no OpenVPN
+## Por qué WireGuard y no OpenVPN
 
-OpenVPN lleva anos siendo el estandar, pero WireGuard lo supera en varios aspectos:
+OpenVPN lleva años siendo el estándar, pero WireGuard lo supera en varios aspectos:
 
-- **Codigo minimo**: unas 4000 lineas frente a las mas de 100000 de OpenVPN. Menos codigo significa menos superficie de ataque y auditorias mas faciles.
-- **Rendimiento**: WireGuard opera en el kernel de Linux y usa criptografia moderna (ChaCha20, Curve25519, BLAKE2s). El rendimiento y la latencia son notablemente mejores.
-- **Configuracion simple**: un archivo de configuracion corto en cada extremo, sin gestionar certificados PKI complejos.
-- **Conexion instantanea**: el handshake se completa en milisegundos. Ideal para dispositivos moviles que cambian entre WiFi y datos.
+- **Código mínimo**: unas 4000 líneas frente a las más de 100000 de OpenVPN. Menos código significa menos superficie de ataque y auditorías más fáciles.
+- **Rendimiento**: WireGuard opera en el kernel de Linux y usa criptografía moderna (ChaCha20, Curve25519, BLAKE2s). El rendimiento y la latencia son notablemente mejores.
+- **Configuración simple**: un archivo de configuración corto en cada extremo, sin gestionar certificados PKI complejos.
+- **Conexión instantánea**: el handshake se completa en milisegundos. Ideal para dispositivos móviles que cambian entre WiFi y datos.
 
 ## Requisitos
 
-- Servidor Linux con IP publica (VPS o servidor dedicado)
+- Servidor Linux con IP pública (VPS o servidor dedicado)
 - Puerto UDP abierto en el firewall (por defecto 51820)
 - Acceso root en servidor y cliente
-- Kernel 5.6+ (WireGuard incluido) o el modulo DKMS para kernels anteriores
+- Kernel 5.6+ (WireGuard incluido) o el módulo DKMS para kernels anteriores
 
 ## Instalar WireGuard
 
@@ -40,7 +40,7 @@ sudo dnf install wireguard-tools -y
 
 ### En el cliente
 
-Instala el mismo paquete `wireguard` o `wireguard-tools` en la maquina cliente. WireGuard tambien tiene aplicaciones oficiales para Windows, macOS, Android e iOS.
+Instala el mismo paquete `wireguard` o `wireguard-tools` en la máquina cliente. WireGuard también tiene aplicaciones oficiales para Windows, macOS, Android e iOS.
 
 ## Generar pares de claves
 
@@ -58,7 +58,7 @@ wg genkey | tee /etc/wireguard/client_private.key | wg pubkey > /etc/wireguard/c
 chmod 600 /etc/wireguard/client_private.key
 ```
 
-Guarda las claves publicas de ambos extremos. Las necesitaras para la configuracion cruzada.
+Guarda las claves públicas de ambos extremos. Las necesitarás para la configuración cruzada.
 
 ```
 Cliente                          Internet                    Servidor
@@ -72,7 +72,7 @@ wg0: 10.0.0.2/24                                        wg0: 10.0.0.1/24
 
 ## Configurar el servidor
 
-Crea el archivo de configuracion de la interfaz WireGuard:
+Crea el archivo de configuración de la interfaz WireGuard:
 
 ```bash
 sudo nano /etc/wireguard/wg0.conf
@@ -93,7 +93,7 @@ PublicKey = <clave_publica_del_cliente>
 AllowedIPs = 10.0.0.2/32
 ```
 
-Sustituye `eth0` por la interfaz de red publica de tu servidor. Verificala con `ip route show default`.
+Sustituye `eth0` por la interfaz de red pública de tu servidor. Verifícala con `ip route show default`.
 
 ### Alternativa con iptables
 
@@ -104,16 +104,16 @@ PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o
 PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 ```
 
-## Habilitar el reenvio de paquetes
+## Habilitar el reenvío de paquetes
 
-WireGuard necesita IP forwarding para enrutar trafico entre la VPN e internet:
+WireGuard necesita IP forwarding para enrutar tráfico entre la VPN e internet:
 
 ```bash
 echo "net.ipv4.ip_forward = 1" | sudo tee /etc/sysctl.d/99-wireguard.conf
 sudo sysctl -p /etc/sysctl.d/99-wireguard.conf
 ```
 
-Verifica que esta activo:
+Verifica que está activo:
 
 ```bash
 sysctl net.ipv4.ip_forward
@@ -123,7 +123,7 @@ La salida debe ser `net.ipv4.ip_forward = 1`.
 
 ## Configurar el cliente
 
-En la maquina cliente, crea su archivo de configuracion:
+En la máquina cliente, crea su archivo de configuración:
 
 ```bash
 sudo nano /etc/wireguard/wg0.conf
@@ -142,11 +142,11 @@ AllowedIPs = 0.0.0.0/0
 PersistentKeepalive = 25
 ```
 
-- **AllowedIPs = 0.0.0.0/0**: enruta todo el trafico a traves de la VPN (full tunnel). Si solo quieres acceder a la red del servidor, usa `10.0.0.0/24`.
-- **PersistentKeepalive**: mantiene el tunel activo cuando el cliente esta detras de NAT.
-- **DNS**: en lugar de un resolutor publico como `1.1.1.1`, puedes apuntar a un servidor [Pi-hole](/blog/pihole-bloqueo-publicidad-red/) de tu propia red para filtrar publicidad tambien cuando estas conectado en remoto.
+- **AllowedIPs = 0.0.0.0/0**: enruta todo el tráfico a través de la VPN (full tunnel). Si solo quieres acceder a la red del servidor, usa `10.0.0.0/24`.
+- **PersistentKeepalive**: mantiene el túnel activo cuando el cliente está detrás de NAT.
+- **DNS**: en lugar de un resolutor público como `1.1.1.1`, puedes apuntar a un servidor [Pi-hole](/blog/pihole-bloqueo-publicidad-red/) de tu propia red para filtrar publicidad también cuando estás conectado en remoto.
 
-## Levantar y bajar el tunel
+## Levantar y bajar el túnel
 
 ### Con wg-quick
 
@@ -163,7 +163,7 @@ sudo wg-quick down wg0
 
 ### Con systemd
 
-Para que el tunel se levante automaticamente al arrancar:
+Para que el túnel se levante automáticamente al arrancar:
 
 ```bash
 sudo systemctl enable --now wg-quick@wg0
@@ -175,25 +175,25 @@ Comprueba el estado del servicio:
 sudo systemctl status wg-quick@wg0
 ```
 
-## Verificar la conexion
+## Verificar la conexión
 
-Desde el cliente, haz ping al servidor a traves del tunel:
+Desde el cliente, haz ping al servidor a través del túnel:
 
 ```bash
 ping -c 4 10.0.0.1
 ```
 
-Para confirmar que todo el trafico sale por la VPN:
+Para confirmar que todo el tráfico sale por la VPN:
 
 ```bash
 curl ifconfig.me
 ```
 
-La IP devuelta debe ser la IP publica del servidor, no la del cliente.
+La IP devuelta debe ser la IP pública del servidor, no la del cliente.
 
-## Anadir mas clientes
+## Añadir más clientes
 
-Para cada nuevo cliente, genera un par de claves y anade un bloque `[Peer]` en la configuracion del servidor:
+Para cada nuevo cliente, genera un par de claves y añade un bloque `[Peer]` en la configuración del servidor:
 
 ```ini
 [Peer]
@@ -202,17 +202,17 @@ PublicKey = <clave_publica_cliente_2>
 AllowedIPs = 10.0.0.3/32
 ```
 
-Recarga la configuracion sin interrumpir las conexiones existentes:
+Recarga la configuración sin interrumpir las conexiones existentes:
 
 ```bash
 sudo wg syncconf wg0 <(sudo wg-quick strip wg0)
 ```
 
-Cada cliente debe tener una IP unica dentro de la subred `10.0.0.0/24`.
+Cada cliente debe tener una IP única dentro de la subred `10.0.0.0/24`.
 
 ## Abrir el puerto en el firewall
 
-Asegurate de que el puerto UDP de WireGuard esta accesible; si necesitas repasar la sintaxis de cada herramienta, consulta la guia de [firewalld, UFW y nftables](/blog/firewalld-nftables-seguridad-red-linux/):
+Asegúrate de que el puerto UDP de WireGuard esté accesible; si necesitas repasar la sintaxis de cada herramienta, consulta la guía de [firewalld, UFW y nftables](/blog/firewalld-nftables-seguridad-red-linux/):
 
 ```bash
 # Con nftables
@@ -228,7 +228,7 @@ sudo ufw allow 51820/udp
 
 ## Resumen
 
-Con WireGuard tienes una VPN moderna, rapida y facil de mantener. La configuracion es minima comparada con OpenVPN, el rendimiento es superior y anadir nuevos clientes se reduce a generar claves y agregar un bloque `[Peer]`. Todo tu trafico viaja cifrado entre tus dispositivos y tu servidor, sin depender de servicios VPN de terceros — un uso habitual es acceder de forma segura a servicios autoalojados como [Nextcloud](/blog/nextcloud-servidor-nube-personal/) cuando estas fuera de casa.
+Con WireGuard tienes una VPN moderna, rápida y fácil de mantener. La configuración es mínima comparada con OpenVPN, el rendimiento es superior y añadir nuevos clientes se reduce a generar claves y agregar un bloque `[Peer]`. Todo tu tráfico viaja cifrado entre tus dispositivos y tu servidor, sin depender de servicios VPN de terceros — un uso habitual es acceder de forma segura a servicios autoalojados como [Nextcloud](/blog/nextcloud-servidor-nube-personal/) cuando estás fuera de casa.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

@@ -9,6 +9,8 @@ image: '../../assets/images/linux-permissions.jpg'
 draft: false
 ---
 
+Los permisos son la primera línea de defensa de cualquier sistema Linux: deciden quién puede leer, modificar o ejecutar cada archivo, y un descuido aquí es una de las causas más comunes tanto de brechas de seguridad como de esos "Permission denied" que te hacen perder media hora depurando un servicio. Este artículo repasa `chmod` y `chown` para el día a día, y las ACLs para cuando el modelo clásico de propietario/grupo/otros se queda corto.
+
 ## Permisos básicos en Linux
 
 Cada archivo tiene tres niveles de permisos: propietario (u), grupo (g) y otros (o), con tres acciones: lectura (r), escritura (w) y ejecución (x).

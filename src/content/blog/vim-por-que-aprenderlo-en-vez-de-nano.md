@@ -21,7 +21,7 @@ Si en algún momento te quedas "atrapado" en Vim, haz esto:
 Eso es todo. Ya no te puedes quedar encerrado. Guárdate esta combinación —`Esc`, `:q!`, `Enter`— y el resto del artículo lo puedes leer tranquilo, sabiendo que siempre tienes una salida.
 
 > [!TIP]
-> Si además quieres guardar los cambios antes de salir, es `:wq` en vez de `:q!`. Y si prefieres no escribir los dos puntos, `ZZ` (mayúsculas, sin `Enter`) hace lo mismo que `:wq`.
+> Si además quieres guardar los cambios antes de salir, es `:wq` en vez de `:q!`. Y si prefieres no escribir los dos puntos, `ZZ` (mayúsculas, sin `Enter`) hace lo mismo que `:x`: guarda y sale, pero solo escribe el archivo si hay cambios sin guardar.
 
 ## Y si la lías, deshazlo
 

@@ -1,5 +1,5 @@
 ---
-title: "Certificados SSL gratis con Certbot y Let's Encrypt"
+title: 'Certificados SSL gratis con Certbot'
 description: 'Cómo funciona la validación ACME, cuándo usar HTTP-01 o DNS-01, cómo emitir certificados wildcard y cómo funciona la renovación automática de Certbot.'
 author: 'antonio'
 pubDate: 2026-07-27
@@ -32,6 +32,25 @@ Certbot crea un registro TXT en `_acme-challenge.tu-dominio` con un valor deriva
 - **Es el único método que permite emitir certificados wildcard** — HTTP-01 no puede, porque no hay forma de demostrar control sobre todos los subdominios posibles con un único fichero HTTP
 
 La elección no es solo de preferencia: si necesitas un wildcard, DNS-01 es obligatorio.
+
+```
+1. Certbot solicita un certificado para tudominio.com
+   │
+   ▼
+2. Let's Encrypt emite un challenge/token
+   │
+   ▼
+3. Certbot publica la respuesta al challenge
+   │
+   ├── HTTP-01 → fichero en http://tudominio.com/.well-known/acme-challenge/<TOKEN>
+   └── DNS-01  → registro TXT en _acme-challenge.tudominio.com
+   │
+   ▼
+4. Let's Encrypt verifica la respuesta publicada
+   │
+   ▼
+5. Certificado emitido y descargado por Certbot
+```
 
 ## Certificados wildcard
 
@@ -92,7 +111,7 @@ Este comando simula el proceso completo de renovación contra el servidor de sta
 
 El perfil clásico de Let's Encrypt sigue emitiendo certificados válidos **90 días**, pero el panorama está cambiando activamente:
 
-- Desde enero de 2026, Let's Encrypt ofrece certificados de **6 días** (144 horas) como opción, pensados para infraestructuras con renovación totalmente automatizada. Es opt-in, seleccionando el perfil `shortlived` en el cliente ACME.
+- Desde enero de 2026, Let's Encrypt ofrece certificados de **6 días** (160 horas, poco más de 6 días) como opción, pensados para infraestructuras con renovación totalmente automatizada. Es opt-in, seleccionando el perfil `shortlived` en el cliente ACME.
 - El perfil `tlsserver` pasó a emitir certificados de **45 días** en mayo de 2026.
 - Está previsto que el perfil clásico (el que usa Certbot por defecto si no indicas perfil) pase a certificados de **64 días** en febrero de 2027.
 

@@ -12,9 +12,9 @@ draft: false
 
 import Figure from '@components/Figure.astro';
 
-## Por que autoalojar tu almacenamiento en la nube
+## Por qué autoalojar tu almacenamiento en la nube
 
-Servicios como Google Drive o Dropbox son comodos, pero tus datos quedan en servidores ajenos. Con Nextcloud puedes tener sincronizacion de archivos, calendario, contactos y mucho mas bajo tu propio control. Tu decides donde se almacenan los datos, quien accede y durante cuanto tiempo se conservan.
+Servicios como Google Drive o Dropbox son cómodos, pero tus datos quedan en servidores ajenos. Con Nextcloud puedes tener sincronización de archivos, calendario, contactos y mucho más bajo tu propio control. Tú decides dónde se almacenan los datos, quién accede y durante cuánto tiempo se conservan.
 
 ## Requisitos previos
 
@@ -23,7 +23,28 @@ Necesitas un servidor Linux con acceso root y una pila LAMP o LEMP funcional:
 - **Sistema operativo**: Debian 12, Ubuntu 22.04+ o similar
 - **Servidor web**: Apache o Nginx
 - **Base de datos**: MariaDB 10.6+ o MySQL 8.0+
-- **PHP**: 8.1 o superior con modulos necesarios (Ubuntu 22.04 LTS instala PHP 8.1 desde sus repos oficiales)
+- **PHP**: 8.2 o superior con módulos necesarios — la versión mínima sube con cada versión mayor de Nextcloud, comprueba la [tabla de compatibilidad oficial](https://docs.nextcloud.com/server/stable/admin_manual/installation/system_requirements.html) antes de instalar (Ubuntu 22.04 LTS solo trae PHP 8.1 en sus repos oficiales, así que necesitarás un repositorio como [Ondřej Surý's PPA](https://launchpad.net/~ondrej/+archive/ubuntu/php) para una versión más reciente)
+
+El proceso completo, de arriba a abajo:
+
+```
+1. Instalar dependencias (Apache, MariaDB, PHP)
+   │
+   ▼
+2. Preparar la base de datos ("nextcloud", usuario "nextcloud")
+   │
+   ▼
+3. Descargar y extraer Nextcloud en /var/www/nextcloud
+   │
+   ▼
+4. Configurar Apache (nube.tudominio.com) y ajustar PHP
+   │
+   ▼
+5. Asistente de primer acceso en http://nube.tudominio.com
+   │
+   ▼
+6. Configurar cron (*/5 * * * * cron.php) para tareas en segundo plano
+```
 
 ### Instalar dependencias
 
@@ -56,7 +77,7 @@ EXIT;
 
 ## Descargar e instalar Nextcloud
 
-Descarga la ultima version estable desde el sitio oficial y extrae el archivo en el directorio web:
+Descarga la última versión estable desde el sitio oficial y extrae el archivo en el directorio web:
 
 ```bash
 cd /tmp
@@ -89,7 +110,7 @@ sudo nano /etc/apache2/sites-available/nextcloud.conf
 </VirtualHost>
 ```
 
-Activa el sitio y los modulos necesarios:
+Activa el sitio y los módulos necesarios:
 
 ```bash
 sudo a2ensite nextcloud.conf
@@ -99,11 +120,11 @@ sudo systemctl restart apache2
 
 ### Alternativa con Nginx
 
-Si prefieres Nginx, la configuracion del bloque server seria similar. Apunta el root a `/var/www/nextcloud` y asegurate de pasar las peticiones PHP a `php-fpm` mediante un bloque `location ~ \.php$` con `fastcgi_pass`.
+Si prefieres Nginx, la configuración del bloque server sería similar. Apunta el root a `/var/www/nextcloud` y asegúrate de pasar las peticiones PHP a `php-fpm` mediante un bloque `location ~ \.php$` con `fastcgi_pass`.
 
 ## Ajustar PHP
 
-Edita el archivo de configuracion de PHP para mejorar el rendimiento:
+Edita el archivo de configuración de PHP para mejorar el rendimiento:
 
 ```bash
 sudo nano /etc/php/8.1/apache2/php.ini
@@ -127,13 +148,13 @@ opcache.revalidate_freq = 1
 sudo systemctl restart apache2
 ```
 
-## Primer acceso y configuracion del administrador
+## Primer acceso y configuración del administrador
 
-Abre el navegador y accede a `http://nube.tudominio.com`. El asistente de instalacion te pedira:
+Abre el navegador y accede a `http://nube.tudominio.com`. El asistente de instalación te pedirá:
 
-1. **Usuario administrador**: elige un nombre y contrasena seguros.
-2. **Directorio de datos**: por defecto `/var/www/nextcloud/data`. Puedes cambiarlo a otra particion con mas espacio.
-3. **Base de datos**: selecciona MySQL/MariaDB e introduce los datos creados antes (usuario `nextcloud`, contrasena y nombre de base de datos `nextcloud`).
+1. **Usuario administrador**: elige un nombre y contraseña seguros.
+2. **Directorio de datos**: por defecto `/var/www/nextcloud/data`. Puedes cambiarlo a otra partición con más espacio.
+3. **Base de datos**: selecciona MySQL/MariaDB e introduce los datos creados antes (usuario `nextcloud`, contraseña y nombre de base de datos `nextcloud`).
 
 Haz clic en instalar y espera a que termine el proceso.
 
@@ -145,13 +166,13 @@ Haz clic en instalar y espera a que termine el proceso.
 
 ## Habilitar aplicaciones
 
-Nextcloud incluye un ecosistema de aplicaciones. Desde el panel de administracion, accede a **Aplicaciones** y activa las que necesites:
+Nextcloud incluye un ecosistema de aplicaciones. Desde el panel de administración, accede a **Aplicaciones** y activa las que necesites:
 
 - **Calendar**: calendario compatible con CalDAV
 - **Contacts**: libreta de direcciones con CardDAV
 - **Notes**: notas en formato Markdown
 - **Talk**: videollamadas y chat
-- **Office**: edicion colaborativa de documentos (requiere Collabora o OnlyOffice)
+- **Office**: edición colaborativa de documentos (requiere Collabora o OnlyOffice)
 
 ## Configurar tareas cron
 
@@ -161,19 +182,19 @@ Para que las tareas de fondo se ejecuten de forma fiable, configura un cron del 
 sudo crontab -u www-data -e
 ```
 
-Anade esta linea:
+Añade esta línea:
 
 ```cron
 */5 * * * * php -f /var/www/nextcloud/cron.php
 ```
 
-Despues, en **Configuracion > Administracion > Ajustes basicos**, selecciona **Cron** como metodo de tareas en segundo plano.
+Después, en **Configuración > Administración > Ajustes básicos**, selecciona **Cron** como método de tareas en segundo plano.
 
 ## Recomendaciones finales
 
 - **HTTPS**: configura un [certificado SSL con Let's Encrypt](/blog/certificados-ssl-certbot-lets-encrypt/) usando `certbot`.
-- **Firewall**: abre unicamente los puertos 80 y 443, siguiendo la guía de [firewalld, UFW y nftables](/blog/firewalld-nftables-seguridad-red-linux/). Bloquea todo lo demas.
-- **Actualizaciones**: revisa las actualizaciones periodicamente desde el panel de administracion o con `sudo -u www-data php /var/www/nextcloud/updater/updater.phar`.
+- **Firewall**: abre únicamente los puertos 80 y 443, siguiendo la guía de [firewalld, UFW y nftables](/blog/firewalld-nftables-seguridad-red-linux/). Bloquea todo lo demás.
+- **Actualizaciones**: revisa las actualizaciones periódicamente desde el panel de administración o con `sudo -u www-data php /var/www/nextcloud/updater/updater.phar`.
 - **Backups**: programa copias de seguridad del directorio de datos y de la base de datos, por ejemplo con la estrategia de [backups incrementales con rsync](/blog/backup-incremental-rsync-servidores-linux/).
 
 > [!WARNING]

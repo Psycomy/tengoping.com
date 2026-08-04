@@ -10,15 +10,15 @@ image: '../../assets/images/lynis-audit.jpg'
 draft: false
 ---
 
-## Que es Lynis
+## Qué es Lynis
 
-Lynis es una herramienta de auditoria de seguridad para sistemas Unix y Linux. Analiza la configuracion del sistema, los servicios en ejecucion, la gestion de usuarios, la configuracion de red, el kernel y muchos otros aspectos para generar un informe con puntuacion de hardening y recomendaciones concretas.
+Lynis es una herramienta de auditoría de seguridad para sistemas Unix y Linux. Analiza la configuración del sistema, los servicios en ejecución, la gestión de usuarios, la configuración de red, el kernel y muchos otros aspectos para generar un informe con puntuación de hardening y recomendaciones concretas.
 
-A diferencia de un escaner de vulnerabilidades externo, Lynis se ejecuta localmente con acceso completo al sistema, lo que le permite detectar problemas de configuracion que un escaner remoto no veria.
+A diferencia de un escáner de vulnerabilidades externo, Lynis se ejecuta localmente con acceso completo al sistema, lo que le permite detectar problemas de configuración que un escáner remoto no vería.
 
-## Instalacion
+## Instalación
 
-Lynis esta disponible en los repositorios de la mayoria de distribuciones y tambien se puede ejecutar directamente desde el repositorio git.
+Lynis está disponible en los repositorios de la mayoría de distribuciones y también se puede ejecutar directamente desde el repositorio git.
 
 ### Desde el gestor de paquetes
 
@@ -32,7 +32,7 @@ sudo apt install lynis -y
 
 ### Desde el repositorio git
 
-Esta opcion te da siempre la version mas reciente:
+Esta opción te da siempre la versión más reciente:
 
 ```bash
 cd /opt
@@ -41,24 +41,48 @@ cd lynis
 sudo ./lynis audit system
 ```
 
-Verifica la version instalada:
+Verifica la versión instalada:
 
 ```bash
 lynis show version
 ```
 
 > [!NOTE]
-> Los comandos de las siguientes secciones (`lynis show version`, `sudo lynis audit system`, `--profile /etc/lynis/custom.prf`) asumen que Lynis esta en el PATH, como ocurre con la instalacion por paquete. Si lo instalaste clonando el repositorio en /opt/lynis, invoca `./lynis` desde ese directorio o crea un symlink: `sudo ln -s /opt/lynis/lynis /usr/local/bin/lynis`.
+> Los comandos de las siguientes secciones (`lynis show version`, `sudo lynis audit system`, `--profile /etc/lynis/custom.prf`) asumen que Lynis está en el PATH, como ocurre con la instalación por paquete. Si lo instalaste clonando el repositorio en /opt/lynis, invoca `./lynis` desde ese directorio o crea un symlink: `sudo ln -s /opt/lynis/lynis /usr/local/bin/lynis`.
 
-## Ejecutar una auditoria basica
+## Ejecutar una auditoría básica
 
-La auditoria completa del sistema se lanza con un unico comando. Ejecutala como root para que Lynis tenga acceso a todos los archivos de configuracion:
+El flujo completo de una auditoría con Lynis, desde que la lanzas hasta que vuelves a comprobar el resultado, es siempre el mismo:
+
+```
+sudo lynis audit system
+   │
+   ▼
+1. Detecta la distribución y el sistema instalado
+   │
+   ▼
+2. Ejecuta los tests por categoría (boot, kernel, red, SSH,
+   firewalls, logging, cron...)
+   │
+   ▼
+3. Genera el informe
+   ├── /var/log/lynis.log        → detalle legible y warnings
+   └── /var/log/lynis-report.dat → datos estructurados (hardening_index, suggestion[]=...)
+   │
+   ▼
+4. Revisas warnings y suggestions, aplicas el hardening que corresponda
+   │
+   ▼
+5. Vuelves a auditar para medir el efecto del cambio
+```
+
+La auditoría completa del sistema se lanza con un único comando. Ejecútala como root para que Lynis tenga acceso a todos los archivos de configuración:
 
 ```bash
 sudo lynis audit system
 ```
 
-La auditoria tarda entre uno y cinco minutos dependiendo del sistema. Lynis muestra el progreso en tiempo real, agrupando las comprobaciones por categorias: boot, kernel, memoria, usuarios, shells, sistema de archivos, USB, red, impresoras, correo, firewalls, servidores web, SSH, SNMP, bases de datos, LDAP, PHP, Squid, logging, cron y mas.
+La auditoría tarda entre uno y cinco minutos dependiendo del sistema. Lynis muestra el progreso en tiempo real, agrupando las comprobaciones por categorías: boot, kernel, memoria, usuarios, shells, sistema de archivos, USB, red, impresoras, correo, firewalls, servidores web, SSH, SNMP, bases de datos, LDAP, PHP, Squid, logging, cron y más.
 
 Al finalizar, muestra un resumen con el indice de hardening:
 
@@ -72,13 +96,13 @@ Al finalizar, muestra un resumen con el indice de hardening:
 
 El informe completo se guarda en `/var/log/lynis.log` y los datos estructurados en `/var/log/lynis-report.dat`. Los elementos clave del informe son:
 
-### Indice de hardening
+### Índice de hardening
 
-Una puntuacion de 0 a 100 que refleja el estado general de seguridad. Un servidor recien instalado suele puntuar entre 55 y 65. Con un [hardening básico](/blog/hardening-basico-servidores-linux/) puedes superar los 80 puntos.
+Una puntuación de 0 a 100 que refleja el estado general de seguridad. Un servidor recién instalado suele puntuar entre 55 y 65. Con un [hardening básico](/blog/hardening-basico-servidores-linux/) puedes superar los 80 puntos.
 
 ### Warnings
 
-Son los hallazgos mas criticos que requieren atencion inmediata. Puedes listar solo las advertencias con:
+Son los hallazgos más críticos que requieren atención inmediata. Puedes listar solo las advertencias con:
 
 ```bash
 sudo grep Warning /var/log/lynis.log
@@ -86,13 +110,13 @@ sudo grep Warning /var/log/lynis.log
 
 ### Suggestions
 
-Recomendaciones de mejora ordenadas por prioridad. Cada sugerencia incluye un identificador, una descripcion y en muchos casos un enlace a documentacion adicional:
+Recomendaciones de mejora ordenadas por prioridad. Cada sugerencia incluye un identificador, una descripción y en muchos casos un enlace a documentación adicional:
 
 ```bash
 sudo grep 'suggestion\[\]=' /var/log/lynis-report.dat
 ```
 
-Ejemplo de sugerencia tipica:
+Ejemplo de sugerencia típica:
 
 ```text
 suggestion[]=BOOT-5122|Set a password on GRUB boot loader to prevent altering boot configuration|-|-|
@@ -101,18 +125,18 @@ suggestion[]=SSH-7408|Consider hardening SSH configuration: AllowTcpForwarding (
 
 ### Secciones clave
 
-Centrate primero en estas areas para obtener el mayor impacto:
+Céntrate primero en estas áreas para obtener el mayor impacto:
 
-- **SSH configuration**: [desactivar root login, forzar claves](/blog/configurar-servidor-ssh-seguro-linux/), limitar cifrados debiles.
+- **SSH configuration**: [desactivar root login, forzar claves](/blog/configurar-servidor-ssh-seguro-linux/), limitar cifrados débiles.
 - **File permissions**: archivos con permisos excesivos, SUID/SGID innecesarios.
-- **Kernel hardening**: parametros sysctl como `net.ipv4.conf.all.rp_filter` o `kernel.randomize_va_space`.
-- **Authentication**: politica de contrasenas, cuentas sin password, usuarios inactivos.
+- **Kernel hardening**: parámetros sysctl como `net.ipv4.conf.all.rp_filter` o `kernel.randomize_va_space`.
+- **Authentication**: política de contraseñas, cuentas sin password, usuarios inactivos.
 - **Firewall**: verificar que hay un [firewall activo y configurado](/blog/firewalld-nftables-seguridad-red-linux/).
-- **Logging and auditing**: comprobar que rsyslog/journald y auditd estan activos.
+- **Logging and auditing**: comprobar que rsyslog/journald y auditd están activos.
 
-## Automatizar auditorias con cron
+## Automatizar auditorías con cron
 
-Programar auditorias periodicas permite detectar regresiones de seguridad cuando se instalan nuevos paquetes o se modifica la configuracion.
+Programar auditorías periódicas permite detectar regresiones de seguridad cuando se instalan nuevos paquetes o se modifica la configuración.
 
 Crea un script wrapper:
 
@@ -129,7 +153,7 @@ EOF
 sudo chmod +x /opt/lynis-audit.sh
 ```
 
-Programalo en cron para que se ejecute semanalmente:
+Prográmalo en cron para que se ejecute semanalmente:
 
 ```bash
 sudo crontab -e
@@ -139,11 +163,11 @@ sudo crontab -e
 0 3 * * 1 /opt/lynis-audit.sh
 ```
 
-La opcion `--cronjob` suprime la interactividad y `--quiet` reduce la salida a lo esencial.
+La opción `--cronjob` suprime la interactividad y `--quiet` reduce la salida a lo esencial.
 
 ## Comparar informes a lo largo del tiempo
 
-Guardar los archivos `lynis-report.dat` con fecha permite comparar la evolucion del hardening. Puedes extraer el indice de cada informe con:
+Guardar los archivos `lynis-report.dat` con fecha permite comparar la evolución del hardening. Puedes extraer el índice de cada informe con:
 
 ```bash
 for f in /var/log/lynis-reports/lynis-report-*.dat; do
@@ -161,11 +185,11 @@ Esto produce una salida como:
 20260915: 78
 ```
 
-Si el indice baja entre dos ejecuciones, revisa las diferencias en los archivos `.dat` para identificar que ha cambiado.
+Si el índice baja entre dos ejecuciones, revisa las diferencias en los archivos `.dat` para identificar qué ha cambiado.
 
 ## Perfiles personalizados
 
-Lynis soporta perfiles de auditoria que definen que tests ejecutar y cuales omitir. El perfil por defecto esta en `/etc/lynis/default.prf`. Puedes crear un perfil personalizado para tu organizacion:
+Lynis soporta perfiles de auditoría que definen qué tests ejecutar y cuáles omitir. El perfil por defecto está en `/etc/lynis/default.prf`. Puedes crear un perfil personalizado para tu organización:
 
 ```bash
 sudo cp /etc/lynis/default.prf /etc/lynis/custom.prf
@@ -179,12 +203,12 @@ sudo lynis audit system --profile /etc/lynis/custom.prf
 
 ## Recomendaciones para maximizar el impacto
 
-- Ejecuta Lynis **antes y despues** de cada cambio de configuracion importante para medir el efecto.
-- No persigas una puntuacion de 100; algunas sugerencias pueden no aplicar a tu caso de uso. Evalua cada recomendacion en tu contexto.
-- Combina Lynis con otras herramientas: `rkhunter` para rootkits, `aide` para integridad de archivos y `auditd` para registrar accesos a archivos criticos.
-- Mantiene Lynis actualizado. Las versiones nuevas incorporan tests para vulnerabilidades y configuraciones recientes.
+- Ejecuta Lynis **antes y después** de cada cambio de configuración importante para medir el efecto.
+- No persigas una puntuación de 100; algunas sugerencias pueden no aplicar a tu caso de uso. Evalúa cada recomendación en tu contexto.
+- Combina Lynis con otras herramientas: `rkhunter` para rootkits, `aide` para integridad de archivos y `auditd` para registrar accesos a archivos críticos.
+- Mantén Lynis actualizado. Las versiones nuevas incorporan tests para vulnerabilidades y configuraciones recientes.
 
-Lynis no corrige los problemas automaticamente, pero te da un mapa claro de donde estan las debilidades de tu sistema y que hacer para resolverlas.
+Lynis no corrige los problemas automáticamente, pero te da un mapa claro de dónde están las debilidades de tu sistema y qué hacer para resolverlas.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

@@ -60,11 +60,11 @@ Vaultwarden incluye un panel `/admin` para gestionar usuarios y organizaciones d
 docker run --rm -it vaultwarden/server:latest /vaultwarden hash
 ```
 
-El comando pide la contraseña dos veces y devuelve una cadena PHC (`$argon2id$...`). Esa cadena, no la contraseña original, es lo que va en el compose:
+El comando pide la contraseña dos veces y devuelve una cadena PHC (`$argon2id$...`). Esa cadena, no la contraseña original, es lo que va en el compose — pero Docker Compose interpola cualquier `$` como variable de entorno, así que en `docker-compose.yml` hay que duplicar cada `$` de la cadena a `$$`:
 
 ```yaml
 environment:
-  ADMIN_TOKEN: '$argon2id$v=19$m=...'
+  ADMIN_TOKEN: '$$argon2id$$v=19$$m=...'
 ```
 
 > [!CAUTION]

@@ -152,10 +152,12 @@ Añade estas cabeceras a nivel global o por servidor:
 ```nginx
 add_header X-Content-Type-Options "nosniff" always;
 add_header X-Frame-Options "SAMEORIGIN" always;
-add_header X-XSS-Protection "1; mode=block" always;
 add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 ```
+
+> [!NOTE]
+> No incluyas `X-XSS-Protection`: es una cabecera deprecada que los navegadores modernos ignoran (Chrome eliminó su filtro XSS en 2019, Firefox nunca lo implementó, Safari lo retiró en 2022), y en algunos casos llegó a introducir vulnerabilidades XSS en sitios que sin ella eran seguros. La protección real hoy la da una `Content-Security-Policy` bien configurada.
 
 ## WebSockets
 

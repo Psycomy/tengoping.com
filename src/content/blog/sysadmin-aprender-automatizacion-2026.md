@@ -1,5 +1,5 @@
 ---
-title: 'Por qué todo sysadmin debería aprender automatización en 2026'
+title: 'Por qué aprender automatización en 2026'
 description: 'Reflexión sobre la importancia de la automatización para los administradores de sistemas en el panorama tecnológico actual y cómo empezar.'
 author: 'alois'
 pubDate: 2026-01-20
@@ -112,5 +112,6 @@ Los perfiles que combinan conocimientos de sysadmin con habilidades de automatiz
 La automatización no reemplaza al sysadmin; lo potencia. Te permite dedicar tiempo a lo que realmente importa: diseñar soluciones robustas, mejorar la seguridad y resolver problemas complejos. Es la misma idea que desarrollamos al hablar de [la IA en la administración de sistemas](/blog/ia-administracion-sistemas-oportunidad-amenaza/): las herramientas cambian el trabajo del sysadmin, no lo eliminan.
 
 > El mejor momento para empezar a automatizar fue hace cinco años. El segundo mejor momento es hoy.
+
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

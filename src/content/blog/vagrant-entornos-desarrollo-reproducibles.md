@@ -12,15 +12,15 @@ draft: false
 
 ## El problema que resuelve Vagrant
 
-Cuantas veces has escuchado "en mi maquina funciona"? Vagrant elimina ese problema. Es una herramienta de HashiCorp que permite definir entornos de desarrollo como codigo: un fichero de texto (Vagrantfile) describe la maquina virtual, su configuracion y el software necesario. Cualquier miembro del equipo puede levantar un entorno identico con un solo comando.
+¿Cuántas veces has escuchado "en mi máquina funciona"? Vagrant elimina ese problema. Es una herramienta de HashiCorp que permite definir entornos de desarrollo como código: un fichero de texto (Vagrantfile) describe la máquina virtual, su configuración y el software necesario. Cualquier miembro del equipo puede levantar un entorno idéntico con un solo comando.
 
 A diferencia de un hipervisor tipo 1 como [Proxmox VE](/blog/proxmox-ve-hipervisor-casero/), Vagrant no es un hipervisor en sí mismo: trabaja sobre proveedores como VirtualBox, libvirt/KVM o VMware, abstrayendo las diferencias entre ellos para ofrecer un flujo de trabajo unificado.
 
-## Instalacion
+## Instalación
 
 ### Instalar Vagrant
 
-En distribuiciones basadas en Debian:
+En distribuciones basadas en Debian:
 
 ```bash
 wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
@@ -46,9 +46,9 @@ sudo apt install -y build-essential libvirt-dev libxslt-dev libxml2-dev zlib1g-d
 vagrant plugin install vagrant-libvirt
 ```
 
-Si prefieres VirtualBox, instalalo desde los repositorios de Oracle y Vagrant lo detectara automaticamente.
+Si prefieres VirtualBox, instálalo desde los repositorios de Oracle y Vagrant lo detectará automáticamente.
 
-Verifica la instalacion:
+Verifica la instalación:
 
 ```bash
 vagrant --version
@@ -56,14 +56,14 @@ vagrant --version
 
 ## Estructura del Vagrantfile
 
-El Vagrantfile es un fichero Ruby que define la configuracion de la VM. Crea un proyecto nuevo:
+El Vagrantfile es un fichero Ruby que define la configuración de la VM. Crea un proyecto nuevo:
 
 ```bash
 mkdir mi-proyecto && cd mi-proyecto
 vagrant init generic/debian12
 ```
 
-Esto genera un Vagrantfile basico. Editalo para ajustar los recursos:
+Esto genera un Vagrantfile básico. Edítalo para ajustar los recursos:
 
 ```ruby
 Vagrant.configure("2") do |config|
@@ -85,13 +85,13 @@ Vagrant.configure("2") do |config|
 end
 ```
 
-Los parametros clave:
+Los parámetros clave:
 
 - `config.vm.box`: imagen base de la VM (se descarga de Vagrant Cloud).
-- `config.vm.network`: red privada con IP fija y reenvio de puertos.
-- `config.vm.provider`: configuracion especifica de cada proveedor.
+- `config.vm.network`: red privada con IP fija y reenvío de puertos.
+- `config.vm.provider`: configuración específica de cada proveedor.
 
-## Ciclo de vida basico
+## Ciclo de vida básico
 
 ### Levantar la VM
 
@@ -123,7 +123,7 @@ Apaga la VM de forma limpia pero conserva el disco.
 vagrant destroy -f
 ```
 
-Elimina la VM por completo. La proxima vez que ejecutes `vagrant up` se creara desde cero.
+Elimina la VM por completo. La próxima vez que ejecutes `vagrant up` se creará desde cero.
 
 ### Ver el estado
 
@@ -134,7 +134,7 @@ vagrant global-status
 
 ## Aprovisionamiento con shell scripts
 
-Vagrant puede ejecutar scripts automaticamente al crear la VM. Anade esto al Vagrantfile:
+Vagrant puede ejecutar scripts automáticamente al crear la VM. Añade esto al Vagrantfile:
 
 ```ruby
 config.vm.provision "shell", inline: <<-SHELL
@@ -144,23 +144,23 @@ config.vm.provision "shell", inline: <<-SHELL
 SHELL
 ```
 
-Tambien puedes referenciar un script externo:
+También puedes referenciar un script externo:
 
 ```ruby
 config.vm.provision "shell", path: "scripts/setup.sh"
 ```
 
-El aprovisionamiento se ejecuta solo en el primer `vagrant up`. Para forzar su ejecucion posterior:
+El aprovisionamiento se ejecuta solo en el primer `vagrant up`. Para forzar su ejecución posterior:
 
 ```bash
 vagrant provision
 ```
 
-Vagrant soporta otros provisioners como [Ansible](/blog/automatizar-servidores-ansible-primeros-pasos/), Puppet o Chef, pero los scripts de shell son la opcion mas directa para empezar.
+Vagrant soporta otros provisioners como [Ansible](/blog/automatizar-servidores-ansible-primeros-pasos/), Puppet o Chef, pero los scripts de shell son la opción más directa para empezar.
 
-## Entornos multi-maquina
+## Entornos multi-máquina
 
-Un solo Vagrantfile puede definir varias VMs. Esto es muy util para simular arquitecturas completas (web + base de datos, por ejemplo):
+Un solo Vagrantfile puede definir varias VMs. Esto es muy útil para simular arquitecturas completas (web + base de datos, por ejemplo):
 
 ```ruby
 Vagrant.configure("2") do |config|
@@ -188,6 +188,15 @@ Vagrant.configure("2") do |config|
 end
 ```
 
+```
+Tu máquina (host)
+   │
+   │ red privada libvirt, 192.168.56.0/24
+   │
+   ├── web-server  192.168.56.10  → nginx
+   └── db-server   192.168.56.11  → postgresql
+```
+
 Gestiona cada VM por separado:
 
 ```bash
@@ -198,7 +207,7 @@ vagrant halt web
 
 ## Compartir boxes
 
-Si creas una configuracion util, puedes empaquetar la VM como una box reutilizable:
+Si creas una configuración útil, puedes empaquetar la VM como una box reutilizable:
 
 ```bash
 vagrant package --output mi-entorno.box
@@ -210,7 +219,7 @@ Otros miembros del equipo pueden importarla:
 vagrant box add mi-entorno mi-entorno.box
 ```
 
-Tambien puedes publicar boxes en Vagrant Cloud para compartirlas con la comunidad o con tu equipo de forma privada.
+También puedes publicar boxes en Vagrant Cloud para compartirlas con la comunidad o con tu equipo de forma privada.
 
 ## Comandos de referencia
 
@@ -226,9 +235,9 @@ vagrant box list         # boxes descargadas localmente
 vagrant package          # empaquetar VM como box
 ```
 
-## Conclusion
+## Conclusión
 
-Vagrant convierte la creacion de entornos de desarrollo en un proceso predecible y repetible. Con un Vagrantfile versionado en [Git](/blog/git-control-versiones-sysadmins/), todos los miembros del equipo trabajan sobre la misma base. Combinado con aprovisionamiento automatico, puedes tener un entorno completo funcionando en minutos.
+Vagrant convierte la creación de entornos de desarrollo en un proceso predecible y repetible. Con un Vagrantfile versionado en [Git](/blog/git-control-versiones-sysadmins/), todos los miembros del equipo trabajan sobre la misma base. Combinado con aprovisionamiento automático, puedes tener un entorno completo funcionando en minutos.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

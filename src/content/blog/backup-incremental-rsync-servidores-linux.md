@@ -1,5 +1,5 @@
 ---
-title: 'Backups incrementales con rsync en servidores Linux'
+title: 'Backups incrementales con rsync en Linux'
 description: 'Cómo implementar una estrategia de backups incrementales usando rsync y hardlinks para ahorrar espacio y tiempo en tus servidores.'
 author: 'antonio'
 pubDate: 2026-01-16
@@ -17,6 +17,24 @@ Hacer una copia completa cada día consume espacio rápidamente. Si un servidor 
 ## Cómo funciona rsync con hardlinks
 
 La opción `--link-dest` de rsync compara el backup actual con el anterior. Si un archivo no ha cambiado, crea un hardlink en vez de copiarlo. El resultado es que cada backup parece una copia completa, pero solo ocupa el espacio de los archivos modificados.
+
+```
+Primer backup: /backups/servidor01/2026-02-06_0300/
+   │
+   ▼
+1. rsync -avz --delete /datos/ /backups/servidor01/2026-02-06_0300/
+   → copia completa: no hay backup anterior con el que comparar
+   │
+   ▼
+2. Backups siguientes, con --link-dest apuntando al anterior:
+   rsync --link-dest=.../2026-02-06_0300 /datos/ .../2026-02-07_0300/
+   ├── archivo sin cambios     → hardlink al backup anterior (0 bytes extra)
+   └── archivo nuevo/modificado → se copia de verdad
+   │
+   ▼
+3. find /backups/servidor01 -mtime +$RETENCION -exec rm -rf {} \;
+   → los snapshots con más de $RETENCION días se eliminan
+```
 
 ## Script de backup incremental
 

@@ -10,7 +10,7 @@ image: '../../assets/images/homelab-hardware.jpg'
 draft: false
 ---
 
-## Que es un homelab
+## Qué es un homelab
 
 Un homelab es un laboratorio doméstico donde experimentas con tecnología de servidores, redes y servicios que normalmente encontrarías en un entorno empresarial. Puede ser algo tan sencillo como una Raspberry Pi corriendo [Pi-hole](/blog/pihole-bloqueo-publicidad-red/) o tan complejo como un rack con varios servidores, switches gestionables y almacenamiento compartido. El objetivo es aprender, practicar y autohospedar servicios sin depender de la nube.
 
@@ -46,7 +46,7 @@ Equivalentes a los PowerEdge de Dell. Los modelos Gen9 y Gen10 ofrecen procesado
 
 El inconveniente principal de estos servidores es el ruido y el consumo. Un R730 en reposo puede consumir entre 100 y 150W y sus ventiladores son audibles. No es ideal si el homelab está en el salón o el dormitorio.
 
-## RAM y CPU: que priorizar
+## RAM y CPU: qué priorizar
 
 Para virtualización con [Proxmox](/blog/proxmox-ve-hipervisor-casero/), ESXi o KVM, la RAM es generalmente más importante que la CPU. Cada máquina virtual o contenedor necesita su porción de memoria, y quedarse sin RAM es el cuello de botella más habitual.
 
@@ -102,7 +102,7 @@ Si vas a mover archivos grandes entre equipos, considera tarjetas de red y switc
 ethtool eth0 | grep Speed
 ```
 
-## Consumo electrico y ruido
+## Consumo eléctrico y ruido
 
 El consumo eléctrico es un factor que muchos ignoran hasta que llega la factura. La diferencia entre opciones es considerable:
 
@@ -116,10 +116,10 @@ El consumo eléctrico es un factor que muchos ignoran hasta que llega la factura
 Para calcular el coste anual aproximado:
 
 ```bash
-# Formula: Vatios * 24h * 365 dias / 1000 * precio_kWh
+# Fórmula: Vatios * 24h * 365 días / 1000 * precio_kWh
 # Ejemplo: mini PC a 12W con electricidad a 0.15 EUR/kWh
 echo "scale=2; 12 * 24 * 365 / 1000 * 0.15" | bc
-# Resultado: 15.76 EUR/anio
+# Resultado: 15.76 EUR/año
 ```
 
 Un servidor enterprise a 150W con el mismo precio de electricidad cuesta unos 197 EUR al año solo en electricidad. Merece la pena tenerlo en cuenta.
@@ -141,7 +141,7 @@ Un servidor enterprise a 150W con el mismo precio de electricidad cuesta unos 19
 - Dos mini PCs para cluster + switch gestionable + NAS dedicado con 2 discos en RAID 1
 - Ideal para: Kubernetes casero, alta disponibilidad, almacenamiento redundante
 
-## Conclusion
+## Conclusión
 
 No necesitas gastar una fortuna para montar un homelab funcional. Un mini PC de segunda mano con suficiente RAM puede ser todo lo que necesitas para empezar. Prioriza la RAM sobre la CPU, elige SSD para el sistema y HDDs para almacenamiento masivo, y ten siempre en cuenta el consumo eléctrico a largo plazo. El mejor homelab es el que usas, no el que tiene más luces LED en un rack.
 
