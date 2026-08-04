@@ -1,6 +1,6 @@
 ---
 title: 'Proxmox VE Helper-Scripts: guía y buenas prácticas'
-description: 'Qué son los Proxmox VE Helper-Scripts de community-scripts.org, cómo instalar apps en LXC con un solo comando y qué riesgos de seguridad debes valorar.'
+description: 'Qué son los Proxmox VE Helper-Scripts de community-scripts.org, cómo despliegan LXC y VMs con un solo comando y qué riesgos de seguridad debes valorar.'
 author: 'antonio'
 pubDate: 2026-08-04
 category: 'Virtualización'
@@ -9,7 +9,7 @@ image: '../../assets/images/virt-proxmox.jpg'
 draft: false
 ---
 
-Los Proxmox VE Helper-Scripts son una colección de scripts Bash mantenida por la comunidad en [community-scripts.org](https://community-scripts.org/) que despliegan contenedores LXC con aplicaciones autohospedadas ya configuradas, con un único comando pegado en el shell de Proxmox. Lo que antes eran quince o veinte minutos creando un contenedor a mano, instalando dependencias y ajustando la red, se reduce a copiar una línea y esperar. A cambio, estás ejecutando código de terceros como root en tu hipervisor, así que conviene entender qué hace el script antes de pegarlo.
+Los Proxmox VE Helper-Scripts son una colección de scripts Bash mantenida por la comunidad en [community-scripts.org](https://community-scripts.org/) que despliegan aplicaciones autohospedadas ya configuradas —en contenedores LXC o en máquinas virtuales QEMU, según el script— con un único comando pegado en el shell de Proxmox. Lo que antes eran quince o veinte minutos creando un contenedor o una VM a mano, instalando dependencias y ajustando la red, se reduce a copiar una línea y esperar. A cambio, estás ejecutando código de terceros como root en tu hipervisor, así que conviene entender qué hace el script antes de pegarlo.
 
 ## Qué son los Proxmox VE Helper-Scripts
 
@@ -55,7 +55,7 @@ $ bash -c "$(curl -fsSL .../ct/adguard.sh)"
 5. Contenedor listo, con AdGuard Home escuchando en su IP
 ```
 
-Este mismo patrón —descarga, `build.func`, creación del contenedor, script de `install/`— es común a los cerca de 400 scripts del repositorio; solo cambia qué instala el paso 4.
+Este patrón —descarga, `build.func`, `pct create`, script de `install/`— es el que siguen los scripts de `ct/`, que son la mayoría del repositorio; solo cambia qué instala el paso 4. Los scripts de `vm/` comparten la misma capa de menú y validaciones, pero a partir de ahí el flujo es distinto, como se explica a continuación.
 
 ### Personalizar recursos sin usar el menú
 
@@ -75,7 +75,7 @@ El script detecta que el contenedor ya existe y ejecuta la rutina de actualizaci
 
 ## Máquinas virtuales y herramientas del host
 
-No todo el catálogo crea contenedores LXC. Los scripts de `vm/` crean máquinas virtuales QEMU completas, útiles cuando la aplicación necesita passthrough de hardware, un kernel propio o simplemente no está pensada para correr en un contenedor (por ejemplo, sistemas operativos completos como openSUSE o Home Assistant OS). Si ya usas máquinas virtuales fuera de Proxmox, la lógica es la misma que la que se explica en [KVM y libvirt: virtualización nativa en Linux](/blog/kvm-libvirt-virtualizacion-nativa-linux/) — Proxmox añade encima una capa de gestión y estos scripts automatizan la creación de la VM sobre esa base.
+No todo el catálogo crea contenedores LXC: un grupo más reducido de scripts, agrupados en `vm/`, crea máquinas virtuales QEMU completas en su lugar, útiles cuando la aplicación necesita passthrough de hardware, un kernel propio o simplemente no está pensada para correr en un contenedor (por ejemplo, sistemas operativos completos como openSUSE o Home Assistant OS). El flujo interno cambia respecto al de los contenedores: en vez de `pct create`, estos scripts usan `qm create` para definir la VM y, en muchos casos, descargan e importan directamente una imagen de disco ya preparada (un `.qcow2`, por ejemplo) con `qm disk import`, en lugar de ejecutar un script de `install/` dentro del invitado — la aplicación ya viene lista en esa imagen. Si ya usas máquinas virtuales fuera de Proxmox, la lógica de fondo es la misma que la que se explica en [KVM y libvirt: virtualización nativa en Linux](/blog/kvm-libvirt-virtualizacion-nativa-linux/) — Proxmox añade encima una capa de gestión y estos scripts automatizan la creación de la VM sobre esa base.
 
 Por otro lado, `tools/pve/` no toca los invitados: configura el propio nodo Proxmox. El más usado es el script de post-instalación:
 
