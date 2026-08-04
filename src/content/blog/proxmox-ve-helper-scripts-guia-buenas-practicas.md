@@ -13,13 +13,13 @@ Los Proxmox VE Helper-Scripts son una colección de scripts Bash mantenida por l
 
 ## Qué son los Proxmox VE Helper-Scripts
 
-El proyecto nació como el repositorio personal de [tteck](https://github.com/tteck), que durante años fue la referencia para automatizar despliegues en Proxmox VE. Tras su fallecimiento a finales de 2024, la comunidad archivó el repositorio original de mutuo acuerdo con él y continuó el trabajo bajo la organización [community-scripts/ProxmoxVE](https://github.com/community-scripts/ProxmoxVE) en GitHub, con licencia MIT y mantenimiento por voluntarios. Hoy el repositorio supera los 400 scripts, organizados en varias carpetas según lo que crean:
+El proyecto nació como el repositorio personal de [tteck](https://github.com/tteck), que durante años fue la referencia para automatizar despliegues en Proxmox VE. Tras su fallecimiento a finales de 2024, la comunidad archivó el repositorio original de mutuo acuerdo con él y continuó el trabajo bajo la organización [community-scripts/ProxmoxVE](https://github.com/community-scripts/ProxmoxVE) en GitHub, con licencia MIT y mantenimiento por voluntarios. Hoy el repositorio suma más de 500 scripts solo para desplegar aplicaciones, organizados en varias carpetas según lo que crean:
 
 - `ct/` — contenedores LXC (la mayoría de los scripts)
 - `vm/` — máquinas virtuales QEMU completas
-- `install/` — lógica de instalación que usan los scripts de `ct/`
+- `install/` — lógica de instalación que usan los scripts de `ct/`, uno por aplicación (`adguard-install.sh`, `docker-install.sh`...)
 - `tools/pve/` — scripts que configuran el propio host Proxmox, no un invitado
-- `turnkey/` — plantillas TurnKey Linux preconfiguradas
+- `turnkey/` — un único script (`turnkey.sh`) que despliega como LXC cualquier plantilla TurnKey Linux disponible, en vez de un script por aplicación
 
 Cada aplicación tiene su propia ficha en community-scripts.org con la descripción, los recursos por defecto (CPU, RAM, disco) y el comando exacto para instalarla.
 
