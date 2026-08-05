@@ -1,8 +1,9 @@
 ---
 title: 'Automatizar servidores con Ansible: primeros pasos'
-description: 'Guía de inicio con Ansible para automatizar la configuración y gestión de servidores Linux de forma declarativa.'
+description: 'Ansible desde cero: comandos ad-hoc, playbooks, roles, variables por grupo, bucles y secretos con ansible-vault, paso a paso.'
 author: 'antonio'
 pubDate: 2026-01-08
+updatedDate: 2026-08-05
 category: 'Automatización'
 tags: ['Ansible', 'Automatización', 'DevOps', 'Linux']
 image: '../../assets/images/auto-ansible.jpg'
@@ -49,6 +50,18 @@ web2.tengoping.com
 [dbservers]
 db1.tengoping.com
 ```
+
+## Comandos ad-hoc: antes de escribir un playbook
+
+Para una tarea de una sola vez no hace falta un playbook — un comando ad-hoc aplica un módulo directamente contra el inventario:
+
+```bash
+ansible webservers -m ping                              # comprueba conectividad SSH + Python
+ansible webservers -a "uptime"                           # ejecuta un comando arbitrario
+ansible webservers -m package -a "name=htop state=present" --become
+```
+
+Es la forma más rápida de verificar que el inventario y las credenciales SSH están bien configurados antes de escribir nada más elaborado, y sigue siendo útil después para comprobaciones puntuales que no merece la pena convertir en un playbook.
 
 ## Primer playbook
 
@@ -162,6 +175,75 @@ Con el role creado, `site.yml` queda mucho más corto — solo referencia el rol
 ```
 
 Pasa a roles cuando un playbook empieza a repetir las mismas tareas en varios proyectos, cuando crece tanto que cuesta encontrar nada en él, o cuando quieres compartir una configuración probada con otro equipo o publicarla en Ansible Galaxy.
+
+## Variables por grupo y por host
+
+En vez de repetir valores dentro del playbook, `group_vars/` y `host_vars/` los definen fuera, según a quién apliquen. Ansible los carga automáticamente si el nombre del archivo coincide con el grupo o host del inventario:
+
+```
+inventory/
+├── hosts
+├── group_vars/
+│   └── webservers.yml   # variables para todo el grupo [webservers]
+└── host_vars/
+    └── web1.tengoping.com.yml   # variables solo para ese host
+```
+
+```yaml
+# group_vars/webservers.yml
+nginx_worker_processes: auto
+nginx_port: 80
+```
+
+Dentro de una tarea o plantilla, se referencian igual que cualquier otra variable: `{{ nginx_port }}`.
+
+## Bucles
+
+Para repetir una tarea con distintos valores, `loop` es la forma recomendada actualmente (la sintaxis más antigua `with_items` sigue funcionando, pero `loop` es la que documenta Ansible como estándar):
+
+```yaml
+- name: Instalar varios paquetes
+  ansible.builtin.package:
+    name: '{{ item }}'
+    state: present
+  loop:
+    - htop
+    - curl
+    - vim
+```
+
+## Secretos con ansible-vault
+
+Una contraseña de base de datos o una clave de API no deberían acabar en texto plano en un repositorio Git, ni siquiera privado. `ansible-vault` cifra archivos o valores individuales:
+
+```bash
+ansible-vault encrypt_string --vault-password-file ~/.vault_pass 'S3cr3t0!' --name 'db_password'
+ansible-vault edit group_vars/dbservers/vault.yml --vault-password-file ~/.vault_pass
+```
+
+```bash
+ansible-playbook site.yml --vault-password-file ~/.vault_pass
+```
+
+> [!CAUTION]
+> El archivo de contraseña del vault (`~/.vault_pass` en estos ejemplos) nunca debe subirse al repositorio — añádelo a `.gitignore`. Es la clave que descifra todos los secretos del proyecto; si se filtra, todos los secretos cifrados con ella quedan comprometidos.
+
+## Ejecución selectiva con tags
+
+Cuando un playbook crece y no quieres re-ejecutar todas sus tareas cada vez, las `tags` permiten lanzar solo un subconjunto:
+
+```yaml
+- name: Desplegar configuración personalizada
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  tags: [config]
+```
+
+```bash
+ansible-playbook site.yml --tags config    # solo las tareas etiquetadas "config"
+ansible-playbook site.yml --skip-tags config   # todo menos esas
+```
 
 ## Conclusión
 

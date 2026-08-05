@@ -1,9 +1,9 @@
 ---
 title: 'Proxy inverso con Nginx: guía práctica'
-description: 'Aprende a configurar Nginx como proxy inverso para redirigir tráfico a tus aplicaciones internas con HTTPS, cabeceras y balanceo de carga.'
+description: 'Nginx como proxy inverso: subidas de archivos grandes, timeouts, rate limiting, gzip y el clásico 502 por SELinux en RHEL.'
 author: 'antonio'
 pubDate: 2026-01-09
-updatedDate: 2026-07-27
+updatedDate: 2026-08-05
 category: 'Redes'
 tags: ['Nginx', 'Proxy', 'Redes', 'Sysadmin']
 image: '../../assets/images/redes-proxy.jpg'
@@ -145,6 +145,60 @@ server {
 
 El tercer servidor con `backup` solo recibe tráfico si los dos primeros están caídos.
 
+## Subidas grandes y timeouts
+
+Dos ajustes por defecto de Nginx sorprenden en cuanto proxeas algo más que una web ligera: el tamaño máximo de subida (`client_max_body_size`) es de solo **1 MB**, y los timeouts de proxy son de **60 segundos**. Detrás de un [Nextcloud](/blog/nextcloud-servidor-nube-personal/), por ejemplo, ambos límites se alcanzan enseguida — el primero al subir cualquier archivo de más de 1 MB (error 413), el segundo en operaciones largas como sincronizar una carpeta con muchos archivos:
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name app.ejemplo.com;
+
+    client_max_body_size 512M;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 300s;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+`client_max_body_size` puede ajustarse en `http`, `server` o `location` — cuanto más cerca del `location` concreto que lo necesita, menos abres el límite en el resto del sitio.
+
+## Limitar la tasa de peticiones
+
+Para frenar abuso o fuerza bruta contra un endpoint concreto (un login, una API pública) sin depender solo de [fail2ban](/blog/configurar-fail2ban-proteger-servicios/) a nivel de conexión:
+
+```nginx
+# en el bloque http {} — define la zona compartida y el límite
+limit_req_zone $binary_remote_addr zone=login:10m rate=1r/s;
+
+server {
+    # ...
+    location /login {
+        limit_req zone=login burst=5 nodelay;
+        proxy_pass http://127.0.0.1:3000;
+    }
+}
+```
+
+`rate=1r/s` fija el ritmo sostenido permitido por IP; `burst=5` deja pasar hasta 5 peticiones de golpe por encima de ese ritmo antes de empezar a rechazar, y `nodelay` las procesa inmediatamente en vez de encolarlas artificialmente.
+
+## Compresión con gzip
+
+```nginx
+gzip on;
+gzip_types text/plain text/css application/json application/javascript text/xml application/xml;
+gzip_min_length 1024;
+```
+
+Comprime las respuestas de texto antes de enviarlas, reduciendo el tráfico en respuestas de API y assets estáticos que el backend no comprima ya por su cuenta. `gzip_min_length` evita gastar CPU comprimiendo respuestas tan pequeñas que no compensa.
+
 ## Cabeceras de seguridad
 
 Añade estas cabeceras a nivel global o por servidor:
@@ -182,6 +236,20 @@ location /ws {
 sudo nginx -t
 sudo systemctl reload nginx
 ```
+
+## 502 Bad Gateway: las dos causas más comunes
+
+Un 502 significa que Nginx sí recibió la petición, pero no consiguió comunicarse con el backend. Antes de sospechar de la aplicación:
+
+1. **El backend no está escuchando** — confírmalo con `curl http://127.0.0.1:3000` desde el propio servidor; si falla ahí, el problema es la aplicación o su puerto, no Nginx.
+2. **SELinux bloqueando la conexión saliente** (RHEL/Rocky/Oracle Linux con SELinux en modo `enforcing`) — la política por defecto no permite que Nginx abra conexiones de red salientes hacia el backend. Se ve en el log de Nginx como `connect() failed (13: Permission denied)`, y se soluciona habilitando el booleano correspondiente:
+
+```bash
+sudo setsebool -P httpd_can_network_connect 1
+```
+
+> [!NOTE]
+> `httpd_can_network_connect` permite conectar a cualquier puerto TCP; si tu backend corre en un puerto ya etiquetado como HTTP (80, 443, 8008, 8443, 9000), el booleano más restrictivo `httpd_can_network_relay` cubre el caso sin abrir tanto. Para el resto de puertos (3000, 5000, 8080...) necesitas `httpd_can_network_connect`.
 
 ## Conclusión
 

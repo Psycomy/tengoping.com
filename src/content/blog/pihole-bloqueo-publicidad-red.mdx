@@ -1,9 +1,9 @@
 ---
 title: 'Pi-hole: bloquea publicidad en toda tu red'
-description: 'Cómo instalar Pi-hole como servidor DNS local para filtrar publicidad y rastreadores en todos los dispositivos de tu red.'
+description: 'Pi-hole a fondo: por qué el DoH del navegador lo esquiva, DNS local para tu LAN, Teleporter y qué revisar si no bloquea.'
 author: 'antonio'
 pubDate: 2026-02-04
-updatedDate: 2026-07-27
+updatedDate: 2026-08-05
 category: 'Self-Hosting'
 tags: ['Pi-hole', 'DNS', 'Self-Hosting', 'Redes']
 image: '../../assets/images/pihole-dns.jpg'
@@ -50,6 +50,16 @@ Para que todos los dispositivos usen Pi-hole sin configuración individual, acce
 - **DNS secundario**: déjalo vacío o pon la misma IP. Si pones un DNS externo como secundario, los dispositivos podrían usarlo y saltarse el filtrado.
 
 Reinicia el servicio DHCP del router para que los dispositivos renueven su configuración.
+
+> [!TIP]
+> Si tu router no permite cambiar el DNS que reparte por DHCP (algunos routers de operador lo bloquean), Pi-hole puede asumir directamente el papel de servidor DHCP de la red desde **Settings > DHCP**, sustituyendo al del router. En ese caso desactiva el DHCP del router primero, para evitar que dos servidores DHCP repartan IPs en conflicto en la misma red.
+
+## Resolver nombres de tu red local
+
+Pi-hole filtra dominios externos, pero por defecto no sabe resolver los nombres de tus propios dispositivos (`nas.local`, `proxmox.local`...). Dos formas de solucionarlo, según el caso:
+
+- **DNS local manual** — en **Local DNS > DNS Records**, añade a mano cada dominio con su IP (se guarda en `/etc/pihole/custom.list`). Útil para servicios con IP fija que no cambian.
+- **Conditional forwarding** — en **Settings > DNS**, activa "Conditional forwarding" e indica la IP de tu router y el rango de tu red local. Pi-hole reenvía al router las consultas de nombres que no reconoce, y el router responde con el hostname que ya conoce de cada dispositivo por DHCP — sin mantener una lista a mano.
 
 ## Panel de administración
 
@@ -132,6 +142,32 @@ sudo systemctl enable --now unbound
 ```
 
 En el panel de Pi-hole, ve a **Settings > DNS** y configura como upstream personalizado `127.0.0.1#5335`. Desactiva los demás proveedores.
+
+## Por qué algunos navegadores se saltan el bloqueo
+
+> [!WARNING]
+> Chrome y otros navegadores basados en Chromium activan DNS-over-HTTPS (DoH) por defecto en muchas configuraciones, y cuando lo hacen dejan de usar el DNS que reparte tu red — cifran la consulta y la mandan directamente a un proveedor como Google o Cloudflare, saltándose Pi-hole por completo. Firefox también soporta DoH, pero respeta el DNS de la red si detecta un resolutor de filtrado de contenido activo; Chrome no hace esa detección automática, así que es el que más sorprende cuando "Pi-hole no bloquea nada" en ese navegador en concreto mientras sí funciona en el resto de dispositivos.
+
+Para que el navegador vuelva a usar Pi-hole, desactiva el DNS seguro a mano en su configuración (`chrome://settings/security` en Chrome, buscando "DNS seguro"; `about:preferences#privacy` en Firefox, sección DNS sobre HTTPS) o gestiónalo de forma centralizada por política si administras varios equipos.
+
+## Copia de seguridad con Teleporter
+
+Antes de tocar la configuración de gravity o migrar a otro equipo, exporta una copia completa (listas, configuración, DNS local) con Teleporter:
+
+```bash
+sudo pihole-FTL --teleporter
+```
+
+Genera un archivo `.zip` en el directorio actual. Para restaurarlo, la vía soportada en Pi-hole v6 es subirlo desde el panel web en **Settings > Teleporter**, no la línea de comandos.
+
+## Si Pi-hole no está bloqueando nada
+
+Antes de sospechar de una lista de bloqueo desactualizada, comprueba en este orden:
+
+1. **¿El dispositivo usa realmente Pi-hole como DNS?** — `nslookup pi.hole` desde el dispositivo problemático; si falla o resuelve contra otra IP, el dispositivo no está usando Pi-hole (revisa DHCP o su configuración manual de DNS).
+2. **¿Es un navegador con DoH activo?** — ver la sección anterior; es la causa más habitual cuando solo falla un navegador y no el resto del tráfico del mismo dispositivo.
+3. **¿Gravity está actualizada?** — `pihole -g` y revisa que termine sin errores de descarga.
+4. **¿El dominio concreto está en alguna lista?** — usa **Query Log** en el panel o `pihole -q dominio.ejemplo.com` para ver si Pi-hole lo reconoce como bloqueado.
 
 ## Mantener Pi-hole actualizado
 

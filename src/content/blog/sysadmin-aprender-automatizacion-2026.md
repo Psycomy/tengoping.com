@@ -1,9 +1,9 @@
 ---
 title: 'Por qué aprender automatización en 2026'
-description: 'Reflexión sobre la importancia de la automatización para los administradores de sistemas en el panorama tecnológico actual y cómo empezar.'
+description: 'Por qué la automatización con Ansible, Terraform y Git dejó de ser opcional para un sysadmin, y por dónde empezar sin agobiarte.'
 author: 'alois'
 pubDate: 2026-01-20
-updatedDate: 2026-07-27
+updatedDate: 2026-08-05
 category: 'Opinión'
 tags: ['Automatización', 'DevOps', 'Ansible', 'Carrera profesional']
 image: '../../assets/images/sysadmin-automation.jpg'
@@ -83,6 +83,10 @@ log() {
 log "Iniciando mantenimiento programado"
 ```
 
+## Lo que la automatización no resuelve
+
+Nada de esto es una bala de plata, y vale la pena decirlo antes de que suene a discurso de vendedor. Automatizar un proceso mal diseñado solo consigue que el desastre ocurra más rápido y en más sitios a la vez. Y si eres el único sysadmin de una infraestructura pequeña, invertir dos semanas en aprender Ansible para gestionar tres servidores puede no compensar todavía — la automatización tiene sentido cuando el coste de repetir la tarea a mano (o el riesgo de hacerla mal) supera al coste de automatizarla una vez. La pregunta no es "¿debo automatizar esto?" en abstracto, sino "¿cuántas veces más voy a hacer esto a mano antes de que me compense escribirlo una vez?".
+
 ## Cómo empezar
 
 No necesitas aprenderlo todo de golpe. Mi recomendación:
@@ -93,9 +97,11 @@ No necesitas aprenderlo todo de golpe. Mi recomendación:
 4. **Documenta mientras automatizas**: los playbooks son documentación viva
 5. **Prueba en entornos de desarrollo** antes de tocar producción
 
+Un primer ejercicio realista, sin abstracciones: si cada pocos meses renuevas a mano un certificado con [Certbot](/blog/certificados-ssl-certbot-lets-encrypt/) en media docena de servidores, ese es exactamente el tipo de tarea "aburrida y repetitiva" que conviene convertir en un playbook de una tarea antes que cualquier proyecto ambicioso — pequeño, de bajo riesgo, y con un beneficio que notas la segunda vez que lo ejecutas.
+
 ## El impacto en tu carrera
 
-Los perfiles que combinan conocimientos de sysadmin con habilidades de automatización son los más demandados. No se trata de dejar de ser sysadmin, sino de ser un sysadmin más efectivo.
+Los perfiles que combinan conocimientos de sysadmin con habilidades de automatización son los más demandados. No se trata de dejar de ser sysadmin, sino de ser un sysadmin más efectivo. Y cuanto más automatizado tienes tu propio trabajo con herramientas como Ansible o Terraform, mejor preparado estás para sacarle partido a un asistente de IA cuando llega el momento de escribir o revisar ese código de automatización: entiendes exactamente qué debería hacer un playbook antes de pedirle a nadie, humano o modelo, que te ayude a escribirlo.
 
 ### Habilidades complementarias
 

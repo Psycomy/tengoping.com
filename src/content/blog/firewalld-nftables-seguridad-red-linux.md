@@ -1,8 +1,9 @@
 ---
 title: 'Firewalld, UFW y nftables en Linux'
-description: 'Aprende a configurar firewalld y nftables para proteger tus servidores Linux con reglas de filtrado de tráfico efectivas.'
+description: 'Firewalld, UFW y nftables: reglas permanentes vs runtime, rate limiting, persistencia tras reinicio y migración desde iptables.'
 author: 'antonio'
 pubDate: 2026-01-21
+updatedDate: 2026-08-05
 category: 'Redes'
 tags: ['Firewall', 'nftables', 'Seguridad', 'Redes']
 image: '../../assets/images/redes-firewall.jpg'
@@ -26,6 +27,19 @@ sudo firewall-cmd --get-active-zones
 ```bash
 sudo firewall-cmd --permanent --add-service=http
 sudo firewall-cmd --permanent --add-port=8080/tcp
+sudo firewall-cmd --reload
+```
+
+> [!IMPORTANT]
+> `--permanent` escribe la regla en el archivo de configuración, pero **no la aplica** a la sesión de firewall que ya está corriendo — necesitas `--reload` (que no corta conexiones existentes) o un reinicio del servicio para que pase a ser efectiva. Ejecutar el comando sin `--permanent` sí actúa al instante, pero se pierde en el próximo reinicio. Si necesitas probar algo puntual, aplícalo primero sin `--permanent` y, cuando confirmes que es la regla correcta, repítelo con `--permanent --reload`.
+
+### Reglas enriquecidas y NAT
+
+Cuando una zona no es suficientemente específica —por ejemplo, permitir un puerto solo desde una IP concreta— las rich rules añaden condiciones adicionales:
+
+```bash
+sudo firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="192.168.1.50" port port="5432" protocol="tcp" accept'
+sudo firewall-cmd --permanent --zone=public --add-masquerade   # NAT de salida, necesario si este host hace de router
 sudo firewall-cmd --reload
 ```
 
@@ -56,6 +70,24 @@ sudo ufw allow OpenSSH
 sudo ufw allow 80/tcp
 sudo ufw allow 8080/tcp
 sudo ufw reload
+```
+
+### Restringir por origen y limitar la tasa de conexión
+
+```bash
+sudo ufw allow from 192.168.1.0/24 to any port 22       # solo esa subred puede llegar a SSH
+sudo ufw limit ssh                                        # bloquea una IP que intente 6 conexiones en 30s
+```
+
+> [!TIP]
+> `ufw limit` es la forma más simple de mitigar fuerza bruta contra SSH sin instalar nada adicional — bloquea temporalmente al origen que se pase de umbral. Para un control más fino (tiempos de baneo configurables, múltiples servicios, notificaciones), la combinación habitual sigue siendo [fail2ban](/blog/configurar-fail2ban-proteger-servicios/) por encima del firewall.
+
+### Gestionar y eliminar reglas
+
+```bash
+sudo ufw status numbered      # ver el número de cada regla
+sudo ufw delete 3             # eliminar la regla número 3
+sudo ufw delete allow 8080/tcp  # o eliminar por especificación, sin buscar el número
 ```
 
 ## nftables: control total
@@ -103,13 +135,73 @@ sudo nft add rule inet filtro input iif lo accept
 sudo nft list ruleset
 ```
 
+### Persistir las reglas tras un reinicio
+
+Las reglas creadas con `nft add` viven solo en memoria: un reinicio las borra. Para que sobrevivan, se guardan en un archivo que el servicio `nftables` carga en cada arranque:
+
+```bash
+sudo sh -c 'nft list ruleset > /etc/nftables.conf'
+sudo systemctl enable --now nftables
+```
+
+### Conjuntos con nombre (sets)
+
+Cuando una regla necesita comparar contra una lista larga de valores —puertos, IPs—, un set con nombre es más legible y más rápido de evaluar que repetir la regla para cada valor:
+
+```bash
+sudo nft add set inet filtro puertos_permitidos { type inet_service \; }
+sudo nft add element inet filtro puertos_permitidos { 22, 80, 443 }
+sudo nft add rule inet filtro input tcp dport @puertos_permitidos accept
+```
+
+### NAT: masquerade para salida a internet
+
+Si este host hace de puerta de enlace para otra red (el mismo escenario que resuelve `--add-masquerade` en firewalld):
+
+```bash
+sudo nft add table ip nat
+sudo nft add chain ip nat postrouting { type nat hook postrouting priority 100 \; }
+sudo nft add rule ip nat postrouting oif "eth0" masquerade
+```
+
+### Migrar desde iptables
+
+Si ya tienes reglas de iptables escritas y quieres su equivalente en sintaxis nftables sin reescribirlas a mano, `iptables-translate` hace la conversión mecánica:
+
+```bash
+iptables-translate -A INPUT -p tcp --dport 22 -j ACCEPT
+# nft add rule ip filter INPUT tcp dport 22 counter accept
+```
+
+> [!NOTE]
+> La traducción es literal: convierte cada regla tal cual, sin aprovechar las ventajas propias de nftables (como fusionar reglas IPv4 e IPv6 en una sola tabla `inet`, tal como hace el ejemplo de este artículo). Sirve como punto de partida para migrar, no como configuración final optimizada.
+
+## Registrar los paquetes descartados
+
+Antes de dar por buena una política restrictiva conviene ver qué se está bloqueando, sobre todo mientras ajustas las reglas:
+
+```bash
+# firewalld
+sudo firewall-cmd --set-log-denied=all
+journalctl -k -f | grep -i 'FINAL_REJECT\|FINAL_DROP'
+
+# nftables: log explícito antes del drop, en la propia chain
+sudo nft add rule inet filtro input log prefix "drop-input: " counter drop
+```
+
+> [!TIP]
+> Registrar _todo_ lo descartado en un servidor con tráfico real puede llenar los logs rápido. Úsalo mientras depuras una política nueva y desactívalo (`--set-log-denied=off`) una vez confirmes que las reglas hacen lo esperado.
+
 ## ¿Cuál usar?
 
-| Escenario         | Recomendación                    |
-| ----------------- | -------------------------------- |
-| Servidor estándar | firewalld o ufw                  |
-| Reglas complejas  | nftables directo                 |
-| Entornos cloud    | security groups + firewall local |
+La elección depende más de la distro y la complejidad del escenario que de una preferencia técnica:
+
+| Escenario                                      | Recomendación                                                                                                                |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Servidor estándar RHEL/Rocky/derivados         | firewalld — ya viene integrado y las zonas encajan con el resto de herramientas de Red Hat                                   |
+| Servidor estándar Ubuntu/Debian                | ufw — sintaxis más directa, suficiente para reglas de puerto/servicio habituales                                             |
+| Reglas complejas (NAT, sets, múltiples chains) | nftables directo — firewalld y ufw son frontends sobre nftables, y para lógica avanzada conviene saltarse la capa intermedia |
+| Entornos cloud (AWS, GCP, Azure...)            | security groups del proveedor + firewall local como segunda capa, nunca solo uno de los dos                                  |
 
 ## Conclusión
 
