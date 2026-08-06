@@ -9,7 +9,7 @@ image: '../../assets/images/virt-k3s.jpg'
 draft: false
 ---
 
-K3s es una distribución de Kubernetes empaquetada en un único binario de menos de 70 MB, pensada para entornos con recursos limitados: edge, IoT y, muy especialmente, el homelab. Si ya tienes claro cómo levantar VMs con [Proxmox VE](/blog/proxmox-ve-hipervisor-casero/) o contenedores de sistema con [Incus/LXC](/blog/incus-lxc-contenedores-sistema-linux/), K3s añade una capa distinta encima: orquestación de múltiples nodos y pods, no una máquina virtual ni un contenedor aislado.
+K3s es una distribución de Kubernetes empaquetada en un único binario de menos de 70 MB, pensada para entornos con recursos limitados: edge, IoT y, muy especialmente, el homelab. Su función principal sigue siendo la misma que la de cualquier Kubernetes: orquestar contenedores de aplicación — las mismas imágenes OCI que ya generas con [Docker](/blog/docker-guia-practica-contenedores-linux/) o [Podman](/blog/introduccion-contenedores-podman-linux/) — repartiéndolos entre varias máquinas, reiniciándolos si fallan y balanceando la carga entre ellas. Si ya tienes claro cómo levantar VMs con [Proxmox VE](/blog/proxmox-ve-hipervisor-casero/) o contenedores de sistema con [Incus/LXC](/blog/incus-lxc-contenedores-sistema-linux/), piensa en K3s como la capa que decide _qué_ contenedores de aplicación corren y _dónde_, mientras que Proxmox o Incus/LXC son solo el sustrato — la máquina (virtual o de sistema) — sobre el que corre cada nodo del clúster.
 
 ## Qué es K3s y por qué no es lo mismo que un hipervisor o un contenedor
 
@@ -21,7 +21,9 @@ K3s, desarrollado originalmente por Rancher Labs y hoy proyecto de la CNCF, es u
 - **Flannel** como plugin de red (CNI) por defecto, en vez de dejarte elegir entre varias opciones.
 - **Traefik** como controlador de ingress por defecto, junto con un balanceador de servicio ligero propio (ServiceLB, antes llamado Klipper) que expone servicios `LoadBalancer` sin depender de un balanceador externo como MetalLB.
 
-Esto es justo lo que diferencia a K3s de lo que ya cubrimos en el blog: Proxmox VE es un hipervisor tipo 1, virtualiza hardware completo para correr sistemas operativos enteros; Incus/LXC gestiona contenedores de sistema, procesos aislados que comparten el kernel del host. K3s no virtualiza ni aísla un único sistema — orquesta _varios_ nodos (que perfectamente pueden ser VMs de Proxmox o contenedores LXC) y decide en cuál de ellos ejecutar cada pod, cómo reiniciarlo si falla y cómo exponerlo en red. Es una capa de orquestación que se apoya encima de las capas de virtualización o contenedor de sistema, no un sustituto de ellas.
+Aquí es donde conviene ser preciso sobre qué orquesta realmente Kubernetes, porque es fácil confundir capas. Un **pod** —la unidad mínima que programa K3s— es, en la práctica, uno o más contenedores de aplicación: el mismo tipo de contenedor OCI que arrancarías con `docker run` o `podman run`, ejecutado por `containerd` (el runtime que K3s trae embebido). De hecho, una imagen construida con `docker build` funciona sin cambios en un pod de K3s, porque ambos cumplen la especificación OCI de imágenes — es la razón por la que Kubernetes dejó de depender de Docker como runtime desde la versión 1.24 sin que ningún `Dockerfile` existente dejara de funcionar. Si ya conoces [Docker](/blog/docker-guia-practica-contenedores-linux/) o [Podman](/blog/introduccion-contenedores-podman-linux/), la función de K3s no es sustituir esa capa, sino decidir en cuál de varias máquinas ejecutar cada uno de esos contenedores, reiniciarlos si fallan y exponerlos en red — algo que Docker/Podman por sí solos no hacen cuando tienes más de un host.
+
+Esas "varias máquinas" (nodos, en la jerga de Kubernetes) son la otra capa, y es donde entran Proxmox e Incus/LXC — pero solo como el sustrato, no como lo que se orquesta. Proxmox VE es un hipervisor tipo 1, virtualiza hardware completo para correr sistemas operativos enteros; Incus/LXC gestiona contenedores de sistema, procesos aislados que comparten el kernel del host. Un nodo K3s puede ser una VM de Proxmox con Linux instalado, un servidor físico, o —con matices, ver más abajo— un contenedor LXC. K3s no impone nada sobre esa capa: solo necesita un Linux con acceso de red al servidor. Es una capa de orquestación de contenedores de aplicación que se apoya encima de las capas de virtualización o contenedor de sistema, no un sustituto de ellas.
 
 ## Arquitectura de un clúster K3s
 
@@ -42,7 +44,10 @@ Traefik (ingress controller, incluido por defecto)
    └── expone los Services hacia el resto de la red del homelab
 ```
 
-Cada nodo agente puede ser, por ejemplo, una VM ligera creada en Proxmox o un contenedor LXC con Incus — K3s no impone nada sobre qué hay debajo, solo necesita un Linux con acceso de red al servidor.
+Cada nodo agente puede ser, por ejemplo, una VM ligera creada en Proxmox — la opción más simple y la que se usa en el resto de este artículo.
+
+> [!WARNING]
+> También es posible correr K3s dentro de un contenedor LXC/Incus, pero no es un caso equivalente a una VM: K3s necesita gestionar sus propias interfaces de red y cgroups, así que el contenedor debe ser **privilegiado** (sin la opción "unprivileged"), con _nesting_ habilitado y AppArmor desactivado. En un contenedor privilegiado, un escape de root desde dentro da acceso de root al host — un riesgo real que no existe con una VM. Si no tienes una razón concreta para ahorrar los recursos de una VM completa, usa VMs para los nodos de K3s.
 
 ## Requisitos previos
 
@@ -61,7 +66,7 @@ Según los requisitos oficiales de K3s (`docs.k3s.io/installation/requirements`)
 
 ### 1. Instalar el nodo servidor
 
-En la máquina que hará de control plane (una VM de Proxmox, un LXC de Incus o un servidor físico), ejecuta el script de instalación oficial:
+En la máquina que hará de control plane (una VM de Proxmox o un servidor físico), ejecuta el script de instalación oficial:
 
 ```bash
 curl -sfL https://get.k3s.io | sh -
@@ -255,7 +260,7 @@ sudo /usr/local/bin/k3s-agent-uninstall.sh
 
 ## Siguiente paso
 
-K3s no sustituye a Proxmox ni a Incus/LXC, se apoya en ellos: puedes seguir usando Proxmox para tus VMs de infraestructura y montar un puñado de esas VMs (o LXCs) como nodos de un clúster K3s dedicado a las aplicaciones que quieras orquestar con réplicas, reinicios automáticos y despliegues declarativos en YAML. Empieza con un servidor y un par de agentes, valida el flujo completo con una app sencilla como la de este artículo, y añade nodos o alta disponibilidad solo cuando el homelab realmente lo demande.
+K3s no sustituye a Docker, Podman, Proxmox ni Incus/LXC — se apoya en todos ellos, cada uno en su capa: Docker o Podman para construir tus imágenes, Proxmox para las VMs que harán de nodos, y K3s para decidir en cuál de esas VMs corre cada contenedor y mantenerlo vivo. Empieza con un servidor y un par de agentes, valida el flujo completo con una app sencilla como la de este artículo, y añade nodos o alta disponibilidad solo cuando el homelab realmente lo demande.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.
