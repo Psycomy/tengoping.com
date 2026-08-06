@@ -18,7 +18,7 @@ const { posts } = Astro.props;
           {post.data.image ? (
             <Image
               src={post.data.image}
-              alt={post.data.title}
+              alt=""
               class="slide-image"
               loading={i === 0 ? 'eager' : 'lazy'}
               fetchpriority={i === 0 ? 'high' : 'auto'}
@@ -30,7 +30,7 @@ const { posts } = Astro.props;
           ) : (
             <img
               src="/images/placeholder-article.svg"
-              alt={post.data.title}
+              alt=""
               class="slide-image"
               loading={i === 0 ? 'eager' : 'lazy'}
               width="1200"

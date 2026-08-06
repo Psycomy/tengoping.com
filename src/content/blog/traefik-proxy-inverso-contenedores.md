@@ -18,7 +18,7 @@ Si ya sigues la guía de [proxy inverso con Nginx](/blog/proxy-inverso-nginx-gui
 - **Nginx:** la configuración vive centralizada en ficheros que tú mantienes; añadir un servicio nuevo implica editar y recargar Nginx.
 - **Traefik:** la configuración vive distribuida, junto a cada servicio, como labels de su propio contenedor; añadir un servicio nuevo es lanzar el contenedor con las labels correctas — Traefik lo detecta solo, sin reiniciar nada.
 
-Ninguno sustituye al otro en todos los casos: Nginx sigue siendo la opción más simple para un puñado de sitios estáticos que casi nunca cambian; Traefik gana claramente cuando tienes muchos contenedores que se crean y destruyen con frecuencia (staging dinámico, homelabs con varios stacks de Docker Compose).
+Ninguno sustituye al otro en todos los casos: Nginx sigue siendo la opción más simple para un puñado de sitios estáticos que casi nunca cambian; Traefik gana claramente cuando tienes muchos contenedores que se crean y destruyen con frecuencia (staging dinámico, homelabs con varios stacks de Docker Compose). Si lo que buscas es ese mismo descubrimiento automático pero con una configuración más simple que la de Traefik, échale un ojo a [Caddy](/blog/caddy-proxy-inverso-https-automatico/), que también gestiona certificados HTTPS solo.
 
 ## Arquitectura: entryPoints, routers y services
 

@@ -19,7 +19,10 @@ from PIL import Image
 SCRIPT_DIR = Path(__file__).parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 CONTENT_DIR = PROJECT_ROOT / "src" / "content" / "blog"
-PUBLIC_IMAGES_DIR = PROJECT_ROOT / "public" / "images" / "blog"
+# Las imágenes ilustrativas viven en src/assets/images/blog para que Astro
+# las optimice (resize, AVIF, width/height reales) vía el componente Figure,
+# que las resuelve a partir de la ruta pública "/images/blog/...".
+ASSETS_IMAGES_DIR = PROJECT_ROOT / "src" / "assets" / "images" / "blog"
 MAX_WIDTH = 1600
 
 
@@ -179,22 +182,16 @@ def main() -> None:
     raw_alt = input(f"\nTexto alternativo [{default_alt}]: ").strip()
     alt = raw_alt if raw_alt else default_alt
 
-    # Tipo de inserción
-    kind_idx = _ask_choice(
-        "Tipo de inserción:",
-        ["imagen suelta", "figura con caption"],
-    )
-    kind = "simple" if kind_idx == 0 else "figure"
-
-    caption: str | None = None
-    if kind == "figure":
-        caption = input("\nCaption: ").strip() or None
+    # Siempre se inserta como <Figure>: es el único mecanismo que Astro
+    # optimiza para las imágenes ilustrativas (ver src/components/Figure.astro).
+    kind = "figure"
+    caption = input("\nCaption (opcional, Enter para omitir): ").strip() or None
 
     # Destino
     stem = _slug_from_filename(src_path.name)
     if not stem:
         stem = src_path.stem  # fallback al nombre original sin normalizar
-    dest = PUBLIC_IMAGES_DIR / post_slug / f"{stem}.webp"
+    dest = ASSETS_IMAGES_DIR / post_slug / f"{stem}.webp"
 
     # Resolver conflicto si existe
     dest = _resolve_conflict(dest, PROJECT_ROOT)
@@ -204,18 +201,16 @@ def main() -> None:
 
     # Convertir y guardar
     kb = convert_and_save(str(src_path), str(dest))
-    public_path = "/" + dest.relative_to(PROJECT_ROOT / "public").as_posix()
+    # Ruta pública sintética: Figure.astro la resuelve contra
+    # src/assets/images/blog, no es una ruta real servida desde /public.
+    public_path = "/images/blog/" + dest.relative_to(ASSETS_IMAGES_DIR).as_posix()
 
     print(f"\n✓ {dest.relative_to(PROJECT_ROOT)} ({kb} KB)")
-    ext = "x" if kind == "figure" else ""
-    print(f"\nCopia esto en tu .md{ext}:\n")
-    if kind == "figure":
-        print('import Figure from \'@components/Figure.astro\';\n')
+    print("\nCopia esto en tu .mdx:\n")
+    print('import Figure from \'@components/Figure.astro\';\n')
     print(build_snippet(public_path, alt, kind, caption))
-
-    if kind == "figure":
-        print("\nNota: <Figure> requiere que el artículo sea .mdx, no .md")
-        print("      Añade el import al principio del artículo si no está ya.")
+    print("\nNota: <Figure> requiere que el artículo sea .mdx, no .md")
+    print("      Añade el import al principio del artículo si no está ya.")
 
 
 if __name__ == "__main__":

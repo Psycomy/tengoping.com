@@ -58,7 +58,7 @@ Agentes (uno por host, puerto 45876 por defecto)
 
 ## Instalar el hub con Docker Compose
 
-El hub es el único componente que necesitas instalar antes de añadir hosts. Crea un directorio de trabajo y un `docker-compose.yml`:
+El hub es el único componente que necesitas instalar antes de añadir hosts. Necesitas [Docker](/blog/docker-guia-practica-contenedores-linux/) funcionando en el host. Crea un directorio de trabajo y un `docker-compose.yml`:
 
 ```yaml
 services:

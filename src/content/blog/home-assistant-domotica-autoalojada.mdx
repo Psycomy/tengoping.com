@@ -160,6 +160,8 @@ http:
 > [!IMPORTANT]
 > Sin `trusted_proxies` y `use_x_forwarded_for`, Home Assistant no reconoce las peticiones que le llegan a través de un proxy inverso y las rechaza directamente — es un paso obligatorio, no opcional, si eliges la vía autoalojada.
 
+Si lo que te preocupa es exponer el panel de control de tu casa directamente a internet, la alternativa más prudente es no exponerlo en absoluto: monta una [VPN con WireGuard](/blog/wireguard-vpn-autoalojada/) y accede a Home Assistant como si estuvieras en tu red local, sin abrir ningún puerto hacia fuera.
+
 ## Segmentar tu domótica en su propia VLAN
 
 Los dispositivos IoT (bombillas, enchufes, cámaras) suelen tener el firmware menos auditado de toda tu red doméstica, así que aislarlos del resto del tráfico es una medida de seguridad razonable. Si ya sigues la guía de [VLANs para segmentar red](/blog/vlans-explicadas-segmentar-red/), el ejemplo de esa guía incluye precisamente una VLAN 20 dedicada a "IoT" para cámaras y enchufes inteligentes — Home Assistant encaja en ese mismo esquema, normalmente ubicado en la VLAN de gestión o en la misma VLAN de IoT si necesita descubrimiento automático por mDNS de los dispositivos.

@@ -17,7 +17,6 @@ interface Props {
   authorUrl?: string;
   noindex?: boolean;
   isHome?: boolean;
-  canonicalOverride?: string;
 }
 
 const {
@@ -32,13 +31,10 @@ const {
   authorUrl,
   noindex = false,
   isHome = false,
-  canonicalOverride,
 } = Astro.props;
 
 const pageTitle = title === site.title ? title : `${title} | ${site.title}`;
-const canonicalURL = canonicalOverride
-  ? new URL(canonicalOverride, Astro.site)
-  : new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.site);
 // alt de la imagen OG: describe la imagen, no el contenido del artículo
 const imageAlt = article
@@ -133,10 +129,9 @@ const imageAlt = article
               '@type': 'WebPage',
               '@id': canonicalURL.toString(),
             },
-            author: {
-              '@type': 'Person',
-              name: author,
-            },
+            author: authorUrl
+              ? { '@type': 'Person', '@id': authorUrl, name: author, url: authorUrl }
+              : { '@type': 'Person', name: author },
             publisher: {
               '@type': 'Organization',
               name: site.title,
@@ -182,7 +177,7 @@ const imageAlt = article
               url: `${site.url}/apple-touch-icon.png`,
             },
             description: site.description,
-            sameAs: ['https://github.com/Psycomy'],
+            sameAs: ['https://github.com/Psycomy/tengoping.com'],
           })}
         />
       )

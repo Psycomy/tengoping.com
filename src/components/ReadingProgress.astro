@@ -21,7 +21,10 @@
       window.removeEventListener('scroll', scrollHandler);
     }
 
-    scrollHandler = function () {
+    let ticking = false;
+
+    const updateProgress = () => {
+      ticking = false;
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
@@ -35,6 +38,12 @@
       }
     };
 
+    scrollHandler = function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(updateProgress);
+    };
+
     window.addEventListener('scroll', scrollHandler, { passive: true });
 
     // onclick overwrites on each init — no accumulation
@@ -43,7 +52,7 @@
       window.scrollTo({ top: 0, behavior: prefersReduced ? 'instant' : 'smooth' });
     };
 
-    scrollHandler(); // initial state
+    updateProgress(); // initial state, synchronous
   }
 
   init();

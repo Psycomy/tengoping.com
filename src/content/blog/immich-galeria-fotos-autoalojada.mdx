@@ -163,7 +163,7 @@ docker exec -t immich_postgres pg_dump --clean --if-exists \
   --dbname=immich --username=postgres | gzip > "/ruta/backup/dump.sql.gz"
 ```
 
-El volcado solo contiene metadatos (álbumes, caras, usuarios, rutas de archivo) — no las fotos ni vídeos en sí. Necesitas respaldar `UPLOAD_LOCATION` por separado, por ejemplo con rsync o rclone hacia otro disco o proveedor cifrado. Si ya tienes [Vaultwarden](/blog/vaultwarden-gestor-contrasenas-autoalojado/) u otros servicios autoalojados en tu red, Immich encaja en el mismo patrón: cada servicio detrás de su propio proxy, con sus propios backups, sin depender de que un único punto de fallo se lleve por delante todo tu homelab.
+El volcado solo contiene metadatos (álbumes, caras, usuarios, rutas de archivo) — no las fotos ni vídeos en sí. Necesitas respaldar `UPLOAD_LOCATION` por separado, por ejemplo con rsync o [rclone](/blog/rclone-sincroniza-cifra-nube/) hacia otro disco o proveedor cifrado. Si ya tienes [Vaultwarden](/blog/vaultwarden-gestor-contrasenas-autoalojado/) u otros servicios autoalojados en tu red, Immich encaja en el mismo patrón: cada servicio detrás de su propio proxy, con sus propios backups, sin depender de que un único punto de fallo se lleve por delante todo tu homelab.
 
 ## Siguiente paso
 

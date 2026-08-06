@@ -109,7 +109,7 @@ const authorJsonLd = authorData
         <div class="article-image">
           <Image
             src={image}
-            alt={title}
+            alt=""
             width={900}
             height={506}
             format="avif"
@@ -122,9 +122,9 @@ const authorJsonLd = authorData
     }
 
     <div class="article-grid">
-      <aside class="article-sidebar" data-pagefind-ignore>
+      <div class="article-sidebar" data-pagefind-ignore>
         <TableOfContents headings={headings} />
-      </aside>
+      </div>
 
       <div class="article-content prose">
         <slot />

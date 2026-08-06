@@ -39,7 +39,7 @@ Aislamiento y qué corre dentro de cada capa
 En la práctica, la pregunta no es "¿cuál es mejor?" sino "¿qué necesito aislar?":
 
 - **Incus/LXC** si quieres algo que se administre como un servidor Linux normal — varios servicios, tu propio usuario SSH, `systemctl` funcionando de verdad — o migrar una VM o un servidor físico existente sin reescribir nada.
-- **Docker/Podman** si el objetivo es empaquetar una aplicación concreta de forma inmutable con un `Dockerfile` versionado. Ya escribí sobre ese modelo en la [introducción a Podman](/blog/introduccion-contenedores-podman-linux/).
+- **[Docker](/blog/docker-guia-practica-contenedores-linux/)/Podman** si el objetivo es empaquetar una aplicación concreta de forma inmutable con un `Dockerfile` versionado. Ya escribí sobre ese modelo en la [introducción a Podman](/blog/introduccion-contenedores-podman-linux/).
 - **VM completa (KVM)** si necesitas un kernel distinto al del host o aislar inquilinos que no confían entre sí.
 
 En un homelab es habitual combinar los tres: KVM/Proxmox para servicios grandes y con estado, Incus para "mini-servidores" ligeros, y Docker/Podman para aplicaciones que ya vienen empaquetadas así.

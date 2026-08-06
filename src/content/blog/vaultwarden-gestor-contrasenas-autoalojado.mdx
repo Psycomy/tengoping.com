@@ -93,7 +93,7 @@ Todo el estado de Vaultwarden vive en el volumen `/data`: la base de datos SQLit
 docker exec vaultwarden sqlite3 /data/db.sqlite3 ".backup '/data/db-backup.sqlite3'"
 ```
 
-Si ya tienes una estrategia de backups incrementales en el servidor, el mismo enfoque de [backups con rsync y hardlinks](/blog/backup-incremental-rsync-servidores-linux/) funciona igual de bien apuntando al directorio `vw-data`.
+Si ya tienes una estrategia de backups incrementales en el servidor, el mismo enfoque de [backups con rsync y hardlinks](/blog/backup-incremental-rsync-servidores-linux/) funciona igual de bien apuntando al directorio `vw-data`. Dado que aquí guardas credenciales, para la copia fuera del servidor merece más la pena un remote cifrado de [rclone](/blog/rclone-sincroniza-cifra-nube/) que un rsync sin cifrar hacia otro disco.
 
 ## Conectar los clientes de Bitwarden
 

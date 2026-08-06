@@ -12,6 +12,8 @@ draft: false
 
 Esta chuleta cubre los comandos que necesitarás tanto en el día a día como en escenarios de rescate, por ejemplo al [recuperar la contraseña de root desde un LiveCD](/blog/recuperar-contrasena-root-livecd-lvm/) en un sistema con LVM.
 
+En un homelab real, los PV rara vez son un disco suelto: lo habitual es crearlos sobre un array de [RAID software con mdadm](/blog/raid-software-mdadm-guia-practica/) (por ejemplo `/dev/md0`) para no perder los volúmenes lógicos si falla un disco.
+
 ## Los comandos básicos de LVM organizados por nivel
 
 ```

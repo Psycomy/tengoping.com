@@ -189,6 +189,8 @@ Para ver estas piezas trabajando juntas, un flujo de investigación real —no l
 
 Cinco pasos, todos con la misma captura, sin adivinar nada a partir de logs de aplicación que a lo mejor ni siquiera existen.
 
+Si directamente no ves tráfico de vuelta del servidor (ni un SYN-ACK, ni un reset), antes de seguir investigando en la aplicación revisa si el problema es más simple: una regla de [firewall con firewalld o nftables](/blog/firewalld-nftables-seguridad-red-linux/) bloqueando el puerto silenciosamente.
+
 ## Wireshark, tshark o tcpdump: cuándo usar cada uno
 
 No son herramientas competidoras, sino complementarias, y es habitual usar varias en el mismo flujo de trabajo:

@@ -205,7 +205,7 @@ sudo lynis audit system --profile /etc/lynis/custom.prf
 
 - Ejecuta Lynis **antes y después** de cada cambio de configuración importante para medir el efecto.
 - No persigas una puntuación de 100; algunas sugerencias pueden no aplicar a tu caso de uso. Evalúa cada recomendación en tu contexto.
-- Combina Lynis con otras herramientas: `rkhunter` para rootkits, `aide` para integridad de archivos y `auditd` para registrar accesos a archivos críticos.
+- Combina Lynis con otras herramientas: `rkhunter` para rootkits, `aide` para integridad de archivos y [`auditd`](/blog/auditd-auditoria-eventos-sistema-linux/) para registrar accesos a archivos críticos.
 - Mantén Lynis actualizado. Las versiones nuevas incorporan tests para vulnerabilidades y configuraciones recientes.
 
 Lynis no corrige los problemas automáticamente, pero te da un mapa claro de dónde están las debilidades de tu sistema y qué hacer para resolverlas.

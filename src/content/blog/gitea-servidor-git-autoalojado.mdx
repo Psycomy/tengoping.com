@@ -221,7 +221,7 @@ git push --mirror
 ## Mantenimiento
 
 - **Actualizaciones**: descarga el nuevo binario y reemplaza el existente en `/usr/local/bin/gitea`. Reinicia el servicio.
-- **Backups**: usa `gitea dump` para generar un archivo con los repositorios, base de datos y configuración.
+- **Backups**: usa `gitea dump` para generar un archivo con los repositorios, base de datos y configuración. Para rotar y retener esos archivos sin llenar el disco, aplica la misma estrategia de [backups incrementales con rsync y hardlinks](/blog/backup-incremental-rsync-servidores-linux/).
 - **Monitoreo**: revisa los logs en `/var/lib/gitea/log/` y supervisa el uso de disco.
 
 Con Gitea funcionando, tienes un servidor Git completo con interfaz web, gestión de usuarios, issues y pull requests, todo bajo tu propio techo.

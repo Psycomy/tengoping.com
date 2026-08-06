@@ -247,6 +247,8 @@ Consultar eventos:
 sudo ausearch -k identity -ts recent
 ```
 
+Esto son solo tres reglas básicas para arrancar. Si quieres profundizar en reglas más completas, `ausearch`/`aureport` y cómo interpretar los logs de auditd, tienes la guía dedicada en [auditoría de eventos con auditd](/blog/auditd-auditoria-eventos-sistema-linux/).
+
 ## 10. Reducir la superficie: deshabilitar sistemas de archivos que no usas
 
 La mayoría de servidores nunca necesitan montar un CD-ROM antiguo (`cramfs`), un disco Mac (`hfs`/`hfsplus`) o un DVD (`udf`). Tener el módulo del kernel disponible aunque no se use es superficie de ataque gratuita. Añade a `/etc/modprobe.d/hardening-filesystems.conf`:

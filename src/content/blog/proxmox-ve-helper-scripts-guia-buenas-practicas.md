@@ -118,7 +118,7 @@ El patrón `curl -fsSL URL | bash` (o su variante `bash -c "$(curl ...)"`, funci
 
 ## LXC vs. contenedor Docker dentro de LXC
 
-Un contenedor LXC creado por estos scripts es un contenedor de sistema completo (con su propio init, usuarios y systemd), no un contenedor de aplicación como los que gestiona Docker. Si vienes de Docker, la diferencia de modelo es la misma que se explica en [Incus/LXC: contenedores de sistema en Linux](/blog/incus-lxc-contenedores-sistema-linux/): un LXC se comporta como una VM ligera, mientras que Docker empaqueta un solo proceso y sus dependencias. De hecho, uno de los scripts más usados del catálogo (`docker.sh`) simplemente crea un LXC y le instala Docker dentro, combinando ambos modelos.
+Un contenedor LXC creado por estos scripts es un contenedor de sistema completo (con su propio init, usuarios y systemd), no un contenedor de aplicación como los que gestiona [Docker](/blog/docker-guia-practica-contenedores-linux/). Si vienes de Docker, la diferencia de modelo es la misma que se explica en [Incus/LXC: contenedores de sistema en Linux](/blog/incus-lxc-contenedores-sistema-linux/): un LXC se comporta como una VM ligera, mientras que Docker empaqueta un solo proceso y sus dependencias. De hecho, uno de los scripts más usados del catálogo (`docker.sh`) simplemente crea un LXC y le instala Docker dentro, combinando ambos modelos.
 
 ## Conclusión
 

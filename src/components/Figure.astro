@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
   src: string;
   alt: string;
@@ -7,6 +10,19 @@ interface Props {
 
 const { src, alt, caption } = Astro.props;
 const filename = src.split('/').at(-1) ?? src;
+
+// `src` llega como ruta pública ("/images/blog/<post>/<archivo>"), como se
+// escribe en los .mdx. Las imágenes reales viven en src/assets/images/blog
+// para que Astro pueda optimizarlas (resize, AVIF, width/height reales).
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/blog/**/*.{png,jpg,jpeg,webp,avif}'
+);
+const imagePath = `/src/assets/images/blog${src.replace(/^\/images\/blog/, '')}`;
+const loadImage = images[imagePath];
+if (!loadImage) {
+  throw new Error(`Figure: no se encontró la imagen "${imagePath}" (prop src="${src}")`);
+}
+const { default: image } = await loadImage();
 ---
 
 <figure class="figure-block">
@@ -14,7 +30,16 @@ const filename = src.split('/').at(-1) ?? src;
     <span class="figure-title">$ {filename}</span>
   </div>
   <div class="figure-body">
-    <img src={src} alt={alt} loading="lazy" decoding="async" />
+    <Image
+      src={image}
+      alt={alt}
+      width={750}
+      format="avif"
+      densities={[1, 2]}
+      sizes="(max-width: 1024px) 100vw, 750px"
+      loading="lazy"
+      decoding="async"
+    />
   </div>
   {caption && <figcaption class="figure-caption">{caption}</figcaption>}
 </figure>
