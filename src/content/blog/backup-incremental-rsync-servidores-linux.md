@@ -3,7 +3,7 @@ title: 'Backups incrementales con rsync en Linux'
 description: 'Cómo implementar una estrategia de backups incrementales usando rsync y hardlinks para ahorrar espacio y tiempo en tus servidores.'
 author: 'antonio'
 pubDate: 2026-01-16
-updatedDate: 2026-07-27
+updatedDate: 2026-08-06
 category: 'Automatización'
 tags: ['Backup', 'rsync', 'Sysadmin', 'Scripts']
 image: '../../assets/images/auto-backup.jpg'
@@ -17,6 +17,12 @@ Hacer una copia completa cada día consume espacio rápidamente. Si un servidor 
 ## Cómo funciona rsync con hardlinks
 
 La opción `--link-dest` de rsync compara el backup actual con el anterior. Si un archivo no ha cambiado, crea un hardlink en vez de copiarlo. El resultado es que cada backup parece una copia completa, pero solo ocupa el espacio de los archivos modificados.
+
+> [!WARNING]
+> Un hardlink no es una copia: es una segunda entrada de directorio apuntando al mismo contenido en disco. Si entras a una carpeta de un backup antiguo y editas un archivo directamente (o cambias sus permisos), estás modificando el mismo dato que comparten todos los demás backups enlazados a él — la corrupción se propaga a "copias" que deberían ser independientes. Trata cualquier snapshot dentro de `$DESTINO` como solo lectura; si necesitas modificar algo, cópialo fuera primero.
+
+> [!IMPORTANT]
+> `--link-dest` solo funciona si origen y `$DESTINO` están en un filesystem que soporte hardlinks (ext4, XFS, Btrfs, NTFS). Un disco USB formateado en exFAT o FAT32 —habitual para compatibilidad con Windows— no los soporta: cada backup se copiaría completo sin ahorro de espacio, sin ningún error que lo avise. Comprueba el filesystem del destino con `df -T "$DESTINO"` antes de confiar en el ahorro de espacio.
 
 ```
 Primer backup: /backups/servidor01/2026-02-06_0300/
@@ -165,7 +171,14 @@ du -sh /backups/servidor01/*
 du -sh --apparent-size /backups/servidor01/*
 ```
 
+Al pasar todos los snapshots como argumentos de la misma llamada (`/backups/servidor01/*` se expande antes de ejecutar `du`), GNU `du` cuenta cada archivo enlazado por hardlink una sola vez en toda la invocación, no una vez por carpeta. En la práctica esto significa que el primer snapshot que `du` procesa "se lleva" el tamaño de los archivos compartidos, y los siguientes aparecen con un tamaño mucho menor — no porque ocupen menos, sino porque esos inodos ya se contaron antes. No interpretes esos números como "lo que costaría cada snapshot por separado". `--apparent-size` no cambia esa deduplicación: solo cambia si el tamaño se redondea al bloque del filesystem (el valor por defecto, típicamente múltiplos de 4 KB) o se muestra el tamaño exacto en bytes del contenido — una diferencia menor salvo que tengas muchísimos archivos muy pequeños. Para el espacio real total ocupado por todos los snapshots juntos, la fuente fiable es el uso del filesystem completo con `df -h "$DESTINO"`, no la suma de los `du` por snapshot.
+
+> [!NOTE]
+> Por defecto, rsync decide si un archivo cambió comparando solo tamaño y fecha de modificación (`mtime`), no su contenido — es lo que se conoce como "quick check". Esto es rápido, pero significa que un archivo cuyo contenido cambió pero cuyo `mtime` se restauró artificialmente (por ejemplo, tras una restauración parcial desde otra fuente) puede quedar sin copiar, compartiendo hardlink con una versión desactualizada. Para una verificación más estricta —a costa de leer todo el contenido en cada pasada, con el coste de E/S que eso implica—, añade `--checksum` puntualmente en una ejecución de auditoría, no en el cron diario.
+
 ## Estrategia de retención
+
+El script de la sección anterior borra por antigüedad simple (`-mtime +$RETENCION`): pasados 30 días, todo desaparece por igual. Una política de retención tipo abuelo-padre-hijo (GFS, _grandfather-father-son_) conserva más historial reciente con granularidad fina y menos historial antiguo con granularidad gruesa, sin que el número total de snapshots crezca sin límite:
 
 | Periodo        | Retención |
 | -------------- | --------- |
@@ -173,11 +186,38 @@ du -sh --apparent-size /backups/servidor01/*
 | Último mes     | Semanal   |
 | Último año     | Mensual   |
 
-Para implementarlo, en vez de borrar por antigüedad, marca los backups semanales y mensuales que quieras conservar con un enlace simbólico o muévelos a otro directorio.
+En vez de borrar por antigüedad simple, hay que decidir para cada snapshot si sigue siendo "el diario de esta semana", "el semanal de este mes" o "el mensual de este año" antes de eliminarlo:
+
+```bash
+#!/bin/bash
+# Retención GFS: ejecutar después de cada backup diario
+DESTINO="/backups/servidor01"
+HOY=$(date +%s)
+
+for snap in "$DESTINO"/2*_*; do
+    NOMBRE=$(basename "$snap")
+    FECHA_SNAP="${NOMBRE%%_*}"                      # parte "2026-02-06" del nombre
+    EDAD=$(( (HOY - $(date -d "$FECHA_SNAP" +%s)) / 86400 ))
+    DIA_SEMANA=$(date -d "$FECHA_SNAP" +%u)          # 1=lunes ... 7=domingo
+    DIA_MES=$(date -d "$FECHA_SNAP" +%d)
+
+    if [ "$EDAD" -le 7 ]; then
+        continue                                     # última semana: se conserva entero
+    elif [ "$EDAD" -le 30 ]; then
+        [ "$DIA_SEMANA" -eq 7 ] || rm -rf "$snap"     # 8-30 días: solo el del domingo
+    elif [ "$EDAD" -le 365 ]; then
+        [ "$DIA_MES" -eq "01" ] || rm -rf "$snap"     # 31-365 días: solo el día 1 de cada mes
+    else
+        rm -rf "$snap"                                # más de un año: fuera
+    fi
+done
+```
+
+Es una implementación de ejemplo, no la única válida: ajusta los cortes (7/30/365) y qué día se considera "el semanal" a tu propia política de retención. Lo importante es el principio — decidir la granularidad según la antigüedad, no borrar todo por igual al cumplir un plazo fijo.
 
 ## Conclusión
 
-rsync con `--link-dest` es una solución elegante que no necesita software adicional. Cada backup es navegable como una copia completa pero ocupa una fracción del espacio. Combinado con systemd timers y una buena política de retención, tienes una estrategia de backup sólida y fiable — y complementa, no sustituye, a la redundancia de un [array RAID](/blog/raid-software-mdadm-guia-practica/).
+rsync con `--link-dest` es una solución elegante que no necesita software adicional. Cada backup es navegable como una copia completa pero ocupa una fracción del espacio, siempre que el destino soporte hardlinks y trates cada snapshot como solo lectura. Combinado con systemd timers, una política de retención por niveles (diario/semanal/mensual) y una verificación periódica que no se fíe solo del quick-check por defecto, tienes una estrategia de backup sólida y fiable — y complementa, no sustituye, a la redundancia de un [array RAID](/blog/raid-software-mdadm-guia-practica/).
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

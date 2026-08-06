@@ -8,42 +8,43 @@ uno, y uno descartado por decisión del usuario.
 
 ---
 
-## 🟡 Pendiente: ampliar los 5 artículos más flojos en profundidad
+## ✅ Hecho (2026-08-06): ampliados 4 de los 5 artículos más flojos en profundidad
 
-**Por qué importa:** en agosto 2026 ya se detectó vía Search Console que 15 de 49 posts no
+**Por qué importaba:** en agosto 2026 ya se detectó vía Search Console que 15 de 49 posts no
 indexaban por tener menos de 1000 palabras ([[gsc-thin-content-fix-aug-2026]] en memoria);
-se ampliaron 10. Estos 5 son, con alta probabilidad, parte de los que quedaron pendientes de
+se ampliaron 10. Estos 5 eran, con alta probabilidad, parte de los que quedaron pendientes de
 esa tanda — misma causa raíz reapareciendo.
 
-**Por qué no se hizo en esta sesión:** requiere reescritura real de contenido (no un fix de
-código), mejor abordado con la skill `blog-write` en una sesión dedicada.
+**Cómo se abordó:** `blog-write` sobre cada slug existente (ampliar, no reescribir desde
+cero), respetando frontmatter y slug actuales — sin tocar URLs ya indexadas. Fact-check con
+WebSearch en cada claim técnico nuevo (2FA/PAM, cifrados SSH, comportamiento de `du` con
+hardlinks, `rate()` vs `irate()`, Alertmanager). `npm run build` + `lint` + `prettier` en
+verde para los 4.
 
-**Artículos, por orden de prioridad (extensión actual):**
+1. **`configurar-servidor-ssh-seguro-linux.md`** — 554 → ~1600 palabras. Añadido: 2FA/TOTP vía
+   PAM, cifrados/algoritmos endurecidos (+ `ssh-audit`), gestión de claves con
+   `~/.ssh/config`, `ClientAliveInterval`/Banner, diagrama de flujo ASCII, enlace a
+   `journalctl`.
+2. **`scripts-bash-utiles-sysadmin.md`** — 530 → ~1580 palabras. Cada uno de los 10 scripts
+   ganó contexto real (por qué importa, matices, gotchas) en vez de solo código: inodos vs
+   espacio en disco, `truncate` vs `rm`, `Restart=on-failure` de systemd, `free` y
+   `procps 3.3.10`, barra final en `rsync`, seguridad del inventario SSH.
+3. **`backup-incremental-rsync-servidores-linux.md`** — 738 → ~1350 palabras. Retención GFS
+   (script abuelo-padre-hijo) reemplaza el borrado por antigüedad simple; verificación de
+   integridad explicada a fondo (quick-check de rsync, `du` y deduplicación de hardlinks);
+   advertencias sobre editar snapshots y filesystems sin soporte de hardlinks (exFAT/FAT32).
+4. **`monitorizar-servidores-linux-prometheus-grafana.mdx`** — 776 → ~1590 palabras. Sección
+   de Alertmanager completa (instalación, routing por `severity`, diagrama de flujo de
+   alertas) que antes solo se mencionaba como "siguiente paso"; más consultas PromQL (carga,
+   errores de red, I/O de disco) y explicación counter/gauge + `rate()` vs `irate()`.
 
-1. `configurar-servidor-ssh-seguro-linux.md` — 554 palabras. Es artículo "hub": `fail2ban`,
-   `firewalld-nftables`, `hardening-basico` y `journalctl` enlazan aquí como referencia
-   canónica de "SSH seguro", pero es de los menos desarrollados del sitio. Prioridad alta por
-   su rol de pilar temático.
-2. `scripts-bash-utiles-sysadmin.md` — 530 palabras, 12 encabezados. Cubre "10 scripts Bash
-   útiles" en ~44 palabras de contexto por script — casi todo el peso recae en el código, sin
-   explicar por qué importa cada uno o qué matices tiene.
-3. `backup-incremental-rsync-servidores-linux.md` — 738 palabras. Otro "hub" (enlazado desde
-   `nas-openmediavault`, `raid-mdadm`, `cron-systemd-timers`, `scripts-bash`, `nextcloud`,
-   `vaultwarden`), notablemente más ligero que `rclone-sincroniza-cifra-nube` (1826 palabras)
-   sobre un tema hermano. La estrategia de retención y verificación queda con poco detalle.
-4. `monitorizar-servidores-linux-prometheus-grafana.mdx` — 776 palabras. El más superficial
-   de la categoría Monitorización: Zabbix (1235), Beszel (1797) y Uptime Kuma (2051) tratan
-   temas comparables con bastante más profundidad. PromQL y alertas quedan resueltos casi de
-   pasada.
-5. `recuperar-contrasena-root-livecd-lvm.md` — 262 palabras, 1 solo encabezado. El post más
-   corto del blog con diferencia. Es una chuleta de rescate para un caso concreto — antes de
-   ampliarlo, decidir con el usuario si de verdad necesita más desarrollo o si, como
-   `comandos-esenciales-lvm-guia-rapida.md`, se acepta como cheatsheet corto intencional
-   ([[feedback-own-notes-no-ai-disclosure]]: los apuntes LVM son cheatsheets 100% del
-   usuario).
+**Pendiente — punto 5, requiere decisión del usuario antes de tocarlo:**
 
-**Cómo abordarlo:** `blog-write` sobre cada slug existente (ampliar, no reescribir desde
-cero), respetando frontmatter y slug actuales — no tocar URLs ya indexadas.
+`recuperar-contrasena-root-livecd-lvm.md` — 262 palabras, 1 solo encabezado. El post más
+corto del blog con diferencia. Es una chuleta de rescate para un caso concreto — antes de
+ampliarlo, decidir con el usuario si de verdad necesita más desarrollo o si, como
+`comandos-esenciales-lvm-guia-rapida.md`, se acepta como cheatsheet corto intencional
+([[feedback-own-notes-no-ai-disclosure]]: los apuntes LVM son cheatsheets 100% del usuario).
 
 ---
 

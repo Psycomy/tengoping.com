@@ -3,7 +3,7 @@ title: 'Monitoriza Linux con Prometheus y Grafana'
 description: 'Guía paso a paso para desplegar un stack de monitorización con Prometheus y Grafana en servidores Linux usando Node Exporter.'
 author: 'antonio'
 pubDate: 2026-01-25
-updatedDate: 2026-07-27
+updatedDate: 2026-08-06
 category: 'Monitorización'
 tags: ['Monitorización', 'Prometheus', 'Grafana', 'Sysadmin']
 image: '../../assets/images/linux-monitoring.jpg'
@@ -181,7 +181,7 @@ Tendrás un panel completo con CPU, memoria, disco, red y más para cada servido
 
 ## Consultas PromQL útiles
 
-Algunas queries que puedes usar en Grafana o directamente en Prometheus:
+Node Exporter expone dos tipos de métrica que se consultan de forma distinta. Las de uso instantáneo (memoria, disco) son _gauges_: su valor actual ya es lo que quieres graficar, sin transformación. Las acumulativas (CPU, red, disco I/O) son _counters_: solo suben con el tiempo (o se reinician a 0 si el proceso se reinicia), así que no tiene sentido graficar su valor absoluto — necesitas `rate()` para convertirlas en "cuánto por segundo" en la ventana indicada. `rate()` además detecta y compensa automáticamente los reinicios del contador, así que no hace falta tratarlos como caso especial.
 
 ```promql
 # Uso de CPU por nodo (porcentaje)
@@ -195,9 +195,45 @@ Algunas queries que puedes usar en Grafana o directamente en Prometheus:
 
 # Tráfico de red recibido (bytes/s)
 rate(node_network_receive_bytes_total{device="eth0"}[5m])
+
+# Carga del sistema relativa a los cores disponibles (>1 = más procesos en cola de los que hay CPU)
+node_load1 / count(count(node_cpu_seconds_total) by (cpu))
+
+# Errores de red recibidos por segundo — un valor > 0 sostenido suele indicar un problema físico (cable, NIC, MTU)
+rate(node_network_receive_errs_total{device="eth0"}[5m])
+
+# Tiempo que el disco pasa ocupado con I/O (porcentaje aproximado de saturación)
+rate(node_disk_io_time_seconds_total{device="sda"}[5m]) * 100
 ```
 
+> [!TIP]
+> Las consultas anteriores usan `rate()`, pensado para dashboards y alertas: promedia toda la ventana (`[5m]`) y suaviza picos puntuales, lo que da una señal estable para decidir si algo está realmente mal. Si en cambio estás depurando un problema en vivo y quieres ver la variación más reciente sin ese suavizado, `irate()` usa solo las dos últimas muestras — reacciona antes a un pico, pero es más ruidoso y no es buena base para una alerta (dispararía y se resolvería con cada fluctuación breve).
+
 ## Configurar alertas básicas
+
+Una alerta de Prometheus por sí sola no notifica a nadie: define _cuándo_ una condición es cierta. Quien decide _a quién avisar y cómo_ es un componente aparte, Alertmanager, que se instala y configura por separado. Esta sección cubre ambas mitades.
+
+```
+Regla evaluada cada 15s (scrape_interval)
+   │
+   ▼
+1. expr se cumple (ej. up == 0)
+   │
+   ▼
+2. Estado "pending" — Prometheus espera a que se cumpla `for` (ej. 2m)
+   │
+   ├── deja de cumplirse antes de `for` → se descarta, no llega a notificar (evita falsas alarmas por un blip)
+   └── sigue cumpliéndose tras `for`    → estado "firing"
+                                            │
+                                            ▼
+                                        3. Prometheus envía la alerta a Alertmanager
+                                            │
+                                            ▼
+                                        4. Alertmanager agrupa, deduplica y enruta según `severity`
+                                            │
+                                            ├── severity: critical → receiver con notificación inmediata
+                                            └── severity: warning  → receiver con notificación agrupada
+```
 
 Crea un archivo de reglas `/etc/prometheus/alerts.yml`:
 
@@ -222,6 +258,8 @@ groups:
           summary: 'Disco al {{ $value | humanizePercentage }} en {{ $labels.instance }}'
 ```
 
+`for: 2m` es lo que separa una alerta útil de una que satura a golpe de falsos positivos: exige que la condición se mantenga cierta durante ese tiempo antes de pasar a estado "firing", así un reinicio de 10 segundos o un pico de disco momentáneo no dispara una notificación. Cuanto más crítico el servicio, menor conviene ese margen; cuanto más ruidosa la métrica (como el disco, que puede subir y bajar con un proceso puntual), mayor.
+
 Añade la referencia en `prometheus.yml`:
 
 ```yaml
@@ -229,15 +267,87 @@ rule_files:
   - 'alerts.yml'
 ```
 
-Reinicia Prometheus para aplicar:
+### Instalar y conectar Alertmanager
 
 ```bash
-sudo systemctl restart prometheus
+# Comprueba la última versión en https://github.com/prometheus/alertmanager/releases
+wget https://github.com/prometheus/alertmanager/releases/download/v0.33.1/alertmanager-0.33.1.linux-amd64.tar.gz
+tar xvfz alertmanager-0.33.1.linux-amd64.tar.gz
+sudo mv alertmanager-0.33.1.linux-amd64/{alertmanager,amtool} /usr/local/bin/
+sudo mkdir -p /etc/alertmanager
 ```
+
+Un `/etc/alertmanager/alertmanager.yml` mínimo, con un receiver de tipo webhook (válido para integrar con ntfy, Telegram vía un pequeño proxy, o cualquier endpoint HTTP propio) y una ruta que separa lo crítico de lo que no lo es:
+
+```yaml
+route:
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  receiver: 'default'
+  routes:
+    - match:
+        severity: critical
+      receiver: 'critico'
+      repeat_interval: 30m
+
+receivers:
+  - name: 'default'
+    webhook_configs:
+      - url: 'http://localhost:8080/notificar'
+  - name: 'critico'
+    webhook_configs:
+      - url: 'http://localhost:8080/notificar-urgente'
+```
+
+`group_wait` da un margen antes de enviar la primera notificación de un grupo nuevo, por si llegan más alertas relacionadas que conviene agrupar en un solo aviso en vez de uno por alerta. `repeat_interval` controla cada cuánto se re-notifica una alerta que sigue activa — más corto para `critico` (30m) que para el resto (4h), porque un nodo caído merece un recordatorio más frecuente que un disco al 86%.
+
+Crea el servicio y arráncalo:
+
+```bash
+sudo tee /etc/systemd/system/alertmanager.service > /dev/null <<EOF
+[Unit]
+Description=Alertmanager
+After=network.target
+
+[Service]
+User=alertmanager
+ExecStart=/usr/local/bin/alertmanager --config.file=/etc/alertmanager/alertmanager.yml
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo useradd -rs /bin/false alertmanager
+sudo systemctl daemon-reload
+sudo systemctl enable --now alertmanager
+```
+
+Y apunta Prometheus hacia él en `prometheus.yml`:
+
+```yaml
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['localhost:9093']
+```
+
+Reinicia ambos para aplicar los cambios:
+
+```bash
+sudo systemctl restart prometheus alertmanager
+```
+
+> [!NOTE]
+> Este ejemplo usa un receiver webhook genérico para no atarte a un servicio concreto. Alertmanager trae integraciones nativas para email, Slack, PagerDuty y Opsgenie con su propia sintaxis de configuración — revisa la [documentación oficial de receivers](https://prometheus.io/docs/alerting/latest/configuration/#receiver) si usas alguno de esos canales directamente.
+
+> [!TIP]
+> Prometheus guarda sus datos localmente 15 días por defecto (`--storage.tsdb.retention.time=15d`); pasado ese plazo, las métricas más antiguas se descartan. Si necesitas comparar con el mismo periodo del año anterior, súbelo explícitamente en el `ExecStart` del servicio (por ejemplo `--storage.tsdb.retention.time=90d`), teniendo en cuenta que más retención significa más disco ocupado en `/var/lib/prometheus`.
 
 ## Conclusión
 
-Con Prometheus, Node Exporter y Grafana tienes un stack de monitorización completo y gratuito. El siguiente paso natural es añadir Alertmanager para enviar notificaciones por email, Slack o Telegram cuando salten las alertas.
+Con Prometheus, Node Exporter, Alertmanager y Grafana tienes un stack de monitorización completo, gratuito y con notificaciones reales cuando algo falla — no solo un panel bonito que hay que estar mirando activamente. Para el próximo nivel de detalle: exporters especializados (`mysqld_exporter`, `blackbox_exporter` para comprobar endpoints HTTP desde fuera) amplían lo que este stack puede vigilar más allá de las métricas de sistema operativo que cubre Node Exporter.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.
