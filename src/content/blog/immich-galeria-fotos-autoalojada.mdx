@@ -1,0 +1,173 @@
+---
+title: 'Immich: tu galería de fotos autoalojada'
+description: 'Instala Immich con Docker Compose: galería tipo Google Fotos con reconocimiento facial y búsqueda por IA que corren en tu propio servidor.'
+author: 'antonio'
+pubDate: 2026-08-06
+category: 'Self-Hosting'
+tags: ['Immich', 'Self-Hosting', 'Fotos', 'IA']
+image: '../../assets/images/immich-server.jpg'
+draft: false
+---
+
+import Figure from '@components/Figure.astro';
+
+Immich es una plataforma open source que replica lo que hace Google Fotos —copia de seguridad automática desde el móvil, línea de tiempo, búsqueda por contenido y reconocimiento de caras— pero corriendo por completo en tu propio servidor. Ni las fotos ni el procesado de IA salen de tu red: el reconocimiento facial y la búsqueda semántica se ejecutan en un contenedor local, no en la nube de nadie. Si ya tienes un homelab con Docker, montar Immich te lleva menos de una hora.
+
+## Immich frente a Nextcloud: por qué no es lo mismo
+
+Si ya conoces [Nextcloud como nube personal](/blog/nextcloud-servidor-nube-personal/), es lógico preguntarse si Immich es redundante. No lo es: son herramientas con objetivos distintos.
+
+- **Nextcloud** es una suite completa: archivos, calendario, contactos, edición colaborativa de documentos. Nextcloud tiene también una app de fotos, pero es un gestor de archivos genérico con visor de imágenes encima.
+- **Immich** está diseñado exclusivamente para fotos y vídeos. Todo el producto —desde el modelo de datos hasta el pipeline de subida— gira en torno a metadatos EXIF, agrupación por caras, mapas de ubicación y búsqueda por contenido visual.
+
+La diferencia práctica se nota en el día a día: en Immich, buscar "playa al atardecer" en el cuadro de búsqueda devuelve fotos aunque ningún archivo ni ninguna carpeta contenga esa palabra. Nextcloud no ofrece esto de forma nativa. Muchos usuarios de homelab acaban usando ambos en paralelo: Nextcloud para documentos y archivos compartidos, Immich como backup de cámara del móvil.
+
+## Requisitos antes de instalar
+
+Los requisitos oficiales de Immich son más altos de lo que cabría esperar de un contenedor Docker cualquiera, sobre todo si vas a usar las funciones de IA:
+
+- **RAM:** mínimo 6 GB, recomendado 8 GB. Con 4 GB puedes ejecutarlo desactivando el contenedor de machine learning.
+- **CPU:** mínimo 2 núcleos, recomendado 4. Desde la versión 3, el contenedor de machine learning en amd64 requiere microarquitectura x86-64-v2 (CPUs de 2012 en adelante aproximadamente).
+- **Arquitectura:** amd64 y arm64 (Raspberry Pi 4/5 incluidos, aunque el rendimiento de la IA en ARM es notablemente más lento).
+- **Sistema de archivos:** uno compatible con permisos Unix (ext4, ZFS, APFS...) para el volumen de subida. Cuenta con que las miniaturas y la transcodificación de vídeo añaden entre un 10 % y un 20 % extra sobre el tamaño de tu biblioteca original.
+- **Docker Engine v25 o superior**, necesario para la función `healthcheck.start_interval` que usa el compose oficial.
+
+> [!TIP]
+> Si tu servidor tiene 4 GB de RAM o menos, puedes seguir usando Immich como backup y galería normal desactivando `immich-machine-learning` en el `docker-compose.yml`. Pierdes búsqueda semántica y reconocimiento facial, pero mantienes subida automática, álbumes y mapa.
+
+## El stack: qué corre por debajo
+
+Immich no es un contenedor único, es un conjunto de cuatro servicios que trabajan juntos:
+
+- **`immich-server`** — la API y el backend principal, sirve también la interfaz web.
+- **`immich-machine-learning`** — contenedor separado que ejecuta los modelos de IA (CLIP para búsqueda semántica, detección y reconocimiento facial). Al estar aislado del servidor principal, puedes moverlo a otra máquina más potente de tu red si el servidor principal se queda corto de recursos.
+- **PostgreSQL** — pero no un Postgres genérico: la imagen oficial `ghcr.io/immich-app/postgres` incluye la extensión **VectorChord** (sucesora de pgvecto.rs, que quedó deprecada) para almacenar y consultar los vectores de embeddings que genera el motor de IA. Es lo que hace posible buscar por contenido visual sin escanear toda la biblioteca en cada consulta.
+- **Redis** (concretamente Valkey, el fork open source de Redis) — cola de trabajos en segundo plano: generación de miniaturas, extracción de metadatos, transcodificación de vídeo.
+
+> [!NOTE]
+> Immich alcanzó su primera versión estable (v2.0) en 2025, cerrando una etapa en la que el propio proyecto advertía de "bugs y cambios incompatibles" entre versiones. Desde entonces sigue versionado semántico y los saltos entre versiones menores ya no rompen instalaciones. En el momento de escribir esto la versión estable es la 3.1.0 — comprueba la [página de releases](https://github.com/immich-app/immich/releases) antes de fijar una versión en tu despliegue.
+
+## Instalación con Docker Compose
+
+Immich publica un `docker-compose.yml` y un `.env` de ejemplo listos para usar. No hace falta escribirlos a mano:
+
+```bash
+mkdir immich-app && cd immich-app
+
+# Descarga el compose y el .env oficiales de la última release
+curl -fsSL -o docker-compose.yml https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml
+curl -fsSL -o .env https://github.com/immich-app/immich/releases/latest/download/example.env
+```
+
+Edita el `.env` antes de arrancar nada:
+
+```bash
+# Dónde se guardan tus fotos y vídeos originales (asegúrate de que hay espacio de sobra)
+UPLOAD_LOCATION=./library
+
+# Dónde vive la base de datos. Nunca en una red share (NFS/SMB) - Postgres no lo soporta
+DB_DATA_LOCATION=./postgres
+
+# Fija una versión concreta en vez de "release" para reproducibilidad
+# Comprueba la última versión en https://github.com/immich-app/immich/releases
+IMMICH_VERSION=v3.1.0
+
+# Cambia esta contraseña. Solo caracteres A-Za-z0-9, sin símbolos ni espacios
+DB_PASSWORD=un-password-largo-y-aleatorio-aqui
+```
+
+> [!IMPORTANT]
+> `DB_DATA_LOCATION` no admite recursos de red (NFS, SMB, CIFS). Postgres necesita bloqueos de fichero que estos protocolos no garantizan de forma fiable, y usarlos ahí es la causa más común de bases de datos corruptas en despliegues de Immich sobre NAS.
+
+Con el `.env` ajustado, levanta el stack:
+
+```bash
+docker compose up -d
+```
+
+La primera vez tarda unos minutos: descarga las cuatro imágenes (el contenedor de machine learning ronda el gigabyte por los modelos que incluye) e inicializa la base de datos. Comprueba que todo arrancó bien:
+
+```bash
+docker compose ps
+# Las cuatro entradas deben mostrar "Up" o "healthy"
+```
+
+Abre `http://<ip-de-tu-servidor>:2283` en el navegador y crea la cuenta de administrador desde el asistente de bienvenida.
+
+## Primeros pasos: subir fotos y ver la galería
+
+Tras crear el usuario administrador, la interfaz web queda lista para recibir fotos, ya sea arrastrándolas desde el navegador con "Subir" o desde la app móvil. La galería agrupa automáticamente por fecha y genera miniaturas al vuelo:
+
+<Figure
+  src="/images/blog/immich-galeria-fotos-autoalojada/galeria-web.webp"
+  alt="Interfaz web de Immich mostrando una galería de fotos agrupadas por fecha, con menú lateral de navegación (Fotos, Explorar, Mapa, Compartidos, Álbumes) y barra de búsqueda superior"
+  caption="Galería web de Immich (v3.1.0) tras subir un lote de fotos de prueba. Captura propia sobre una instalación Docker local con imágenes de dominio público."
+/>
+
+Esta captura es de una instalación de prueba real levantada con el `docker-compose.yml` de este artículo — no es una imagen de marketing del proyecto.
+
+## Búsqueda semántica y reconocimiento facial: qué corre en local
+
+Aquí está el motivo por el que alguien elige Immich en vez de un gestor de archivos con visor de fotos. Dos funciones de IA vienen activadas por defecto y procesan cada foto que subes, en segundo plano, sin salir de tu red:
+
+```
+Subida de una foto (web, móvil o carpeta externa)
+   │
+   ▼
+1. immich-server extrae metadatos EXIF (fecha, ubicación GPS, modelo de cámara)
+   │
+   ▼
+2. Generación de miniaturas y, si es vídeo, transcodificación
+   │
+   ▼
+3. immich-machine-learning genera el embedding CLIP de la imagen
+   │
+   ├── Se guarda como vector en Postgres (extensión VectorChord)
+   │   → habilita la búsqueda semántica ("perro en la playa")
+   │
+   └── Detección de caras → agrupación en clusters por similitud
+       → tú asignas un nombre una vez, Immich reconoce esa cara después
+```
+
+- **Búsqueda semántica (CLIP):** el motor de IA convierte cada imagen en un vector numérico que representa su contenido visual. Cuando buscas "atardecer en la montaña", tu consulta de texto se convierte en el mismo tipo de vector y Postgres, vía VectorChord, encuentra las fotos más cercanas matemáticamente. No hay ninguna llamada a una API externa en este proceso: el modelo CLIP vive dentro del contenedor `immich-machine-learning`.
+- **Reconocimiento facial:** Immich detecta caras en cada foto y las agrupa por similitud en la página "Personas". Le pones el nombre a un grupo una vez y, a partir de ahí, cualquier foto nueva con esa cara se etiqueta sola.
+
+El contenedor de machine learning está desacoplado del servidor a propósito: si tu servidor principal es una mini-PC modesta, puedes apuntar `immich-machine-learning` a otra máquina de tu red con más CPU (o una GPU) sin tocar el resto del stack, usando la opción de [machine learning remota](https://docs.immich.app/guides/remote-machine-learning/). También existe aceleración por hardware (CUDA para NVIDIA, ROCm para AMD, OpenVINO para Intel, entre otras) añadiendo un sufijo a la imagen del contenedor.
+
+> [!NOTE]
+> Si activas machine learning remota apuntando a otro host de tu red, ten en cuenta que las miniaturas que viajan a ese contenedor no van cifradas por defecto: la documentación oficial recomienda mantener esa comunicación dentro de una red de confianza, no exponerla directamente a internet.
+
+## La app móvil: backup automático
+
+La app oficial de Immich (disponible en App Store y Google Play, buscando "Immich") es un cliente del servidor que acabas de montar — no funciona de forma independiente, necesitas tu propia instancia. Sus funciones principales:
+
+1. Backup automático en segundo plano de fotos y vídeos del carrete, con opción de restringirlo a álbumes concretos en vez de todo el dispositivo.
+2. Subida solo por Wi-Fi (recomendado para bibliotecas grandes, evita gastar datos móviles).
+3. Los mismos álbumes, mapa y búsqueda semántica que la web, sincronizados en tiempo real.
+
+Configúrala apuntando a la URL de tu servidor (`http://tu-dominio:2283` o el dominio detrás de tu proxy inverso, ver siguiente sección) e inicia sesión con la cuenta que creaste en el paso anterior.
+
+## Cómo proteger tu instancia antes de exponerla a internet
+
+Publicar Immich directamente en internet, sin nada delante, expone tu login de administrador y tu biblioteca completa de fotos al puerto abierto. Antes de dar acceso remoto a la app móvil desde fuera de casa, ten en cuenta lo siguiente:
+
+- **No expongas el puerto `2283` directamente.** Pon un proxy inverso delante con HTTPS. Ya cubrimos esto en detalle en el artículo de [proxy inverso con Nginx](/blog/proxy-inverso-nginx-guia-practica/) — Immich necesita que el proxy reenvíe las cabeceras `Host`, `X-Real-IP`, `X-Forwarded-Proto` y `X-Forwarded-For`, y **no soporta** servirse bajo una subruta como `/immich/`: necesita su propio dominio o subdominio.
+- **Prioriza VPN sobre exposición pública.** Si solo necesitas acceso remoto para ti y tu familia, algo como WireGuard es más seguro que abrir un puerto al mundo — nadie puede intentar fuerza bruta contra un login que ni siquiera pueden alcanzar.
+- **Ten un plan de backup probado**, no solo del volumen de subida (las fotos en sí) sino también de la base de datos. Los volúmenes Docker no se respaldan solos: si borras el volumen o falla el disco, no hay forma de recuperar nada.
+
+Para la base de datos, Immich recomienda un volcado lógico con `pg_dump`, no copiar los ficheros de `DB_DATA_LOCATION` en caliente (puede dejarte un backup corrupto e irrecuperable):
+
+```bash
+# Backup: exporta la base de datos completa a un .sql.gz
+docker exec -t immich_postgres pg_dump --clean --if-exists \
+  --dbname=immich --username=postgres | gzip > "/ruta/backup/dump.sql.gz"
+```
+
+El volcado solo contiene metadatos (álbumes, caras, usuarios, rutas de archivo) — no las fotos ni vídeos en sí. Necesitas respaldar `UPLOAD_LOCATION` por separado, por ejemplo con rsync o rclone hacia otro disco o proveedor cifrado. Si ya tienes [Vaultwarden](/blog/vaultwarden-gestor-contrasenas-autoalojado/) u otros servicios autoalojados en tu red, Immich encaja en el mismo patrón: cada servicio detrás de su propio proxy, con sus propios backups, sin depender de que un único punto de fallo se lleve por delante todo tu homelab.
+
+## Siguiente paso
+
+Con el stack levantado, la cuenta de administrador creada y la app móvil sincronizando, ya tienes una alternativa funcional a Google Fotos corriendo en tu propia red. El siguiente paso natural es automatizar los backups —tanto de `UPLOAD_LOCATION` como del volcado de Postgres— con un `systemd timer` o un cron, para no depender de acordarte de hacerlo a mano.
+
+> [!NOTE]
+> ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.
