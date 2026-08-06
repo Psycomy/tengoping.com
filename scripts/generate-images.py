@@ -350,7 +350,7 @@ def cmd_check(args):
     posts_sin_image = []
 
     for fname in sorted(os.listdir(CONTENT_DIR)):
-        if not fname.endswith(".md"):
+        if not fname.endswith((".md", ".mdx")):
             continue
         fpath = os.path.join(CONTENT_DIR, fname)
         fm = parse_frontmatter(fpath)
@@ -398,10 +398,10 @@ def cmd_check(args):
 
 
 def cmd_auto(args):
-    """Auto-genera imágenes desde frontmatter de los .md."""
+    """Auto-genera imágenes desde frontmatter de los .md/.mdx."""
     articles = []
     for fname in sorted(os.listdir(CONTENT_DIR)):
-        if not fname.endswith(".md"):
+        if not fname.endswith((".md", ".mdx")):
             continue
         fpath = os.path.join(CONTENT_DIR, fname)
         fm = parse_frontmatter(fpath)
@@ -535,7 +535,7 @@ Ejemplos:
 
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--auto", action="store_true",
-                      help="auto-genera desde frontmatter de los .md")
+                      help="auto-genera desde frontmatter de los .md/.mdx")
     mode.add_argument("--new", action="store_true",
                       help="modo interactivo para crear una imagen nueva")
     mode.add_argument("--check", action="store_true",
