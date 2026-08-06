@@ -38,13 +38,19 @@ verde para los 4.
    alertas) que antes solo se mencionaba como "siguiente paso"; más consultas PromQL (carga,
    errores de red, I/O de disco) y explicación counter/gauge + `rate()` vs `irate()`.
 
-**Pendiente — punto 5, requiere decisión del usuario antes de tocarlo:**
+**Punto 5 — decidido por el usuario (2026-08-06): se deja como está.**
 
-`recuperar-contrasena-root-livecd-lvm.md` — 262 palabras, 1 solo encabezado. El post más
-corto del blog con diferencia. Es una chuleta de rescate para un caso concreto — antes de
-ampliarlo, decidir con el usuario si de verdad necesita más desarrollo o si, como
-`comandos-esenciales-lvm-guia-rapida.md`, se acepta como cheatsheet corto intencional
-([[feedback-own-notes-no-ai-disclosure]]: los apuntes LVM son cheatsheets 100% del usuario).
+`recuperar-contrasena-root-livecd-lvm.md` — 262 palabras, 1 solo encabezado. Se confirma como
+cheatsheet corto intencional, igual que `comandos-esenciales-lvm-guia-rapida.md`: no es una
+guía a medio terminar, es una chuleta de rescate pensada para copiar-pegar en el momento
+exacto de un incidente, no para leerse de cabo a rabo. Puede seguir sin indexar bien en
+Google por su longitud — se acepta ese coste a cambio de mantener el formato apropiado para
+su propósito. Sin acción pendiente.
+
+## Estado final
+
+Los 5 hallazgos de esta auditoría están resueltos: 4 artículos ampliados (commit `2f1c597`,
+2026-08-06) y 1 confirmado como cheatsheet corto intencional sin necesidad de cambios.
 
 ---
 
