@@ -6,7 +6,7 @@ pubDate: 2026-08-06
 category: 'Virtualización'
 tags: ['K3s', 'Kubernetes', 'Virtualización', 'Homelab']
 image: '../../assets/images/virt-k3s.jpg'
-draft: false
+draft: true
 ---
 
 K3s es una distribución de Kubernetes empaquetada en un único binario de menos de 70 MB, pensada para entornos con recursos limitados: edge, IoT y, muy especialmente, el homelab. Su función principal sigue siendo la misma que la de cualquier Kubernetes: orquestar contenedores de aplicación — las mismas imágenes OCI que ya generas con [Docker](/blog/docker-guia-practica-contenedores-linux/) o [Podman](/blog/introduccion-contenedores-podman-linux/) — repartiéndolos entre varias máquinas, reiniciándolos si fallan y balanceando la carga entre ellas. Si ya tienes claro cómo levantar VMs con [Proxmox VE](/blog/proxmox-ve-hipervisor-casero/) o contenedores de sistema con [Incus/LXC](/blog/incus-lxc-contenedores-sistema-linux/), piensa en K3s como la capa que decide _qué_ contenedores de aplicación corren y _dónde_, mientras que Proxmox o Incus/LXC son solo el sustrato — la máquina (virtual o de sistema) — sobre el que corre cada nodo del clúster.
