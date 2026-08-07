@@ -160,7 +160,7 @@ rsync -avh --delete /srv/datos/ /srv/backup/
 rsync -avhz -e ssh usuario@servidor_remoto:/datos/ /srv/backup/remoto/
 ```
 
-Programa las copias con un cron job o desde la interfaz web de OMV.
+Programa las copias con un cron job o desde la interfaz web de OMV. Si además quieres una copia cifrada fuera de sitio en la nube (Backblaze B2, S3, Google Drive...), [rclone](/blog/rclone-sincroniza-cifra-nube/) es la herramienta natural para complementar estos backups locales.
 
 ## Monitorización con SMART
 

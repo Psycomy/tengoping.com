@@ -14,7 +14,7 @@ draft: false
 
 ¿Cuántas veces has escuchado "en mi máquina funciona"? Vagrant elimina ese problema. Es una herramienta de HashiCorp que permite definir entornos de desarrollo como código: un fichero de texto (Vagrantfile) describe la máquina virtual, su configuración y el software necesario. Cualquier miembro del equipo puede levantar un entorno idéntico con un solo comando.
 
-A diferencia de un hipervisor tipo 1 como [Proxmox VE](/blog/proxmox-ve-hipervisor-casero/), Vagrant no es un hipervisor en sí mismo: trabaja sobre proveedores como VirtualBox, libvirt/KVM o VMware, abstrayendo las diferencias entre ellos para ofrecer un flujo de trabajo unificado.
+A diferencia de un hipervisor tipo 1 como [Proxmox VE](/blog/proxmox-ve-hipervisor-casero/), Vagrant no es un hipervisor en sí mismo: trabaja sobre proveedores como VirtualBox, [libvirt/KVM](/blog/kvm-libvirt-virtualizacion-nativa-linux/) o VMware, abstrayendo las diferencias entre ellos para ofrecer un flujo de trabajo unificado.
 
 ## Instalación
 

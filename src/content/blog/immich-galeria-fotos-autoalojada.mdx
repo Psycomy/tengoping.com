@@ -153,7 +153,7 @@ Publicar Immich directamente en internet, sin nada delante, expone tu login de a
 
 - **No expongas el puerto `2283` directamente.** Pon un proxy inverso delante con HTTPS. Ya cubrimos esto en detalle en el artículo de [proxy inverso con Nginx](/blog/proxy-inverso-nginx-guia-practica/) — Immich necesita que el proxy reenvíe las cabeceras `Host`, `X-Real-IP`, `X-Forwarded-Proto` y `X-Forwarded-For`, y **no soporta** servirse bajo una subruta como `/immich/`: necesita su propio dominio o subdominio.
 - **Prioriza VPN sobre exposición pública.** Si solo necesitas acceso remoto para ti y tu familia, algo como WireGuard es más seguro que abrir un puerto al mundo — nadie puede intentar fuerza bruta contra un login que ni siquiera pueden alcanzar.
-- **Ten un plan de backup probado**, no solo del volumen de subida (las fotos en sí) sino también de la base de datos. Los volúmenes Docker no se respaldan solos: si borras el volumen o falla el disco, no hay forma de recuperar nada.
+- **Ten un plan de backup probado**, no solo del volumen de subida (las fotos en sí) sino también de la base de datos. Los volúmenes Docker no se respaldan solos: si borras el volumen o falla el disco, no hay forma de recuperar nada. El backup lógico no sustituye a la redundancia física: si el disco donde vive `UPLOAD_LOCATION` es único, considera montarlo sobre [RAID software con mdadm](/blog/raid-software-mdadm-guia-practica/) para no depender de un solo punto de fallo de hardware.
 
 Para la base de datos, Immich recomienda un volcado lógico con `pg_dump`, no copiar los ficheros de `DB_DATA_LOCATION` en caliente (puede dejarte un backup corrupto e irrecuperable):
 

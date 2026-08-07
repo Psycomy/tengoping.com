@@ -203,7 +203,7 @@ git clone git@git.tudominio.com:admin/mi-proyecto.git
 
 ## Configurar acceso SSH
 
-Añade tu clave pública en **Configuración > Claves SSH** del perfil de usuario. Si usas el servidor SSH del sistema (no el integrado de Gitea), asegúrate de que el usuario `gitea` tenga un `~/.ssh/authorized_keys` gestionado por Gitea.
+Añade tu clave pública en **Configuración > Claves SSH** del perfil de usuario. Si usas el servidor SSH del sistema (no el integrado de Gitea), asegúrate de que el usuario `gitea` tenga un `~/.ssh/authorized_keys` gestionado por Gitea. De paso, aprovecha para aplicar un [hardening general al servidor SSH del host](/blog/configurar-servidor-ssh-seguro-linux): deshabilitar login por contraseña y restringir el acceso root protege también el acceso a tu instancia de Gitea.
 
 ## Migrar repositorios desde GitHub
 

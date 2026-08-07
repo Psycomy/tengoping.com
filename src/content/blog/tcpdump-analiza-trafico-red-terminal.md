@@ -188,7 +188,7 @@ sudo tcpdump -i eth0 -n port 53
 
 ## Siguiente paso
 
-Con `host`, `port`, `net`, `-n`/`-nn` y `-w`/`-r` ya cubres la gran mayoría de las depuraciones de red del día a día. Para un análisis más visual de capturas guardadas — seguir sesiones TCP completas, ver gráficos de latencia — el siguiente paso natural es abrir esos mismos archivos `.pcap` en Wireshark, que reutiliza exactamente la misma sintaxis de filtros que acabas de aprender aquí.
+Con `host`, `port`, `net`, `-n`/`-nn` y `-w`/`-r` ya cubres la gran mayoría de las depuraciones de red del día a día. Para un análisis más visual de capturas guardadas — seguir sesiones TCP completas, ver gráficos de latencia — el siguiente paso natural es abrir esos mismos archivos `.pcap` en [Wireshark](/blog/wireshark-analiza-trafico-red-visualmente), que reutiliza exactamente la misma sintaxis de filtros que acabas de aprender aquí.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

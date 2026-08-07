@@ -233,6 +233,8 @@ dig @localhost tengoping.com MX      # comprobar un tipo de registro concreto
 dig +trace tengoping.com             # seguir la resolución desde los root servers, útil si algo falla fuera de tu red
 ```
 
+Si con `journalctl` y `dig` no es suficiente y necesitas ver exactamente qué consultas llegan al puerto 53 (o si sospechas de un cliente mal configurado o de tráfico DNS anómalo), [capturar el tráfico con tcpdump](/blog/tcpdump-analiza-trafico-red-terminal/) te muestra cada paquete de consulta y respuesta tal cual viaja por la red.
+
 ## Buenas prácticas de seguridad
 
 - **`recursion no;`** en un servidor autoritativo público — ya está en el ejemplo de este artículo — evita que se use tu BIND como resolutor abierto para consultas de terceros, un vector clásico de amplificación DDoS.

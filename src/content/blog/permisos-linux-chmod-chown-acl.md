@@ -65,6 +65,8 @@ chmod 644 config.yml   # rw-r--r--
 chmod 600 id_rsa       # rw-------
 ```
 
+Ese `600` en la clave privada no es capricho: un [servidor SSH bien configurado](/blog/configurar-servidor-ssh-seguro-linux/) rechaza directamente claves con permisos más laxos, precisamente para que nadie más en la máquina pueda leerlas.
+
 ### Notación simbólica
 
 ```bash

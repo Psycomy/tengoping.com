@@ -130,7 +130,7 @@ Let's Encrypt aplica límites para evitar abuso, y es fácil toparse con ellos s
 
 ## Siguiente paso
 
-Con esto tienes criterio para elegir el tipo de validación correcto (HTTP-01 para dominios simples accesibles públicamente, DNS-01 si necesitas wildcards o el servidor no es accesible desde fuera), el modo de emisión que mejor encaja con tu servidor web, y entiendes qué hace realmente la renovación automática por debajo. El siguiente paso natural es automatizar la emisión de certificados en infraestructura como código (por ejemplo, integrando Certbot en tus playbooks de [Ansible](/blog/automatizar-servidores-ansible-primeros-pasos/)) si gestionas varios servidores.
+Con esto tienes criterio para elegir el tipo de validación correcto (HTTP-01 para dominios simples accesibles públicamente, DNS-01 si necesitas wildcards o el servidor no es accesible desde fuera), el modo de emisión que mejor encaja con tu servidor web, y entiendes qué hace realmente la renovación automática por debajo. El siguiente paso natural es automatizar la emisión de certificados en infraestructura como código (por ejemplo, integrando Certbot en tus playbooks de [Ansible](/blog/automatizar-servidores-ansible-primeros-pasos/)) si gestionas varios servidores. Si prefieres no gestionar Certbot como una pieza aparte, [Caddy](/blog/caddy-proxy-inverso-https-automatico/) obtiene y renueva los certificados de forma totalmente automática como parte del propio proxy inverso.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.

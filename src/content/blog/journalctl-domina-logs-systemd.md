@@ -196,7 +196,7 @@ Este mismo patrón — `-u <servicio>` combinado con `--since` y `-p` — es el 
 
 `journalctl` reemplaza a `grep` sobre archivos de texto dispersos en `/var/log/` por un único punto de consulta estructurado, con filtros que cubren el 90% de los casos de depuración diarios. La curva de aprendizaje es corta: con `-u`, `-p`, `--since` y `-f` ya cubres la mayoría de situaciones; el resto de flags están ahí para cuando los necesites.
 
-Si administras varios servidores, el siguiente paso natural es centralizar estos logs en un sistema como Prometheus/Grafana o Zabbix en vez de conectarte por SSH a cada máquina para lanzar `journalctl` — pero para depuración local en un único servidor, no vas a necesitar nada más que esto.
+Si administras varios servidores, el siguiente paso natural es centralizar estos logs en un sistema como [Prometheus/Grafana](/blog/monitorizar-servidores-linux-prometheus-grafana) o [Zabbix](/blog/zabbix-monitorizacion-infraestructura) en vez de conectarte por SSH a cada máquina para lanzar `journalctl` — pero para depuración local en un único servidor, no vas a necesitar nada más que esto.
 
 > [!NOTE]
 > ✍️ Transparencia: Este artículo ha sido creado con el apoyo de herramientas de inteligencia artificial. Toda la información técnica ha sido revisada y validada por el autor antes de su publicación.
