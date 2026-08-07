@@ -3,7 +3,7 @@ title: 'Montar tu propia nube con Nextcloud'
 description: 'Guía completa para instalar Nextcloud en un servidor Linux y tener tu propio almacenamiento en la nube sin depender de terceros.'
 author: 'alois'
 pubDate: 2026-01-27
-updatedDate: 2026-07-27
+updatedDate: 2026-08-07
 category: 'Self-Hosting'
 tags: ['Nextcloud', 'Self-Hosting', 'Nube', 'Linux']
 image: '../../assets/images/nextcloud-server.jpg'
@@ -174,6 +174,22 @@ Nextcloud incluye un ecosistema de aplicaciones. Desde el panel de administraci�
 - **Talk**: videollamadas y chat
 - **Office**: edición colaborativa de documentos (requiere Collabora o OnlyOffice)
 
+Las apps más relevantes para sacarle partido a una instalación autoalojada son estas cuatro:
+
+- **Nextcloud Talk**: chat y videollamadas cifradas entre usuarios de tu instancia, sin depender de Zoom, Meet o Teams. Para grupos de más de unos pocos usuarios simultáneos conviene desplegar aparte el componente **High Performance Backend** (basado en Janus), pero para uso doméstico o de equipo pequeño funciona directamente con el servidor de señalización interno.
+- **Nextcloud Office**: edición colaborativa de documentos ofimáticos (Writer, Calc, Impress) directamente en el navegador. No viene integrada por defecto: necesitas desplegar un servidor **Collabora Online** (o OnlyOffice) aparte, normalmente vía Docker, y apuntar la app a esa URL desde **Configuración > Office**.
+- **Memories** (o **Nextcloud Photos**, más básica): gestión de fotos con línea de tiempo, reconocimiento facial y álbumes. Si buscas específicamente una galería con reconocimiento facial más pulido y sincronización automática desde el móvil, la alternativa dedicada [Immich](/blog/immich-galeria-fotos-autoalojada/) tiene un enfoque más especializado; Memories tiene sentido cuando ya vives dentro del ecosistema Nextcloud y no quieres mantener dos servicios separados.
+- **Nextcloud Deck**: tablero kanban tipo Trello, útil para gestionar tareas de forma privada sin depender de un SaaS externo.
+
+La instalación se hace desde la interfaz (**Aplicaciones > buscar el nombre > Descargar y activar**) o por línea de comandos con `occ`, la herramienta de administración de Nextcloud:
+
+```bash
+sudo -u www-data php /var/www/nextcloud/occ app:install deck
+sudo -u www-data php /var/www/nextcloud/occ app:enable deck
+```
+
+`occ app:list` te muestra qué apps están activas e inactivas en tu instancia en cualquier momento.
+
 ## Configurar tareas cron
 
 Para que las tareas de fondo se ejecuten de forma fiable, configura un cron del sistema en lugar del AJAX por defecto:
@@ -189,6 +205,64 @@ Añade esta línea:
 ```
 
 Después, en **Configuración > Administración > Ajustes básicos**, selecciona **Cron** como método de tareas en segundo plano.
+
+## Solución de problemas comunes
+
+### Error "Access through untrusted domain"
+
+Si accedes a tu instancia por una IP o un dominio distinto al que usaste en el asistente de instalación, Nextcloud rechaza la petición con un aviso de dominio no confiable. Esto es una medida de seguridad, no un fallo: evita que alguien redirija tráfico hacia tu servidor con un `Host` falsificado. Se soluciona añadiendo cada dominio o IP adicional al array `trusted_domains` de `config/config.php`:
+
+```bash
+sudo nano /var/www/nextcloud/config/config.php
+```
+
+```php
+'trusted_domains' =>
+array (
+  0 => 'nube.tudominio.com',
+  1 => '192.168.1.50',
+  2 => 'nube.tudominio.com:8443',
+),
+```
+
+También puedes añadir un dominio nuevo sin editar el array a mano:
+
+```bash
+sudo -u www-data php /var/www/nextcloud/occ config:system:set trusted_domains 2 --value=nube.tudominio.com
+```
+
+### Error de memory_limit al subir archivos grandes o ejecutar tareas en segundo plano
+
+Aunque ya hayas ajustado `memory_limit = 512M` en el `php.ini` de Apache durante la instalación (ver más arriba), es fácil que el límite efectivo siga siendo el de otro SAPI de PHP si usas PHP-FPM en vez de `mod_php`, o que un cambio no se aplique porque falta reiniciar el servicio correcto. Comprueba el valor que PHP está usando realmente en ese momento:
+
+```bash
+php -i | grep memory_limit
+```
+
+Si el valor mostrado no coincide con el que configuraste, revisa si tu instalación usa PHP-FPM (`/etc/php/8.1/fpm/php.ini`, distinto del `apache2/php.ini`) y reinicia el servicio correspondiente después de modificarlo:
+
+```bash
+sudo systemctl restart php8.1-fpm   # si usas PHP-FPM
+sudo systemctl restart apache2      # si usas mod_php
+```
+
+Nextcloud recomienda un mínimo de `512M`; si sigues viendo errores al subir archivos muy grandes o al ejecutar el escaneo de archivos, sube el valor a `1G` y revisa también `upload_max_filesize` y `post_max_size`, que deben ser igual o mayores que el tamaño de archivo que quieres subir.
+
+### El cron de mantenimiento no se ejecuta
+
+Si en **Configuración > Administración > Ajustes básicos** ves un aviso de que el cron "no se ha ejecutado en las últimas horas", casi siempre es porque la línea de `crontab` no llegó a añadirse para el usuario `www-data`, o el propio `cron.php` está fallando en silencio. Comprueba que la tarea existe:
+
+```bash
+sudo crontab -u www-data -l
+```
+
+Y ejecuta el script manualmente para ver el error real si lo hay:
+
+```bash
+sudo -u www-data php -f /var/www/nextcloud/cron.php
+```
+
+Un fallo típico aquí es que `www-data` no tenga permisos de escritura sobre el directorio de datos, o que el `memory_limit` en el PHP de línea de comandos (`cli/php.ini`, otro archivo distinto a los dos anteriores) sea demasiado bajo para las tareas en segundo plano.
 
 ## Recomendaciones finales
 
