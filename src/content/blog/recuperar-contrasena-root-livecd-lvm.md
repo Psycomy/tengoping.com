@@ -4,7 +4,7 @@ description: '¿Olvidaste la contraseña de root en Linux con LVM? Recupérala c
 author: 'antonio'
 pubDate: 2026-03-03
 category: 'Linux'
-tags: ['rescate', 'linux', 'LVM']
+tags: ['Rescate', 'Linux', 'LVM']
 image: '../../assets/images/recuperar-contrasena-root-livecd-lvm.jpg'
 draft: false
 ---

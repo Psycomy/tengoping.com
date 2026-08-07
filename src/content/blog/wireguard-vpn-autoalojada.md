@@ -4,7 +4,7 @@ description: 'Guía paso a paso para configurar un servidor VPN con WireGuard en
 author: 'alois'
 pubDate: 2026-02-12
 category: 'Redes'
-tags: ['WireGuard', 'VPN', 'Self-Hosting', 'Seguridad']
+tags: ['WireGuard', 'VPN', 'Redes', 'Self-Hosting', 'Seguridad']
 image: '../../assets/images/wireguard-vpn.jpg'
 draft: false
 ---
