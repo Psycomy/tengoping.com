@@ -4,7 +4,7 @@ description: 'Guía paso a paso para configurar y securizar un servidor SSH en c
 author: 'antonio'
 pubDate: 2026-01-01
 updatedDate: 2026-08-06
-category: 'Linux'
+category: 'Seguridad'
 tags: ['SSH', 'Linux', 'Seguridad', 'Sysadmin']
 image: '../../assets/images/ssh-server.jpg'
 draft: false

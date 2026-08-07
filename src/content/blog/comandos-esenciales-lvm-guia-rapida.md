@@ -4,7 +4,7 @@ description: 'Cheatsheet con los comandos más usados de LVM (Logical Volume Man
 author: 'antonio'
 pubDate: 2026-02-20
 updatedDate: 2026-07-27
-category: 'Automatización'
+category: 'Linux'
 tags: ['LVM', 'Storage', 'Linux', 'Cheatsheet']
 image: '../../assets/images/lvm-storage.jpg'
 draft: false

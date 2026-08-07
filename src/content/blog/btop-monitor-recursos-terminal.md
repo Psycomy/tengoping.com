@@ -3,7 +3,7 @@ title: 'btop: monitoriza tu sistema en terminal'
 description: 'Guía práctica de btop, el monitor de recursos para terminal: instalación, atajos de teclado esenciales y personalización básica.'
 author: 'antonio'
 pubDate: 2026-08-01T10:00:00
-category: 'Software'
+category: 'Monitorización'
 tags: ['Terminal', 'Sysadmin', 'Cheatsheet', 'Linux']
 image: '../../assets/images/soft-btop.jpg'
 draft: false
