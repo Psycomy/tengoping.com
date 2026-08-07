@@ -83,7 +83,10 @@ const { author } = Astro.props;
     transition: color 0.2s;
   }
   .author-name a:hover {
-    color: var(--color-primary);
+    /* --color-primary-dark, no --color-primary: sobre --color-bg-secondary
+       (el fondo de esta tarjeta) el par default da 4.52:1, al límite de AA
+       para el texto de 0.8125rem de este bloque. */
+    color: var(--color-primary-dark);
   }
   .author-bio {
     margin: 0 0 0.75rem;
@@ -108,10 +111,10 @@ const { author } = Astro.props;
     transition: color 0.2s;
   }
   .author-social a:hover {
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
   }
   .author-all-posts {
-    color: var(--color-primary);
+    color: var(--color-primary-dark);
     text-decoration: none;
     font-size: 0.8125rem;
     font-weight: 600;

@@ -349,7 +349,9 @@
   }
 
   .terminal-error code {
-    color: var(--color-primary);
+    /* --color-primary-dark: sobre este mismo --color-bg-secondary el
+       --color-primary por defecto da 4.52:1, al límite de AA. */
+    color: var(--color-primary-dark);
     background: var(--color-bg-secondary);
     padding: 0.15rem 0.4rem;
   }
@@ -368,7 +370,9 @@
   }
 
   .status-results {
-    color: var(--color-primary);
+    /* Hereda el fondo --color-bg-secondary de .terminal-status a font-size
+       0.75rem: --color-primary-dark mantiene margen real sobre AA. */
+    color: var(--color-primary-dark);
   }
 
   .status-keys {
