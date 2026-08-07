@@ -32,7 +32,7 @@ Astro 7 static blog in Spanish (es). Zero JS frameworks — all interactivity is
 
 ### Layout Hierarchy
 
-`BaseLayout` → wraps every page (HTML shell, meta tags, OG/Twitter cards, JSON-LD, theme flash prevention script, self-hosted fonts, Header/Footer/Search). Accepts `section?: string` prop for article category meta and `canonicalOverride?: string` for paginated pages.
+`BaseLayout` → wraps every page (HTML shell, meta tags, OG/Twitter cards, JSON-LD, theme flash prevention script, self-hosted fonts, Header/Footer/Search). Accepts `section?: string` prop for article category meta and `noindex?: boolean` to mark a page (e.g. paginated listing pages beyond page 1) as `noindex, follow`. Canonical URL is always self-referential — computed from `Astro.url.pathname`, never overridden.
 
 `ArticleLayout` → extends BaseLayout for blog posts (reading time, author lookup, sticky TOC sidebar, copy-code buttons, Giscus comments, prev/next nav). Uses a 3-column CSS grid (`1fr / 750px / 250px`) with sidebar sticky via `position: sticky` + `align-items: start` on the grid.
 
