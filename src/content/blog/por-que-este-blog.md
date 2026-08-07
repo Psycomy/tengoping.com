@@ -108,7 +108,7 @@ Aquí entra de todo:
 - Desarrollo web
 - Open Source
 
-Ahora mismo el blog lo escribimos dos personas. Yo llevo unos años currando en consultoría y telecomunicaciones, con temporadas eminentemente en NOC monitorizando infraestructuras ajenas, y por el camino he ido sacándome certificaciones de redes y cloud porque me gusta entender el porqué de las cosas, no solo el cómo. Alois viene del mismo mundo — sistemas, redes, virtualización — con más querencia por la automatización y por dejar la infraestructura montada de forma que no haya que tocarla cada dos semanas. Ninguno de los dos vive de este blog ni pretende vivir de él: escribimos fuera de horario, con la misma infraestructura que usamos en el día a día, no con un laboratorio de postureo montado solo para hacer capturas de pantalla bonitas.
+Ahora mismo el blog lo escribimos dos personas. Yo llevo unos años currando en consultoría y telecomunicaciones, por el camino he ido sacándome certificaciones de redes y cloud porque me gusta entender el porqué de las cosas, no solo el cómo. Alois viene del mundo de las telecomunicaciones — sistemas, redes, virtualización — con más querencia por las redes debido a la deformación profesional. Ninguno de los dos vive de este blog ni pretende vivir de él: escribimos fuera de horario, con la misma infraestructura que usamos en el día a día, no con un laboratorio de postureo montado solo para hacer capturas de pantalla bonitas.
 
 No somos una empresa. No somos gurús. Solo gente que prueba cosas, las rompe, las arregla, y cuenta lo que aprende por el camino.
 
