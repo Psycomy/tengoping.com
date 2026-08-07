@@ -3,11 +3,15 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import pagefind from 'astro-pagefind';
 import { unified } from '@astrojs/markdown-remark';
+import { sharpImageService } from 'astro/config';
 import remarkGithubAlerts from './src/plugins/remark-github-alerts.mjs';
 
 export default defineConfig({
   site: 'https://tengoping.com',
   compressHTML: true,
+  image: {
+    service: sharpImageService(),
+  },
   build: {
     inlineStylesheets: 'always',
   },

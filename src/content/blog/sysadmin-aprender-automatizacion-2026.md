@@ -3,7 +3,7 @@ title: 'Por qué aprender automatización en 2026'
 description: 'Por qué la automatización con Ansible, Terraform y Git dejó de ser opcional para un sysadmin, y por dónde empezar sin agobiarte.'
 author: 'alois'
 pubDate: 2026-01-20
-updatedDate: 2026-08-05
+updatedDate: 2026-08-07
 category: 'Opinión'
 tags: ['Automatización', 'DevOps', 'Ansible', 'Carrera profesional']
 image: '../../assets/images/sysadmin-automation.jpg'
@@ -18,12 +18,16 @@ Si eres sysadmin y todavía gestionas servidores conectándote uno a uno por SSH
 
 Las empresas gestionan cada vez más infraestructura. Lo que antes eran 10 servidores físicos ahora pueden ser cientos de instancias en la nube. Gestionar esto manualmente no solo es ineficiente, sino que es una fuente constante de errores.
 
+Un caso concreto que se repite en casi cualquier equipo pequeño: hay que parchear el kernel y reiniciar 40 servidores tras un CVE crítico. A mano, eso son 40 sesiones SSH, 40 `apt upgrade` vigilados uno a uno y 40 reinicios escalonados para no tumbar el servicio — una tarde entera, con la certeza de que en algún servidor se te va a olvidar comprobar que el kernel nuevo arrancó bien antes de pasar al siguiente. Con un playbook de Ansible que actualiza, comprueba el estado del servicio tras el reinicio y avanza al siguiente lote solo si el anterior salió bien (`serial: 5` para reiniciar de cinco en cinco, por ejemplo), la misma tarea pasa de "tarde entera con riesgo de despiste" a "lanzar el playbook y revisar el resumen final". El trabajo no desaparece — se convierte en escribir y revisar 30 líneas de YAML una vez, en vez de repetir el mismo procedimiento manual cada vez que sale un parche.
+
 ### Los problemas de lo manual
 
-- **Inconsistencia**: Cada servidor configurado a mano es ligeramente diferente
-- **Errores humanos**: Un typo en producción puede tumbar un servicio
-- **Falta de documentación**: Los cambios manuales rara vez se documentan bien
-- **Escalabilidad nula**: No puedes hacer lo mismo en 200 servidores
+- **Inconsistencia**: cada servidor configurado a mano es ligeramente diferente — es habitual descubrir, meses después, que la mitad de los servidores tiene `logrotate` reteniendo logs 7 días y la otra mitad 30, simplemente porque cada incidencia se resolvió a mano y sin criterio único
+- **Errores humanos**: un typo en producción puede tumbar un servicio
+- **Falta de documentación**: los cambios manuales rara vez se documentan bien
+- **Escalabilidad nula**: no puedes hacer lo mismo en 200 servidores
+
+Automatizar también cambia cuándo te enteras de que algo va mal. Un sistema de [monitorización con Prometheus y Grafana](/blog/monitorizar-servidores-linux-prometheus-grafana) o [Zabbix](/blog/zabbix-monitorizacion-infraestructura) no solo avisa cuando un disco se llena o un servicio deja de responder — puede disparar directamente un script de remediación (rotar y comprimir logs antiguos, reiniciar un servicio colgado, liberar caché) antes de que el problema escale a las tres de la madrugada. Combinado con [tareas programadas vía cron o systemd timers](/blog/tareas-programadas-cron-systemd-timers/) para el mantenimiento preventivo (limpiar `/tmp`, rotar certificados, purgar backups viejos), buena parte del trabajo reactivo de un sysadmin se convierte en trabajo que ocurre solo, y que revisas en vez de ejecutar.
 
 ## Herramientas que deberías conocer
 
