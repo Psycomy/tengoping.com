@@ -28,7 +28,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.8.0",
+    "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.0.1",
     "husky": "^9.1.7",
