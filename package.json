@@ -15,7 +15,7 @@
     "check-links": "linkinator \"**/*.html\" --recurse --server-root ./dist --skip \"^https?://(?!localhost)\" --verbosity error"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.2.1",
+    "@astrojs/markdown-remark": "^7.2.4",
     "@astrojs/mdx": "^7.0.3",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
