@@ -22,7 +22,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "astro": "^7.2.2",
     "astro-pagefind": "^2.0.1",
-    "satori": "^0.29.0",
+    "satori": "^0.33.0",
     "sharp": "^0.35.3"
   },
   "devDependencies": {
