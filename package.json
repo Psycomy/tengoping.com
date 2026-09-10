@@ -15,7 +15,7 @@
     "check-links": "linkinator \"**/*.html\" --recurse --server-root ./dist --skip \"^https?://(?!localhost)\" --verbosity error"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.2.4",
+    "@astrojs/markdown-remark": "^7.3.0",
     "@astrojs/mdx": "^7.0.8",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
@@ -45,7 +45,7 @@
     "defu": ">=6.1.5",
     "vite": ">=7.3.5",
     "esbuild": ">=0.28.1",
-    "js-yaml": "^4.3.1",
+    "js-yaml": "^4.3.2",
     "postcss": ">=8.5.10",
     "devalue": ">=5.8.1",
     "fflate": "^0.7.5"
