@@ -20,7 +20,7 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^7.3.1",
+    "astro": "^7.3.2",
     "astro-pagefind": "^2.0.1",
     "satori": "^0.33.4",
     "sharp": "^0.35.4"
