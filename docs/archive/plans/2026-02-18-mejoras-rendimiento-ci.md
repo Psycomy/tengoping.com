@@ -119,7 +119,8 @@ git commit -m "a11y: aria-hidden en SVGs de ShareButtons para evitar duplicació
 Línea 33 actual:
 
 ```astro
-? <Image
+?{' '}
+<Image
   src={image}
   alt={title}
   class="card-image"
@@ -133,7 +134,8 @@ Línea 33 actual:
 Cambiar a:
 
 ```astro
-? <Image
+?{' '}
+<Image
   src={image}
   alt={title}
   class="card-image"
@@ -167,7 +169,8 @@ git commit -m "perf: añadir sizes a ArticleCard para responsive image selection
 Línea 27 actual:
 
 ```astro
-? <Image
+?{' '}
+<Image
   src={post.data.image}
   alt={post.data.title}
   class="slide-image"
@@ -182,7 +185,8 @@ Línea 27 actual:
 Cambiar a:
 
 ```astro
-? <Image
+?{' '}
+<Image
   src={post.data.image}
   alt={post.data.title}
   class="slide-image"

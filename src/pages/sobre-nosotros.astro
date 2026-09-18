@@ -40,62 +40,60 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     </div>
 
     <div class="authors-grid">
-      {
-        authors.map((author) => {
-          const authorPosts = posts.filter((p) => p.data.author === author.id).slice(0, 3);
-          return (
-            <div class="author-profile">
-              <div class="author-header">
-                <img
-                  src={avatarVariant(author.avatar, 160)}
-                  alt={author.name}
-                  class="author-avatar"
-                  width="80"
-                  height="80"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div>
-                  <h2>
-                    <a href={`/autor/${author.id}/`}>{author.name}</a>
-                  </h2>
-                  <p class="author-role">{author.bioShort}</p>
-                </div>
+      {authors.map((author) => {
+        const authorPosts = posts.filter((p) => p.data.author === author.id).slice(0, 3);
+        return (
+          <div class="author-profile">
+            <div class="author-header">
+              <img
+                src={avatarVariant(author.avatar, 160)}
+                alt={author.name}
+                class="author-avatar"
+                width="80"
+                height="80"
+                loading="lazy"
+                decoding="async"
+              />
+              <div>
+                <h2>
+                  <a href={`/autor/${author.id}/`}>{author.name}</a>
+                </h2>
+                <p class="author-role">{author.bioShort}</p>
               </div>
-              <p class="author-bio">{author.bio}</p>
-              <div class="author-social">
-                {author.social.twitter && (
-                  <a href={author.social.twitter} target="_blank" rel="noopener noreferrer">
-                    Twitter
-                  </a>
-                )}
-                {author.social.github && (
-                  <a href={author.social.github} target="_blank" rel="noopener noreferrer">
-                    GitHub
-                  </a>
-                )}
-                {author.social.linkedin && (
-                  <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer">
-                    LinkedIn
-                  </a>
-                )}
-              </div>
-              {authorPosts.length > 0 && (
-                <div class="author-posts">
-                  <h3>Artículos recientes</h3>
-                  <ul>
-                    {authorPosts.map((post) => (
-                      <li>
-                        <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            </div>
+            <p class="author-bio">{author.bio}</p>
+            <div class="author-social">
+              {author.social.twitter && (
+                <a href={author.social.twitter} target="_blank" rel="noopener noreferrer">
+                  Twitter
+                </a>
+              )}
+              {author.social.github && (
+                <a href={author.social.github} target="_blank" rel="noopener noreferrer">
+                  GitHub
+                </a>
+              )}
+              {author.social.linkedin && (
+                <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer">
+                  LinkedIn
+                </a>
               )}
             </div>
-          );
-        })
-      }
+            {authorPosts.length > 0 && (
+              <div class="author-posts">
+                <h3>Artículos recientes</h3>
+                <ul>
+                  {authorPosts.map((post) => (
+                    <li>
+                      <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   </section>
 </BaseLayout>

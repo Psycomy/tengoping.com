@@ -10,9 +10,8 @@ import BaseLayout from '@layouts/BaseLayout.astro';
       </div>
       <div class="terminal-body">
         <p class="terminal-line">
-          <span class="prompt">$</span> curl -I https://tengoping.com<span class="path"
-            >{Astro.url.pathname}</span
-          >
+          <span class="prompt">$</span> curl -I https://tengoping.com
+          <span class="path">{Astro.url.pathname}</span>
         </p>
         <h1 class="terminal-line response-line">
           HTTP/1.1 <span class="status-code">404</span> Not Found
@@ -25,7 +24,9 @@ import BaseLayout from '@layouts/BaseLayout.astro';
         </p>
         <p class="terminal-line output-line">La página solicitada no existe o ha sido movida.</p>
         <p class="terminal-line">&nbsp;</p>
-        <p class="terminal-line"><span class="prompt">$</span> echo "Sugerencias:"</p>
+        <p class="terminal-line">
+          <span class="prompt">$</span> echo "Sugerencias:"
+        </p>
         <p class="terminal-line output-line">- Verifica que la URL esté escrita correctamente</p>
         <p class="terminal-line output-line">- La página pudo haber sido eliminada o renombrada</p>
         <p class="terminal-line">&nbsp;</p>
@@ -36,8 +37,12 @@ import BaseLayout from '@layouts/BaseLayout.astro';
       </div>
     </div>
     <div class="error-actions">
-      <a href="/" class="terminal-btn">[volver_al_inicio]</a>
-      <a href="/blog" class="terminal-btn">[ver_artículos]</a>
+      <a href="/" class="terminal-btn">
+        [volver_al_inicio]
+      </a>
+      <a href="/blog" class="terminal-btn">
+        [ver_artículos]
+      </a>
     </div>
   </section>
 </BaseLayout>

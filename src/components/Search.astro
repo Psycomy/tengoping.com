@@ -21,7 +21,8 @@
           stroke="currentColor"
           stroke-width="2"
         >
-          <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
     </div>
@@ -31,16 +32,19 @@
       </span>
       <div class="terminal-prompt-line">
         <span class="prompt-symbol">$</span>
-        <span class="prompt-cmd">grep -ri "</span><span
-          class="prompt-query"
-          id="search-query-mirror"></span><span class="prompt-cmd">" /blog/</span><span
-          class="prompt-cursor">▌</span
-        >
+        <span class="prompt-cmd">grep -ri "</span>
+        <span class="prompt-query" id="search-query-mirror"></span>
+        <span class="prompt-cmd">" /blog/</span>
+        <span class="prompt-cursor">▌</span>
       </div>
       <div id="search-pagefind"></div>
     </div>
     <div class="terminal-status" id="search-status">
-      <span class="status-results" id="search-results-count" aria-live="polite" aria-atomic="true"
+      <span
+        class="status-results"
+        id="search-results-count"
+        aria-live="polite"
+        aria-atomic="true"
       ></span>
       <span class="status-keys">ESC cerrar · Ctrl+K buscar</span>
     </div>

@@ -22,33 +22,31 @@ const { author } = Astro.props;
     />
   </a>
   <div class="author-info">
-    <h3 class="author-name"><a href={`/autor/${author.id}/`}>{author.name}</a></h3>
+    <h3 class="author-name">
+      <a href={`/autor/${author.id}/`}>{author.name}</a>
+    </h3>
     <p class="author-bio">{author.bio}</p>
     <div class="author-links">
       <div class="author-social">
-        {
-          author.social.twitter && (
-            <a href={author.social.twitter} target="_blank" rel="noopener noreferrer">
-              [twitter]
-            </a>
-          )
-        }
-        {
-          author.social.github && (
-            <a href={author.social.github} target="_blank" rel="noopener noreferrer">
-              [github]
-            </a>
-          )
-        }
-        {
-          author.social.linkedin && (
-            <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer">
-              [linkedin]
-            </a>
-          )
-        }
+        {author.social.twitter && (
+          <a href={author.social.twitter} target="_blank" rel="noopener noreferrer">
+            [twitter]
+          </a>
+        )}
+        {author.social.github && (
+          <a href={author.social.github} target="_blank" rel="noopener noreferrer">
+            [github]
+          </a>
+        )}
+        {author.social.linkedin && (
+          <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer">
+            [linkedin]
+          </a>
+        )}
       </div>
-      <a href={`/autor/${author.id}/`} class="author-all-posts">[ver todos los artículos]</a>
+      <a href={`/autor/${author.id}/`} class="author-all-posts">
+        [ver todos los artículos]
+      </a>
     </div>
   </div>
 </aside>

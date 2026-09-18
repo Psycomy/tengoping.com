@@ -28,18 +28,20 @@ const categories = getUniqueCategories(allPosts);
     </div>
 
     <nav class="category-filter" aria-label="Filtrar por categoría">
-      <a href="/blog" class="badge badge-category">Todas</a>
-      {
-        categories.map((cat) => (
-          <a href={`/categorias/${slugify(cat)}`} class="badge badge-tag">
-            {cat}
-          </a>
-        ))
-      }
+      <a href="/blog" class="badge badge-category">
+        Todas
+      </a>
+      {categories.map((cat) => (
+        <a href={`/categorias/${slugify(cat)}`} class="badge badge-tag">
+          {cat}
+        </a>
+      ))}
     </nav>
 
     <div class="posts-grid">
-      {page.data.map((post) => <ArticleCard post={post} />)}
+      {page.data.map((post) => (
+        <ArticleCard post={post} />
+      ))}
     </div>
 
     <Pagination

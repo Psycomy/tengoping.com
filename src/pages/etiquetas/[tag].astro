@@ -31,12 +31,20 @@ const metaPrompt = `$ grep -ri "${tag}" /blog/`;
   <section class="container page-section">
     <div class="page-header">
       <span class="meta-prompt">{metaPrompt}</span>
-      <h1>Etiqueta: <span class="highlight">{tag}</span></h1>
-      <p class="subtitle">{posts.length} {posts.length === 1 ? 'artículo' : 'artículos'}</p>
-      <a href="/etiquetas/" class="back-link">← Todas las etiquetas</a>
+      <h1>
+        Etiqueta: <span class="highlight">{tag}</span>
+      </h1>
+      <p class="subtitle">
+        {posts.length} {posts.length === 1 ? 'artículo' : 'artículos'}
+      </p>
+      <a href="/etiquetas/" class="back-link">
+        ← Todas las etiquetas
+      </a>
     </div>
     <div class="posts-grid">
-      {posts.map((post) => <ArticleCard post={post} />)}
+      {posts.map((post) => (
+        <ArticleCard post={post} />
+      ))}
     </div>
   </section>
 </BaseLayout>

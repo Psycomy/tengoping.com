@@ -12,74 +12,76 @@ const { posts } = Astro.props;
 
 <section class="hero-slider" aria-label="Últimas publicaciones">
   <div class="slider-track">
-    {
-      posts.map((post, i) => (
-        <div class="slide" data-index={i} aria-hidden={i !== 0 ? 'true' : undefined}>
-          {post.data.image ? (
-            <Image
-              src={post.data.image}
-              alt=""
-              class="slide-image"
-              loading={i === 0 ? 'eager' : 'lazy'}
-              fetchpriority={i === 0 ? 'high' : 'auto'}
-              format="avif"
-              width={1200}
-              height={450}
-              sizes="100vw"
-            />
-          ) : (
-            <img
-              src="/images/placeholder-article.svg"
-              alt=""
-              class="slide-image"
-              loading={i === 0 ? 'eager' : 'lazy'}
-              width="1200"
-              height="450"
-              decoding="async"
-            />
-          )}
-          <div class="slide-overlay">
-            <div class="slide-content container">
-              <a
-                href={`/categorias/${slugify(post.data.category)}`}
-                class="badge badge-category"
-                tabindex={i !== 0 ? -1 : undefined}
-              >
-                ./{post.data.category}
-              </a>
-              <h2 class="slide-title">{post.data.title}</h2>
-              <p class="slide-description">{post.data.description}</p>
-              <a href={`/blog/${post.id}/`} class="slide-cta" tabindex={i !== 0 ? -1 : undefined}>
-                [$ leer más →]
-              </a>
-            </div>
+    {posts.map((post, i) => (
+      <div class="slide" data-index={i} aria-hidden={i !== 0 ? 'true' : undefined}>
+        {post.data.image ? (
+          <Image
+            src={post.data.image}
+            alt=""
+            class="slide-image"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : 'auto'}
+            format="avif"
+            width={1200}
+            height={450}
+            sizes="100vw"
+          />
+        ) : (
+          <img
+            src="/images/placeholder-article.svg"
+            alt=""
+            class="slide-image"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            width="1200"
+            height="450"
+            decoding="async"
+          />
+        )}
+        <div class="slide-overlay">
+          <div class="slide-content container">
+            <a
+              href={`/categorias/${slugify(post.data.category)}`}
+              class="badge badge-category"
+              tabindex={i !== 0 ? -1 : undefined}
+            >
+              ./{post.data.category}
+            </a>
+            <h2 class="slide-title">{post.data.title}</h2>
+            <p class="slide-description">{post.data.description}</p>
+            <a href={`/blog/${post.id}/`} class="slide-cta" tabindex={i !== 0 ? -1 : undefined}>
+              [$ leer más →]
+            </a>
           </div>
         </div>
-      ))
-    }
+      </div>
+    ))}
   </div>
 
-  <button class="slider-arrow slider-prev" aria-label="Anterior">[&lt;]</button>
-  <button class="slider-arrow slider-next" aria-label="Siguiente">[&gt;]</button>
+  <button class="slider-arrow slider-prev" aria-label="Anterior">
+    [&lt;]
+  </button>
+  <button class="slider-arrow slider-next" aria-label="Siguiente">
+    [&gt;]
+  </button>
 
   <div class="slider-controls">
     <span
       class="slider-counter"
       aria-live="polite"
       aria-atomic="true"
-      aria-label={`Diapositiva 1 de ${posts.length}`}>[1/{posts.length}]</span
+      aria-label={`Diapositiva 1 de ${posts.length}`}
     >
+      [1/{posts.length}]
+    </span>
     <div class="slider-dots" role="group" aria-label="Navegación del slider">
-      {
-        posts.map((_, i) => (
-          <button
-            class={`slider-dot${i === 0 ? ' active' : ''}`}
-            aria-current={i === 0 ? 'true' : undefined}
-            aria-label={`Diapositiva ${i + 1}`}
-            data-dot={i}
-          />
-        ))
-      }
+      {posts.map((_, i) => (
+        <button
+          class={`slider-dot${i === 0 ? ' active' : ''}`}
+          aria-current={i === 0 ? 'true' : undefined}
+          aria-label={`Diapositiva ${i + 1}`}
+          data-dot={i}
+        />
+      ))}
     </div>
     <button class="slider-pause" type="button" aria-label="Pausar autoplay" aria-pressed="false">
       [⏸]

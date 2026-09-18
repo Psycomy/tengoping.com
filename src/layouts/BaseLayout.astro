@@ -110,65 +110,28 @@ const imageAlt = article
       type="font/woff2"
       crossorigin
     />
-    {
-      article && author && (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'BlogPosting',
+    {article && author && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          '@id': canonicalURL.toString(),
+          headline: title,
+          description: description,
+          image: imageURL.toString(),
+          url: canonicalURL.toString(),
+          datePublished: publishDate,
+          dateModified: modifiedDate ?? publishDate,
+          inLanguage: 'es',
+          mainEntityOfPage: {
+            '@type': 'WebPage',
             '@id': canonicalURL.toString(),
-            headline: title,
-            description: description,
-            image: imageURL.toString(),
-            url: canonicalURL.toString(),
-            datePublished: publishDate,
-            dateModified: modifiedDate ?? publishDate,
-            inLanguage: 'es',
-            mainEntityOfPage: {
-              '@type': 'WebPage',
-              '@id': canonicalURL.toString(),
-            },
-            author: authorUrl
-              ? { '@type': 'Person', '@id': authorUrl, name: author, url: authorUrl }
-              : { '@type': 'Person', name: author },
-            publisher: {
-              '@type': 'Organization',
-              name: site.title,
-              url: site.url,
-              logo: {
-                '@type': 'ImageObject',
-                url: `${site.url}/apple-touch-icon.png`,
-              },
-            },
-          })}
-        />
-      )
-    }
-
-    {
-      isHome && (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebSite',
-            '@id': site.url,
-            name: site.title,
-            url: site.url,
-            description: site.description,
-            inLanguage: 'es',
-          })}
-        />
-      )
-    }
-
-    {
-      isHome && (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify({
-            '@context': 'https://schema.org',
+          },
+          author: authorUrl
+            ? { '@type': 'Person', '@id': authorUrl, name: author, url: authorUrl }
+            : { '@type': 'Person', name: author },
+          publisher: {
             '@type': 'Organization',
             name: site.title,
             url: site.url,
@@ -176,12 +139,43 @@ const imageAlt = article
               '@type': 'ImageObject',
               url: `${site.url}/apple-touch-icon.png`,
             },
-            description: site.description,
-            sameAs: ['https://github.com/Psycomy/tengoping.com'],
-          })}
-        />
-      )
-    }
+          },
+        })}
+      ></script>
+    )}
+
+    {isHome && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          '@id': site.url,
+          name: site.title,
+          url: site.url,
+          description: site.description,
+          inLanguage: 'es',
+        })}
+      ></script>
+    )}
+
+    {isHome && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: site.title,
+          url: site.url,
+          logo: {
+            '@type': 'ImageObject',
+            url: `${site.url}/apple-touch-icon.png`,
+          },
+          description: site.description,
+          sameAs: ['https://github.com/Psycomy/tengoping.com'],
+        })}
+      ></script>
+    )}
 
     <style>
       :global(#sw-update-banner) {
@@ -264,7 +258,9 @@ const imageAlt = article
     </script>
   </head>
   <body>
-    <a href="#main-content" class="sr-only skip-link">Ir al contenido principal</a>
+    <a href="#main-content" class="sr-only skip-link">
+      Ir al contenido principal
+    </a>
     <Header />
     <main id="main-content">
       <slot />

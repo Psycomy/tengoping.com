@@ -20,44 +20,11 @@ for (const h of filtered) {
 }
 ---
 
-{
-  nested.length > 0 && (
-    <aside class="toc-outer" aria-label="Tabla de contenidos">
-      <div class="toc-wrapper">
-        <nav class="toc-desktop">
-          <h2 class="toc-title">// tabla de contenidos</h2>
-          <ul class="toc-list">
-            {nested.map((item, i) => (
-              <li>
-                <a href={`#${item.heading.slug}`} data-slug={item.heading.slug}>
-                  <span class="toc-tree">
-                    {i === nested.length - 1 && item.children.length === 0 ? '└──' : '├──'}
-                  </span>{' '}
-                  {item.heading.text}
-                </a>
-                {item.children.length > 0 && (
-                  <ul class="toc-sublist">
-                    {item.children.map((child, j) => (
-                      <li>
-                        <a href={`#${child.slug}`} data-slug={child.slug}>
-                          <span class="toc-tree">
-                            {i === nested.length - 1 ? '   ' : '│  '}
-                            {j === item.children.length - 1 ? '└──' : '├──'}
-                          </span>{' '}
-                          {child.text}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-
-      <details class="toc-mobile">
-        <summary>// tabla de contenidos</summary>
+{nested.length > 0 && (
+  <aside class="toc-outer" aria-label="Tabla de contenidos">
+    <div class="toc-wrapper">
+      <nav class="toc-desktop">
+        <h2 class="toc-title">// tabla de contenidos</h2>
         <ul class="toc-list">
           {nested.map((item, i) => (
             <li>
@@ -85,10 +52,41 @@ for (const h of filtered) {
             </li>
           ))}
         </ul>
-      </details>
-    </aside>
-  )
-}
+      </nav>
+    </div>
+
+    <details class="toc-mobile">
+      <summary>// tabla de contenidos</summary>
+      <ul class="toc-list">
+        {nested.map((item, i) => (
+          <li>
+            <a href={`#${item.heading.slug}`} data-slug={item.heading.slug}>
+              <span class="toc-tree">
+                {i === nested.length - 1 && item.children.length === 0 ? '└──' : '├──'}
+              </span>{' '}
+              {item.heading.text}
+            </a>
+            {item.children.length > 0 && (
+              <ul class="toc-sublist">
+                {item.children.map((child, j) => (
+                  <li>
+                    <a href={`#${child.slug}`} data-slug={child.slug}>
+                      <span class="toc-tree">
+                        {i === nested.length - 1 ? '   ' : '│  '}
+                        {j === item.children.length - 1 ? '└──' : '├──'}
+                      </span>{' '}
+                      {child.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </details>
+  </aside>
+)}
 
 <script>
   let scrollObserver: IntersectionObserver | null = null;
