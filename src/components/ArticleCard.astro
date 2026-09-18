@@ -17,80 +17,70 @@ const authorAvatarSmall = authorData?.avatar ? avatarVariant(authorData.avatar, 
 ---
 
 <article class="article-card card-hover">
-  {
-    /* Duplica el enlace del título: oculto a AT y fuera del tab-order para no
-      anunciar dos veces el mismo destino */
-  }
+  {/* Duplica el enlace del título: oculto a AT y fuera del tab-order para no
+      anunciar dos veces el mismo destino */}
   <a href={`/blog/${post.id}/`} class="card-image-link" aria-hidden="true" tabindex="-1">
-    {
-      image ? (
-        <Image
-          src={image}
-          alt=""
-          class="card-image"
-          loading="lazy"
-          width={300}
-          height={200}
-          format="avif"
-          sizes="(max-width: 768px) 100vw, 300px"
-        />
-      ) : (
-        <img
-          src="/images/placeholder-article.svg"
-          alt=""
-          class="card-image"
-          loading="lazy"
-          width="300"
-          height="200"
-          decoding="async"
-        />
-      )
-    }
+    {image ? (
+      <Image
+        src={image}
+        alt=""
+        class="card-image"
+        loading="lazy"
+        width={300}
+        height={200}
+        format="avif"
+        sizes="(max-width: 768px) 100vw, 300px"
+      />
+    ) : (
+      <img
+        src="/images/placeholder-article.svg"
+        alt=""
+        class="card-image"
+        loading="lazy"
+        width="300"
+        height="200"
+        decoding="async"
+      />
+    )}
     <div class="card-image-skeleton" aria-hidden="true"></div>
   </a>
   <div class="card-content">
-    <a href={`/categorias/${slugify(category)}`} class="badge badge-category">{category}</a>
+    <a href={`/categorias/${slugify(category)}`} class="badge badge-category">
+      {category}
+    </a>
     <h3 class="card-title">
       <a href={`/blog/${post.id}/`}>{title}</a>
     </h3>
-    <p class="card-description">
-      {description}
-    </p>
+    <p class="card-description">{description}</p>
     <div class="card-tags">
-      {
-        tags.map((tag) => (
-          <a href={`/etiquetas/${slugify(tag)}`} class="badge badge-tag">
-            {tag}
-          </a>
-        ))
-      }
+      {tags.map((tag) => (
+        <a href={`/etiquetas/${slugify(tag)}`} class="badge badge-tag">
+          {tag}
+        </a>
+      ))}
     </div>
     <div class="card-meta">
       <div class="card-author">
-        {
-          authorData && (
-            <a href={`/autor/${authorData.id}/`} aria-hidden="true" tabindex="-1">
-              <img
-                src={authorAvatarSmall ?? authorData.avatar}
-                alt=""
-                class="card-avatar"
-                loading="lazy"
-                width="28"
-                height="28"
-                decoding="async"
-              />
-            </a>
-          )
-        }
-        {
-          authorData ? (
-            <a href={`/autor/${authorData.id}/`} class="card-author-link">
-              {authorData.name}
-            </a>
-          ) : (
-            <span class="card-author-link">{author}</span>
-          )
-        }
+        {authorData && (
+          <a href={`/autor/${authorData.id}/`} aria-hidden="true" tabindex="-1">
+            <img
+              src={authorAvatarSmall ?? authorData.avatar}
+              alt=""
+              class="card-avatar"
+              loading="lazy"
+              width="28"
+              height="28"
+              decoding="async"
+            />
+          </a>
+        )}
+        {authorData ? (
+          <a href={`/autor/${authorData.id}/`} class="card-author-link">
+            {authorData.name}
+          </a>
+        ) : (
+          <span class="card-author-link">{author}</span>
+        )}
       </div>
       <div class="card-info">
         <time datetime={new Date(pubDate).toISOString()}>{formatDate(pubDate)}</time>

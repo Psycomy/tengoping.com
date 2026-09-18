@@ -46,9 +46,13 @@ const basePath = `/categorias/${slugify(category)}`;
       <h1>{category}</h1>
     </div>
     {meta?.description && <p class="category-desc">{meta.description}</p>}
-    <p class="subtitle">{page.total} {page.total === 1 ? 'artículo' : 'artículos'}</p>
+    <p class="subtitle">
+      {page.total} {page.total === 1 ? 'artículo' : 'artículos'}
+    </p>
     <div class="posts-grid">
-      {page.data.map((post) => <ArticleCard post={post} />)}
+      {page.data.map((post) => (
+        <ArticleCard post={post} />
+      ))}
     </div>
     <Pagination
       url={{ prev: page.url.prev, next: page.url.next, current: page.url.current }}

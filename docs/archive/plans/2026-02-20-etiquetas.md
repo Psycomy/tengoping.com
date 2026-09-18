@@ -64,24 +64,24 @@ const sections = [
     <div class="page-header">
       <span class="meta-prompt">$ ls -la /etiquetas/ | sort -rn</span>
       <h1>Etiquetas</h1>
-      <p class="subtitle">{tagCounts.length} etiquetas en {posts.length} artículos</p>
+      <p class="subtitle">
+        {tagCounts.length} etiquetas en {posts.length} artículos
+      </p>
     </div>
 
-    {
-      sections.map((section) => (
-        <div class="tags-section" id={section.id}>
-          <h2 class={`section-title level-${section.level}`}>{section.label}</h2>
-          <div class="tags-grid">
-            {section.tags.map((tag) => (
-              <a href={`/etiquetas/${tag.slug}`} class={`tag-card level-${section.level}`}>
-                <span class="tag-name">{tag.name}</span>
-                <span class="tag-count">[{tag.count}]</span>
-              </a>
-            ))}
-          </div>
+    {sections.map((section) => (
+      <div class="tags-section" id={section.id}>
+        <h2 class={`section-title level-${section.level}`}>{section.label}</h2>
+        <div class="tags-grid">
+          {section.tags.map((tag) => (
+            <a href={`/etiquetas/${tag.slug}`} class={`tag-card level-${section.level}`}>
+              <span class="tag-name">{tag.name}</span>
+              <span class="tag-count">[{tag.count}]</span>
+            </a>
+          ))}
         </div>
-      ))
-    }
+      </div>
+    ))}
   </section>
 </BaseLayout>
 
@@ -255,10 +255,16 @@ El archivo tiene ~57 líneas. Sección template actual (líneas 26-33):
 ```astro
 <BaseLayout title={`Etiqueta: ${tag}`} description={`Artículos con la etiqueta ${tag}`}>
   <section class="container page-section">
-    <h1>Etiqueta: <span class="highlight">{tag}</span></h1>
-    <p class="subtitle">{posts.length} {posts.length === 1 ? 'artículo' : 'artículos'}</p>
+    <h1>
+      Etiqueta: <span class="highlight">{tag}</span>
+    </h1>
+    <p class="subtitle">
+      {posts.length} {posts.length === 1 ? 'artículo' : 'artículos'}
+    </p>
     <div class="posts-grid">
-      {posts.map((post) => <ArticleCard post={post} />)}
+      {posts.map((post) => (
+        <ArticleCard post={post} />
+      ))}
     </div>
   </section>
 </BaseLayout>
@@ -281,12 +287,20 @@ Reemplazar las líneas 26-34 con:
   <section class="container page-section">
     <div class="page-header">
       <span class="meta-prompt">{metaPrompt}</span>
-      <h1>Etiqueta: <span class="highlight">{tag}</span></h1>
-      <p class="subtitle">{posts.length} {posts.length === 1 ? 'artículo' : 'artículos'}</p>
-      <a href="/etiquetas/" class="back-link">← Todas las etiquetas</a>
+      <h1>
+        Etiqueta: <span class="highlight">{tag}</span>
+      </h1>
+      <p class="subtitle">
+        {posts.length} {posts.length === 1 ? 'artículo' : 'artículos'}
+      </p>
+      <a href="/etiquetas/" class="back-link">
+        ← Todas las etiquetas
+      </a>
     </div>
     <div class="posts-grid">
-      {posts.map((post) => <ArticleCard post={post} />)}
+      {posts.map((post) => (
+        <ArticleCard post={post} />
+      ))}
     </div>
   </section>
 </BaseLayout>

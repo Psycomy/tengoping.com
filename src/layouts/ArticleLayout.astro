@@ -80,46 +80,46 @@ const authorJsonLd = authorData
   author={authorData?.name}
   authorUrl={authorPageUrl}
 >
-  {authorJsonLd && <script type="application/ld+json" set:html={JSON.stringify(authorJsonLd)} />}
+  {authorJsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(authorJsonLd)}></script>
+  )}
 
   <article class="article-page container" data-pagefind-body>
     <Breadcrumbs title={title} category={category} />
     <header class="article-header">
       <div class="article-meta">
         <span class="meta-prompt">$ cat {entry.id}.md</span>
-        <a href={`/categorias/${slugify(category)}`} class="badge badge-category">{category}</a>
+        <a href={`/categorias/${slugify(category)}`} class="badge badge-category">
+          {category}
+        </a>
         <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
         {updatedDate && <span class="updated-date">(actualizado: {formatDate(updatedDate)})</span>}
         <span class="reading-time">{readingTime} min de lectura</span>
       </div>
       <h1>{title}</h1>
       <p class="article-description">{description}</p>
-      {
-        isStale && (
-          <aside class="stale-warning" role="note" aria-live="polite">
-            [!] Este artículo puede estar desactualizado. Última revisión:{' '}
-            {formatDate(lastReviewDate)}.
-          </aside>
-        )
-      }
+      {isStale && (
+        <aside class="stale-warning" role="note" aria-live="polite">
+          [!] Este artículo puede estar desactualizado. Última revisión:{' '}
+          {formatDate(lastReviewDate)}.
+        </aside>
+      )}
     </header>
 
-    {
-      image && (
-        <div class="article-image">
-          <Image
-            src={image}
-            alt=""
-            width={900}
-            height={506}
-            format="avif"
-            loading="eager"
-            fetchpriority="high"
-            sizes="(max-width: 900px) 100vw, 900px"
-          />
-        </div>
-      )
-    }
+    {image && (
+      <div class="article-image">
+        <Image
+          src={image}
+          alt=""
+          width={900}
+          height={506}
+          format="avif"
+          loading="eager"
+          fetchpriority="high"
+          sizes="(max-width: 900px) 100vw, 900px"
+        />
+      </div>
+    )}
 
     <div class="article-grid">
       <div class="article-sidebar" data-pagefind-ignore>
@@ -133,22 +133,20 @@ const authorJsonLd = authorData
 
     <footer class="article-footer" data-pagefind-ignore>
       <div class="article-tags">
-        {
-          tags.map((tag) => (
-            <a href={`/etiquetas/${slugify(tag)}`} class="badge badge-tag">
-              {tag}
-            </a>
-          ))
-        }
+        {tags.map((tag) => (
+          <a href={`/etiquetas/${slugify(tag)}`} class="badge badge-tag">
+            {tag}
+          </a>
+        ))}
       </div>
 
       <ShareButtons title={title} url={canonicalURL} />
 
       <div class="rss-cta">
         <span class="rss-prompt">$ curl tengoping.com/rss.xml | subscribe</span>
-        <a href="/rss.xml" class="rss-link" aria-label="Suscribirse al feed RSS"
-          >[suscribirse por RSS →]</a
-        >
+        <a href="/rss.xml" class="rss-link" aria-label="Suscribirse al feed RSS">
+          [suscribirse por RSS →]
+        </a>
       </div>
 
       {authorData && <AuthorCard author={authorData} />}

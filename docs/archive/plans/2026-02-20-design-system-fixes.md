@@ -191,11 +191,9 @@ Reemplazar por:
 Localizar líneas ~61-63:
 
 ```astro
-{
-  post.data.description.length > 140
-    ? post.data.description.slice(0, 140) + '...'
-    : post.data.description
-}
+{post.data.description.length > 140
+  ? post.data.description.slice(0, 140) + '...'
+  : post.data.description}
 ```
 
 Reemplazar por:

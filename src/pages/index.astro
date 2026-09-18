@@ -59,7 +59,9 @@ const lastUpdated = new Intl.DateTimeFormat('es-ES', {
         </p>
       </div>
       <dl class="intro-stats">
-        <p class="stats-prompt"><span class="prompt">$</span> stat ./blog</p>
+        <p class="stats-prompt">
+          <span class="prompt">$</span> stat ./blog
+        </p>
         <div class="stat-row">
           <dt>artículos</dt>
           <dd>{allPosts.length}</dd>
@@ -76,37 +78,35 @@ const lastUpdated = new Intl.DateTimeFormat('es-ES', {
     </div>
   </section>
   <HeroSlider posts={allPosts.slice(0, 5)} />
-  {
-    sortedCategories.map(([category, posts]) => (
-      <section class="category-section container">
-        <div class="category-header">
-          <h2>
-            <span class="category-icon" set:html={categoryMeta[category]?.icon || ''} />
-            {category}
-          </h2>
-          <a
-            class="cat-link"
-            href={`/categorias/${slugify(category)}`}
-            aria-label={`Ver todos los artículos de ${category}`}
-          >
-            [ver todos →]
-          </a>
+  {sortedCategories.map(([category, posts]) => (
+    <section class="category-section container">
+      <div class="category-header">
+        <h2>
+          <span class="category-icon" set:html={categoryMeta[category]?.icon || ''} />
+          {category}
+        </h2>
+        <a
+          class="cat-link"
+          href={`/categorias/${slugify(category)}`}
+          aria-label={`Ver todos los artículos de ${category}`}
+        >
+          [ver todos →]
+        </a>
+      </div>
+      <div class="category-grid">
+        <div class="featured">
+          <ArticleCard post={posts[0]} />
         </div>
-        <div class="category-grid">
-          <div class="featured">
-            <ArticleCard post={posts[0]} />
+        {posts.length > 1 && (
+          <div class="secondary">
+            {posts.slice(1, 3).map((post) => (
+              <ArticleCard post={post} />
+            ))}
           </div>
-          {posts.length > 1 && (
-            <div class="secondary">
-              {posts.slice(1, 3).map((post) => (
-                <ArticleCard post={post} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-    ))
-  }
+        )}
+      </div>
+    </section>
+  ))}
 </BaseLayout>
 
 <style>

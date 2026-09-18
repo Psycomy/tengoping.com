@@ -7,28 +7,26 @@ interface Props {
 const { prevPost, nextPost } = Astro.props;
 ---
 
-{
-  (prevPost || nextPost) && (
-    <nav class="article-nav" aria-label="Navegación entre artículos">
-      <div class="nav-prev">
-        {prevPost && (
-          <a href={`/blog/${prevPost.id}/`} rel="prev">
-            <span class="nav-label">← Anterior</span>
-            <span class="nav-title">{prevPost.data.title}</span>
-          </a>
-        )}
-      </div>
-      <div class="nav-next">
-        {nextPost && (
-          <a href={`/blog/${nextPost.id}/`} rel="next">
-            <span class="nav-label">Siguiente →</span>
-            <span class="nav-title">{nextPost.data.title}</span>
-          </a>
-        )}
-      </div>
-    </nav>
-  )
-}
+{(prevPost || nextPost) && (
+  <nav class="article-nav" aria-label="Navegación entre artículos">
+    <div class="nav-prev">
+      {prevPost && (
+        <a href={`/blog/${prevPost.id}/`} rel="prev">
+          <span class="nav-label">← Anterior</span>
+          <span class="nav-title">{prevPost.data.title}</span>
+        </a>
+      )}
+    </div>
+    <div class="nav-next">
+      {nextPost && (
+        <a href={`/blog/${nextPost.id}/`} rel="next">
+          <span class="nav-label">Siguiente →</span>
+          <span class="nav-title">{nextPost.data.title}</span>
+        </a>
+      )}
+    </div>
+  </nav>
+)}
 
 <style>
   .article-nav {

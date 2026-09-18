@@ -35,24 +35,24 @@ const sections = [
     <div class="page-header">
       <span class="meta-prompt">$ ls -la /etiquetas/ | sort -rn</span>
       <h1>Etiquetas</h1>
-      <p class="subtitle">{tagCounts.length} etiquetas en {posts.length} artículos</p>
+      <p class="subtitle">
+        {tagCounts.length} etiquetas en {posts.length} artículos
+      </p>
     </div>
 
-    {
-      sections.map((section) => (
-        <div class="tags-section" id={section.id}>
-          <h2 class={`section-title level-${section.level}`}>{section.label}</h2>
-          <div class="tags-grid">
-            {section.tags.map((tag) => (
-              <a href={`/etiquetas/${tag.slug}`} class={`tag-card level-${section.level}`}>
-                <span class="tag-name">{tag.name}</span>
-                <span class="tag-count">[{tag.count}]</span>
-              </a>
-            ))}
-          </div>
+    {sections.map((section) => (
+      <div class="tags-section" id={section.id}>
+        <h2 class={`section-title level-${section.level}`}>{section.label}</h2>
+        <div class="tags-grid">
+          {section.tags.map((tag) => (
+            <a href={`/etiquetas/${tag.slug}`} class={`tag-card level-${section.level}`}>
+              <span class="tag-name">{tag.name}</span>
+              <span class="tag-count">[{tag.count}]</span>
+            </a>
+          ))}
         </div>
-      ))
-    }
+      </div>
+    ))}
   </section>
 </BaseLayout>
 

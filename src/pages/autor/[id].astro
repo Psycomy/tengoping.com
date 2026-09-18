@@ -41,7 +41,7 @@ const personSchema = {
 ---
 
 <BaseLayout title={author.name} description={author.bio}>
-  <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema)}></script>
   <section class="container page-section">
     <div class="author-card">
       <div class="author-avatar-wrapper">
@@ -62,35 +62,33 @@ const personSchema = {
         <div class="author-meta">
           <span class="meta-stat">{posts.length} artículos</span>
           <div class="author-social">
-            {
-              author.social.twitter && (
-                <a href={author.social.twitter} target="_blank" rel="noopener noreferrer">
-                  [twitter]
-                </a>
-              )
-            }
-            {
-              author.social.github && (
-                <a href={author.social.github} target="_blank" rel="noopener noreferrer">
-                  [github]
-                </a>
-              )
-            }
-            {
-              author.social.linkedin && (
-                <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer">
-                  [linkedin]
-                </a>
-              )
-            }
+            {author.social.twitter && (
+              <a href={author.social.twitter} target="_blank" rel="noopener noreferrer">
+                [twitter]
+              </a>
+            )}
+            {author.social.github && (
+              <a href={author.social.github} target="_blank" rel="noopener noreferrer">
+                [github]
+              </a>
+            )}
+            {author.social.linkedin && (
+              <a href={author.social.linkedin} target="_blank" rel="noopener noreferrer">
+                [linkedin]
+              </a>
+            )}
           </div>
         </div>
       </div>
     </div>
 
-    <h2 class="posts-heading">Artículos de {author.name} ({posts.length})</h2>
+    <h2 class="posts-heading">
+      Artículos de {author.name} ({posts.length})
+    </h2>
     <div class="posts-grid">
-      {posts.map((post) => <ArticleCard post={post} />)}
+      {posts.map((post) => (
+        <ArticleCard post={post} />
+      ))}
     </div>
   </section>
 </BaseLayout>
