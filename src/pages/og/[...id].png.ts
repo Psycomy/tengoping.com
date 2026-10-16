@@ -37,6 +37,7 @@ export const GET: APIRoute = async ({ props }) => {
           justifyContent: 'space-between',
           width: '100%',
           height: '100%',
+          boxSizing: 'border-box',
           padding: '60px',
           backgroundColor: '#0D1117',
           fontFamily: 'JetBrains Mono',
@@ -91,7 +92,7 @@ export const GET: APIRoute = async ({ props }) => {
                   props: {
                     style: {
                       fontSize: title.length > 60 ? '36px' : '44px',
-                      fontWeight: 700,
+                      fontWeight: 400,
                       lineHeight: 1.2,
                       color: '#E6EDF3',
                       marginTop: '12px',
@@ -116,7 +117,7 @@ export const GET: APIRoute = async ({ props }) => {
                 {
                   type: 'span',
                   props: {
-                    style: { fontSize: '22px', fontWeight: 700, color: '#58D5A2' },
+                    style: { fontSize: '22px', fontWeight: 400, color: '#58D5A2' },
                     children: 'root@tengoping:~$_',
                   },
                 },
