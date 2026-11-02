@@ -217,6 +217,8 @@ function writeHeaders(scriptHashes, styleHashes, reportingConfig) {
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Link: </fonts/JetBrainsMono-Regular.woff2>; rel=preload; as=font; type=font/woff2; crossorigin
+  Link: </fonts/JetBrainsMono-Bold.woff2>; rel=preload; as=font; type=font/woff2; crossorigin
   Content-Security-Policy: ${cspWithReporting}
 ${reportingHeaders}${CACHE_RULES}`;
 
