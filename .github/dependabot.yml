@@ -27,6 +27,10 @@ updates:
       day: 'monday'
       time: '09:00'
       timezone: 'Europe/Madrid'
+    groups:
+      codeql-action:
+        patterns:
+          - 'github/codeql-action/*'
     labels:
       - 'dependencies'
     commit-message:
