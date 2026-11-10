@@ -12,3 +12,4 @@ dist/
 scripts/.venv/
 **/__pycache__/
 *.pyc
+.wrangler/
